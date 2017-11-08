@@ -1,5 +1,5 @@
-const Joi = require('joi');
-const User = require('../models/user.model');
+const Joi = require('joi')
+const User = require('../models/user.model')
 
 module.exports = {
 
@@ -10,8 +10,8 @@ module.exports = {
       perPage: Joi.number().min(1).max(100),
       name: Joi.string(),
       email: Joi.string(),
-      role: Joi.string().valid(User.roles),
-    },
+      role: Joi.string().valid(User.roles)
+    }
   },
 
   // POST /v1/users
@@ -20,8 +20,8 @@ module.exports = {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(128).required(),
       name: Joi.string().max(128),
-      role: Joi.string().valid(User.roles),
-    },
+      role: Joi.string().valid(User.roles)
+    }
   },
 
   // PUT /v1/users/:userId
@@ -30,11 +30,11 @@ module.exports = {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(128).required(),
       name: Joi.string().max(128),
-      role: Joi.string().valid(User.roles),
+      role: Joi.string().valid(User.roles)
     },
     params: {
-      userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),
-    },
+      userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required()
+    }
   },
 
   // PATCH /v1/users/:userId
@@ -43,10 +43,10 @@ module.exports = {
       email: Joi.string().email(),
       password: Joi.string().min(6).max(128),
       name: Joi.string().max(128),
-      role: Joi.string().valid(User.roles),
+      role: Joi.string().valid(User.roles)
     },
     params: {
-      userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),
-    },
-  },
-};
+      userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required()
+    }
+  }
+}

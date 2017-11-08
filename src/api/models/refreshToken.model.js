@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const crypto = require('crypto');
-const moment = require('moment-timezone');
+const mongoose = require('mongoose')
+const crypto = require('crypto')
+const moment = require('moment-timezone')
 
 /**
  * Refresh Token Schema
@@ -10,20 +10,20 @@ const refreshTokenSchema = new mongoose.Schema({
   token: {
     type: String,
     required: true,
-    index: true,
+    index: true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: true
   },
   userEmail: {
     type: 'String',
     ref: 'User',
-    required: true,
+    required: true
   },
-  expires: { type: Date },
-});
+  expires: { type: Date }
+})
 
 refreshTokenSchema.statics = {
 
@@ -33,22 +33,22 @@ refreshTokenSchema.statics = {
    * @param {User} user
    * @returns {RefreshToken}
    */
-  generate(user) {
-    const userId = user._id;
-    const userEmail = user.email;
-    const token = `${userId}.${crypto.randomBytes(40).toString('hex')}`;
-    const expires = moment().add(30, 'days').toDate();
+  generate (user) {
+    const userId = user._id
+    const userEmail = user.email
+    const token = `${userId}.${crypto.randomBytes(40).toString('hex')}`
+    const expires = moment().add(30, 'days').toDate()
     const tokenObject = new RefreshToken({
-      token, userId, userEmail, expires,
-    });
-    tokenObject.save();
-    return tokenObject;
-  },
+      token, userId, userEmail, expires
+    })
+    tokenObject.save()
+    return tokenObject
+  }
 
-};
+}
 
 /**
  * @typedef RefreshToken
  */
-const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema);
-module.exports = RefreshToken;
+const RefreshToken = mongoose.model('RefreshToken', refreshTokenSchema)
+module.exports = RefreshToken
