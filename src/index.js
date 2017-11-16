@@ -1,14 +1,17 @@
-// make bluebird default Promise
-Promise = require('bluebird') // eslint-disable-line no-global-assign
-const { port, env } = require('./config/vars')
-const app = require('./config/express')
-const mongoose = require('./config/mongoose')
+import 'bluebird' // eslint-disable-line no-global-assign
 
-// open mongoose connection
-// mongoose.connect()
+import { port, env } from './config/vars'
+import app from './config/express'
+import models from './config/sequelize'
 
-// listen to requests
-app.listen(port, () => console.info(`server started on port ${port} (${env})`))
+models.sequelize.authenticate()
+  .then(() => models.sequelize.sync())
+  .then(() => {
+    app.listen(port, () => console.info(`server started on port ${port} (${env})`))
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err)
+  })
 
 /**
 * Exports express
