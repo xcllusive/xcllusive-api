@@ -1,75 +1,70 @@
+import models from '../../config/sequelize'
+import APIError from '../utils/APIError'
+
 const httpStatus = require('http-status')
-const User = require('../models/user.model')
+const jwt = require('jsonwebtoken')
 const RefreshToken = require('../models/refreshToken.model')
 const moment = require('moment-timezone')
-const { jwtExpirationInterval } = require('../../config/vars')
+const { jwtExpirationInterval, jwtSecret } = require('../../config/vars')
 
-/**
-* Returns a formated object with tokens
-* @private
-*/
-function generateTokenResponse (user, accessToken) {
-  const tokenType = 'Bearer'
-  const refreshToken = RefreshToken.generate(user).token
-  const expiresIn = moment().add(jwtExpirationInterval, 'minutes')
-  return {
-    tokenType, accessToken, refreshToken, expiresIn
+const User = models.users
+
+const checkDuplicateEmail = (err) => {
+  if (err.original.code === 'ER_DUP_ENTRY') {
+    return new APIError({
+      message: 'Validation Error',
+      errors: [{
+        field: 'email',
+        location: 'body',
+        messages: ['"email" already exists']
+      }],
+      status: httpStatus.CONFLICT,
+      isPublic: true
+    })
   }
+  return err
 }
 
-/**
- * Returns jwt token if registration was successful
- * @public
- */
-exports.register = async (req, res, next) => {
+const jwtSignUser = user => jwt.sign(user, jwtSecret, { expiresIn: moment().add(jwtExpirationInterval, 'minutes').unix() })
+
+export const register = async (req, res, next) => {
   try {
-    const user = await (new User(req.body)).save()
+    const user = await User.create(req.body)
     const userTransformed = user.transform()
-    const token = generateTokenResponse(user, user.token())
-    res.status(httpStatus.CREATED)
-    return res.json({ token, user: userTransformed })
+    const token = jwtSignUser(userTransformed)
+    return res.status(httpStatus.CREATED).json({ token, user: userTransformed })
   } catch (error) {
-    return next(User.checkDuplicateEmail(error))
+    return next(checkDuplicateEmail(error))
   }
 }
 
-/**
- * Returns jwt token if valid username and password is provided
- * @public
- */
-exports.login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
-    const { user, accessToken } = await User.findAndGenerateToken(req.body)
-    const token = generateTokenResponse(user, accessToken)
-    const userTransformed = user.transform()
-    return res.json({ token, user: userTransformed })
-  } catch (error) {
-    return next(error)
+    const { email, password } = req.body
+    const user = await User.findOne({ where: { email } })
+    if (!user) {
+      return res.status(httpStatus.FORBIDDEN).json({
+        error: 'The login information was incorrect'
+      })
+    }
+    const isPasswordValid = await user.comparePassword(password, user.password)
+    if (!isPasswordValid) {
+      return res.status(403).send({
+        error: 'The login information was incorrect'
+      })
+    }
+    const userTransformed = user.transform(user)
+    res.send({
+      user: userTransformed,
+      token: jwtSignUser(userTransformed)
+    })
+  } catch (err) {
+    return next(err)
   }
+  return next()
 }
 
-/**
- * login with an existing user or creates a new one if valid accessToken token
- * Returns jwt token
- * @public
- */
-exports.oAuth = async (req, res, next) => {
-  try {
-    const { user } = req
-    const accessToken = user.token()
-    const token = generateTokenResponse(user, accessToken)
-    const userTransformed = user.transform()
-    return res.json({ token, user: userTransformed })
-  } catch (error) {
-    return next(error)
-  }
-}
-
-/**
- * Returns a new jwt when given a valid refresh token
- * @public
- */
-exports.refresh = async (req, res, next) => {
+export const refresh = async (req, res, next) => {
   try {
     const { email, refreshToken } = req.body
     const refreshObject = await RefreshToken.findOneAndRemove({
@@ -77,7 +72,7 @@ exports.refresh = async (req, res, next) => {
       token: refreshToken
     })
     const { user, accessToken } = await User.findAndGenerateToken({ email, refreshObject })
-    const response = generateTokenResponse(user, accessToken)
+    const response = jwtSignUser(user, accessToken)
     return res.json(response)
   } catch (error) {
     return next(error)

@@ -17,14 +17,6 @@ module.exports = {
     }
   },
 
-  // POST /v1/auth/facebook
-  // POST /v1/auth/google
-  oAuth: {
-    body: {
-      access_token: Joi.string().required()
-    }
-  },
-
   // POST /v1/auth/refresh
   refresh: {
     body: {

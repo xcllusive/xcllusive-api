@@ -34,7 +34,7 @@ refreshTokenSchema.statics = {
    * @returns {RefreshToken}
    */
   generate (user) {
-    const userId = user._id
+    const userId = user.id
     const userEmail = user.email
     const token = `${userId}.${crypto.randomBytes(40).toString('hex')}`
     const expires = moment().add(30, 'days').toDate()

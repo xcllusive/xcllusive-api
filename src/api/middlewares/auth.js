@@ -49,6 +49,3 @@ exports.authorize = (roles = User.roles) => (req, res, next) =>
     'jwt', { session: false },
     handleJWT(req, res, next, roles)
   )(req, res, next)
-
-exports.oAuth = service =>
-  passport.authenticate(service, { session: false })
