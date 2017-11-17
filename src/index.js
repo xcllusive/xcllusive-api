@@ -13,8 +13,4 @@ models.sequelize.authenticate()
     console.error('Unable to connect to the database:', err)
   })
 
-/**
-* Exports express
-* @public
-*/
 module.exports = app
