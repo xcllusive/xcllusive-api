@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs'
+import httpStatus from 'http-status'
+import APIError from '../utils/APIError'
 
 const hashPassword = async (user) => {
   const SALT_FACTOR = 8
@@ -17,9 +19,33 @@ const hashPassword = async (user) => {
 }
 
 export default (sequelize, DataTypes) => {
-  const roles = ['user', 'admin']
-
-  const User = sequelize.define('user', {
+  const User = sequelize.define('User', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      unique: true,
+      allowNull: false,
+      validate: {
+        notEmpty: false,
+        isInt: true,
+        notNull: true
+      }
+    },
+    agentList: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    createBy: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -29,28 +55,172 @@ export default (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    password: {
+    fax: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
-        notEmpty: true,
-        len: [6, 128]
+        notEmpty: false
       }
     },
-    name: {
+    firstName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true
       }
     },
-    role: {
-      type: DataTypes.ENUM,
+    idReferrer: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    lastName: {
+      type: DataTypes.STRING,
       allowNull: false,
-      values: roles,
-      defaultValue: 'user'
+      validate: {
+        notEmpty: true
+      }
+    },
+    listAppraisal: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listClosingStage: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listDataGathering: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listMeeting: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listSum: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listYes: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listingNegotiation: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    listingAgent: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    modifiedBy: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [4, 128]
+      }
+    },
+    phoneHome: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    phoneMobile: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    phoneWork: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    postCode: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    street: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    suburb: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: false
+      }
+    },
+    userTypeId: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    roles: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
+    createdAt: 'dateTimeCreated',
+    updatedAt: 'dateTimeModified',
     hooks: {
       beforeCreate: hashPassword,
       beforeUpdate: hashPassword,
@@ -65,6 +235,22 @@ export default (sequelize, DataTypes) => {
     const userJson = user.toJSON()
     delete userJson.password
     return userJson
+  }
+
+  User.prototype.checkDuplicateEmail = (err) => {
+    if (err.original.code === 'ER_DUP_ENTRY') {
+      return new APIError({
+        message: 'Validation Error',
+        errors: [{
+          field: 'email',
+          location: 'body',
+          messages: ['"email" already exists']
+        }],
+        status: httpStatus.CONFLICT,
+        isPublic: true
+      })
+    }
+    return err
   }
 
   return User
