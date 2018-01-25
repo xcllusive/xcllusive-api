@@ -1,5 +1,10 @@
+import fs from 'fs'
+import path from 'path'
 import Sequelize from 'sequelize'
 import { mysql } from './vars'
+
+const basename = path.basename(__filename)
+const db = {}
 
 const { Op } = Sequelize
 
@@ -47,20 +52,30 @@ const sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
     min: 0,
     acquire: 30000,
     idle: 10000
+  },
+  logging: true
+})
+
+fs.readdirSync(`${__dirname}/../api/models`)
+  .filter((file) => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js')
+  })
+  .forEach((file) => {
+    const model = sequelize['import'](path.join(`${__dirname}/../api/models`, file))
+    db[model.name] = model
+    console.log(db)
+  })
+
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db)
   }
 })
 
-const models = {
-  users: sequelize.import('../api/models/user.model.js')
-}
+db.sequelize = sequelize
+db.Sequelize = Sequelize
 
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) {
-    models[modelName].associate(models)
-  }
-})
+// relations
+db.User.hasOne(db.UserType)
 
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-
-export default models
+export default db
