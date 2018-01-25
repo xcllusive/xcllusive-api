@@ -11,6 +11,7 @@
     "yarn": "*"
   },
   "scripts": {
+    "precommit": "yarn lint",
     "prestart": "yarn docs",
     "build": "cross-env NODE_ENV=production rimraf dist/ && babel ./src --out-dir dist/ --copy-files",
     "dev": "nodemon --exec babel-node ./src/index.js",
