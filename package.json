@@ -11,10 +11,9 @@
     "yarn": "*"
   },
   "scripts": {
-    "precommit": "yarn lint",
     "prestart": "yarn docs",
     "build": "cross-env NODE_ENV=production rimraf dist/ && babel ./src --out-dir dist/ --copy-files",
-    "dev": "nodemon --exec babel-node ./src/index.js --presets es2015",
+    "dev": "nodemon --exec babel-node ./src/index.js",
     "lint": "eslint **/*.js --ignore-path .gitignore --ignore-pattern internals/scripts",
     "lint:fix": "yarn lint -- --fix",
     "lint:watch": "yarn lint -- --watch",
@@ -51,19 +50,17 @@
     "lodash": "^4.17.4",
     "method-override": "^2.3.8",
     "moment-timezone": "^0.5.13",
-    "mongoose": "^4.9.7",
     "morgan": "^1.8.1",
     "mysql2": "^1.5.0",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "3.0.0",
-    "sequelize": "^4.22.6",
-    "uuid": "^3.1.0"
+    "sequelize": "^4.22.6"
   },
   "devDependencies": {
     "apidoc": "^0.17.5",
     "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.0",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.0",
