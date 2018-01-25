@@ -1,7 +1,6 @@
 const Joi = require('joi')
 
 module.exports = {
-  // POST /v1/auth/register
   register: {
     body: {
       email: Joi.string().email().required(),
@@ -9,7 +8,6 @@ module.exports = {
     }
   },
 
-  // POST /v1/auth/login
   login: {
     body: {
       email: Joi.string().email().required(),
@@ -17,7 +15,6 @@ module.exports = {
     }
   },
 
-  // POST /v1/auth/refresh
   refresh: {
     body: {
       email: Joi.string().email().required(),
