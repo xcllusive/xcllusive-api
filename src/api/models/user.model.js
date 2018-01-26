@@ -253,5 +253,9 @@ export default (sequelize, DataTypes) => {
     return err
   }
 
+  User.associate = (models) => {
+    models.User.hasMany(models.UserType)
+  }
+
   return User
 }

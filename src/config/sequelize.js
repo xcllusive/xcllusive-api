@@ -75,7 +75,4 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-// relations
-db.User.hasOne(db.UserType)
-
 export default db
