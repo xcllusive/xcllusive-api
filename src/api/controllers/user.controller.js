@@ -57,8 +57,10 @@ export const update = (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
+  const { search } = req.query
+
   try {
-    const users = await User.findAll()
+    const users = search ? await User.findAll({ where: { $or: { firstName: { $like: `%${search}%` } }, lastName: { $like: `%${search}%` } } }) : await User.findAll()
     const transformedUsers = users.map(user => user.transform(user))
     res.json(transformedUsers)
   } catch (err) {
