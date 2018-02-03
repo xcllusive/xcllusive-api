@@ -4,6 +4,7 @@ import APIError from '../utils/APIError'
 
 const hashPassword = async (user) => {
   const SALT_FACTOR = 8
+
   if (!user.changed('password')) {
     return
   }
@@ -228,10 +229,15 @@ export default (sequelize, DataTypes) => {
     }
   })
 
-  User.prototype.comparePassword = async (password, userPassword) =>
-    bcrypt.compare(password, userPassword)
+  User.prototype.comparePassword = async (password, userPassword) => {
+    console.log('pass: ', password)
+    console.log('userPass: ', userPassword)
+    return await bcrypt.compareSync(password, userPassword)
+  }
 
   User.prototype.transform = (user) => {
+    console.log(this.user)
+    console.log(user)
     const userJson = user.toJSON()
     delete userJson.password
     return userJson
