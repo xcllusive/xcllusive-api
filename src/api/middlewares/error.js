@@ -3,10 +3,7 @@ const expressValidation = require('express-validation')
 const APIError = require('../utils/APIError')
 const { env } = require('../../config/vars')
 
-/**
- * Error handler. Send stacktrace only during development
- * @public
- */
+/* Error handler. Send stacktrace only during development */
 const handler = (err, req, res, next) => {
   const response = {
     code: err.status,
@@ -25,10 +22,7 @@ const handler = (err, req, res, next) => {
 }
 exports.handler = handler
 
-/**
- * If error is not an instanceOf APIError, convert it.
- * @public
- */
+/* If error is not an instanceOf APIError, convert it. */
 exports.converter = (err, req, res, next) => {
   let convertedError = err
 
@@ -50,10 +44,7 @@ exports.converter = (err, req, res, next) => {
   return handler(convertedError, req, res)
 }
 
-/**
- * Catch 404 and forward to error handler
- * @public
- */
+/* Catch 404 and forward to error handler */
 exports.notFound = (req, res, next) => {
   const err = new APIError({
     message: 'Not found',
