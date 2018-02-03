@@ -1,15 +1,14 @@
-const express = require('express')
-const morgan = require('morgan')
-const bodyParser = require('body-parser')
-const compress = require('compression')
-const methodOverride = require('method-override')
-const cors = require('cors')
-const helmet = require('helmet')
-const passport = require('passport')
-const routes = require('../api/routes/v1')
-const { logs } = require('./vars')
-const strategies = require('./passport')
-const error = require('../api/middlewares/error')
+import express from 'express'
+import morgan from 'morgan'
+import bodyParser from 'body-parser'
+import compress from 'compression'
+import methodOverride from 'method-override'
+import cors from 'cors'
+import helmet from 'helmet'
+
+import routes from '../api/routes'
+import { logs } from './vars'
+import error from '../api/middlewares/error'
 
 const app = express()
 
@@ -20,8 +19,6 @@ app.use(compress())
 app.use(methodOverride())
 app.use(helmet())
 app.use(cors())
-app.use(passport.initialize())
-passport.use('jwt', strategies.jwt)
 app.use('/', routes)
 app.use(error.converter)
 app.use(error.notFound)
