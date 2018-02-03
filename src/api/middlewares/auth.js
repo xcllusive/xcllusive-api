@@ -1,6 +1,8 @@
-import httpStatus from 'http-status'
-import passport from 'passport'
+import jwt from 'jsonwebtoken'
+import { intersection } from 'lodash'
+
 import APIError from '../utils/APIError'
+import { jwtSecret } from '../../config/vars'
 
 import { Roles } from '../models/user.model'
 
@@ -39,11 +41,46 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   return next()
 }
 
-export const ADMIN = 'admin'
-export const LOGGED_USER = '_loggedUser'
+export const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization
 
-export const authorize = (roles = Roles) => (req, res, next) =>
-  passport.authenticate(
-    'jwt', { session: false },
-    handleJWT(req, res, next, roles)
-  )(req, res, next)
+  if (!authHeader)
+    return res.status(401).send({ error: 'No token provided' })
+
+  const parts = authHeader.split(' ')
+
+  if (!parts.length === 2)
+    return res.status(401).send({ error: 'Token error' })
+
+  const [ scheme, token ] = parts
+
+  if (!/^Bearer$/i.test(scheme))
+    return res.status(401).send({ error: 'Token malformatted' })
+
+  jwt.verify(token, jwtSecret, (err, decoded) => {
+    if (err) return res.status(401).send({ error: 'Token invalid' })
+
+    req.user = decoded
+    return next()
+  })
+}
+
+export const authorizeMiddleware = settings => {
+  const { roles } = settings
+
+  return (req, res, next) => {
+    const { user  } = req
+  
+    if (!user)
+      return res.status(403).send({ error: 'Not Authorized' })
+
+    if (roles && roles.length > 0) {
+      let tokenRoles = JSON.parse(req.user.roles)
+      if (!intersection(roles, tokenRoles).length > 0) {
+        return res.status(403).send({ error: 'Not Authorized' })
+      }
+    }
+  
+    return next()
+  }
+}

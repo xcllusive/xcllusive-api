@@ -1,20 +1,18 @@
-const Joi = require('joi')
+import Joi from 'joi'
 
-module.exports = {
+export default {
   register: {
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().required().min(6).max(128)
     }
   },
-
   login: {
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().required().max(128)
     }
   },
-
   refresh: {
     body: {
       email: Joi.string().email().required(),
