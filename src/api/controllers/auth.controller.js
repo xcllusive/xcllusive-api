@@ -38,7 +38,7 @@ export const login = async (req, res, next) => {
       })
     }
     const isPasswordValid = await user.comparePassword(password, user.password)
-    if (isPasswordValid) {
+    if (!isPasswordValid) {
       return res.status(401).json({
         error: 'The credentials information was incorrect'
       })

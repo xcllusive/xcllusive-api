@@ -5,6 +5,9 @@ import APIError from '../utils/APIError'
 const hashPassword = async (user) => {
   const SALT_FACTOR = 8
 
+  console.log(user)
+  console.log(user.password)
+
   if (!user.changed('password')) {
     return
   }
@@ -224,8 +227,7 @@ export default (sequelize, DataTypes) => {
     updatedAt: 'dateTimeModified',
     hooks: {
       beforeCreate: hashPassword,
-      beforeUpdate: hashPassword,
-      beforeSave: hashPassword
+      beforeUpdate: hashPassword
     }
   })
 
@@ -233,30 +235,6 @@ export default (sequelize, DataTypes) => {
     console.log('pass: ', password)
     console.log('userPass: ', userPassword)
     return await bcrypt.compareSync(password, userPassword)
-  }
-
-  User.prototype.transform = (user) => {
-    console.log(this.user)
-    console.log(user)
-    const userJson = user.toJSON()
-    delete userJson.password
-    return userJson
-  }
-
-  User.prototype.checkDuplicateEmail = (err) => {
-    if (err.original.code === 'ER_DUP_ENTRY') {
-      return new APIError({
-        message: 'Validation Error',
-        errors: [{
-          field: 'email',
-          location: 'body',
-          messages: ['"email" already exists']
-        }],
-        status: httpStatus.CONFLICT,
-        isPublic: true
-      })
-    }
-    return err
   }
 
   User.associate = (models) => {
