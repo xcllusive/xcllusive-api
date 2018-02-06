@@ -2,7 +2,11 @@ import httpStatus from 'http-status'
 import models from '../../config/sequelize'
 
 export const list = async (req, res, next) => {
-  const { search } = req.query
+  const { search, admin, staff, introducer } = req.query
+
+  const isAdmin = JSON.parse(admin)
+  const isStaff = JSON.parse(staff)
+  const isIntroducer = JSON.parse(introducer)
 
   try {
     const whereOptions = search && search.length > 1 ?
@@ -12,18 +16,34 @@ export const list = async (req, res, next) => {
             {
               firstName: {
                 $like: `%${search}%`
-              },
+              }
             },
             {
               lastName: {
                 $like: `%${search}%`
               }
+            },
+            {
+              userTypeId: {
+                $eq: 0
+              }
             }
           ]
         }
       } : null
+    const arrayTypeId = []
+    if (isAdmin) arrayTypeId.push(1)
+    if (isStaff) arrayTypeId.push(2)
+    if (isIntroducer) arrayTypeId.push(3)
     const options = {
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
+      where: {
+        $or: [
+          {
+            userTypeId: arrayTypeId
+          }
+        ]
+      }
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))
     

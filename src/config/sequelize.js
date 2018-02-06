@@ -53,7 +53,7 @@ const sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
     acquire: 30000,
     idle: 10000
   },
-  logging: false
+  logging: true
 })
 
 fs.readdirSync(`${__dirname}/../api/models`)
@@ -63,7 +63,6 @@ fs.readdirSync(`${__dirname}/../api/models`)
   .forEach((file) => {
     const model = sequelize['import'](path.join(`${__dirname}/../api/models`, file))
     db[model.name] = model
-    console.log(db)
   })
 
 Object.keys(db).forEach((modelName) => {

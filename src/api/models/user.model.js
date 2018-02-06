@@ -232,8 +232,6 @@ export default (sequelize, DataTypes) => {
   })
 
   User.prototype.comparePassword = async (password, userPassword) => {
-    console.log('pass: ', password)
-    console.log('userPass: ', userPassword)
     return await bcrypt.compareSync(password, userPassword)
   }
 
