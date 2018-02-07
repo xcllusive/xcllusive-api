@@ -2,11 +2,16 @@ import httpStatus from 'http-status'
 import models from '../../config/sequelize'
 
 export const list = async (req, res, next) => {
-  const { search, admin, staff, introducer } = req.query
+  const {
+    search,
+    admin,
+    staff,
+    introducer
+  } = req.query
 
-  const isAdmin = JSON.parse(admin)
-  const isStaff = JSON.parse(staff)
-  const isIntroducer = JSON.parse(introducer)
+  const isAdmin = admin ? JSON.parse(admin) : true
+  const isStaff = staff ? JSON.parse(staff) : true
+  const isIntroducer = introducer ? JSON.parse(introducer) : true
 
   try {
     const whereOptions = search && search.length > 1 ?
