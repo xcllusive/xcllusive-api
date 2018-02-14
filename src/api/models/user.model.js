@@ -132,7 +132,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    userTypeId: {
+    userType: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -146,7 +146,13 @@ export default (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: hashPassword,
       beforeUpdate: hashPassword
-    }
+    },
+    indexes: [
+      {
+        unique: true,
+        fields: ['id', 'email']
+      }
+    ]
   })
 
   User.prototype.comparePassword = async (password, userPassword) => {

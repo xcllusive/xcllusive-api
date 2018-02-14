@@ -1,4 +1,4 @@
-export const USER_MENU = 'USER_MENU'
+export const BUYER_MENU = 'BUYER_MENU'
 export const BUSINESS_MENU = 'BUSINESS_MENU'
 export const PRESALE_MENU = 'PRESALE_MENU'
 export const RESOURCES_MENU = 'RESOURCES_MENU'

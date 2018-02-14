@@ -5,8 +5,8 @@ import userRoutes from './user.route'
 
 const router = express.Router()
 
-router.get('/', (req, res) => res.send('OK'))
+router.get('/', (req, res) => res.send('API is working !'))
 router.use('/auth', authRoutes)
-router.use('/users', userRoutes)
+router.use('/user', userRoutes)
 
 module.exports = router

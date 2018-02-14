@@ -1,6 +1,6 @@
 import models from '../../config/sequelize'
 import {
-  USER_MENU,
+  BUYER_MENU,
   BUSINESS_MENU,
   PRESALE_MENU,
   RESOURCES_MENU,
@@ -20,9 +20,14 @@ export const list = async (req, res, next) => {
   const isStaff = staff ? JSON.parse(staff) : true
   const isIntroducer = introducer ? JSON.parse(introducer) : true
 
+  const arrayType = []
+  if (isAdmin) arrayType.push('Admin')
+  if (isStaff) arrayType.push('Staff')
+  if (isIntroducer) arrayType.push('Introducer')
+
   try {
-    const whereOptions = search && search.length > 1 ?
-      {
+    const whereOptions = search && search.length > 0
+      ? {
         where: {
           $or: [
             {
@@ -34,34 +39,23 @@ export const list = async (req, res, next) => {
               lastName: {
                 $like: `%${search}%`
               }
-            },
-            {
-              userTypeId: {
-                $eq: 0
-              }
             }
-          ]
+          ],
+          userType: arrayType
         }
-      } : null
-    const arrayTypeId = []
-    if (isAdmin) arrayTypeId.push(1)
-    if (isStaff) arrayTypeId.push(2)
-    if (isIntroducer) arrayTypeId.push(3)
+      }
+      : null
+
     const options = {
       attributes: { exclude: ['password'] },
       where: {
-        $or: [
-          {
-            userTypeId: arrayTypeId
-          }
-        ]
+        userType: arrayType
       }
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))
-    
-    res.status(200).json(users)
+    return res.status(200).json(users)
   } catch (err) {
-    next(err)
+    return next(err)
   }
 }
 
@@ -81,7 +75,7 @@ export const create = async (req, res, next) => {
 
   if (listingAgent === 0) req.body.listingAgent = false
   if (listingAgent === 1) req.body.listingAgent = true
-  if (buyerMenu) roles.push(USER_MENU)
+  if (buyerMenu) roles.push(BUYER_MENU)
   if (businessMenu) roles.push(BUSINESS_MENU)
   if (preSaleMenu) roles.push(PRESALE_MENU)
   if (resourcesMenu) roles.push(RESOURCES_MENU)
@@ -112,10 +106,13 @@ export const update = (req, res, next) => {
   res.status(httpStatus.NO_CONTENT).end()
 }
 
-export const remove = (req, res, next) => {
-  const { user } = req.locals
+export const remove = async (req, res, next) => {
+  const { id } = req.body
 
-  user.remove()
-    .then(() => res.status(httpStatus.NO_CONTENT).end())
-    .catch(e => next(e))
+  try {
+    await models.User.destroy({ where: { id } })
+    return res.status(200).json({ message: 'User removed with success' })
+  } catch (error) {
+    return next(error)
+  }
 }
