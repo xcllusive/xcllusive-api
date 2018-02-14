@@ -4,8 +4,7 @@ import validate from 'express-validation'
 import { list, create, update, remove } from '../controllers/user.controller'
 
 import {
-  LIST_USERS,
-  CREATE_USER
+  SYSTEM_SETTINGS_MENU
 } from '../constants/roles'
 
 import { 
@@ -24,10 +23,11 @@ const router = express.Router()
 
 router
   .use(authMiddleware)
+  .use(authorizeMiddleware({ roles: [SYSTEM_SETTINGS_MENU] }))
 
 router
   .route('/')
-  .get(authorizeMiddleware( { roles: [ LIST_USERS ] } ), list)
+  .get(list)
   .post(create)
   .put(update)
   .delete(remove)

@@ -1,5 +1,12 @@
-import httpStatus from 'http-status'
 import models from '../../config/sequelize'
+import {
+  USER_MENU,
+  BUSINESS_MENU,
+  PRESALE_MENU,
+  RESOURCES_MENU,
+  CLIENT_MANAGER_MENU,
+  SYSTEM_SETTINGS_MENU
+} from '../constants/roles'
 
 export const list = async (req, res, next) => {
   const {
@@ -59,13 +66,45 @@ export const list = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
+  const {
+    userType,
+    listingAgent,
+    buyerMenu,
+    businessMenu,
+    preSaleMenu,
+    resourcesMenu,
+    clientManagerMenu,
+    systemSettingsMenu
+  } = req.body
+
+  const roles = []
+
+  if (listingAgent === 0) req.body.listingAgent = false
+  if (listingAgent === 1) req.body.listingAgent = true
+  if (buyerMenu) roles.push(USER_MENU)
+  if (businessMenu) roles.push(BUSINESS_MENU)
+  if (preSaleMenu) roles.push(PRESALE_MENU)
+  if (resourcesMenu) roles.push(RESOURCES_MENU)
+  if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
+  if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
+
+  req.body.roles = JSON.stringify(roles)
+  req.body.createBy = req.user.id
+  req.body.userTypeId = userType
+
   try {
-    const user = await models.User.create(req.body)
-    const userTransformed = user.transform(user)
-    return res.status(httpStatus.CREATED).json(userTransformed)
+    const { email } = req.body
+    const userExists = await models.User.findOne({ attributes: ['email'], where: { email } })
+    if (userExists) {
+      return res.status(404).json({
+        error: 'User exists'
+      })
+    }
+    await models.User.create(req.body)
+    return res.status(200).json({ message: 'User created with success' })
   } catch (err) {
     console.log(err)
-    return next(User.checkDuplicateEmail(err))
+    return next(err)
   }
 }
 

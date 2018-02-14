@@ -29,190 +29,108 @@ export default (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
       unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: false,
-        isInt: true,
-        notNull: true
-      }
+      allowNull: false
     },
     agentList: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     createBy: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-        notEmpty: true
-      }
+      unique: true
     },
     fax: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false
     },
     idReferrer: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false
     },
     listAppraisal: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listClosingStage: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listDataGathering: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listMeeting: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listSum: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listYes: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listingNegotiation: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listingAgent: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     modifiedBy: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [4, 128]
-      }
+      allowNull: false
     },
     phoneHome: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     phoneMobile: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     phoneWork: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     postCode: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     street: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     suburb: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     userTypeId: {
       type: DataTypes.STRING,
@@ -235,9 +153,9 @@ export default (sequelize, DataTypes) => {
     return await bcrypt.compareSync(password, userPassword)
   }
 
-  User.associate = (models) => {
-    models.User.hasMany(models.UserType)
-  }
+  // User.associate = (models) => {
+  //   models.User.hasMany(models.UserType)
+  // }
 
   return User
 }

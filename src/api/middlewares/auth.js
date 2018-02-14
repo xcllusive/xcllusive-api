@@ -44,20 +44,23 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
 export const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization
 
-  if (!authHeader)
+  if (!authHeader) {
     return res.status(401).send({ error: 'No token provided' })
+  }
 
   const parts = authHeader.split(' ')
 
-  if (!parts.length === 2)
+  if (!parts.length === 2) {
     return res.status(401).send({ error: 'Token error' })
+  }
 
-  const [ scheme, token ] = parts
+  const [scheme, token] = parts
 
-  if (!/^Bearer$/i.test(scheme))
+  if (!/^Bearer$/i.test(scheme)) {
     return res.status(401).send({ error: 'Token malformatted' })
+  }
 
-  jwt.verify(token, jwtSecret, (err, decoded) => {
+  return jwt.verify(token, jwtSecret, (err, decoded) => {
     if (err) return res.status(401).send({ error: 'Token invalid' })
 
     req.user = decoded
@@ -65,22 +68,23 @@ export const authMiddleware = (req, res, next) => {
   })
 }
 
-export const authorizeMiddleware = settings => {
+export const authorizeMiddleware = (settings) => {
   const { roles } = settings
 
   return (req, res, next) => {
-    const { user  } = req
-  
-    if (!user)
+    const { user } = req
+
+    if (!user) {
       return res.status(403).send({ error: 'Not Authorized' })
+    }
 
     if (roles && roles.length > 0) {
-      let tokenRoles = JSON.parse(req.user.roles)
+      const tokenRoles = JSON.parse(req.user.roles)
       if (!intersection(roles, tokenRoles).length > 0) {
         return res.status(403).send({ error: 'Not Authorized' })
       }
     }
-  
+
     return next()
   }
 }
