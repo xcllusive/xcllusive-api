@@ -16,6 +16,8 @@ export const list = async (req, res, next) => {
     introducer
   } = req.query
 
+  console.log('search: ', search)
+
   const isAdmin = admin ? JSON.parse(admin) : true
   const isStaff = staff ? JSON.parse(staff) : true
   const isIntroducer = introducer ? JSON.parse(introducer) : true
@@ -26,7 +28,7 @@ export const list = async (req, res, next) => {
   if (isIntroducer) arrayType.push('Introducer')
 
   try {
-    const whereOptions = search && search.length > 0
+    const whereOptions = search && search.length > 1
       ? {
         where: {
           $or: [
@@ -61,7 +63,6 @@ export const list = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
   const {
-    userType,
     listingAgent,
     buyerMenu,
     businessMenu,
@@ -84,7 +85,6 @@ export const create = async (req, res, next) => {
 
   req.body.roles = JSON.stringify(roles)
   req.body.createBy = req.user.id
-  req.body.userTypeId = userType
 
   try {
     const { email } = req.body
@@ -97,7 +97,6 @@ export const create = async (req, res, next) => {
     await models.User.create(req.body)
     return res.status(200).json({ message: 'User created with success' })
   } catch (err) {
-    console.log(err)
     return next(err)
   }
 }
