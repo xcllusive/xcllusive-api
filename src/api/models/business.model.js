@@ -1,771 +1,461 @@
-import httpStatus from 'http-status'
-import APIError from '../utils/APIError'
-
 export default (sequelize, DataTypes) => {
   const Business = sequelize.define('Business', {
-    businessID: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
       unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: false,
-        notNull: true
-      }
+      allowNull: true
     },
     businessCat: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     commissionPerc: {
       type: DataTypes.FLOAT,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     commissionSold: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     conclusionDate: {
       type: DataTypes.DATE,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listed: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     active: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     address1: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     address1V: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     address2: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     address2V: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     afterSalesNotes: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     businessABN: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     businessCategoryText: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     businessDescriptionShort: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     businessName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false
     },
     businessNameLabel: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     businessNameSecondary: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     businessNameSecondarySel: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     businessPartner: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     businessSource: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: false
     },
     businessType: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     businessURL: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     cCreatedBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     chartSelScore: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     cModifiedBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     countAttBuyers: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     countTaskDueNo: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     createdBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     creationDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     currentPrice: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     data120DayGuarantee: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     dataRegion: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     dateChangedToForSale: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     dateChangedToSalesMemorandum: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     dayGeneratedIWP: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     displayNameV: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     firstNameV: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: false
     },
     forSale: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    fullnameV: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     gDateFrom: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     gDateto: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     gGlobalPending: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     idReferrer: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     imNote: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     imRegenerate: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     imStatus: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     imVersion: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     industry: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     introducerType: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listedPrice: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     listingAgent: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     listingAgentEmail: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     location: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     locationFormat: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     lostDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     lostDateCopy: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     mailingAddressV: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     modificationBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     modificationDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     notifyOwner: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     ownersTime: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     postCode: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     postCodeV: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     potentialListing: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     recID: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     referralList: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     referrerComAgreed: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     referrerComSold: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     saleNotesLostMeeting: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     saleNotesLostWant: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     saleNotesReasonChoose: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     saleNotesReasonType: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     searchNote: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     sellabilityCounter: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     sellabilityLockout: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     sellabilityStatus: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     settlementDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     sold: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     soldAgentCalc: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     soldCalc: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     soldCalcDisplay: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     soldDataCheck: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     soldOwnerCalc: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     soldPrice: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     soldStockPrice: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     sort: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     sortBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     sourceNotes: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     staffAccountName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     stage: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     statsLeadNurtureStatus: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     suburb: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     suburbV: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
-    surnameV: {
+    lastNameV: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: false
     },
     underOffer: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     uVendorPhone1: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     vendorEmail: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: false
     },
     vendorFax: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     vendorFaxAC: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     vendorPhone1: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     vendorPhone1AC: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     vendorPhone2: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     vendorPhone3: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     wCreatedBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     },
     webStage: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     withdrawn: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     withdrawnCalc: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: true
     },
     wModifiedBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false
-      }
+      allowNull: true
     }
   }, {
     createdAt: 'dateTimeCreated',
-    updatedAt: 'dateTimeModified'    
+    updatedAt: 'dateTimeModified',
+    indexes: [
+      {
+        unique: true,
+        fields: ['id']
+      }
+    ]
   })
 
   return Business
