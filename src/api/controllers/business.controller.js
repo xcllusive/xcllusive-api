@@ -1,8 +1,43 @@
 import models from '../../config/sequelize'
 
 export const list = async (req, res, next) => {
+  const {
+    search
+  } = req.query
+
+  const whereOptions = search && search.length > 1
+    ? {
+      where: {
+        $or: [
+          {
+            id: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            businessName: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            firstNameV: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            lastNameV: {
+              $like: `%${search}%`
+            }
+          }
+        ]
+      }
+    }
+    : null
+  const options = {
+    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV']
+  }
   try {
-    const business = await models.Business.findAll()
+    const business = await models.Business.findAll(Object.assign(options, whereOptions))
     return res.status(200).json(business)
   } catch (err) {
     return next(err)
@@ -20,7 +55,8 @@ export const create = async (req, res, next) => {
     vendorEmail: req.body.vendorEmail,
     businessSource: req.body.businessSource,
     sourceNotes: req.body.sourceNotes,
-    description: req.body.description
+    description: req.body.description,
+    stage: 'Potential Listing'
   }
 
   try {

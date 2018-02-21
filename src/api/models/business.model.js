@@ -431,10 +431,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    webStage: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
     withdrawn: {
       type: DataTypes.INTEGER,
       allowNull: true

@@ -16,8 +16,6 @@ export const list = async (req, res, next) => {
     introducer
   } = req.query
 
-  console.log('search: ', search)
-
   const isAdmin = admin ? JSON.parse(admin) : true
   const isStaff = staff ? JSON.parse(staff) : true
   const isIntroducer = introducer ? JSON.parse(introducer) : true
