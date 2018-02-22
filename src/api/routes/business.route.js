@@ -1,7 +1,7 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import { list, create, update, remove } from '../controllers/business.controller'
+import { list, create, update, remove, getBusiness } from '../controllers/business.controller'
 
 import {
   BUSINESS_MENU
@@ -31,5 +31,9 @@ router
   .post(create)
   .put(update)
   .delete(remove)
+
+router
+  .route('/:idBusiness')
+  .get(getBusiness)
 
 export default router

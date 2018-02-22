@@ -1,5 +1,20 @@
 import models from '../../config/sequelize'
 
+export const getBusiness = async (req, res, next) => {
+  const {
+    idBusiness
+  } = req.params
+
+  console.log(req.params)
+
+  try {
+    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    return res.status(200).json(business)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 export const list = async (req, res, next) => {
   const {
     search
@@ -37,8 +52,8 @@ export const list = async (req, res, next) => {
     attributes: ['id', 'businessName', 'firstNameV', 'lastNameV']
   }
   try {
-    const business = await models.Business.findAll(Object.assign(options, whereOptions))
-    return res.status(200).json(business)
+    const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
+    return res.status(200).json(businesses)
   } catch (err) {
     return next(err)
   }
