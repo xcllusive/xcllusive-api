@@ -5,8 +5,6 @@ export const getBusiness = async (req, res, next) => {
     idBusiness
   } = req.params
 
-  console.log(req.params)
-
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
     return res.status(200).json(business)
@@ -82,8 +80,17 @@ export const create = async (req, res, next) => {
   }
 }
 
-export const update = (req, res, next) => {
+export const update = async (req, res, next) => {
+  const {
+    idBusiness
+  } = req.params
 
+  try {
+    await models.Business.update(req.body, { where: { id: idBusiness } })
+    return res.start(200).json({ message: `Business ${idBusiness} updated with success` })
+  } catch (error) {
+    return next(error)
+  }
 }
 
 export const remove = async (req, res, next) => {
