@@ -35,5 +35,6 @@ router
 router
   .route('/:idBusiness')
   .get(getBusiness)
+  .post(update)
 
 export default router
