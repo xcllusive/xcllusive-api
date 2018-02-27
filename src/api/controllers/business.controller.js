@@ -85,9 +85,45 @@ export const update = async (req, res, next) => {
     idBusiness
   } = req.params
 
+  if (!idBusiness || idBusiness === undefined) Promise.reject('business id is required')
+
+  const {
+    businessName,
+    firstNameV,
+    lastNameV,
+    vendorPhone1,
+    vendorPhone2,
+    vendorPhone3,
+    vendorEmail,
+    businessSource,
+    sourceNote,
+    description,
+    businessNameSecondary,
+    businessABN,
+    data120DayGuarantee,
+    notifyOwner
+  } = req.body
+
+  const business = {
+    businessName,
+    firstNameV,
+    lastNameV,
+    vendorPhone1,
+    vendorPhone2,
+    vendorPhone3,
+    vendorEmail,
+    businessSource,
+    sourceNote,
+    description,
+    businessNameSecondary,
+    businessABN,
+    data120DayGuarantee,
+    notifyOwner
+  }
+
   try {
-    await models.Business.update(req.body, { where: { id: idBusiness } })
-    return res.start(200).json({ message: `Business ${idBusiness} updated with success` })
+    await models.Business.update(business, { where: { id: idBusiness } })
+    return res.status(200).json({ message: `Business ${idBusiness} updated with success` })
   } catch (error) {
     return next(error)
   }
