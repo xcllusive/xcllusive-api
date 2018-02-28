@@ -100,6 +100,11 @@ export const update = async (req, res, next) => {
     description,
     businessNameSecondary,
     businessABN,
+    businessURL,
+    address1,
+    suburb,
+    state,
+    postCode,
     data120DayGuarantee,
     notifyOwner
   } = req.body
@@ -117,6 +122,11 @@ export const update = async (req, res, next) => {
     description,
     businessNameSecondary,
     businessABN,
+    businessURL,
+    address1,
+    suburb,
+    state,
+    postCode,
     data120DayGuarantee,
     notifyOwner
   }
