@@ -99,8 +99,41 @@ export const create = async (req, res, next) => {
   }
 }
 
-export const update = (req, res, next) => {
-  res.status(httpStatus.NO_CONTENT).end()
+export const update = async (req, res, next) => {
+  const {
+    listingAgent,
+    buyerMenu,
+    password,
+    businessMenu,
+    preSaleMenu,
+    resourcesMenu,
+    clientManagerMenu,
+    systemSettingsMenu
+  } = req.body
+
+  const roles = []
+
+  if (listingAgent === 0) req.body.listingAgent = false
+  if (listingAgent === 1) req.body.listingAgent = true
+  if (buyerMenu) roles.push(BUYER_MENU)
+  if (businessMenu) roles.push(BUSINESS_MENU)
+  if (preSaleMenu) roles.push(PRESALE_MENU)
+  if (resourcesMenu) roles.push(RESOURCES_MENU)
+  if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
+  if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
+
+  req.body.roles = JSON.stringify(roles)
+  req.body.createBy = req.user.id
+
+  if (!password) delete req.body.password
+
+  try {
+    await models.User.update(req.body, { where: { id: req.body.id } })
+    return res.status(200).json({ message: 'User updated with success' })
+  } catch (err) {
+    console.log(err)
+    return next(err)
+  }
 }
 
 export const remove = async (req, res, next) => {
