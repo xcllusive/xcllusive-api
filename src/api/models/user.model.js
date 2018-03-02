@@ -30,11 +30,7 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
       unique: true,
       allowNull: false
-    },
-    agentList: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    },
+    },    
     createBy: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -43,50 +39,14 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
-    },
-    fax: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
+    },    
     firstName: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    idReferrer: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false
-    },
-    listAppraisal: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    listClosingStage: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    listDataGathering: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    listMeeting: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    listSum: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    listYes: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    listingNegotiation: {
-      type: DataTypes.INTEGER,
-      allowNull: true
     },
     listingAgent: {
       type: DataTypes.INTEGER,
@@ -127,16 +87,16 @@ export default (sequelize, DataTypes) => {
     suburb: {
       type: DataTypes.STRING,
       allowNull: true
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
+    },    
     userType: {
       type: DataTypes.STRING,
       allowNull: false
     },
     roles: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    dataRegion: {
       type: DataTypes.STRING,
       allowNull: false
     }
