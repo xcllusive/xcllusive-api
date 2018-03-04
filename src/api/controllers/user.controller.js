@@ -129,7 +129,7 @@ export const update = async (req, res, next) => {
 
   try {
     await models.User.update(req.body, { where: { id: req.body.id } })
-    return res.status(200).json({ message: 'User updated with success' })
+    return res.status(200).json({ message: `User ${req.body.firstName} updated with success` })
   } catch (err) {
     console.log(err)
     return next(err)
