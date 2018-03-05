@@ -5,9 +5,21 @@ export const getBusiness = async (req, res, next) => {
     idBusiness
   } = req.params
 
+  const _mapValuesToArray = (array) => {
+    if (array.length > 0) {
+      return array.map((item, index) => ({ key: index, text: item.label, value: item.label }))
+    }
+    return []
+  }
+
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
-    return res.status(200).json(business)
+    const sourceList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
+    const response = {
+      business,
+      sourceList: _mapValuesToArray(sourceList)
+    }
+    return res.status(200).json(response)
   } catch (err) {
     return next(err)
   }
