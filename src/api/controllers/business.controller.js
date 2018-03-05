@@ -15,9 +15,11 @@ export const getBusiness = async (req, res, next) => {
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
     const sourceList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
+    const industryList = await models.BusinessIndustry.findAll({ raw: true, attributes: ['id', 'label'] })
     const response = {
       business,
-      sourceList: _mapValuesToArray(sourceList)
+      sourceList: _mapValuesToArray(sourceList),
+      industryList: _mapValuesToArray(industryList)
     }
     return res.status(200).json(response)
   } catch (err) {
