@@ -167,6 +167,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: true
     },
+    notifyOwner: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     ownersTime: {
       type: DataTypes.STRING,
       allowNull: true
