@@ -171,6 +171,7 @@ export const update = async (req, res, next) => {
     await models.Business.update(business, { where: { id: idBusiness } })
     return res.status(200).json({ message: `Business ${idBusiness} updated with success` })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 }
