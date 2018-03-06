@@ -120,7 +120,6 @@ export const update = async (req, res, next) => {
     vendorPhone2,
     vendorPhone3,
     vendorEmail,
-    businessSource,
     sourceNotes,
     description,
     businessNameSecondary,
@@ -131,7 +130,13 @@ export const update = async (req, res, next) => {
     state,
     postCode,
     data120DayGuarantee,
-    notifyOwner
+    notifyOwner,
+    businessSource,
+    businessRating,
+    businessIndustry,
+    businessOwnersTime,
+    businessProduct,
+    businessType
   } = req.body
 
   const business = {
@@ -142,7 +147,6 @@ export const update = async (req, res, next) => {
     vendorPhone2,
     vendorPhone3,
     vendorEmail,
-    businessSource,
     sourceNotes,
     description,
     businessNameSecondary,
@@ -153,7 +157,14 @@ export const update = async (req, res, next) => {
     state,
     postCode,
     data120DayGuarantee,
-    notifyOwner
+    notifyOwner,
+    sourceId: businessSource,
+    ratingId: businessRating,
+    industryId: businessIndustry,
+    ownersTimeId: businessOwnersTime,
+    productId: businessProduct,
+    typeId: businessType
+
   }
 
   try {
