@@ -7,7 +7,7 @@ export const getBusiness = async (req, res, next) => {
 
   const _mapValuesToArray = (array) => {
     if (array.length > 0) {
-      return array.map((item, index) => ({ key: index, text: item.label, value: item.label }))
+      return array.map((item, index) => ({ key: index, text: item.label, value: item.id }))
     }
     return []
   }
@@ -16,10 +16,19 @@ export const getBusiness = async (req, res, next) => {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
     const sourceList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
     const industryList = await models.BusinessIndustry.findAll({ raw: true, attributes: ['id', 'label'] })
+    const ownersTimeList = await models.BusinessOwnersTime.findAll({ raw: true, attributes: ['id', 'label'] })
+    const productList = await models.BusinessProduct.findAll({ raw: true, attributes: ['id', 'label'] })
+    const ratingList = await models.BusinessRating.findAll({ raw: true, attributes: ['id', 'label'] })
+    const typeList = await models.BusinessType.findAll({ raw: true, attributes: ['id', 'label'] })
+
     const response = {
       business,
       sourceList: _mapValuesToArray(sourceList),
-      industryList: _mapValuesToArray(industryList)
+      industryList: _mapValuesToArray(industryList),
+      ownersTimeList: _mapValuesToArray(ownersTimeList),
+      productList: _mapValuesToArray(productList),
+      ratingList: _mapValuesToArray(ratingList),
+      typeList: _mapValuesToArray(typeList)
     }
     return res.status(200).json(response)
   } catch (err) {

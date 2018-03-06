@@ -242,5 +242,14 @@ export default (sequelize, DataTypes) => {
     ]
   })
 
+  Business.associate = (models) => {
+    models.Business.belongsTo(models.BusinessSource, { foreignKey: 'sourceId' })
+    models.Business.belongsTo(models.BusinessRating, { foreignKey: 'ratingId' })
+    models.Business.belongsTo(models.BusinessIndustry, { foreignKey: 'industryId' })
+    models.Business.belongsTo(models.BusinessOwnersTime, { foreignKey: 'ownersTimeId' })
+    models.Business.belongsTo(models.BusinessProduct, { foreignKey: 'productId' })
+    models.Business.belongsTo(models.BusinessType, { foreignKey: 'typeId' })
+  }
+
   return Business
 }
