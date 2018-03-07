@@ -58,6 +58,7 @@ export const create = async (req, res, next) => {
     }
     return res.status(200).json({ message: `Business register ${label} created` })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 }

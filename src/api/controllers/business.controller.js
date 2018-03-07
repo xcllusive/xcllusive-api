@@ -32,43 +32,51 @@ export const getBusiness = async (req, res, next) => {
     }
     return res.status(200).json(response)
   } catch (err) {
+    console.log(err)
     return next(err)
   }
 }
 
 export const list = async (req, res, next) => {
-  const {
-    search
-  } = req.query
+  let search = req.query.search
+  let whereOptions = {}
 
-  const whereOptions = search && search.length > 1
-    ? {
-      where: {
-        $or: [
-          {
-            id: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            businessName: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            firstNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            lastNameV: {
-              $like: `%${search}%`
-            }
+  if (search && search.length > 0) {
+    if (search.includes('BS') || search.includes('bs')) {
+      if (search.includes('BS')) search = search.replace(/BS/g, '')
+      if (search.includes('bs')) search = search.replace(/bs/g, '')
+      whereOptions = {
+        where: {
+          id: {
+            $eq: search
           }
-        ]
+        }
+      }
+    } else {
+      whereOptions = {
+        where: {
+          $or: [
+            {
+              businessName: {
+                $like: `%${search}%`
+              }
+            },
+            {
+              firstNameV: {
+                $like: `%${search}%`
+              }
+            },
+            {
+              lastNameV: {
+                $like: `%${search}%`
+              }
+            }
+          ]
+        }
       }
     }
-    : null
+  }
+
   const options = {
     attributes: ['id', 'businessName', 'firstNameV', 'lastNameV']
   }
@@ -96,7 +104,7 @@ export const create = async (req, res, next) => {
   }
 
   try {
-    const user = await models.User.findOne({where: {id: req.user.id}, attributes: ['firstName', 'lastName']})
+    const user = await models.User.findOne({ where: { id: req.user.id }, attributes: ['firstName', 'lastName'] })
     newBusiness.listingAgent = `${user.firstName} ${user.lastName}`
     await models.Business.create(newBusiness)
     return res.status(200).json({ message: 'Business created with success' })
@@ -110,7 +118,7 @@ export const update = async (req, res, next) => {
     idBusiness
   } = req.params
 
-  if (!idBusiness || idBusiness === undefined) Promise.reject('business id is required')
+  if (!idBusiness || idBusiness === 'undefined') throw new Error(`Business id does not exist`)
 
   const {
     businessName,
@@ -158,12 +166,12 @@ export const update = async (req, res, next) => {
     postCode,
     data120DayGuarantee,
     notifyOwner,
-    sourceId: businessSource,
-    ratingId: businessRating,
-    industryId: businessIndustry,
-    ownersTimeId: businessOwnersTime,
-    productId: businessProduct,
-    typeId: businessType
+    sourceId: businessSource === '' ? null : businessSource,
+    ratingId: businessRating === '' ? null : businessRating,
+    industryId: businessIndustry === '' ? null : businessIndustry,
+    ownersTimeId: businessOwnersTime === '' ? null : businessOwnersTime,
+    productId: businessProduct === '' ? null : businessProduct,
+    typeId: businessType === '' ? null : businessType
 
   }
 

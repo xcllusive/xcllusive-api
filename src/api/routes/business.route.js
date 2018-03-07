@@ -29,12 +29,11 @@ router
   .route('/')
   .get(list)
   .post(create)
-  .put(update)
-  .delete(remove)
 
 router
   .route('/:idBusiness')
   .get(getBusiness)
-  .post(update)
+  .put(update)
+  .delete(remove)
 
 export default router
