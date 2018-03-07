@@ -172,12 +172,11 @@ export const update = async (req, res, next) => {
     ownersTimeId: businessOwnersTime === '' ? null : businessOwnersTime,
     productId: businessProduct === '' ? null : businessProduct,
     typeId: businessType === '' ? null : businessType
-
   }
 
   try {
     await models.Business.update(business, { where: { id: idBusiness } })
-    return res.status(200).json({ message: `Business ${idBusiness} updated with success` })
+    return res.status(200).json({ message: `Business BS${idBusiness} updated with success` })
   } catch (error) {
     console.log(error)
     return next(error)
@@ -189,6 +188,29 @@ export const remove = async (req, res, next) => {
   try {
     await models.User.destroy({ where: { id } })
     return res.status(200).json({ message: 'User removed with success' })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const updateListingAgent = async (req, res, next) => {
+  const {
+    listingAgentId
+  } = req.body
+
+  const {
+    idBusiness
+  } = req.params
+
+  const data = {
+    listingAgent: listingAgentId
+  }
+
+  if (!idBusiness || idBusiness === 'undefined') throw new Error(`Business id does not exist`)
+
+  try {
+    await models.Business.update(data, { where: { id: idBusiness } })
+    return res.status(200).json({ message: `Agent list on business BS${idBusiness} updated with success` })
   } catch (error) {
     return next(error)
   }

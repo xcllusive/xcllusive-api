@@ -1,7 +1,7 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import { list, create, update, remove, getBusiness } from '../controllers/business.controller'
+import { list, create, update, remove, getBusiness, updateListingAgent } from '../controllers/business.controller'
 
 import {
   BUSINESS_MENU
@@ -35,5 +35,9 @@ router
   .get(getBusiness)
   .put(update)
   .delete(remove)
+
+router
+  .route('/listing-agent/:idBusiness')
+  .put(updateListingAgent)
 
 export default router
