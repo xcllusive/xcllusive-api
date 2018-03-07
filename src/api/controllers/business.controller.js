@@ -195,7 +195,7 @@ export const remove = async (req, res, next) => {
 
 export const updateListingAgent = async (req, res, next) => {
   const {
-    listingAgentId
+    listingAgentName
   } = req.body
 
   const {
@@ -203,7 +203,7 @@ export const updateListingAgent = async (req, res, next) => {
   } = req.params
 
   const data = {
-    listingAgent: listingAgentId
+    listingAgent: listingAgentName
   }
 
   if (!idBusiness || idBusiness === 'undefined') throw new Error(`Business id does not exist`)
