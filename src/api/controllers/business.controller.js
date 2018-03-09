@@ -7,7 +7,7 @@ export const getBusiness = async (req, res, next) => {
 
   const _mapValuesToArray = (array) => {
     if (array.length > 0) {
-      if (array[0].firstName !== '') {
+      if (array[0].firstName) {
         return array.map((item, index) => ({ key: index, text: `${item.firstName} ${item.lastName}`, value: `${item.firstName} ${item.lastName}` })) 
       }
       return array.map((item, index) => ({ key: index, text: item.label, value: item.id }))
@@ -23,7 +23,7 @@ export const getBusiness = async (req, res, next) => {
     const productList = await models.BusinessProduct.findAll({ raw: true, attributes: ['id', 'label'] })
     const ratingList = await models.BusinessRating.findAll({ raw: true, attributes: ['id', 'label'] })
     const typeList = await models.BusinessType.findAll({ raw: true, attributes: ['id', 'label'] })
-    const usersStaff = await models.User.findAll({ raw: true, attibutes: ['id', 'firstName', 'lastName'], where: { userType: 'Staff' } })
+    const usersStaff = await models.User.findAll({ raw: true, attributes: ['id', 'firstName', 'lastName'], where: { userType: 'Staff' } })
 
     const response = {
       business,
@@ -33,7 +33,7 @@ export const getBusiness = async (req, res, next) => {
       productList: _mapValuesToArray(productList),
       ratingList: _mapValuesToArray(ratingList),
       typeList: _mapValuesToArray(typeList),
-      usersStaff
+      usersStaff: _mapValuesToArray(usersStaff)
     }
     return res.status(200).json(response)
   } catch (err) {
@@ -150,7 +150,8 @@ export const update = async (req, res, next) => {
     businessOwnersTime,
     businessProduct,
     businessType,
-    listingAgent
+    listingAgent,
+    staffAccountName
   } = req.body
 
   const business = {
@@ -178,7 +179,8 @@ export const update = async (req, res, next) => {
     industryId: businessIndustry === '' ? null : businessIndustry,
     ownersTimeId: businessOwnersTime === '' ? null : businessOwnersTime,
     productId: businessProduct === '' ? null : businessProduct,
-    typeId: businessType === '' ? null : businessType
+    typeId: businessType === '' ? null : businessType,
+    staffAccountName
   }
 
   try {
