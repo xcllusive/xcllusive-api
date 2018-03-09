@@ -20,6 +20,7 @@ export const getBusiness = async (req, res, next) => {
     const productList = await models.BusinessProduct.findAll({ raw: true, attributes: ['id', 'label'] })
     const ratingList = await models.BusinessRating.findAll({ raw: true, attributes: ['id', 'label'] })
     const typeList = await models.BusinessType.findAll({ raw: true, attributes: ['id', 'label'] })
+    const usersStaff = await models.User.findAll({ raw: true, where: { userType: 'Staff' } })
 
     const response = {
       business,
@@ -28,7 +29,8 @@ export const getBusiness = async (req, res, next) => {
       ownersTimeList: _mapValuesToArray(ownersTimeList),
       productList: _mapValuesToArray(productList),
       ratingList: _mapValuesToArray(ratingList),
-      typeList: _mapValuesToArray(typeList)
+      typeList: _mapValuesToArray(typeList),
+      usersStaff
     }
     return res.status(200).json(response)
   } catch (err) {
