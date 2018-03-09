@@ -7,6 +7,9 @@ export const getBusiness = async (req, res, next) => {
 
   const _mapValuesToArray = (array) => {
     if (array.length > 0) {
+      if (array[0].firstName !== '') {
+        return array.map((item, index) => ({ key: index, text: `${item.firstName} ${item.lastName}`, value: `${item.firstName} ${item.lastName}` })) 
+      }
       return array.map((item, index) => ({ key: index, text: item.label, value: item.id }))
     }
     return []
@@ -20,7 +23,7 @@ export const getBusiness = async (req, res, next) => {
     const productList = await models.BusinessProduct.findAll({ raw: true, attributes: ['id', 'label'] })
     const ratingList = await models.BusinessRating.findAll({ raw: true, attributes: ['id', 'label'] })
     const typeList = await models.BusinessType.findAll({ raw: true, attributes: ['id', 'label'] })
-    const usersStaff = await models.User.findAll({ raw: true, where: { userType: 'Staff' } })
+    const usersStaff = await models.User.findAll({ raw: true, attibutes: ['id', 'firstName', 'lastName'], where: { userType: 'Staff' } })
 
     const response = {
       business,
@@ -146,7 +149,8 @@ export const update = async (req, res, next) => {
     businessIndustry,
     businessOwnersTime,
     businessProduct,
-    businessType
+    businessType,
+    listingAgent
   } = req.body
 
   const business = {
@@ -168,6 +172,7 @@ export const update = async (req, res, next) => {
     postCode,
     data120DayGuarantee,
     notifyOwner,
+    listingAgent,
     sourceId: businessSource === '' ? null : businessSource,
     ratingId: businessRating === '' ? null : businessRating,
     industryId: businessIndustry === '' ? null : businessIndustry,
