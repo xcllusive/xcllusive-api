@@ -61,3 +61,70 @@ export const create = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const update = async (req, res, next) => {
+  const {
+    label,
+    businessRegister
+  } = req.body
+
+  try {
+    if (businessRegister === 1) {
+      await models.BusinessSource.update({ label }, { where: { id: businessRegister } })
+    }
+    if (businessRegister === 2) {
+      await models.BusinessRating.update({ label }, { where: { id: businessRegister } })
+    }
+    if (businessRegister === 3) {
+      await models.BusinessProduct.update({ label }, { where: { id: businessRegister } })
+    }
+    if (businessRegister === 4) {
+      await models.BusinessIndustry.update({ label }, { where: { id: businessRegister } })
+    }
+    if (businessRegister === 5) {
+      await models.BusinessType.update({ label }, { where: { id: businessRegister } })
+    }
+    if (businessRegister === 6) {
+      await models.BusinessOwnersTime.update({ label }, { where: { id: businessRegister } })
+    }
+    if (!businessRegister) {
+      throw new Error(`Business register ${businessRegister} does not exist`)
+    }
+
+    return res.status(200).json({ message: `Business register ${label} updated` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const remove = async (req, res, next) => {
+  const { businessRegister } = req.body
+
+  try {
+    if (businessRegister === 1) {
+      await models.BusinessSource.destroy({ where: { businessRegister } })
+    }
+    if (businessRegister === 2) {
+      await models.BusinessRating.destroy({ where: { businessRegister } })
+    }
+    if (businessRegister === 3) {
+      await models.BusinessProduct.destroy({ where: { businessRegister } })
+    }
+    if (businessRegister === 4) {
+      await models.BusinessIndustry.destroy({ where: { businessRegister } })
+    }
+    if (businessRegister === 5) {
+      await models.BusinessType.destroy({ where: { businessRegister } })
+    }
+    if (businessRegister === 6) {
+      await models.BusinessOwnersTime.destroy({ where: { businessRegister } })
+    }
+    if (!businessRegister) {
+      throw new Error(`Business register ${businessRegister} does not exist`)
+    }
+
+    return res.status(200).json({ message: `Business register ${businessRegister} removed with success` })
+  } catch (error) {
+    return next(error)
+  }
+}
