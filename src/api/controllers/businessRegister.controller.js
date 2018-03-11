@@ -34,31 +34,30 @@ export const create = async (req, res, next) => {
   } = req.body
 
   try {
-    switch (businessRegister) {
-      case 1:
-        await models.BusinessSource.create({ label })
-        break
-      case 2:
-        await models.BusinessRating.create({ label })
-        break
-      case 3:
-        await models.BusinessProduct.create({ label })
-        break
-      case 4:
-        await models.BusinessIndustry.create({ label })
-        break
-      case 5:
-        await models.BusinessType.create({ label })
-        break
-      case 6:
-        await models.BusinessOwnersTime.create({ label })
-        break
-      default:
-        throw new Error(`Business register ${businessRegister} does not exist`)
+    if (businessRegister === 1) {
+      await models.BusinessSource.create({ label })
     }
+    if (businessRegister === 2) {
+      await models.BusinessRating.create({ label })
+    }
+    if (businessRegister === 3) {
+      await models.BusinessProduct.create({ label })
+    }
+    if (businessRegister === 4) {
+      await models.BusinessIndustry.create({ label })
+    }
+    if (businessRegister === 5) {
+      await models.BusinessType.create({ label })
+    }
+    if (businessRegister === 6) {
+      await models.BusinessOwnersTime.create({ label })
+    }
+    if (!businessRegister) {
+      throw new Error(`Business register ${businessRegister} does not exist`)
+    }
+
     return res.status(200).json({ message: `Business register ${label} created` })
   } catch (error) {
-    console.log(error)
     return next(error)
   }
 }
