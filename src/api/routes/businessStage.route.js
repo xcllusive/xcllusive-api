@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { list, create, update, remove } from '../controllers/businessRegister.controller'
+import { list, create, update, remove } from '../controllers/businessStage.controller'
 
 import {
   BUSINESS_MENU
