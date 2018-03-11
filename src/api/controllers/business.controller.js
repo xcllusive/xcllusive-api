@@ -17,6 +17,7 @@ export const getBusiness = async (req, res, next) => {
 
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const stageList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
     const sourceList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
     const industryList = await models.BusinessIndustry.findAll({ raw: true, attributes: ['id', 'label'] })
     const ownersTimeList = await models.BusinessOwnersTime.findAll({ raw: true, attributes: ['id', 'label'] })
@@ -27,6 +28,7 @@ export const getBusiness = async (req, res, next) => {
 
     const response = {
       business,
+      stageList: _mapValuesToArray(stageList),
       sourceList: _mapValuesToArray(sourceList),
       industryList: _mapValuesToArray(industryList),
       ownersTimeList: _mapValuesToArray(ownersTimeList),
@@ -144,6 +146,7 @@ export const update = async (req, res, next) => {
     postCode,
     data120DayGuarantee,
     notifyOwner,
+    businessStage,
     businessSource,
     businessRating,
     businessIndustry,
@@ -174,6 +177,7 @@ export const update = async (req, res, next) => {
     data120DayGuarantee,
     notifyOwner,
     listingAgent,
+    stageId: businessStage === '' ? null : businessStage,
     sourceId: businessSource === '' ? null : businessSource,
     ratingId: businessRating === '' ? null : businessRating,
     industryId: businessIndustry === '' ? null : businessIndustry,
