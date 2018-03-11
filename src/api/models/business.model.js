@@ -247,7 +247,6 @@ export default (sequelize, DataTypes) => {
     models.Business.belongsTo(models.BusinessType, { foreignKey: 'typeId' })
     models.Business.belongsTo(models.BusinessStage, { foreignKey: 'stageId' })
   }
-  }
 
   return Business
 }
