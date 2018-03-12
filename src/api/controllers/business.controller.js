@@ -17,7 +17,7 @@ export const getBusiness = async (req, res, next) => {
 
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
-    const stageList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
+    const stageList = await models.BusinessStage.findAll({ raw: true, attributes: ['id', 'label'] })
     const sourceList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
     const industryList = await models.BusinessIndustry.findAll({ raw: true, attributes: ['id', 'label'] })
     const ownersTimeList = await models.BusinessOwnersTime.findAll({ raw: true, attributes: ['id', 'label'] })

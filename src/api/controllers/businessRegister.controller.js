@@ -7,8 +7,6 @@ export const list = async (req, res, next) => {
 
   try {
     switch (parseInt(businessRegister, 10)) {
-      case 0:
-        return res.status(200).json(await models.BusinessStage.findAll())
       case 1:
         return res.status(200).json(await models.BusinessSource.findAll())
       case 2:
@@ -21,6 +19,8 @@ export const list = async (req, res, next) => {
         return res.status(200).json(await models.BusinessType.findAll())
       case 6:
         return res.status(200).json(await models.BusinessOwnersTime.findAll())
+      case 7:
+        return res.status(200).json(await models.BusinessStage.findAll())
       default:
         throw new Error(`Business register ${businessRegister} does not exist`)
     }
@@ -36,9 +36,6 @@ export const create = async (req, res, next) => {
   } = req.body
 
   try {
-    if (businessRegister === 0) {
-      await models.BusinessStage.create({ label })
-    }
     if (businessRegister === 1) {
       await models.BusinessSource.create({ label })
     }
@@ -57,12 +54,16 @@ export const create = async (req, res, next) => {
     if (businessRegister === 6) {
       await models.BusinessOwnersTime.create({ label })
     }
+    if (businessRegister === 7) {
+      await models.BusinessStage.create({ label })
+    }
     if (!businessRegister) {
       throw new Error(`Business register ${businessRegister} does not exist`)
     }
 
     return res.status(200).json({ message: `Business register ${label} created` })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 }
@@ -74,9 +75,6 @@ export const update = async (req, res, next) => {
   } = req.body
 
   try {
-    if (businessRegister === 0) {
-      await models.BusinessStage.update({ label }, { where: { id: businessRegister } })
-    }
     if (businessRegister === 1) {
       await models.BusinessSource.update({ label }, { where: { id: businessRegister } })
     }
@@ -95,6 +93,9 @@ export const update = async (req, res, next) => {
     if (businessRegister === 6) {
       await models.BusinessOwnersTime.update({ label }, { where: { id: businessRegister } })
     }
+    if (businessRegister === 7) {
+      await models.BusinessStage.update({ label }, { where: { id: businessRegister } })
+    }
     if (!businessRegister) {
       throw new Error(`Business register ${businessRegister} does not exist`)
     }
@@ -109,9 +110,6 @@ export const remove = async (req, res, next) => {
   const { businessRegister } = req.body
 
   try {
-    if (businessRegister === 0) {
-      await models.BusinessStage.destroy({ where: { businessRegister } })
-    }
     if (businessRegister === 1) {
       await models.BusinessSource.destroy({ where: { businessRegister } })
     }
@@ -129,6 +127,9 @@ export const remove = async (req, res, next) => {
     }
     if (businessRegister === 6) {
       await models.BusinessOwnersTime.destroy({ where: { businessRegister } })
+    }
+    if (businessRegister === 7) {
+      await models.BusinessStage.destroy({ where: { businessRegister } })
     }
     if (!businessRegister) {
       throw new Error(`Business register ${businessRegister} does not exist`)
