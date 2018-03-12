@@ -203,6 +203,14 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
+    saleNotesLostMeeting: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    saleNotesLostWant: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     lastNameV: {
       type: DataTypes.STRING,
       allowNull: false
