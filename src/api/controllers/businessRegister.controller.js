@@ -7,6 +7,8 @@ export const list = async (req, res, next) => {
 
   try {
     switch (parseInt(businessRegister, 10)) {
+      case 0:
+        return res.status(200).json(await models.BusinessStage.findAll())
       case 1:
         return res.status(200).json(await models.BusinessSource.findAll())
       case 2:
@@ -34,6 +36,9 @@ export const create = async (req, res, next) => {
   } = req.body
 
   try {
+    if (businessRegister === 0) {
+      await models.BusinessStage.create({ label })
+    }
     if (businessRegister === 1) {
       await models.BusinessSource.create({ label })
     }
@@ -69,6 +74,9 @@ export const update = async (req, res, next) => {
   } = req.body
 
   try {
+    if (businessRegister === 0) {
+      await models.BusinessStage.update({ label }, { where: { id: businessRegister } })
+    }
     if (businessRegister === 1) {
       await models.BusinessSource.update({ label }, { where: { id: businessRegister } })
     }
@@ -101,6 +109,9 @@ export const remove = async (req, res, next) => {
   const { businessRegister } = req.body
 
   try {
+    if (businessRegister === 0) {
+      await models.BusinessStage.destroy({ where: { businessRegister } })
+    }
     if (businessRegister === 1) {
       await models.BusinessSource.destroy({ where: { businessRegister } })
     }
