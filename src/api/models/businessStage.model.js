@@ -7,11 +7,7 @@ export default (sequelize, DataTypes) => {
       unique: true,
       allowNull: true
     },
-<<<<<<< HEAD
     label: {
-=======
-    name: {
->>>>>>> de31c1243440db503d6e78f98465e2cd8ad5e58f
       type: DataTypes.STRING,
       allowNull: true
     }
