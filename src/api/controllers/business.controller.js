@@ -25,6 +25,8 @@ export const getBusiness = async (req, res, next) => {
     const ratingList = await models.BusinessRating.findAll({ raw: true, attributes: ['id', 'label'] })
     const typeList = await models.BusinessType.findAll({ raw: true, attributes: ['id', 'label'] })
     const usersStaff = await models.User.findAll({ raw: true, attributes: ['id', 'firstName', 'lastName'], where: { userType: 'Staff' } })
+    const stageNotSignedList = await models.BusinessStageNotSigned.findAll({ raw: true, attributes: ['id', 'label'] })
+    const stageNotWantList = await models.BusinessStageNotWant.findAll({ raw: true, attributes: ['id', 'label'] })
 
     const response = {
       business,
@@ -35,7 +37,9 @@ export const getBusiness = async (req, res, next) => {
       productList: _mapValuesToArray(productList),
       ratingList: _mapValuesToArray(ratingList),
       typeList: _mapValuesToArray(typeList),
-      usersStaff: _mapValuesToArray(usersStaff)
+      usersStaff: _mapValuesToArray(usersStaff),
+      stageNotSignedList: _mapValuesToArray(stageNotSignedList),
+      stageNotWantList: _mapValuesToArray(stageNotWantList)
     }
     return res.status(200).json(response)
   } catch (err) {
