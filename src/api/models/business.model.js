@@ -63,10 +63,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    businessSource: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     businessType: {
       type: DataTypes.STRING,
       allowNull: true

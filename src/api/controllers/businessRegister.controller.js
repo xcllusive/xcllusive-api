@@ -1,14 +1,17 @@
 import models from '../../config/sequelize'
+import { mapValuesOnArrayToDropdownBusinessRegisters } from '../utils/sharedFunctionsArray'
 
 export const list = async (req, res, next) => {
   const {
     businessRegister
-  } = req.query
+  } = req.params
 
   try {
     switch (parseInt(businessRegister, 10)) {
-      case 1:
-        return res.status(200).json(await models.BusinessSource.findAll())
+      case 1: {
+        const values = await models.BusinessSource.findAll({ raw: true })
+        return res.status(200).json(mapValuesOnArrayToDropdownBusinessRegisters(values))
+      }
       case 2:
         return res.status(200).json(await models.BusinessRating.findAll())
       case 3:

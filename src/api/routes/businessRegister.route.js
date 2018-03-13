@@ -18,7 +18,7 @@ router
   .use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
 router
-  .route('/')
+  .route('/:businessRegister')
   .get(list)
   .post(create)
   .put(update)

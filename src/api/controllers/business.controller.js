@@ -104,7 +104,7 @@ export const create = async (req, res, next) => {
     vendorPhone2: req.body.vendorPhone2,
     vendorPhone3: req.body.vendorPhone3,
     vendorEmail: req.body.vendorEmail,
-    businessSource: req.body.businessSource,
+    sourceId: req.body.businessSource === '' ? null : req.body.businessSource,
     sourceNotes: req.body.sourceNotes,
     description: req.body.description,
     stage: 'Potential Listing'
@@ -116,6 +116,7 @@ export const create = async (req, res, next) => {
     await models.Business.create(newBusiness)
     return res.status(200).json({ message: 'Business created with success' })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 }
