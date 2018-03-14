@@ -230,6 +230,46 @@ export default (sequelize, DataTypes) => {
     vendorPhone3: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    engagementFee: {
+      type: DataTypes.FLOAT,
+      allowNull: true
+    },
+    minimumCharge: {
+      type: DataTypes.FLOAT,
+      allowNull: true
+    },
+    maximumCharge: {
+      type: DataTypes.FLOAT,
+      allowNull: true
+    },
+    appraisalLow: {
+      type: DataTypes.FLOAT,
+      allowNull: true
+    },
+    depositeTaken: {
+      type: DataTypes.FLOAT,
+      allowNull: true
+    },
+    depositeTakenDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    attachedPurchaser: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    settlementDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    soldPrice: {
+      type: DataTypes.FLOAT,
+      allowNull: true
+    },
+    searchNote: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     createdAt: 'dateTimeCreated',
