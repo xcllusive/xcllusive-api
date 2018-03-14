@@ -159,7 +159,22 @@ export const update = async (req, res, next) => {
     businessProduct,
     businessType,
     listingAgent,
-    staffAccountName
+    staffAccountName,
+    listedPrice,
+    currentPrice,
+    engagementFee,
+    commissionPerc,
+    minimumCharge,
+    appraisalHigh,
+    appraisalLow,
+    depositeTaken,
+    depositeTakenDate,
+    commissionSold,
+    settlementDate,
+    soldPrice,
+    attachedPurchaser,
+    searchNote,
+    afterSalesNotes
   } = req.body
 
   const business = {
@@ -189,7 +204,22 @@ export const update = async (req, res, next) => {
     ownersTimeId: businessOwnersTime === '' ? null : businessOwnersTime,
     productId: businessProduct === '' ? null : businessProduct,
     typeId: businessType === '' ? null : businessType,
-    staffAccountName
+    staffAccountName,
+    listedPrice,
+    currentPrice,
+    engagementFee,
+    commissionPerc,
+    minimumCharge,
+    appraisalHigh,
+    appraisalLow,
+    depositeTaken,
+    depositeTakenDate,
+    commissionSold,
+    settlementDate,
+    soldPrice,
+    attachedPurchaser,
+    searchNote,
+    afterSalesNotes
   }
 
   try {

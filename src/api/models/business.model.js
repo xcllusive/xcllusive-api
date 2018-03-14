@@ -239,11 +239,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: true
     },
-    maximumCharge: {
+    appraisalLow: {
       type: DataTypes.FLOAT,
       allowNull: true
     },
-    appraisalLow: {
+    appraisalHigh: {
       type: DataTypes.FLOAT,
       allowNull: true
     },
