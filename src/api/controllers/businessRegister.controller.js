@@ -77,27 +77,31 @@ export const update = async (req, res, next) => {
     businessRegister
   } = req.body
 
+  const {
+    businessRegister: id
+  } = req.params
+
   try {
     if (businessRegister === 1) {
-      await models.BusinessSource.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessSource.update({ label }, { where: { id } })
     }
     if (businessRegister === 2) {
-      await models.BusinessRating.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessRating.update({ label }, { where: { id } })
     }
     if (businessRegister === 3) {
-      await models.BusinessProduct.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessProduct.update({ label }, { where: { id } })
     }
     if (businessRegister === 4) {
-      await models.BusinessIndustry.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessIndustry.update({ label }, { where: { id } })
     }
     if (businessRegister === 5) {
-      await models.BusinessType.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessType.update({ label }, { where: { id } })
     }
     if (businessRegister === 6) {
-      await models.BusinessOwnersTime.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessOwnersTime.update({ label }, { where: { id } })
     }
     if (businessRegister === 7) {
-      await models.BusinessStage.update({ label }, { where: { id: businessRegister } })
+      await models.BusinessStage.update({ label }, { where: { id } })
     }
     if (!businessRegister) {
       throw new Error(`Business register ${businessRegister} does not exist`)
@@ -110,35 +114,45 @@ export const update = async (req, res, next) => {
 }
 
 export const remove = async (req, res, next) => {
-  const { businessRegister } = req.body
+  const {
+    registerType
+  } = req.body
+
+  const {
+    businessRegister: id
+  } = req.params
 
   try {
-    if (businessRegister === 1) {
-      await models.BusinessSource.destroy({ where: { businessRegister } })
+    const existsRegisterType = await models.Business.findOne({ where: { sourceId: id } })
+    if (existsRegisterType) {
+      return res.status(406).json({ error: `Business register ${id} is used on one business or more.` })
     }
-    if (businessRegister === 2) {
-      await models.BusinessRating.destroy({ where: { businessRegister } })
+    if (registerType === 1) {
+      await models.BusinessSource.destroy({ where: { id } })
     }
-    if (businessRegister === 3) {
-      await models.BusinessProduct.destroy({ where: { businessRegister } })
+    if (registerType === 2) {
+      await models.BusinessRating.destroy({ where: { id } })
     }
-    if (businessRegister === 4) {
-      await models.BusinessIndustry.destroy({ where: { businessRegister } })
+    if (registerType === 3) {
+      await models.BusinessProduct.destroy({ where: { id } })
     }
-    if (businessRegister === 5) {
-      await models.BusinessType.destroy({ where: { businessRegister } })
+    if (registerType === 4) {
+      await models.BusinessIndustry.destroy({ where: { id } })
     }
-    if (businessRegister === 6) {
-      await models.BusinessOwnersTime.destroy({ where: { businessRegister } })
+    if (registerType === 5) {
+      await models.BusinessType.destroy({ where: { id } })
     }
-    if (businessRegister === 7) {
-      await models.BusinessStage.destroy({ where: { businessRegister } })
+    if (registerType === 6) {
+      await models.BusinessOwnersTime.destroy({ where: { id } })
     }
-    if (!businessRegister) {
-      throw new Error(`Business register ${businessRegister} does not exist`)
+    if (registerType === 7) {
+      await models.BusinessStage.destroy({ where: { id } })
+    }
+    if (!registerType) {
+      throw new Error(`Business register ${registerType} does not exist`)
     }
 
-    return res.status(200).json({ message: `Business register ${businessRegister} removed with success` })
+    return res.status(200).json({ message: `Business register ${id} removed with success` })
   } catch (error) {
     return next(error)
   }
