@@ -174,7 +174,8 @@ export const update = async (req, res, next) => {
     soldPrice,
     attachedPurchaser,
     searchNote,
-    afterSalesNotes
+    afterSalesNotes,
+    stage
   } = req.body
 
   const business = {
@@ -219,7 +220,8 @@ export const update = async (req, res, next) => {
     soldPrice,
     attachedPurchaser,
     searchNote,
-    afterSalesNotes
+    afterSalesNotes,
+    stageId: stage === '' ? null : stage
   }
 
   try {
