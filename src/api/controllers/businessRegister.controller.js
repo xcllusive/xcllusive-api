@@ -123,8 +123,8 @@ export const remove = async (req, res, next) => {
   } = req.params
 
   try {
-    const existsRegisterType = await models.Business.findOne({ where: { sourceId: id } })
-    if (existsRegisterType) {
+    const existsRegisterType = await models.Business.findAll({ raw: true }, { where: { sourceId: id } })
+    if (existsRegisterType.length > 0) {
       return res.status(406).json({ error: `Business register ${id} is used on one business or more.` })
     }
     if (registerType === 1) {
