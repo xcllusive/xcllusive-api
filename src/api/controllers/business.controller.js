@@ -119,8 +119,9 @@ export const create = async (req, res, next) => {
     newBusiness.listingAgent = `${user.firstName} ${user.lastName}`
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
-      text: 'Created',
-      createdBy: 'teste',
+      text: 'New  ',
+      createdBy: 1,
+      status: 'Pending',
       business_id: business.get('id')
     })
 
