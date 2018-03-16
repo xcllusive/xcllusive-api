@@ -117,7 +117,13 @@ export const create = async (req, res, next) => {
   try {
     const user = await models.User.findOne({ where: { id: req.user.id }, attributes: ['firstName', 'lastName'] })
     newBusiness.listingAgent = `${user.firstName} ${user.lastName}`
-    await models.Business.create(newBusiness)
+    const business = await models.Business.create(newBusiness)
+    await models.BusinessLog.create({
+      text: 'Created',
+      createdBy: 'teste',
+      business_id: business.get('id')
+    })
+
     return res.status(200).json({ message: 'Business created with success' })
   } catch (error) {
     console.log(error)

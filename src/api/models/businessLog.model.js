@@ -1,10 +1,10 @@
 export default (sequelize, DataTypes) => {
   const BusinessLog = sequelize.define('BusinessLog', {
     id: {
-      type: DataTypes.INTEGER,      
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      unique: true,
-      allowNull: true
+      unique: true
     },
     creationTimeStamp: {
       type: DataTypes.DATE,
@@ -48,6 +48,12 @@ export default (sequelize, DataTypes) => {
       }
     ]
   })
+
+  BusinessLog.associate = (models) => {
+    models.BusinessLog.belongsTo(models.Business, {
+      foreignKey: 'business_id'
+    })
+  }
 
   return BusinessLog
 }

@@ -292,6 +292,9 @@ export default (sequelize, DataTypes) => {
     models.Business.belongsTo(models.BusinessType, { foreignKey: 'typeId' })
     models.Business.belongsTo(models.BusinessStageNotSigned, { foreignKey: 'stageNotSignedId' })
     models.Business.belongsTo(models.BusinessStageNotWant, { foreignKey: 'stageNotWantId' })
+    models.Business.hasMany(models.BusinessLog, {
+      foreignKey: 'businessLogId'
+    })
   }
 
   return Business

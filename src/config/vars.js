@@ -16,5 +16,5 @@ module.exports = {
     user: process.env.NODE_ENV === 'development' ? process.env.MYSQL_USERNAME_DEV : process.env.MYSQL_USERNAME,
     password: process.env.NODE_ENV === 'development' ? process.env.MYSQL_PASSWORD_DEV : process.env.MYSQL_PASSWORD
   },
-  logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev',
+  logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev'
 }

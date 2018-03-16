@@ -19,11 +19,11 @@ router
 
 router
   .route('/')
-  .get(list)
   .post(create)
 
 router
   .route('/:businessRegister')
+  .get(list)
   .put(update)
   .delete(remove)
 
