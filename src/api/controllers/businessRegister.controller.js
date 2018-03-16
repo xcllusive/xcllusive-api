@@ -125,7 +125,7 @@ export const remove = async (req, res, next) => {
   try {
     const existsRegisterType = await models.Business.findOne({ where: { sourceId: id } })
     if (existsRegisterType) {
-      return res.status(406).json({ error: `Business register ${id} is used on one business or more.` })
+      return res.status(406).json({ error: `You can NOT delete that! Business register ${id} has been using in one or more businesses` })
     }
     if (registerType === 1) {
       await models.BusinessSource.destroy({ where: { id } })
