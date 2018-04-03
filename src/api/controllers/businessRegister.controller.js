@@ -123,7 +123,14 @@ export const remove = async (req, res, next) => {
   } = req.params
 
   try {
-    const existsRegisterType = await models.Business.findAll({ raw: true }, { where: { sourceId: id } })
+    const existsRegisterType = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'sourceId'],
+      where: {
+        sourceId: id
+      }
+    })
+    console.log(existsRegisterType)
     if (existsRegisterType.length > 0) {
       return res.status(406).json({ error: `You can NOT delete that! Business register ${id} has been using in one or more businesses` })
     }
