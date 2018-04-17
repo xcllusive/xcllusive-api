@@ -1,32 +1,69 @@
 import models from '../../config/sequelize'
 
 export const getBusiness = async (req, res, next) => {
-  const {
-    idBusiness
-  } = req.params
+  const { idBusiness } = req.params
 
-  const _mapValuesToArray = (array) => {
+  const _mapValuesToArray = array => {
     if (array.length > 0) {
       if (array[0].firstName) {
-        return array.map((item, index) => ({ key: index, text: `${item.firstName} ${item.lastName}`, value: `${item.firstName} ${item.lastName}` })) 
+        return array.map((item, index) => ({
+          key: index,
+          text: `${item.firstName} ${item.lastName}`,
+          value: `${item.firstName} ${item.lastName}`
+        }))
       }
-      return array.map((item, index) => ({ key: index, text: item.label, value: item.id }))
+      return array.map((item, index) => ({
+        key: index,
+        text: item.label,
+        value: item.id
+      }))
     }
     return []
   }
 
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
-    const stageList = await models.BusinessStage.findAll({ raw: true, attributes: ['id', 'label'] })
-    const sourceList = await models.BusinessSource.findAll({ raw: true, attributes: ['id', 'label'] })
-    const industryList = await models.BusinessIndustry.findAll({ raw: true, attributes: ['id', 'label'] })
-    const ownersTimeList = await models.BusinessOwnersTime.findAll({ raw: true, attributes: ['id', 'label'] })
-    const productList = await models.BusinessProduct.findAll({ raw: true, attributes: ['id', 'label'] })
-    const ratingList = await models.BusinessRating.findAll({ raw: true, attributes: ['id', 'label'] })
-    const typeList = await models.BusinessType.findAll({ raw: true, attributes: ['id', 'label'] })
-    const usersStaff = await models.User.findAll({ raw: true, attributes: ['id', 'firstName', 'lastName'], where: { userType: 'Staff' } })
-    const stageNotSignedList = await models.BusinessStageNotSigned.findAll({ raw: true, attributes: ['id', 'label'] })
-    const stageNotWantList = await models.BusinessStageNotWant.findAll({ raw: true, attributes: ['id', 'label'] })
+    const stageList = await models.BusinessStage.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const sourceList = await models.BusinessSource.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const industryList = await models.BusinessIndustry.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const ownersTimeList = await models.BusinessOwnersTime.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const productList = await models.BusinessProduct.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const ratingList = await models.BusinessRating.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const typeList = await models.BusinessType.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const usersStaff = await models.User.findAll({
+      raw: true,
+      attributes: ['id', 'firstName', 'lastName'],
+      where: { userType: 'Staff' }
+    })
+    const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const stageNotWantList = await models.BusinessStageNotWant.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
 
     const response = {
       business,
@@ -115,7 +152,10 @@ export const create = async (req, res, next) => {
   }
 
   try {
-    const user = await models.User.findOne({ where: { id: req.user.id }, attributes: ['firstName', 'lastName'] })
+    const user = await models.User.findOne({
+      where: { id: req.user.id },
+      attributes: ['firstName', 'lastName']
+    })
     newBusiness.listingAgent = `${user.firstName} ${user.lastName}`
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
@@ -133,11 +173,11 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const {
-    idBusiness
-  } = req.params
+  const { idBusiness } = req.params
 
-  if (!idBusiness || idBusiness === 'undefined') throw new Error(`Business id does not exist`)
+  if (!idBusiness || idBusiness === 'undefined') {
+    throw new Error('Business id does not exist')
+  }
 
   const {
     businessName,
@@ -233,7 +273,9 @@ export const update = async (req, res, next) => {
 
   try {
     await models.Business.update(business, { where: { id: idBusiness } })
-    return res.status(200).json({ message: `Business BS${idBusiness} updated with success` })
+    return res
+      .status(200)
+      .json({ message: `Business BS${idBusiness} updated with success` })
   } catch (error) {
     console.log(error)
     return next(error)
@@ -251,23 +293,23 @@ export const remove = async (req, res, next) => {
 }
 
 export const updateListingAgent = async (req, res, next) => {
-  const {
-    listingAgentName
-  } = req.body
+  const { listingAgentName } = req.body
 
-  const {
-    idBusiness
-  } = req.params
+  const { idBusiness } = req.params
 
   const data = {
     listingAgent: listingAgentName
   }
 
-  if (!idBusiness || idBusiness === 'undefined') throw new Error(`Business id does not exist`)
+  if (!idBusiness || idBusiness === 'undefined') {
+    throw new Error('Business id does not exist')
+  }
 
   try {
     await models.Business.update(data, { where: { id: idBusiness } })
-    return res.status(200).json({ message: `Agent list on business BS${idBusiness} updated with success` })
+    return res
+      .status(200)
+      .json({ message: `Agent list on business BS${idBusiness} updated with success` })
   } catch (error) {
     return next(error)
   }
