@@ -53,19 +53,20 @@ const sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
     acquire: 30000,
     idle: 10000
   },
-  logging: console.log
+  logging: false
 })
 
-fs.readdirSync(`${__dirname}/../api/models`)
-  .filter((file) => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js')
+fs
+  .readdirSync(`${__dirname}/../api/models`)
+  .filter(file => {
+    return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   })
-  .forEach((file) => {
+  .forEach(file => {
     const model = sequelize['import'](path.join(`${__dirname}/../api/models`, file))
     db[model.name] = model
   })
 
-Object.keys(db).forEach((modelName) => {
+Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db)
   }

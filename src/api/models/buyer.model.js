@@ -51,7 +51,7 @@ export default (sequelize, DataTypes) => {
       },
       caSent: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       checkAddress: {
         type: DataTypes.STRING,
@@ -144,6 +144,14 @@ export default (sequelize, DataTypes) => {
       telephone3: {
         type: DataTypes.INTEGER,
         allowNull: true
+      },
+      createdBy_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      modifiedBy_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
     },
     {
@@ -157,6 +165,15 @@ export default (sequelize, DataTypes) => {
       ]
     }
   )
+
+  Buyer.associate = models => {
+    models.Buyer.belongsTo(models.User, {
+      foreignKey: 'createdBy_id'
+    })
+    models.Buyer.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id'
+    })
+  }
 
   return Buyer
 }

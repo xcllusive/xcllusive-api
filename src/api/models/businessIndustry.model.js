@@ -1,5 +1,7 @@
 export default (sequelize, DataTypes) => {
-    const BusinessIndustry = sequelize.define('BusinessIndustry', {
+  const BusinessIndustry = sequelize.define(
+    'BusinessIndustry',
+    {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -11,7 +13,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       }
-    }, {
+    },
+    {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
       indexes: [
@@ -20,8 +23,8 @@ export default (sequelize, DataTypes) => {
           fields: ['id']
         }
       ]
-    })
-  
-    return BusinessIndustry
-  }
-  
+    }
+  )
+
+  return BusinessIndustry
+}
