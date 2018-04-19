@@ -1,6 +1,19 @@
 import models from '../../config/sequelize'
 
-export const get = async (req, res, next) => {}
+export const get = async (req, res, next) => {
+  const { idBuyer: id } = req.params
+
+  try {
+    const buyer = await models.Buyer.findOne({ where: { id } })
+
+    return res.status(201).json({
+      data: buyer,
+      message: 'Success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
 
 export const list = async (req, res, next) => {
   const { perPage } = req.query
@@ -71,10 +84,7 @@ export const create = async (req, res, next) => {
       message: 'Buyer created with success'
     })
   } catch (error) {
-    return res.status(201).json({
-      error: true,
-      message: error
-    })
+    return next(error)
   }
 }
 
