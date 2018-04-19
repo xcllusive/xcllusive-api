@@ -6,8 +6,9 @@ export const listBuyers = {
     perPage: Joi.number()
       .min(1)
       .max(100),
-    name: Joi.string(),
-    email: Joi.string()
+    firstName: Joi.string(),
+    lastName: Joi.string(),
+    email: Joi.string().email()
   }
 }
 
@@ -17,9 +18,6 @@ export const createBuyer = {
       .email()
       .required(),
     firstName: Joi.string()
-      .max(128)
-      .required(),
-    lastName: Joi.string()
       .max(128)
       .required(),
     surname: Joi.string()

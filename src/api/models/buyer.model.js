@@ -46,11 +46,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       caReceived: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: true
       },
       caSent: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: true
       },
       checkAddress: {

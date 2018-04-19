@@ -3,25 +3,56 @@ import models from '../../config/sequelize'
 export const get = async (req, res, next) => {}
 
 export const list = async (req, res, next) => {
-  try {
-    const buyers = await models.Buyer.findAll({
-      include: [
-        {
-          model: models.User
+  const { perPage } = req.query
+  const existingParams = [
+    'firstName',
+    'surname',
+    'displayName',
+    'email',
+    'telephone1',
+    'telephone2',
+    'telephone3',
+    'emailOptional'
+  ].filter(field => req.query[field])
+  const whereOptions = {}
+
+  if (existingParams.length) {
+    existingParams.map(item => {
+      whereOptions.where = {}
+      whereOptions.where.$or = []
+      whereOptions.where.$or.push({
+        [item]: {
+          $like: `%${req.query[item]}%`
         }
-      ],
-      raw: true
+      })
     })
+  }
+
+  console.log(whereOptions)
+
+  const options = {
+    attributes: [
+      'id',
+      'firstName',
+      'surname',
+      'email',
+      'streetName',
+      'telephone1',
+      'caSent',
+      'caReceived'
+    ],
+    limit: perPage
+  }
+
+  try {
+    const buyers = await models.Buyer.findAll(Object.assign(options, whereOptions))
     return res.status(200).json({
-      error: false,
       data: buyers,
       message: 'Success'
     })
   } catch (error) {
-    console.log(error)
     return res.json({
       error: true,
-      data: [],
       message: error
     })
   }
@@ -36,14 +67,12 @@ export const create = async (req, res, next) => {
   try {
     const buyer = await models.Buyer.create(newBuyer)
     return res.status(201).json({
-      error: false,
       data: buyer,
       message: 'Buyer created with success'
     })
   } catch (error) {
     return res.status(201).json({
       error: true,
-      data: [],
       message: error
     })
   }
