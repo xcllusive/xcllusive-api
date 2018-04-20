@@ -9,12 +9,7 @@ import {
 } from '../constants/roles'
 
 export const list = async (req, res, next) => {
-  const {
-    search,
-    admin,
-    staff,
-    introducer
-  } = req.query
+  const { search, admin, staff, introducer } = req.query
 
   const isAdmin = admin ? JSON.parse(admin) : true
   const isStaff = staff ? JSON.parse(staff) : true
@@ -26,25 +21,26 @@ export const list = async (req, res, next) => {
   if (isIntroducer) arrayType.push('Introducer')
 
   try {
-    const whereOptions = search && search.length > 1
-      ? {
-        where: {
-          $or: [
-            {
-              firstName: {
-                $like: `%${search}%`
+    const whereOptions =
+      search && search.length > 1
+        ? {
+          where: {
+            $or: [
+              {
+                firstName: {
+                  $like: `%${search}%`
+                }
+              },
+              {
+                lastName: {
+                  $like: `%${search}%`
+                }
               }
-            },
-            {
-              lastName: {
-                $like: `%${search}%`
-              }
-            }
-          ],
-          userType: arrayType
+            ],
+            userType: arrayType
+          }
         }
-      }
-      : null
+        : null
 
     const options = {
       attributes: { exclude: ['password'] },
@@ -86,7 +82,10 @@ export const create = async (req, res, next) => {
 
   try {
     const { email } = req.body
-    const userExists = await models.User.findOne({ attributes: ['email'], where: { email } })
+    const userExists = await models.User.findOne({
+      attributes: ['email'],
+      where: { email }
+    })
     if (userExists) {
       return res.status(404).json({
         error: 'User exists'
@@ -129,7 +128,9 @@ export const update = async (req, res, next) => {
 
   try {
     await models.User.update(req.body, { where: { id: req.body.id } })
-    return res.status(200).json({ message: `User ${req.body.firstName} updated with success` })
+    return res
+      .status(200)
+      .json({ message: `User ${req.body.firstName} updated with success` })
   } catch (err) {
     console.log(err)
     return next(err)
