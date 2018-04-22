@@ -1,4 +1,5 @@
 import models from '../../config/sequelize'
+
 import {
   BUYER_MENU,
   BUSINESS_MENU,
@@ -16,9 +17,9 @@ export const list = async (req, res, next) => {
   const isIntroducer = introducer ? JSON.parse(introducer) : true
 
   const arrayType = []
-  if (isAdmin) arrayType.push('Admin')
-  if (isStaff) arrayType.push('Staff')
-  if (isIntroducer) arrayType.push('Introducer')
+  isAdmin && arrayType.push('Admin')
+  isStaff && arrayType.push('Staff')
+  isIntroducer && arrayType.push('Introducer')
 
   try {
     const whereOptions =
@@ -49,6 +50,7 @@ export const list = async (req, res, next) => {
       }
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))
+    console.log(options)
     return res.status(200).json(users)
   } catch (err) {
     return next(err)
@@ -87,9 +89,8 @@ export const create = async (req, res, next) => {
       where: { email }
     })
     if (userExists) {
-      return res.status(404).json({
-        error: 'User exists'
-      })
+      const err = { message: 'User already exists', status: 400, isPublic: true }
+      throw err
     }
     await models.User.create(req.body)
     return res.status(200).json({ message: 'User created with success' })

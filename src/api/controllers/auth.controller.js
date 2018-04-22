@@ -4,9 +4,11 @@ import moment from 'moment-timezone'
 import { jwtExpirationInterval, jwtSecret } from '../../config/vars'
 import models from '../../config/sequelize'
 
-const jwtSignUser = (user) => {
+const jwtSignUser = user => {
   return jwt.sign(user, jwtSecret, {
-    expiresIn: moment().add(jwtExpirationInterval, 'minutes').unix()
+    expiresIn: moment()
+      .add(jwtExpirationInterval, 'minutes')
+      .unix()
   })
 }
 
@@ -16,17 +18,23 @@ export const login = async (req, res, next) => {
     const user = await models.User.findOne({ where: { email } })
 
     if (!user) {
-      return res.status(401).json({
-        error: 'The login information was incorrect'
-      })
+      const err = {
+        message: 'The login information was incorrect',
+        status: 401,
+        isPublic: true
+      }
+      throw err
     }
 
     const isPasswordValid = await user.comparePassword(password, user.password)
 
     if (!isPasswordValid) {
-      return res.status(401).json({
-        error: 'The credentials information was incorrect'
-      })
+      const err = {
+        message: 'The credentials information was incorrect',
+        status: 401,
+        isPublic: true
+      }
+      throw err
     }
 
     const userResponse = {
