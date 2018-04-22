@@ -3,14 +3,9 @@ import validate from 'express-validation'
 
 import { list, create, update, remove } from '../controllers/user.controller'
 
-import {
-  SYSTEM_SETTINGS_MENU
-} from '../constants/roles'
+import { SYSTEM_SETTINGS_MENU } from '../constants/roles'
 
-import { 
-  authMiddleware,
-  authorizeMiddleware
-} from '../middlewares/auth'
+import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
 
 import {
   listUsers,
@@ -21,9 +16,7 @@ import {
 
 const router = express.Router()
 
-router
-  .use(authMiddleware)
-  .use(authorizeMiddleware({ roles: [SYSTEM_SETTINGS_MENU] }))
+router.use(authMiddleware).use(authorizeMiddleware({ roles: [SYSTEM_SETTINGS_MENU] }))
 
 router
   .route('/')

@@ -1,4 +1,5 @@
 import models from '../../config/sequelize'
+
 import {
   BUYER_MENU,
   BUSINESS_MENU,
@@ -9,42 +10,38 @@ import {
 } from '../constants/roles'
 
 export const list = async (req, res, next) => {
-  const {
-    search,
-    admin,
-    staff,
-    introducer
-  } = req.query
+  const { search, admin, staff, introducer } = req.query
 
   const isAdmin = admin ? JSON.parse(admin) : true
   const isStaff = staff ? JSON.parse(staff) : true
   const isIntroducer = introducer ? JSON.parse(introducer) : true
 
   const arrayType = []
-  if (isAdmin) arrayType.push('Admin')
-  if (isStaff) arrayType.push('Staff')
-  if (isIntroducer) arrayType.push('Introducer')
+  isAdmin && arrayType.push('Admin')
+  isStaff && arrayType.push('Staff')
+  isIntroducer && arrayType.push('Introducer')
 
   try {
-    const whereOptions = search && search.length > 1
-      ? {
-        where: {
-          $or: [
-            {
-              firstName: {
-                $like: `%${search}%`
+    const whereOptions =
+      search && search.length > 1
+        ? {
+          where: {
+            $or: [
+              {
+                firstName: {
+                  $like: `%${search}%`
+                }
+              },
+              {
+                lastName: {
+                  $like: `%${search}%`
+                }
               }
-            },
-            {
-              lastName: {
-                $like: `%${search}%`
-              }
-            }
-          ],
-          userType: arrayType
+            ],
+            userType: arrayType
+          }
         }
-      }
-      : null
+        : null
 
     const options = {
       attributes: { exclude: ['password'] },
@@ -53,6 +50,7 @@ export const list = async (req, res, next) => {
       }
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))
+    console.log(options)
     return res.status(200).json(users)
   } catch (err) {
     return next(err)
@@ -86,11 +84,13 @@ export const create = async (req, res, next) => {
 
   try {
     const { email } = req.body
-    const userExists = await models.User.findOne({ attributes: ['email'], where: { email } })
+    const userExists = await models.User.findOne({
+      attributes: ['email'],
+      where: { email }
+    })
     if (userExists) {
-      return res.status(404).json({
-        error: 'User exists'
-      })
+      const err = { message: 'User already exists', status: 400, isPublic: true }
+      throw err
     }
     await models.User.create(req.body)
     return res.status(200).json({ message: 'User created with success' })
@@ -129,7 +129,9 @@ export const update = async (req, res, next) => {
 
   try {
     await models.User.update(req.body, { where: { id: req.body.id } })
-    return res.status(200).json({ message: `User ${req.body.firstName} updated with success` })
+    return res
+      .status(200)
+      .json({ message: `User ${req.body.firstName} updated with success` })
   } catch (err) {
     console.log(err)
     return next(err)

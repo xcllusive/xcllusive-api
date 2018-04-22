@@ -1,34 +1,47 @@
 import models from '../../config/sequelize'
 
-export const get = async (req, res, next) => {}
+export const get = async (req, res, next) => {
+  const { idBuyer: id } = req.params
+
+  try {
+    const buyer = await models.Buyer.findOne({ where: { id } })
+
+    return res.status(201).json({
+      data: buyer,
+      message: 'Success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
 
 export const list = async (req, res, next) => {
-  const { perPage } = req.query
-  const existingParams = [
-    'firstName',
+  const { search, perPage } = req.query
+  const paramsSearch = [
     'surname',
-    'displayName',
+    'firstName',
     'email',
     'telephone1',
     'telephone2',
     'telephone3',
     'emailOptional'
-  ].filter(field => req.query[field])
+  ]
   const whereOptions = {}
 
-  if (existingParams.length) {
-    existingParams.map(item => {
-      whereOptions.where = {}
-      whereOptions.where.$or = []
+  if (search) {
+    whereOptions.where = {}
+    whereOptions.where.$or = []
+    paramsSearch.map(item => {
       whereOptions.where.$or.push({
         [item]: {
-          $like: `%${req.query[item]}%`
+          $like: `%${search}%`
         }
       })
     })
   }
 
-  console.log(whereOptions)
+  console.log(search)
+  console.log(JSON.stringify(whereOptions))
 
   const options = {
     attributes: [
@@ -71,10 +84,7 @@ export const create = async (req, res, next) => {
       message: 'Buyer created with success'
     })
   } catch (error) {
-    return res.status(201).json({
-      error: true,
-      message: error
-    })
+    return next(error)
   }
 }
 
