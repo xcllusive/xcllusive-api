@@ -122,7 +122,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       streetName: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       suburb: {
