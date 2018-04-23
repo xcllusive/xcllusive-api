@@ -173,6 +173,9 @@ export default (sequelize, DataTypes) => {
     models.Buyer.belongsTo(models.User, {
       foreignKey: 'modifiedBy_id'
     })
+    models.Buyer.belongsTo(models.BusinessSource, {
+      foreignKey: 'source_id'
+    })
   }
 
   return Buyer

@@ -81,6 +81,7 @@ export const list = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const newBuyer = req.body
 
+  newBuyer.source_id = req.body.sourceId === '' ? null : req.body.sourceId
   newBuyer.createdBy_id = req.user.id
   newBuyer.modifiedBy_id = req.user.id
 
