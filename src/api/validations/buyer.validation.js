@@ -43,8 +43,8 @@ export const updateBuyer = {
     name: Joi.string().max(128)
   },
   params: {
-    userId: Joi.string()
-      .regex(/^[a-fA-F0-9]{24}$/)
+    idBuyer: Joi.string()
+      .regex(/^[0-9]$/)
       .required()
   }
 }

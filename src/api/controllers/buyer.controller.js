@@ -89,7 +89,20 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  console.log('update')
+  const { idBuyer } = req.params
+  const modifyBuyer = req.body
+
+  modifyBuyer.modifiedBy_id = req.user.id
+
+  try {
+    await models.Buyer.update(modifyBuyer, { where: { id: idBuyer } })
+    return res.status(201).json({
+      data: modifyBuyer,
+      message: 'Buyer updated with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
 }
 
 export const remove = async (req, res, next) => {
