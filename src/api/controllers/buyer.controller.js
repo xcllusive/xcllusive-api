@@ -52,7 +52,14 @@ export const list = async (req, res, next) => {
       'streetName',
       'telephone1',
       'caSent',
-      'caReceived'
+      'caReceived',
+      'suburb',
+      'state',
+      'buyerSource',
+      'postCode',
+      'priceFrom',
+      'priceTo',
+      'emailOptional'
     ],
     limit: perPage
   }
