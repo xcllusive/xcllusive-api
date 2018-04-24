@@ -126,7 +126,20 @@ export const list = async (req, res, next) => {
   }
 
   const options = {
-    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV']
+    attributes: [
+      'id',
+      'businessName',
+      'firstNameV',
+      'lastNameV',
+      'address1',
+      'industry',
+      'listedPrice',
+      'description',
+      'stageId',
+      'suburb',
+      'state',
+      'postCode'
+    ]
   }
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))

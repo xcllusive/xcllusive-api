@@ -55,7 +55,7 @@ export const list = async (req, res, next) => {
       'caReceived',
       'suburb',
       'state',
-      'buyerSource',
+      'source_id',
       'postCode',
       'priceFrom',
       'priceTo',
@@ -81,7 +81,7 @@ export const list = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const newBuyer = req.body
 
-  newBuyer.source_id = req.body.sourceId === '' ? null : req.body.sourceId
+  newBuyer.source_id = req.body.source_id === '' ? null : req.body.source_id
   newBuyer.createdBy_id = req.user.id
   newBuyer.modifiedBy_id = req.user.id
 
