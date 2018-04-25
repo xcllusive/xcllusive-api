@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
       },
       title: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       },
       description: {
         type: DataTypes.STRING,
@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
       },
       subject: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       },
       body: {
         type: DataTypes.STRING,
