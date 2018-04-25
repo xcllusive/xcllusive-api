@@ -87,43 +87,49 @@ export const getBusiness = async (req, res, next) => {
 
 export const list = async (req, res, next) => {
   let search = req.query.search
-  let whereOptions = {}
+  let typeId = req.query.typeId
+  let whereOptions = {
+    where: {}
+  }
+
+  if (typeId && typeId.length > 0) {
+    whereOptions.where.typeId = {
+      $eq: `${typeId}`
+    }
+  }
 
   if (search && search.length > 0) {
+    whereOptions.where.$or = []
     if (search.includes('BS') || search.includes('bs')) {
       if (search.includes('BS')) search = search.replace(/BS/g, '')
       if (search.includes('bs')) search = search.replace(/bs/g, '')
-      whereOptions = {
-        where: {
-          id: {
-            $eq: search
+      whereOptions.where.$or.push({
+        id: {
+          $eq: search
+        }
+      })
+    } else {
+      whereOptions.where.$or.push(
+        {
+          businessName: {
+            $like: `%${search}%`
+          }
+        },
+        {
+          firstNameV: {
+            $like: `%${search}%`
+          }
+        },
+        {
+          lastNameV: {
+            $like: `%${search}%`
           }
         }
-      }
-    } else {
-      whereOptions = {
-        where: {
-          $or: [
-            {
-              businessName: {
-                $like: `%${search}%`
-              }
-            },
-            {
-              firstNameV: {
-                $like: `%${search}%`
-              }
-            },
-            {
-              lastNameV: {
-                $like: `%${search}%`
-              }
-            }
-          ]
-        }
-      }
+      )
     }
   }
+
+  console.log(JSON.stringify(whereOptions))
 
   const options = {
     attributes: [
@@ -138,7 +144,8 @@ export const list = async (req, res, next) => {
       'stageId',
       'suburb',
       'state',
-      'postCode'
+      'postCode',
+      'typeId'
     ]
   }
   try {

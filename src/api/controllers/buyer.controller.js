@@ -40,9 +40,6 @@ export const list = async (req, res, next) => {
     })
   }
 
-  console.log(search)
-  console.log(JSON.stringify(whereOptions))
-
   const options = {
     attributes: [
       'id',
