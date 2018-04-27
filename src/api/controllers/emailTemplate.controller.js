@@ -4,6 +4,37 @@ import Handlebars from 'handlebars'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 
+export const get = async (req, res, next) => {
+  const { idEmailTemplate: id } = req.params
+
+  try {
+    const template = await models.EmailTemplate.findOne({ where: { id } })
+    return res.status(201).json({
+      data: template,
+      message: 'Templates list with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const list = async (req, res, next) => {
+  const { perPage } = req.query
+  const options = {
+    attributes: ['id', 'title'],
+    limit: perPage
+  }
+  try {
+    const templates = await models.EmailTemplate.findAll(options)
+    return res.status(201).json({
+      data: templates,
+      message: 'Templates list with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const create = async (req, res, next) => {
   const newTemplateEmail = req.body
   const nameFileTemplate = newTemplateEmail.title.replace(/\s/g, '-')
