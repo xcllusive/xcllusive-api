@@ -4,8 +4,10 @@ export default (sequelize, DataTypes) => {
     {
       id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
-        unique: true
+        unique: true,
+        allowNull: false
       },
       title: {
         type: DataTypes.STRING,
@@ -28,7 +30,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       enableAttachment: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: true
       }
     },
@@ -43,6 +45,15 @@ export default (sequelize, DataTypes) => {
       ]
     }
   )
+
+  EmailTemplate.associate = models => {
+    models.Buyer.belongsTo(models.User, {
+      foreignKey: 'createdBy_id'
+    })
+    models.Buyer.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id'
+    })
+  }
 
   return EmailTemplate
 }

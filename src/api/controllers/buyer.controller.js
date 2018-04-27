@@ -1,4 +1,6 @@
+import Handlebars from 'handlebars'
 import models from '../../config/sequelize'
+import mailer from '../modules/mailer'
 
 export const get = async (req, res, next) => {
   const { idBuyer: id } = req.params
@@ -115,6 +117,76 @@ export const remove = async (req, res, next) => {
   try {
     await models.User.destroy({ where: { id } })
     return res.status(200).json({ message: 'User removed with success' })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const sendCA = async (req, res, next) => {
+  const { buyerId, businessId } = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+
+    if (!buyer) {
+      throw new Error({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new Error({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists template CA Sent
+    const template = await models.EmailTemplate.findOne({
+      where: { title: 'CA Sent' }
+    })
+    if (!template) {
+      throw new Error({
+        message: 'The email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      business_name: business.businessName
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: buyer.email,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: template.subject,
+      html: templateCompiled(context)
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // Updated caSent on Buyer
+    await models.Buyer.update({ caSent: true }, { where: { id: buyerId } })
+
+    return res.status(201).json({
+      data: {
+        mail: responseMailer
+      },
+      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+    })
   } catch (error) {
     return next(error)
   }

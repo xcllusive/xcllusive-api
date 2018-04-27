@@ -1,4 +1,4 @@
-const path = require('path')
+import path from 'path'
 
 // import .env variables
 require('dotenv-safe').load({
@@ -11,10 +11,28 @@ module.exports = {
   jwtSecret: process.env.JWT_SECRET,
   jwtExpirationInterval: process.env.JWT_EXPIRATION_MINUTES,
   mysql: {
-    uri: process.env.NODE_ENV === 'development' ? process.env.MYSQL_URI_DEV : process.env.MYSQL_URI,
-    database: process.env.NODE_ENV === 'development' ? process.env.MYSQL_DATABASE_DEV : process.env.MYSQL_DATABASE,
-    user: process.env.NODE_ENV === 'development' ? process.env.MYSQL_USERNAME_DEV : process.env.MYSQL_USERNAME,
-    password: process.env.NODE_ENV === 'development' ? process.env.MYSQL_PASSWORD_DEV : process.env.MYSQL_PASSWORD
+    uri:
+      process.env.NODE_ENV === 'development'
+        ? process.env.MYSQL_URI_DEV
+        : process.env.MYSQL_URI,
+    database:
+      process.env.NODE_ENV === 'development'
+        ? process.env.MYSQL_DATABASE_DEV
+        : process.env.MYSQL_DATABASE,
+    user:
+      process.env.NODE_ENV === 'development'
+        ? process.env.MYSQL_USERNAME_DEV
+        : process.env.MYSQL_USERNAME,
+    password:
+      process.env.NODE_ENV === 'development'
+        ? process.env.MYSQL_PASSWORD_DEV
+        : process.env.MYSQL_PASSWORD
+  },
+  mail: {
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   },
   logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev'
 }

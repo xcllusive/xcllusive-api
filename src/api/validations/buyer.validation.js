@@ -56,3 +56,14 @@ export const removeBuyer = {
       .required()
   }
 }
+
+export const sendCA = {
+  body: {
+    buyerId: Joi.number()
+      .min(1)
+      .required(),
+    businessId: Joi.number()
+      .min(1)
+      .required()
+  }
+}

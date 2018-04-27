@@ -119,6 +119,12 @@ export default (sequelize, DataTypes) => {
     models.User.hasMany(models.Buyer, {
       foreignKey: 'modifiedBy_id'
     })
+    models.User.hasMany(models.EmailTemplate, {
+      foreignKey: 'createdBy_id'
+    })
+    models.User.hasMany(models.EmailTemplate, {
+      foreignKey: 'modifiedBy_id'
+    })
   }
 
   return User
