@@ -11,7 +11,7 @@ export const get = async (req, res, next) => {
     const template = await models.EmailTemplate.findOne({ where: { id } })
     return res.status(201).json({
       data: template,
-      message: 'Templates list with success'
+      message: 'Template get with success'
     })
   } catch (error) {
     return next(error)
