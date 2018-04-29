@@ -33,11 +33,15 @@
     "url": "git@github.com:xcllusive/xcllusive-api.git"
   },
   "dependencies": {
+    "aws-sdk": "^2.229.1",
     "axios": "^0.16.2",
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.0",
+    "busboy": "^0.2.14",
+    "busboy-body-parser": "^0.3.2",
     "compression": "^1.6.2",
+    "connect-busboy": "^0.0.2",
     "cors": "^2.8.3",
     "cross-env": "^5.0.1",
     "dotenv-safe": "^4.0.4",

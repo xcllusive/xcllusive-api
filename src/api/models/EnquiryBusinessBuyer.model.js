@@ -1,18 +1,13 @@
 export default (sequelize, DataTypes) => {
   const EnquiryBusinessBuyer = sequelize.define(
-    'enquiry_business_buyer',
+    'EnquiryBusinessBuyer',
     {
-      buyerID: {
+      id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         unique: true,
-        allowNull: true
-      },
-      businessID: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        unique: true,
-        allowNull: true
+        allowNull: false
       }
     },
     {
@@ -21,11 +16,20 @@ export default (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true,
-          fields: ['buyerID', 'businessID']
+          fields: ['id']
         }
       ]
     }
   )
+
+  EnquiryBusinessBuyer.associate = models => {
+    models.EnquiryBusinessBuyer.belongsTo(models.Business, {
+      foreignKey: 'business_id'
+    })
+    models.EnquiryBusinessBuyer.belongsTo(models.Buyer, {
+      foreignKey: 'buyer_id'
+    })
+  }
 
   return EnquiryBusinessBuyer
 }

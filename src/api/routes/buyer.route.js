@@ -6,7 +6,9 @@ import {
   create,
   update,
   remove,
-  sendCA
+  sendCA,
+  sendIM,
+  receivedCA
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -28,5 +30,9 @@ router
   .delete(validate(validation.removeBuyer), remove)
 
 router.route('/send-ca').post(validate(validation.sendCA), sendCA)
+
+router.route('/send-im').post(validate(validation.sendIM), sendIM)
+
+router.route('/received-ca').post(validate(validation.receivedCA), receivedCA)
 
 export default router

@@ -2,26 +2,15 @@ export default (sequelize, DataTypes) => {
   const BuyerLog = sequelize.define(
     'BuyerLog',
     {
-      buyerID: {
+      id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
-        unique: true
-      },
-      businessID: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        unique: true
+        unique: true,
+        allowNull: false
       },
       text: {
         type: DataTypes.STRING,
-        allowNull: true
-      },
-      createdByID: {
-        type: DataTypes.DATE,
-        allowNull: true
-      },
-      modifiedByID: {
-        type: DataTypes.DATE,
         allowNull: true
       },
       followUp: {
@@ -39,17 +28,23 @@ export default (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true,
-          fields: ['buyerID', 'businessID']
+          fields: ['id']
         }
       ]
     }
   )
 
   BuyerLog.associate = models => {
+    models.BuyerLog.belongsTo(models.User, {
+      foreignKey: 'createdBy_id'
+    })
+    models.BuyerLog.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id'
+    })
     models.BuyerLog.belongsTo(models.Buyer, {
       foreignKey: 'buyer_id'
     })
-    models.BuyerLog.belongsTo(models.Buyer, {
+    models.BuyerLog.belongsTo(models.Business, {
       foreignKey: 'business_id'
     })
   }

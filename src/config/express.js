@@ -5,6 +5,8 @@ import compress from 'compression'
 import methodOverride from 'method-override'
 import cors from 'cors'
 import helmet from 'helmet'
+import busboy from 'connect-busboy'
+import busboyBodyParser from 'busboy-body-parser'
 
 import routes from '../api/routes'
 import { logs } from './vars'
@@ -13,8 +15,10 @@ import error from '../api/middlewares/error'
 const app = express()
 
 app.use(morgan(logs))
+app.use(busboy())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(busboyBodyParser())
 app.use(compress())
 app.use(methodOverride())
 app.use(helmet())

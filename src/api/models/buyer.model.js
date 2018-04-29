@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       smSent: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: true
       },
       smSentDate: {
@@ -145,6 +145,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
+      attachmentUrl: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       createdBy_id: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -175,6 +179,9 @@ export default (sequelize, DataTypes) => {
     })
     models.Buyer.belongsTo(models.BusinessSource, {
       foreignKey: 'source_id'
+    })
+    models.Buyer.hasMany(models.EnquiryBusinessBuyer, {
+      foreignKey: 'id'
     })
   }
 

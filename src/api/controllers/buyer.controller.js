@@ -1,6 +1,9 @@
 import Handlebars from 'handlebars'
+import Busboy from 'busboy'
+import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
+import { uploadToS3 } from '../modules/aws'
 
 export const get = async (req, res, next) => {
   const { idBuyer: id } = req.params
@@ -130,7 +133,7 @@ export const sendCA = async (req, res, next) => {
     const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
 
     if (!buyer) {
-      throw new Error({
+      throw new APIError({
         message: 'Buyer not found',
         status: 404,
         isPublic: true
@@ -141,7 +144,7 @@ export const sendCA = async (req, res, next) => {
     const business = await models.Business.findOne({ where: { id: businessId } })
 
     if (!business) {
-      throw new Error({
+      throw new APIError({
         message: 'Business not found',
         status: 404,
         isPublic: true
@@ -153,7 +156,7 @@ export const sendCA = async (req, res, next) => {
       where: { title: 'CA Sent' }
     })
     if (!template) {
-      throw new Error({
+      throw new APIError({
         message: 'The email template not found',
         status: 404,
         isPublic: true
@@ -172,14 +175,33 @@ export const sendCA = async (req, res, next) => {
       to: buyer.email,
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
-      html: templateCompiled(context)
+      html: templateCompiled(context),
+      attachments: buyer.attachmentUrl
+        ? [
+            {
+              filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
+              path: buyer.attachmentUrl
+            }
+          ]
+        : []
     }
 
     // Send Email
     const responseMailer = await mailer.sendMail(mailOptions)
 
+    // Set on Enquiry table
+    await models.EnquiryBusinessBuyer.create({
+      buyer_id: buyer.id,
+      business_id: business.id
+    })
+
     // Updated caSent on Buyer
     await models.Buyer.update({ caSent: true }, { where: { id: buyerId } })
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: 'Buyer CA sent'
+    })
 
     return res.status(201).json({
       data: {
@@ -188,6 +210,186 @@ export const sendCA = async (req, res, next) => {
       message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
     })
   } catch (error) {
+    return next(error)
+  }
+}
+
+export const sendIM = async (req, res, next) => {
+  const { buyerId, businessId } = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify notifyOwner on business
+    if (!business.notifyOwner) {
+      throw new APIError({
+        message: 'Notify Owner is to false',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    // Verify exists template
+    const template = await models.EmailTemplate.findOne({
+      where: { title: 'Send Business IM' }
+    })
+    if (!template) {
+      throw new Error({
+        message: 'The email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      business_name: business.businessName,
+      listing_agent: business.listingAgent,
+      listing_agent_email: business.vendorEmail,
+      listing_agent_phone: business.vendorPhone1
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: buyer.email,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: `${business.businessName} - ${template.subject}`,
+      html: templateCompiled(context),
+      attachments: buyer.attachmentUrl
+        ? [
+            {
+              filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
+              path: buyer.attachmentUrl
+            }
+          ]
+        : []
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // Set on Enquiry table
+    // await models.EnquiryBusinessBuyer.create({
+    //   buyer_id: buyer.id,
+    //   business_id: business.id
+    // })
+
+    // Updated caSent on Buyer
+    await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: `Send Information Sales Memorandum to Buyer ${buyer.id}`,
+      followUpStatus: 'Done',
+      followUp: new Date.Now()
+    })
+
+    return res.status(201).json({
+      data: {
+        mail: responseMailer
+      },
+      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const receivedCA = async (req, res, next) => {
+  const { buyerId, businessId } = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Get upload file
+    const busboy = new Busboy({ headers: req.headers })
+
+    busboy.on('finish', async () => {
+      const file = req.files.caFile
+
+      // Verify file received
+      // if (!file) {
+      //   throw new APIError({
+      //     message: 'Expect one file upload named caFile',
+      //     status: 400,
+      //     isPublic: true
+      //   })
+      // }
+
+      // // Verify file is pdf
+      // if (/^application\/(pdf)$/.test(file.mimetype)) {
+      //   throw new APIError({
+      //     message: 'Expect pdf file',
+      //     status: 400,
+      //     isPublic: true
+      //   })
+      // }
+
+      // Upload file to aws s3
+      const upload = await uploadToS3(
+        'xcllusive-certificate-authority',
+        file,
+        `ca-buyer-${buyer.id}.pdf`
+      )
+
+      // updated CA received on buyer
+      await models.Buyer.update(
+        { caReceived: true, attachmentUrl: upload.Location },
+        { where: { id: buyerId } }
+      )
+
+      return res.status(201).json({
+        data: {
+          file: upload
+        },
+        message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+      })
+    })
+    req.pipe(busboy)
+  } catch (error) {
+    console.log(error)
     return next(error)
   }
 }

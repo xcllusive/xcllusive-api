@@ -67,3 +67,25 @@ export const sendCA = {
       .required()
   }
 }
+
+export const sendIM = {
+  body: {
+    buyerId: Joi.number()
+      .min(1)
+      .required(),
+    businessId: Joi.number()
+      .min(1)
+      .required()
+  }
+}
+
+export const receivedCA = {
+  // body: {
+  //   buyerId: Joi.number()
+  //     .min(1)
+  //     .required(),
+  //   businessId: Joi.number()
+  //     .min(1)
+  //     .required()
+  // }
+}
