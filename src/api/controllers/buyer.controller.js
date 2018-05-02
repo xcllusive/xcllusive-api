@@ -178,11 +178,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: buyer.attachmentUrl
         ? [
-            {
-              filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
-              path: buyer.attachmentUrl
-            }
-          ]
+          {
+            filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
+            path: buyer.attachmentUrl
+          }
+        ]
         : []
     }
 
@@ -279,11 +279,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: buyer.attachmentUrl
         ? [
-            {
-              filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
-              path: buyer.attachmentUrl
-            }
-          ]
+          {
+            filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
+            path: buyer.attachmentUrl
+          }
+        ]
         : []
     }
 

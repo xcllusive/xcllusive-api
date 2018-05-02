@@ -1,16 +1,20 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import { list, create, update, remove, getBusiness, updateListingAgent } from '../controllers/business.controller'
-
 import {
-  BUSINESS_MENU
-} from '../constants/roles'
+  list,
+  create,
+  update,
+  remove,
+  getBusiness,
+  updateListingAgent,
+  enquiryBusiness,
+  emailToBuyer
+} from '../controllers/business.controller'
 
-import { 
-  authMiddleware,
-  authorizeMiddleware
-} from '../middlewares/auth'
+import { BUSINESS_MENU } from '../constants/roles'
+
+import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
 
 import {
   listUsers,
@@ -21,9 +25,7 @@ import {
 
 const router = express.Router()
 
-router
-  .use(authMiddleware)
-  .use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
 router
   .route('/')
@@ -36,8 +38,10 @@ router
   .put(update)
   .delete(remove)
 
-router
-  .route('/listing-agent/:idBusiness')
-  .put(updateListingAgent)
+router.route('/listing-agent/:idBusiness').put(updateListingAgent)
+
+router.route('/enquiry-business').post(enquiryBusiness)
+
+router.route('email-to-buyer').post(emailToBuyer)
 
 export default router

@@ -1,4 +1,7 @@
+import Handlebars from 'handlebars'
+import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
+import mailer from '../modules/mailer'
 
 export const getBusiness = async (req, res, next) => {
   const { idBusiness } = req.params
@@ -330,6 +333,148 @@ export const updateListingAgent = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: `Agent list on business BS${idBusiness} updated with success` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const enquiryBusiness = async (req, res, next) => {
+  const { buyerId, businessId } = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify business attach to buyer
+    const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
+      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+    })
+
+    if (enquiryBusinessBuyer) {
+      throw new APIError({
+        message: `Business ${businessId} is attach to buyer ${buyerId}`,
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Attach business to buyer
+    const attach = await models.EnquiryBusinessBuyer.create({
+      business_id: businessId,
+      buyer_id: buyerId
+    })
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: `Business Enquired, Business=${businessId}, Buyer ${buyerId}`,
+      followUpStatus: 'Done',
+      followUp: new Date.Now()
+    })
+
+    return res.status(201).json({
+      data: attach,
+      message: `Business ${businessId} attach to buyer ${buyerId}`
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const emailToBuyer = async (req, res, next) => {
+  const { buyerId, businessId } = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists template
+    const template = await models.EmailTemplate.findOne({
+      where: { title: 'Send Email to Buyer' }
+    })
+    if (!template) {
+      throw new Error({
+        message: 'The email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      buyer_name: `${buyer.firstName} ${buyer.surname}`
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: buyer.email,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: `${business.businessName} - ${template.subject}`,
+      html: templateCompiled(context),
+      attachments: template.enableAttachment
+        ? [
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
+        : []
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: `Email to Buyer ${buyer.id} Sent (Under Offer)’r`,
+      followUpStatus: 'Done',
+      followUp: new Date.Now()
+    })
+
+    return res.status(201).json({
+      data: {
+        mail: responseMailer
+      },
+      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+    })
   } catch (error) {
     return next(error)
   }
