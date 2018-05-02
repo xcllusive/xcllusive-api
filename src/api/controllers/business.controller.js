@@ -385,9 +385,11 @@ export const enquiryBusiness = async (req, res, next) => {
 
     // Insert in log
     await models.BuyerLog.create({
-      text: `Business Enquired, Business=${businessId}, Buyer ${buyerId}`,
+      text: 'Business Enquired',
       followUpStatus: 'Done',
-      followUp: new Date.Now()
+      followUp: new Date.Now(),
+      business_id: businessId,
+      buyer_id: buyerId
     })
 
     return res.status(201).json({
@@ -466,7 +468,9 @@ export const emailToBuyer = async (req, res, next) => {
     await models.BuyerLog.create({
       text: `Email to Buyer ${buyer.id} Sent (Under Offer)’r`,
       followUpStatus: 'Done',
-      followUp: new Date.Now()
+      followUp: new Date.Now(),
+      business_id: businessId,
+      buyer_id: buyerId
     })
 
     return res.status(201).json({

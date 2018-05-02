@@ -200,7 +200,9 @@ export const sendCA = async (req, res, next) => {
 
     // Insert in log
     await models.BuyerLog.create({
-      text: 'Buyer CA sent'
+      text: 'Buyer CA sent',
+      business_id: businessId,
+      buyer_id: buyerId
     })
 
     return res.status(201).json({
@@ -303,7 +305,9 @@ export const sendIM = async (req, res, next) => {
     await models.BuyerLog.create({
       text: `Send Information Sales Memorandum to Buyer ${buyer.id}`,
       followUpStatus: 'Done',
-      followUp: new Date.Now()
+      followUp: new Date.Now(),
+      business_id: businessId,
+      buyer_id: buyerId
     })
 
     return res.status(201).json({
