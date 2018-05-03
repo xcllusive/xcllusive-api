@@ -62,7 +62,8 @@ export const list = async (req, res, next) => {
       'postCode',
       'priceFrom',
       'priceTo',
-      'emailOptional'
+      'emailOptional',
+      'attachmentUrl'
     ],
     limit: perPage
   }
