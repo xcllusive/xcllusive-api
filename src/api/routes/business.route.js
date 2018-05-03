@@ -42,6 +42,6 @@ router.route('/listing-agent/:idBusiness').put(updateListingAgent)
 
 router.route('/enquiry-business').post(enquiryBusiness)
 
-router.route('email-to-buyer').post(emailToBuyer)
+router.route('/email-to-buyer').post(emailToBuyer)
 
 export default router

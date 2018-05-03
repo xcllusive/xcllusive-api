@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars'
+import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
@@ -373,7 +374,7 @@ export const enquiryBusiness = async (req, res, next) => {
     if (enquiryBusinessBuyer) {
       throw new APIError({
         message: `Business ${businessId} is attach to buyer ${buyerId}`,
-        status: 404,
+        status: 400,
         isPublic: true
       })
     }
@@ -388,7 +389,7 @@ export const enquiryBusiness = async (req, res, next) => {
     await models.BuyerLog.create({
       text: 'Business Enquired',
       followUpStatus: 'Done',
-      followUp: new Date.Now(),
+      followUp: moment(),
       business_id: businessId,
       buyer_id: buyerId
     })
