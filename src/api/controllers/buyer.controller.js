@@ -261,6 +261,19 @@ export const sendIM = async (req, res, next) => {
       })
     }
 
+    // Verify business attach to buyer
+    const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
+      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+    })
+
+    if (!enquiryBusinessBuyer) {
+      // Set on Enquiry table
+      await models.EnquiryBusinessBuyer.create({
+        buyer_id: buyer.id,
+        business_id: business.id
+      })
+    }
+
     // Verify exists template
     const template = await models.EmailTemplate.findOne({
       where: { title: 'Send Business IM' }
@@ -301,12 +314,6 @@ export const sendIM = async (req, res, next) => {
 
     // Send Email
     const responseMailer = await mailer.sendMail(mailOptions)
-
-    // Set on Enquiry table
-    // await models.EnquiryBusinessBuyer.create({
-    //   buyer_id: buyer.id,
-    //   business_id: business.id
-    // })
 
     // Updated caSent on Buyer
     await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
