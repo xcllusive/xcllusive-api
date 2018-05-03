@@ -322,7 +322,7 @@ export const sendIM = async (req, res, next) => {
     await models.BuyerLog.create({
       text: `Send Information Sales Memorandum to Buyer ${buyer.id}`,
       followUpStatus: 'Done',
-      followUp: new Date.Now(),
+      followUp: moment().add(1, 'days'),
       business_id: businessId,
       buyer_id: buyerId
     })
