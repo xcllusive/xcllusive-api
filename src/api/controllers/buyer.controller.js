@@ -400,17 +400,15 @@ export const receivedCA = async (req, res, next) => {
         { caReceived: true, attachmentUrl: upload.Location },
         { where: { id: buyerId } }
       )
-
-      return res.status(201).json({
-        data: {
-          file: upload
-        },
-        message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
-      })
     })
+
     req.pipe(busboy)
+
+    return res.status(201).json({
+      data: {},
+      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+    })
   } catch (error) {
-    console.log(error)
     return next(error)
   }
 }
