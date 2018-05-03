@@ -279,7 +279,7 @@ export const sendIM = async (req, res, next) => {
       where: { title: 'Send Business IM' }
     })
     if (!template) {
-      throw new Error({
+      throw new APIError({
         message: 'The email template not found',
         status: 404,
         isPublic: true
