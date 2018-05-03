@@ -148,7 +148,8 @@ export const list = async (req, res, next) => {
       'suburb',
       'state',
       'postCode',
-      'typeId'
+      'typeId',
+      'notifyOwner'
     ]
   }
   try {

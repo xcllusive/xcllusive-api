@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars'
 import Busboy from 'busboy'
+import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
@@ -151,6 +152,19 @@ export const sendCA = async (req, res, next) => {
       })
     }
 
+    // Verify business attach to buyer
+    const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
+      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+    })
+
+    if (!enquiryBusinessBuyer) {
+      // Set on Enquiry table
+      await models.EnquiryBusinessBuyer.create({
+        buyer_id: buyer.id,
+        business_id: business.id
+      })
+    }
+
     // Verify exists template CA Sent
     const template = await models.EmailTemplate.findOne({
       where: { title: 'CA Sent' }
@@ -176,11 +190,11 @@ export const sendCA = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
-      attachments: buyer.attachmentUrl
+      attachments: template.enableAttachment
         ? [
           {
-            filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
-            path: buyer.attachmentUrl
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
           }
         ]
         : []
@@ -189,18 +203,14 @@ export const sendCA = async (req, res, next) => {
     // Send Email
     const responseMailer = await mailer.sendMail(mailOptions)
 
-    // Set on Enquiry table
-    await models.EnquiryBusinessBuyer.create({
-      buyer_id: buyer.id,
-      business_id: business.id
-    })
-
     // Updated caSent on Buyer
     await models.Buyer.update({ caSent: true }, { where: { id: buyerId } })
 
     // Insert in log
     await models.BuyerLog.create({
-      text: 'Buyer CA sent',
+      followUpStatus: 'Pending',
+      text: 'Confidentiality Agreement Sent',
+      followUp: moment().add(7, 'days'),
       business_id: businessId,
       buyer_id: buyerId
     })
@@ -279,11 +289,11 @@ export const sendIM = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: `${business.businessName} - ${template.subject}`,
       html: templateCompiled(context),
-      attachments: buyer.attachmentUrl
+      attachments: template.enableAttachment
         ? [
           {
-            filename: `ca-${buyer.firstName.trim()}-${buyer.surname.trim()}.pdf`,
-            path: buyer.attachmentUrl
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
           }
         ]
         : []
