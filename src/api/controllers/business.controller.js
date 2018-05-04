@@ -91,14 +91,14 @@ export const getBusiness = async (req, res, next) => {
 
 export const list = async (req, res, next) => {
   let search = req.query.search
-  let typeId = req.query.typeId
+  let stageId = req.query.stageId
   let whereOptions = {
     where: {}
   }
 
-  if (typeId && typeId.length > 0) {
-    whereOptions.where.typeId = {
-      $eq: `${typeId}`
+  if (stageId && stageId.length > 0) {
+    whereOptions.where.stageId = {
+      $eq: `${stageId}`
     }
   }
 
