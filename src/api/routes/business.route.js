@@ -9,7 +9,8 @@ import {
   getBusiness,
   updateListingAgent,
   enquiryBusiness,
-  emailToBuyer
+  emailToBuyer,
+  sendEnquiryOwner
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -43,5 +44,7 @@ router.route('/listing-agent/:idBusiness').put(updateListingAgent)
 router.route('/enquiry-business').post(enquiryBusiness)
 
 router.route('/email-to-buyer').post(emailToBuyer)
+
+router.route('/send-enquiry-owner').post(sendEnquiryOwner)
 
 export default router

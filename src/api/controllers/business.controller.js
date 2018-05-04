@@ -479,3 +479,90 @@ export const emailToBuyer = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const sendEnquiryOwner = async (req, res, next) => {
+  const { buyerId, businessId } = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists template
+    const template = await models.EmailTemplate.findOne({
+      where: { title: 'Send Enquiry to Owner' }
+    })
+
+    if (!template) {
+      throw new Error({
+        message: 'The email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      owner_name: `${business.firstName} ${business.lastName}`,
+      business_name: business.businessName,
+      buyer_id: buyerId,
+      buyer_phone: buyer.telephone1,
+      buyer_email: buyer.email
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: business.email,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: template.subject,
+      html: templateCompiled(context),
+      attachments: template.enableAttachment
+        ? [
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
+        : []
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: 'Enquiry to Owner Sent',
+      followUpStatus: 'Done',
+      followUp: moment(),
+      business_id: businessId,
+      buyer_id: buyerId
+    })
+
+    return res.status(201).json({
+      data: responseMailer,
+      message: 'Enquiry to Owner Sent'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
