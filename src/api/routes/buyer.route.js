@@ -8,7 +8,8 @@ import {
   remove,
   sendCA,
   sendIM,
-  receivedCA
+  receivedCA,
+  listLog
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -18,16 +19,18 @@ const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 
-router
-  .route('/')
-  .get(validate(validation.listBuyers), list)
-  .post(validate(validation.createBuyer), create)
+router.route('/log').get(validate(validation.listLog), listLog)
 
 router
   .route('/:idBuyer')
   .get(validate(validation.getBuyer), get)
   .put(validate(validation.updateBuyer), update)
   .delete(validate(validation.removeBuyer), remove)
+
+router
+  .route('/')
+  .get(validate(validation.listBuyers), list)
+  .post(validate(validation.createBuyer), create)
 
 router.route('/send-ca').post(validate(validation.sendCA), sendCA)
 
