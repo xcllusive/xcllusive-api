@@ -371,11 +371,11 @@ export const enquiryBusiness = async (req, res, next) => {
       where: { $and: { business_id: businessId, buyer_id: buyerId } }
     })
 
-    if (enquiryBusinessBuyer) {
-      throw new APIError({
-        message: `Business ${businessId} is attach to buyer ${buyerId}`,
-        status: 400,
-        isPublic: true
+    if (!enquiryBusinessBuyer) {
+      // Set on Enquiry table
+      await models.EnquiryBusinessBuyer.create({
+        buyer_id: buyer.id,
+        business_id: business.id
       })
     }
 
