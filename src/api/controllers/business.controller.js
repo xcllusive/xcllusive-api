@@ -144,13 +144,14 @@ export const list = async (req, res, next) => {
       'listedPrice',
       'description',
       'stageId',
+      'productId',
       'suburb',
       'state',
       'postCode',
       'typeId',
       'notifyOwner'
     ],
-    include: [models.BusinessStage]
+    include: [models.BusinessStage, models.BusinessProduct]
   }
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
