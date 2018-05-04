@@ -192,7 +192,6 @@ export const create = async (req, res, next) => {
 
     return res.status(200).json({ message: 'Business created with success' })
   } catch (error) {
-    console.log(error)
     return next(error)
   }
 }
@@ -201,7 +200,11 @@ export const update = async (req, res, next) => {
   const { idBusiness } = req.params
 
   if (!idBusiness || idBusiness === 'undefined') {
-    throw new Error('Business id does not exist')
+    throw new APIError({
+      message: 'Business id does not exist',
+      status: 404,
+      isPublic: true
+    })
   }
 
   const {
@@ -246,8 +249,7 @@ export const update = async (req, res, next) => {
     soldPrice,
     attachedPurchaser,
     searchNote,
-    afterSalesNotes,
-    stage
+    afterSalesNotes
   } = req.body
 
   const business = {
@@ -292,8 +294,7 @@ export const update = async (req, res, next) => {
     soldPrice,
     attachedPurchaser,
     searchNote,
-    afterSalesNotes,
-    stageId: stage === '' ? null : stage
+    afterSalesNotes
   }
 
   try {
@@ -302,7 +303,6 @@ export const update = async (req, res, next) => {
       .status(200)
       .json({ message: `Business BS${idBusiness} updated with success` })
   } catch (error) {
-    console.log(error)
     return next(error)
   }
 }
@@ -327,7 +327,11 @@ export const updateListingAgent = async (req, res, next) => {
   }
 
   if (!idBusiness || idBusiness === 'undefined') {
-    throw new Error('Business id does not exist')
+    throw new APIError({
+      message: 'Business id does not exist',
+      status: 404,
+      isPublic: true
+    })
   }
 
   try {
@@ -428,7 +432,7 @@ export const emailToBuyer = async (req, res, next) => {
       where: { title: 'Send Email to Buyer' }
     })
     if (!template) {
-      throw new Error({
+      throw new APIError({
         message: 'The email template not found',
         status: 404,
         isPublic: true
@@ -449,11 +453,11 @@ export const emailToBuyer = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -512,7 +516,7 @@ export const sendEnquiryOwner = async (req, res, next) => {
     })
 
     if (!template) {
-      throw new Error({
+      throw new APIError({
         message: 'The email template not found',
         status: 404,
         isPublic: true
@@ -538,11 +542,11 @@ export const sendEnquiryOwner = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
