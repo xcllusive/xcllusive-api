@@ -133,8 +133,6 @@ export const list = async (req, res, next) => {
     }
   }
 
-  console.log(JSON.stringify(whereOptions))
-
   const options = {
     attributes: [
       'id',
@@ -151,7 +149,8 @@ export const list = async (req, res, next) => {
       'postCode',
       'typeId',
       'notifyOwner'
-    ]
+    ],
+    include: [models.BusinessStage]
   }
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
