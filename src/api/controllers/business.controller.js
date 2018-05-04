@@ -464,7 +464,7 @@ export const emailToBuyer = async (req, res, next) => {
     await models.BuyerLog.create({
       text: `Email to Buyer ${buyer.id} Sent (Under Offer)’r`,
       followUpStatus: 'Done',
-      followUp: new Date.Now(),
+      followUp: moment(),
       business_id: businessId,
       buyer_id: buyerId
     })
