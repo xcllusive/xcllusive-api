@@ -367,23 +367,17 @@ export const enquiryBusiness = async (req, res, next) => {
     }
 
     // Verify business attach to buyer
-    const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
+    let enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
       where: { $and: { business_id: businessId, buyer_id: buyerId } }
     })
 
     if (!enquiryBusinessBuyer) {
       // Set on Enquiry table
-      await models.EnquiryBusinessBuyer.create({
+      enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.create({
         buyer_id: buyer.id,
         business_id: business.id
       })
     }
-
-    // Attach business to buyer
-    const attach = await models.EnquiryBusinessBuyer.create({
-      business_id: businessId,
-      buyer_id: buyerId
-    })
 
     // Insert in log
     await models.BuyerLog.create({
@@ -395,7 +389,7 @@ export const enquiryBusiness = async (req, res, next) => {
     })
 
     return res.status(201).json({
-      data: attach,
+      data: enquiryBusinessBuyer,
       message: `Business ${businessId} attach to buyer ${buyerId}`
     })
   } catch (error) {
