@@ -430,7 +430,8 @@ export const listLog = async (req, res, next) => {
     }
 
     const logs = await models.BuyerLog.findAll({
-      where: { buyer_id: id }
+      where: { buyer_id: id },
+      order: [['followUp', 'DESC']]
     })
 
     return res.status(201).json({
