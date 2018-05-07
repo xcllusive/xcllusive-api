@@ -415,7 +415,7 @@ export const receivedCA = async (req, res, next) => {
 }
 
 export const listLog = async (req, res, next) => {
-  const { buyerId, businessId } = req.query
+  const { buyerId } = req.query
 
   try {
     // Verify exists buyer
@@ -430,18 +430,19 @@ export const listLog = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    // const business = await models.Business.findOne({ where: { id: businessId } })
 
-    if (!business) {
-      throw new APIError({
-        message: 'Business not found',
-        status: 404,
-        isPublic: true
-      })
-    }
+    // if (!business) {
+    //   throw new APIError({
+    //     message: 'Business not found',
+    //     status: 404,
+    //     isPublic: true
+    //   })
+    // }
 
     const logs = await models.BuyerLog.findAll({
-      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+      //  where: { $and: { business_id: businessId, buyer_id: buyerId } }
+      where: { $and: { buyer_id: buyerId } }
     })
 
     return res.status(201).json({
