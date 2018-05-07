@@ -94,9 +94,6 @@ export const listLog = {
   query: {
     buyerId: Joi.number()
       .min(1)
-      .required(),
-    businessId: Joi.string()
-      .regex(/^[0-9]$/)
       .required()
   }
 }

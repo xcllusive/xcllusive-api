@@ -193,11 +193,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -305,11 +305,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -429,25 +429,14 @@ export const listLog = async (req, res, next) => {
       })
     }
 
-    // Verify exists business
-    // const business = await models.Business.findOne({ where: { id: businessId } })
-
-    // if (!business) {
-    //   throw new APIError({
-    //     message: 'Business not found',
-    //     status: 404,
-    //     isPublic: true
-    //   })
-    // }
-
     const logs = await models.BuyerLog.findAll({
-      //  where: { $and: { business_id: businessId, buyer_id: buyerId } }
-      where: { $and: { buyer_id: buyerId } }
+      where: { buyer_id: buyerId }
     })
 
     return res.status(201).json({
       data: logs,
-      message: logs.length === 0 ? 'Nothing buyer found' : 'Get buyer log with succesfuly'
+      message:
+        logs.length === 0 ? 'Nothing buyer log found' : 'Get buyer log with succesfuly'
     })
   } catch (error) {
     return next(error)
