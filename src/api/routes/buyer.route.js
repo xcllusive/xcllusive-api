@@ -19,7 +19,7 @@ const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 
-router.route('/log').get(validate(validation.listLog), listLog)
+router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
 
 router
   .route('/:idBuyer')

@@ -91,8 +91,8 @@ export const receivedCA = {
 }
 
 export const listLog = {
-  query: {
-    buyerId: Joi.number()
+  params: {
+    idBuyer: Joi.number()
       .min(1)
       .required()
   }

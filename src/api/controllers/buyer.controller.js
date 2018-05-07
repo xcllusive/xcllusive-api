@@ -193,11 +193,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -305,11 +305,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -415,11 +415,11 @@ export const receivedCA = async (req, res, next) => {
 }
 
 export const listLog = async (req, res, next) => {
-  const { buyerId } = req.query
+  const { idBuyer: id } = req.params
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({ where: { id } })
 
     if (!buyer) {
       throw new APIError({
@@ -430,7 +430,7 @@ export const listLog = async (req, res, next) => {
     }
 
     const logs = await models.BuyerLog.findAll({
-      where: { buyer_id: buyerId }
+      where: { buyer_id: id }
     })
 
     return res.status(201).json({
