@@ -193,11 +193,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -305,11 +305,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -341,6 +341,9 @@ export const sendIM = async (req, res, next) => {
 
 export const receivedCA = async (req, res, next) => {
   const { buyerId, businessId } = req.body
+  const file = req.files.caFile
+
+  console.log(file)
 
   try {
     // Verify exists buyer
@@ -365,48 +368,33 @@ export const receivedCA = async (req, res, next) => {
       })
     }
 
-    // Get upload file
-    const busboy = new Busboy({ headers: req.headers })
+    // Verify file received
+    if (!file) {
+      throw new APIError({
+        message: 'Expect one file upload named caFile',
+        status: 400,
+        isPublic: true
+      })
+    }
 
-    busboy.on('finish', async () => {
-      const file = req.files.caFile
+    // Verify file is pdf
+    if (!/\/pdf$/.test(file.mimetype)) {
+      throw new APIError({
+        message: 'Expect pdf file',
+        status: 400,
+        isPublic: true
+      })
+    }
 
-      // Verify file received
-      // if (!file) {
-      //   throw new APIError({
-      //     message: 'Expect one file upload named caFile',
-      //     status: 400,
-      //     isPublic: true
-      //   })
-      // }
-
-      // // Verify file is pdf
-      // if (/^application\/(pdf)$/.test(file.mimetype)) {
-      //   throw new APIError({
-      //     message: 'Expect pdf file',
-      //     status: 400,
-      //     isPublic: true
-      //   })
-      // }
-
-      // Upload file to aws s3
-      const upload = await uploadToS3(
-        'xcllusive-certificate-authority',
-        file,
-        `ca-buyer-${buyer.id}.pdf`
-      )
-
-      // updated CA received on buyer
-      await models.Buyer.update(
-        { caReceived: true, attachmentUrl: upload.Location },
-        { where: { id: buyerId } }
-      )
-    })
-
-    req.pipe(busboy)
+    // Upload file to aws s3
+    const upload = await uploadToS3(
+      'xcllusive-certificate-authority',
+      file,
+      `ca-buyer-${buyer.id}.pdf`
+    )
 
     return res.status(201).json({
-      data: {},
+      data: upload,
       message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
     })
   } catch (error) {
@@ -431,7 +419,13 @@ export const listLog = async (req, res, next) => {
 
     const logs = await models.BuyerLog.findAll({
       where: { buyer_id: id },
-      order: [['followUp', 'DESC']]
+      order: [['followUp', 'DESC']],
+      include: [
+        {
+          model: models.Business,
+          attributes: ['businessName']
+        }
+      ]
     })
 
     return res.status(201).json({
