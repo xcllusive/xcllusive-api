@@ -343,8 +343,6 @@ export const receivedCA = async (req, res, next) => {
   const { buyerId, businessId } = req.body
   const file = req.files.caFile
 
-  console.log(file)
-
   try {
     // Verify exists buyer
     const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
@@ -391,6 +389,12 @@ export const receivedCA = async (req, res, next) => {
       'xcllusive-certificate-authority',
       file,
       `ca-buyer-${buyer.id}.pdf`
+    )
+
+    // updated CA received on buyer
+    await models.Buyer.update(
+      { caReceived: true, attachmentUrl: upload.Location },
+      { where: { id: buyerId } }
     )
 
     return res.status(201).json({

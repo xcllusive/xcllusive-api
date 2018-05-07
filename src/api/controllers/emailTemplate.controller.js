@@ -1,8 +1,8 @@
-import fs from 'fs'
-import path from 'path'
 import Handlebars from 'handlebars'
+import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
+import { uploadToS3 } from '../modules/aws'
 
 export const get = async (req, res, next) => {
   const { idEmailTemplate: id } = req.params
@@ -37,19 +37,43 @@ export const list = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
   const newTemplateEmail = req.body
-  const nameFileTemplate = newTemplateEmail.title.replace(/\s/g, '-')
-  const rootDirectoryEmailTemplate = path.resolve('./src/api/resources/mail/templates')
+  const file = req.files.attachment
+  const nameFileTemplate = newTemplateEmail.title.replace(/\s/g, '-').toLowerCase()
 
-  newTemplateEmail.attachmentPath = 'http://brunodasilvalenga.com.br'
   newTemplateEmail.createdBy_id = req.user.id
   newTemplateEmail.modifiedBy_id = req.user.id
 
   try {
-    await fs.writeFile(
-      `${rootDirectoryEmailTemplate}/template-${nameFileTemplate}.html`,
-      newTemplateEmail.body
-    )
+    // Verify file received
+    if (!file) {
+      throw new APIError({
+        message: 'Expect one file upload named attachment',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    // // Verify file is pdf, doc, docx
+    // if (
+    //   !/\/pdf$/.test(file.mimetype) ||
+    //   !/\/doc$/.test(file.mimetype) ||
+    //   !/\/docx$/.test(file.mimetype)
+    // ) {
+    //   throw new APIError({
+    //     message: 'Expect pdf or doc file',
+    //     status: 400,
+    //     isPublic: true
+    //   })
+    // }
+
+    // Upload file to aws s3
+    const upload = await uploadToS3('xcllusive-email-templates', file, nameFileTemplate)
+
+    newTemplateEmail.attachmentPath = upload.Location
+
+    // Create email template
     const templateEmail = await models.EmailTemplate.create(newTemplateEmail)
+
     return res.status(201).json({
       data: templateEmail,
       message: 'Template email created with success'
