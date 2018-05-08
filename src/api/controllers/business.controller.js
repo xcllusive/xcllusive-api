@@ -145,8 +145,6 @@ export const list = async (req, res, next) => {
     }
   }
 
-  console.log(JSON.stringify(whereOptions))
-
   const options = {
     attributes: [
       'id',
@@ -240,7 +238,7 @@ export const update = async (req, res, next) => {
     postCode,
     data120DayGuarantee,
     notifyOwner,
-    businessStage,
+    stage,
     businessSource,
     businessRating,
     businessIndustry,
@@ -286,7 +284,7 @@ export const update = async (req, res, next) => {
     data120DayGuarantee,
     notifyOwner,
     listingAgent,
-    stageId: businessStage === '' ? null : businessStage,
+    stageId: stage === '' ? null : stage,
     sourceId: businessSource === '' ? null : businessSource,
     ratingId: businessRating === '' ? null : businessRating,
     industryId: businessIndustry === '' ? null : businessIndustry,
@@ -467,11 +465,11 @@ export const emailToBuyer = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -556,11 +554,11 @@ export const sendEnquiryOwner = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
