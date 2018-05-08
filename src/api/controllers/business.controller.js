@@ -103,33 +103,38 @@ export const list = async (req, res, next) => {
   }
 
   if (search && search.length > 0) {
-    whereOptions.where.$or = []
     if (search.includes('BS') || search.includes('bs')) {
       if (search.includes('BS')) search = search.replace(/BS/g, '')
       if (search.includes('bs')) search = search.replace(/bs/g, '')
-      whereOptions.where.$or.push({
-        id: {
-          $eq: search
-        }
-      })
+      whereOptions.where.id = {
+        $eq: search
+      }
     } else {
-      whereOptions.where.$or.push(
-        {
-          businessName: {
-            $like: `%${search}%`
-          }
-        },
-        {
-          firstNameV: {
-            $like: `%${search}%`
-          }
-        },
-        {
-          lastNameV: {
-            $like: `%${search}%`
-          }
+      if (parseInt(search)) {
+        whereOptions.where.listedPrice = {
+          $lte: search * 1.1,
+          $gte: search * 0.9
         }
-      )
+      } else {
+        whereOptions.where.$or = []
+        whereOptions.where.$or.push(
+          {
+            businessName: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            firstNameV: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            lastNameV: {
+              $like: `%${search}%`
+            }
+          }
+        )
+      }
     }
   }
 
@@ -173,7 +178,7 @@ export const create = async (req, res, next) => {
     sourceId: req.body.businessSource === '' ? null : req.body.businessSource,
     sourceNotes: req.body.sourceNotes,
     description: req.body.description,
-    stage: 'Potential Listing'
+    stageId: 1
   }
 
   try {
