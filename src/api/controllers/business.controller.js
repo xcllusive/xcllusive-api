@@ -97,8 +97,15 @@ export const list = async (req, res, next) => {
   }
 
   if (stageId && stageId.length > 0) {
-    whereOptions.where.stageId = {
-      $eq: `${stageId}`
+    if (parseInt(stageId)) {
+      whereOptions.where.stageId = {
+        $eq: `${stageId}`
+      }
+    } else {
+      const arrayStageId = JSON.parse(stageId)
+      whereOptions.where.stageId = {
+        $or: arrayStageId
+      }
     }
   }
 
@@ -137,6 +144,8 @@ export const list = async (req, res, next) => {
       }
     }
   }
+
+  console.log(JSON.stringify(whereOptions))
 
   const options = {
     attributes: [
@@ -178,7 +187,7 @@ export const create = async (req, res, next) => {
     sourceId: req.body.businessSource === '' ? null : req.body.businessSource,
     sourceNotes: req.body.sourceNotes,
     description: req.body.description,
-    stageId: 1
+    stageId: 1 // Potencial Listing
   }
 
   try {
