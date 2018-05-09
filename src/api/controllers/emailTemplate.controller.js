@@ -92,6 +92,8 @@ export const update = async (req, res, next) => {
       })
     }
 
+    editTemplateEmail.title = template.title
+
     // Verify file received
     if (file) {
       const nameFileTemplate = !editTemplateEmail.title
