@@ -176,11 +176,11 @@ export const list = async (req, res, next) => {
     ],
     include: [
       models.BusinessStage,
-      models.BusinessProduct,
-      {
-        model: models.BusinessIndustry,
-        where: { label: { $like: `%${search}%` } }
-      }
+      models.BusinessProduct
+      // {
+      //   model: models.BusinessIndustry,
+      //   where: { label: { $like: `%${search}%` } }
+      // }
     ]
   }
   try {
