@@ -33,6 +33,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      handlebars: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: '[]'
       }
     },
     {

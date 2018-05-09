@@ -9,6 +9,11 @@ export const get = async (req, res, next) => {
 
   try {
     const template = await models.EmailTemplate.findOne({ where: { id } })
+
+    if (JSON.parse(template.handlebars)) {
+      template.handlebars = JSON.parse(template.handlebars)
+    }
+
     return res.status(201).json({
       data: template,
       message: 'Template get with success'
