@@ -31,7 +31,8 @@ export default (sequelize, DataTypes) => {
       },
       enableAttachment: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false
       }
     },
     {
