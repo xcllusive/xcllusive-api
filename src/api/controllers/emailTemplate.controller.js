@@ -44,15 +44,6 @@ export const create = async (req, res, next) => {
   newTemplateEmail.modifiedBy_id = req.user.id
 
   try {
-    // Verify file received
-    if (!file) {
-      throw new APIError({
-        message: 'Expect one file upload named attachment',
-        status: 400,
-        isPublic: true
-      })
-    }
-
     // // Verify file is pdf, doc, docx
     // if (
     //   !/\/pdf$/.test(file.mimetype) ||
@@ -77,6 +68,48 @@ export const create = async (req, res, next) => {
     return res.status(201).json({
       data: templateEmail,
       message: 'Template email created with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const update = async (req, res, next) => {
+  const { idEmailTemplate: id } = req.params
+  const editTemplateEmail = req.body
+  const file = req.files.attachment
+
+  editTemplateEmail.modifiedBy_id = req.user.id
+
+  try {
+    const template = await models.EmailTemplate.findOne({ where: { id } })
+
+    if (!template) {
+      throw new APIError({
+        message: 'Template not found',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    // Verify file received
+    if (file) {
+      const nameFileTemplate = !editTemplateEmail.title
+        ? template.title.replace(/\s/g, '-').toLowerCase()
+        : editTemplateEmail.title.replace(/\s/g, '-').toLowerCase()
+
+      // Upload file to aws s3
+      const upload = await uploadToS3('xcllusive-email-templates', file, nameFileTemplate)
+      editTemplateEmail.attachmentPath = upload.Location
+    }
+
+    const updatedTemplate = await models.EmailTemplate.update(editTemplateEmail, {
+      where: { id }
+    })
+
+    return res.status(201).json({
+      data: updatedTemplate,
+      message: 'Template updated with success'
     })
   } catch (error) {
     return next(error)

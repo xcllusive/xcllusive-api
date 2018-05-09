@@ -139,6 +139,16 @@ export const list = async (req, res, next) => {
             lastNameV: {
               $like: `%${search}%`
             }
+          },
+          {
+            suburb: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            searchNote: {
+              $like: `%${search}%`
+            }
           }
         )
       }
@@ -157,13 +167,21 @@ export const list = async (req, res, next) => {
       'description',
       'stageId',
       'productId',
+      'industryId',
       'suburb',
       'state',
       'postCode',
       'typeId',
       'notifyOwner'
     ],
-    include: [models.BusinessStage, models.BusinessProduct]
+    include: [
+      models.BusinessStage,
+      models.BusinessProduct,
+      {
+        model: models.BusinessIndustry,
+        where: { label: { $like: `%${search}%` } }
+      }
+    ]
   }
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
