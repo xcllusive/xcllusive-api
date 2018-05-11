@@ -496,7 +496,7 @@ export const emailToBuyer = async (req, res, next) => {
 
     // Insert in log
     await models.BuyerLog.create({
-      text: `Email to Buyer ${buyer.id} Sent (Under Offer)’r`,
+      text: `Email to Buyer ${buyer.id} Sent (Under Offer)`,
       followUpStatus: 'Done',
       followUp: moment(),
       business_id: businessId,

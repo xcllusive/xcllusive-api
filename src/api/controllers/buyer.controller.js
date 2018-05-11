@@ -30,7 +30,6 @@ export const get = async (req, res, next) => {
       message: 'Success'
     })
   } catch (error) {
-    console.log(error)
     return next(error)
   }
 }
