@@ -6,9 +6,7 @@
       "request": "launch",
       "name": "nodemon",
       "runtimeExecutable": "nodemon",
-      "runtimeArgs": [
-        "--inspect"
-      ],
+      "runtimeArgs": ["--inspect"],
       "program": "${workspaceRoot}/src/index.js",
       "restart": true,
       "port": 9229,
@@ -19,17 +17,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "node",
-      "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "--inspect"
-      ],
-      "program": "${workspaceRoot}/src/index.js",
-      "restart": true,
-      "port": 9229,
-      "protocol": "inspector",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "name": "Launch Program",
+      "program": "${workspaceRoot}/dist/index.js",
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "vscode",
+      "outFiles": ["${workspaceRoot}/dist/**.js"]
     }
   ],
   "compounds": []
