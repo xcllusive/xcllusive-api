@@ -1,5 +1,4 @@
 import Handlebars from 'handlebars'
-import Busboy from 'busboy'
 import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
@@ -10,7 +9,18 @@ export const get = async (req, res, next) => {
   const { idBuyer: id } = req.params
 
   try {
-    const buyer = await models.Buyer.findOne({ where: { id } })
+    const buyer = await models.Buyer.findOne({
+      where: { id },
+      include: [models.BusinessSource]
+    })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
 
     return res.status(201).json({
       data: buyer,
@@ -193,11 +203,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -305,11 +315,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
