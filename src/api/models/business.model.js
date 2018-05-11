@@ -301,10 +301,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'stageNotWantId'
     })
     models.Business.hasMany(models.BusinessLog, {
-      foreignKey: 'id'
+      foreignKey: 'business_id'
     })
     models.Business.hasMany(models.EnquiryBusinessBuyer, {
-      foreignKey: 'id'
+      foreignKey: 'business_id'
     })
   }
 

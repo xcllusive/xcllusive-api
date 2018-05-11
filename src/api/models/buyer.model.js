@@ -181,7 +181,7 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'source_id'
     })
     models.Buyer.hasMany(models.EnquiryBusinessBuyer, {
-      foreignKey: 'id'
+      foreignKey: 'buyer_id'
     })
   }
 
