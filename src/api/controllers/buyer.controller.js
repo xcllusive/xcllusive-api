@@ -454,3 +454,42 @@ export const listLog = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const listBusinessesFromBuyerLog = async (req, res, next) => {
+  const { idBuyer } = req.params
+  const { businessId } = req.query
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: idBuyer } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const logs = await models.BuyerLog.findAll({
+      where: { buyer_id: idBuyer, business_id: businessId },
+      order: [['followUp', 'DESC']],
+      include: [
+        {
+          model: models.Business,
+          attributes: ['businessName']
+        }
+      ]
+    })
+
+    return res.status(201).json({
+      data: logs,
+      message:
+        logs.length === 0
+          ? 'No business found for buyer'
+          : 'Get business from buyer with succesfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

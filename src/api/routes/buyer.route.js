@@ -9,7 +9,8 @@ import {
   sendCA,
   sendIM,
   receivedCA,
-  listLog
+  listLog,
+  listBusinessesFromBuyerLog
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -20,6 +21,10 @@ const router = express.Router()
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 
 router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
+
+router
+  .route('/log/from-business/:idBuyer')
+  .get(validate(validation.listBusinessesFromBuyerLog), listBusinessesFromBuyerLog)
 
 router
   .route('/:idBuyer')

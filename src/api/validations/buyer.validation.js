@@ -97,3 +97,16 @@ export const listLog = {
       .required()
   }
 }
+
+export const listBusinessesFromBuyerLog = {
+  params: {
+    idBuyer: Joi.number()
+      .min(1)
+      .required()
+  },
+  query: {
+    businessId: Joi.number()
+      .min(1)
+      .required()
+  }
+}
