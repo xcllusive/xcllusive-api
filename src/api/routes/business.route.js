@@ -10,7 +10,8 @@ import {
   updateListingAgent,
   enquiryBusiness,
   emailToBuyer,
-  sendEnquiryOwner
+  sendEnquiryOwner,
+  getBuyersFromBusiness
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -27,6 +28,8 @@ import {
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+
+router.route('/:idBusiness/buyer').get(getBuyersFromBusiness)
 
 router
   .route('/')

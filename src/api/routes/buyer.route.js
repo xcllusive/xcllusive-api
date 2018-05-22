@@ -10,7 +10,8 @@ import {
   sendIM,
   receivedCA,
   listLog,
-  listBusinessesFromBuyerLog
+  listBusinessesFromBuyerLog,
+  fromBusiness
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
