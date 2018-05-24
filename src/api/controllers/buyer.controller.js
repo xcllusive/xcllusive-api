@@ -499,7 +499,15 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
 
   try {
     // Verify exists buyer
-    const buyers = await models.EnquiryBusinessBuyer.findAll({ where: { id: idBuyer } })
+    const buyers = await models.EnquiryBusinessBuyer.findAll({
+      where: { id: idBuyer },
+      include: [
+        {
+          model: models.Business,
+          attributes: ['businessName']
+        }
+      ]
+    })
 
     if (!buyers) {
       throw new APIError({
