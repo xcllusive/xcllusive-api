@@ -28,8 +28,8 @@ export const createBuyer = {
 
 export const getBuyer = {
   params: {
-    idBuyer: Joi.string()
-      .regex(/^[0-9]$/)
+    idBuyer: Joi.number()
+      .min(1)
       .required()
   }
 }
@@ -43,16 +43,16 @@ export const updateBuyer = {
     name: Joi.string().max(128)
   },
   params: {
-    idBuyer: Joi.string()
-      .regex(/^[0-9]$/)
+    idBuyer: Joi.number()
+      .min(1)
       .required()
   }
 }
 
 export const removeBuyer = {
   params: {
-    idBuyer: Joi.string()
-      .regex(/^[0-9]{24}$/)
+    idBuyer: Joi.number()
+      .min(1)
       .required()
   }
 }
@@ -80,14 +80,14 @@ export const sendIM = {
 }
 
 export const receivedCA = {
-  // body: {
-  //   buyerId: Joi.number()
-  //     .min(1)
-  //     .required(),
-  //   businessId: Joi.number()
-  //     .min(1)
-  //     .required()
-  // }
+  body: {
+    buyerId: Joi.number()
+      .min(1)
+      .required(),
+    businessId: Joi.number()
+      .min(1)
+      .required()
+  }
 }
 
 export const listLog = {
@@ -106,6 +106,14 @@ export const listBusinessesFromBuyerLog = {
   },
   query: {
     businessId: Joi.number()
+      .min(1)
+      .required()
+  }
+}
+
+export const listBusinessesFromBuyer = {
+  params: {
+    idBuyer: Joi.number()
       .min(1)
       .required()
   }

@@ -21,13 +21,15 @@ const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 
-router.route('/:idBuyer/business').get(listBusinessesFromBuyer)
-
 router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
 
 router
   .route('/log/from-business/:idBuyer')
   .get(validate(validation.listBusinessesFromBuyerLog), listBusinessesFromBuyerLog)
+
+router
+  .route('/:idBuyer/business')
+  .get(validate(validation.listBusinessesFromBuyer), listBusinessesFromBuyer)
 
 router
   .route('/:idBuyer')
