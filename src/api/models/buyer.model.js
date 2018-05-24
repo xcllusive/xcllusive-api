@@ -102,11 +102,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       priceFrom: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       priceTo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       scanfilePath: {
