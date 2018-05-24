@@ -493,3 +493,27 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const listBusinessesFromBuyer = async (req, res, next) => {
+  const { idBuyer } = req.params
+
+  try {
+    // Verify exists buyer
+    const buyers = await models.EnquiryBusinessBuyer.findAll({ where: { id: idBuyer } })
+
+    if (!buyers) {
+      throw new APIError({
+        message: 'Businesses not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(201).json({
+      data: buyers,
+      message: 'Get businesses from buyer with succesfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
