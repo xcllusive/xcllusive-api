@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       buyerNotes: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
       },
       smSent: {
@@ -37,7 +37,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      businessType: {
+      buyerType: {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -147,6 +147,10 @@ export default (sequelize, DataTypes) => {
       },
       attachmentUrl: {
         type: DataTypes.STRING,
+        allowNull: true
+      },
+      backgroundInfo: {
+        type: DataTypes.TEXT,
         allowNull: true
       },
       createdBy_id: {
