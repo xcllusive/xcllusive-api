@@ -500,7 +500,7 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
   try {
     // Verify exists buyer
     const buyers = await models.EnquiryBusinessBuyer.findAll({
-      where: { id: idBuyer },
+      where: { buyer_id: idBuyer },
       include: [
         {
           model: models.Business,
