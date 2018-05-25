@@ -24,11 +24,18 @@ export const get = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { perPage } = req.query
+  const { perPage, brokersEmail } = req.query
   const options = {
     attributes: ['id', 'title'],
     limit: perPage
   }
+
+  if (brokersEmail) {
+    options.where = {
+      brokersEmail: true
+    }
+  }
+
   try {
     const templates = await models.EmailTemplate.findAll(options)
     return res.status(201).json({
