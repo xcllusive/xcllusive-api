@@ -206,11 +206,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -318,11 +318,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -563,7 +563,7 @@ export const updateLog = async (req, res, next) => {
       where: { id: idLog }
     })
 
-    if (!log) {
+    if (!log && !newLog) {
       throw new APIError({
         message: 'Buyer Log not found',
         status: 404,
