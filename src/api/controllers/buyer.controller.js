@@ -206,11 +206,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -318,11 +318,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -528,6 +528,7 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
 
 export const updateLog = async (req, res, next) => {
   const { idBuyer, idLog } = req.params
+  const { newLog } = req.body
   const updateBuyer = {
     buyerNotes: req.body.buyerNotes ? req.body.buyerNotes : '',
     backgroundInfo: req.body.backgroundInfo ? req.body.backgroundInfo : '',
@@ -539,7 +540,8 @@ export const updateLog = async (req, res, next) => {
     text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
     followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
     followUpStatus: 'Pending',
-    modifiedBy_id: req.user.id
+    modifiedBy_id: req.user.id,
+    createdBy_id: newLog ? req.user.id : null
   }
 
   try {
@@ -570,7 +572,12 @@ export const updateLog = async (req, res, next) => {
     }
 
     await models.Buyer.update(updateBuyer, { where: { id: idBuyer } })
-    await models.Buyer.update(updateLog, { where: { id: idLog } })
+
+    if (newLog) {
+      await models.BuyerLog.create(updateLog)
+    } else {
+      await models.BuyerLog.update(updateLog, { where: { id: idLog } })
+    }
 
     return res.status(201).json({
       data: log,
