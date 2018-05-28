@@ -206,11 +206,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -318,11 +318,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -558,17 +558,20 @@ export const updateLog = async (req, res, next) => {
       })
     }
 
-    // Verify exists log
-    const log = await models.BuyerLog.findOne({
-      where: { id: idLog }
-    })
-
-    if (!log && !newLog) {
-      throw new APIError({
-        message: 'Buyer Log not found',
-        status: 404,
-        isPublic: true
+    // Verify the log is new log
+    if (!newLog) {
+      // Verify exists log
+      const log = await models.BuyerLog.findOne({
+        where: { id: idLog }
       })
+
+      if (!log) {
+        throw new APIError({
+          message: 'Buyer Log not found',
+          status: 404,
+          isPublic: true
+        })
+      }
     }
 
     await models.Buyer.update(updateBuyer, { where: { id: idBuyer } })
