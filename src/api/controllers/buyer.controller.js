@@ -525,3 +525,58 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const updateLog = async (req, res, next) => {
+  const { idBuyer, idLog } = req.params
+  const updateBuyer = {
+    buyerNotes: req.body.buyerNotes ? req.body.buyerNotes : '',
+    backgroundInfo: req.body.backgroundInfo ? req.body.backgroundInfo : '',
+    buyerType: req.body.buyerType ? req.body.buyerType : '',
+    priceFrom: req.body.priceFrom ? req.body.priceFrom : '',
+    priceTo: req.body.priceTo ? req.body.priceTo : ''
+  }
+  const updateLog = {
+    text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
+    followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
+    followUpStatus: 'Pending',
+    modifiedBy_id: req.user.id
+  }
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({
+      where: { id: idBuyer }
+    })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists log
+    const log = await models.BuyerLog.findOne({
+      where: { id: idLog }
+    })
+
+    if (!log) {
+      throw new APIError({
+        message: 'Buyer Log not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    await models.Buyer.update(updateBuyer, { where: { id: idBuyer } })
+    await models.Buyer.update(updateLog, { where: { id: idLog } })
+
+    return res.status(201).json({
+      data: log,
+      message: 'Buyer log updated with succesfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
