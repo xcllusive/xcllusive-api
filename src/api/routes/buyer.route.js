@@ -24,7 +24,7 @@ router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 
 router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
 
-router.route('/:idBuyer/log/:idLog').put(updateLog)
+router.route('/log/:idLog').put(updateLog)
 
 router
   .route('/log/from-business/:idBuyer')

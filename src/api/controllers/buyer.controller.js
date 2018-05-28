@@ -120,6 +120,19 @@ export const update = async (req, res, next) => {
   modifyBuyer.modifiedBy_id = req.user.id
 
   try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({
+      where: { id: idBuyer }
+    })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
     await models.Buyer.update(modifyBuyer, { where: { id: idBuyer } })
     return res.status(201).json({
       data: modifyBuyer,
@@ -206,11 +219,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -318,11 +331,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -527,60 +540,29 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
 }
 
 export const updateLog = async (req, res, next) => {
-  const { idBuyer, idLog } = req.params
-  const { newLog } = req.body
-  const updateBuyer = {
-    buyerNotes: req.body.buyerNotes ? req.body.buyerNotes : '',
-    backgroundInfo: req.body.backgroundInfo ? req.body.backgroundInfo : '',
-    buyerType: req.body.buyerType ? req.body.buyerType : '',
-    priceFrom: req.body.priceFrom ? req.body.priceFrom : '',
-    priceTo: req.body.priceTo ? req.body.priceTo : ''
-  }
+  const { idLog } = req.params
   const updateLog = {
     text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
     followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
     followUpStatus: 'Pending',
-    modifiedBy_id: req.user.id,
-    createdBy_id: newLog ? req.user.id : null
+    modifiedBy_id: req.user.id
   }
 
   try {
-    // Verify exists buyer
-    const buyer = await models.Buyer.findOne({
-      where: { id: idBuyer }
+    // Verify exists log
+    const log = await models.BuyerLog.findOne({
+      where: { id: idLog }
     })
 
-    if (!buyer) {
+    if (!log) {
       throw new APIError({
-        message: 'Buyer not found',
+        message: 'Buyer Log not found',
         status: 404,
         isPublic: true
       })
     }
 
-    // Verify the log is new log
-    if (!newLog) {
-      // Verify exists log
-      const log = await models.BuyerLog.findOne({
-        where: { id: idLog }
-      })
-
-      if (!log) {
-        throw new APIError({
-          message: 'Buyer Log not found',
-          status: 404,
-          isPublic: true
-        })
-      }
-    }
-
-    await models.Buyer.update(updateBuyer, { where: { id: idBuyer } })
-
-    if (newLog) {
-      await models.BuyerLog.create(updateLog)
-    } else {
-      await models.BuyerLog.update(updateLog, { where: { id: idLog } })
-    }
+    await models.BuyerLog.update(updateLog, { where: { id: idLog } })
 
     return res.status(201).json({
       data: log,
