@@ -539,6 +539,27 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
   }
 }
 
+export const createLog = async (req, res, next) => {
+  const newLog = {
+    text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
+    followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
+    followUpStatus: 'Pending',
+    modifiedBy_id: req.user.id,
+    createdBy_id: req.user.id
+  }
+
+  try {
+    const log = await models.BuyerLog.create(newLog)
+
+    return res.status(201).json({
+      data: log,
+      message: 'Buyer log updated with succesfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const updateLog = async (req, res, next) => {
   const { idLog } = req.params
   const updateLog = {
