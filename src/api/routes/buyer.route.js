@@ -11,6 +11,7 @@ import {
   receivedCA,
   listLog,
   updateLog,
+  createLog,
   listBusinessesFromBuyerLog,
   listBusinessesFromBuyer
 } from '../controllers/buyer.controller'
@@ -25,6 +26,7 @@ router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
 
 router.route('/log/:idLog').put(updateLog)
+router.route('/log').post(createLog)
 
 router
   .route('/log/from-business/:idBuyer')
