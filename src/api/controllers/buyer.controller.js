@@ -544,6 +544,8 @@ export const createLog = async (req, res, next) => {
     text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
     followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
     followUpStatus: 'Pending',
+    business_id: req.body.business_id,
+    buyer_id: req.body.buyer_id,
     modifiedBy_id: req.user.id,
     createdBy_id: req.user.id
   }
