@@ -7,6 +7,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import busboy from 'connect-busboy'
 import busboyBodyParser from 'busboy-body-parser'
+import paginate from 'express-paginate'
 
 import routes from '../api/routes'
 import { logs } from './vars'
@@ -23,6 +24,7 @@ app.use(compress())
 app.use(methodOverride())
 app.use(helmet())
 app.use(cors())
+app.use(paginate.middleware(10, 50))
 app.use('/', routes)
 app.use(error.converter)
 app.use(error.notFound)

@@ -194,7 +194,7 @@ export const sendCA = async (req, res, next) => {
 
     // Verify exists template CA Sent
     const template = await models.EmailTemplate.findOne({
-      where: { title: 'CA Sent' }
+      where: { id: 8 }
     })
     if (!template) {
       throw new APIError({
@@ -484,7 +484,7 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       })
     }
 
-    const logs = await models.BuyerLog.findAll({
+    const logs = await models.BuyerLog.findAndCountAll({
       where: { buyer_id: idBuyer, business_id: businessId },
       order: [['followUp', 'DESC']],
       include: [
@@ -492,11 +492,15 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
           model: models.Business,
           attributes: ['businessName']
         }
-      ]
+      ],
+      limit: req.query.limit,
+      offset: req.skip
     })
 
     return res.status(201).json({
       data: logs,
+      pageCount: logs.count,
+      itemCount: Math.ceil(logs.count / req.query.limit),
       message:
         logs.length === 0
           ? 'No business found for buyer'
