@@ -135,7 +135,7 @@ export const sendEmail = async (req, res, next) => {
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: newEmail.idBuyer } })
+    const buyer = await models.Buyer.findOne({ where: { id: newEmail.buyerId } })
 
     if (!buyer) {
       throw new APIError({
