@@ -130,6 +130,45 @@ export const update = async (req, res, next) => {
   }
 }
 
+export const sendEmail = async (req, res, next) => {
+  const newEmail = req.body
+
+  try {
+    // Verify exists buyer
+    const buyer = await models.Buyer.findOne({ where: { id: newEmail.idBuyer } })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'Buyer not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // const templateCompiled = Handlebars.compile(template.body)
+
+    // const context = {
+    //   firstName: 'Cayo'
+    // }
+
+    const mailOptions = {
+      to: buyer.email,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: newEmail.subject,
+      html: newEmail.body
+    }
+
+    const resMailer = await mailer.sendMail(mailOptions)
+
+    return res.status(201).json({
+      data: resMailer,
+      message: 'Send email successfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const sendEmailTest = async (req, res, next) => {
   const newEmail = req.body
 

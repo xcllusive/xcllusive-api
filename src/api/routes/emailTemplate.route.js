@@ -1,10 +1,11 @@
 import express from 'express'
-import validate from 'express-validation'
+// import validate from 'express-validation'
 import {
   get,
   list,
   create,
   update,
+  sendEmail,
   sendEmailTest
 } from '../controllers/emailTemplate.controller'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -31,6 +32,8 @@ router
   .route('/:idEmailTemplate')
   .get(get)
   .put(update)
+
+router.route('/send-email').post(sendEmail)
 
 router.route('/send-test').post(sendEmailTest)
 
