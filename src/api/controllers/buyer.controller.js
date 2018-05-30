@@ -220,11 +220,11 @@ export const sendCA = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -332,11 +332,11 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 

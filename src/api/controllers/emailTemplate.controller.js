@@ -30,13 +30,14 @@ export const list = async (req, res, next) => {
     limit: perPage
   }
 
-  if (brokersEmail) {
+  if (brokersEmail === true) {
     options.where = {
       brokersEmail: true
     }
   }
 
   try {
+    console.log(options)
     const templates = await models.EmailTemplate.findAll(options)
     return res.status(201).json({
       data: templates,
