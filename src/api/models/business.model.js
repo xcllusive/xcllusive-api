@@ -73,16 +73,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      cCreatedBy: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       chartSelScore: {
         type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      cModifiedBy: {
-        type: DataTypes.STRING,
         allowNull: true
       },
       countAttBuyers: {
@@ -91,14 +83,6 @@ export default (sequelize, DataTypes) => {
       },
       country: {
         type: DataTypes.STRING,
-        allowNull: true
-      },
-      createdBy: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      creationDate: {
-        type: DataTypes.DATE,
         allowNull: true
       },
       currentPrice: {
@@ -155,14 +139,6 @@ export default (sequelize, DataTypes) => {
       },
       mailingAddressV: {
         type: DataTypes.STRING,
-        allowNull: true
-      },
-      modificationBy: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      modificationDate: {
-        type: DataTypes.DATE,
         allowNull: true
       },
       notifyOwner: {
@@ -287,6 +263,14 @@ export default (sequelize, DataTypes) => {
   )
 
   Business.associate = models => {
+    models.Business.belongsTo(models.User, {
+      foreignKey: 'createdBy_id',
+      as: 'CreatedBy'
+    })
+    models.Business.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id',
+      as: 'ModifiedBy'
+    })
     models.Business.belongsTo(models.BusinessStage, { foreignKey: 'stageId' })
     models.Business.belongsTo(models.BusinessSource, { foreignKey: 'sourceId' })
     models.Business.belongsTo(models.BusinessRating, { foreignKey: 'ratingId' })

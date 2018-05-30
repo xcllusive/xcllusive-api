@@ -26,7 +26,13 @@ export const getBusiness = async (req, res, next) => {
   }
 
   try {
-    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({
+      where: { id: idBusiness },
+      include: [
+        { model: models.User, as: 'CreatedBy' },
+        { model: models.User, as: 'ModifiedBy' }
+      ]
+    })
     const stageList = await models.BusinessStage.findAll({
       raw: true,
       attributes: ['id', 'label']
@@ -84,7 +90,6 @@ export const getBusiness = async (req, res, next) => {
     }
     return res.status(200).json(response)
   } catch (err) {
-    console.log(err)
     return next(err)
   }
 }
@@ -203,7 +208,8 @@ export const create = async (req, res, next) => {
     sourceId: req.body.businessSource === '' ? null : req.body.businessSource,
     sourceNotes: req.body.sourceNotes,
     description: req.body.description,
-    stageId: 1 // Potencial Listing
+    stageId: 1, // Potencial Listing
+    createdBy_id: req.user.id
   }
 
   try {
@@ -214,9 +220,10 @@ export const create = async (req, res, next) => {
     newBusiness.listingAgent = `${user.firstName} ${user.lastName}`
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
-      text: 'New  ',
-      createdBy: 1,
+      text: 'New  Business',
+      createdBy_id: req.user.id,
       status: 'Pending',
+      followUp: moment(),
       business_id: business.get('id')
     })
 
@@ -324,7 +331,8 @@ export const update = async (req, res, next) => {
     soldPrice,
     attachedPurchaser,
     searchNote,
-    afterSalesNotes
+    afterSalesNotes,
+    modifiedBy_id: req.user.id
   }
 
   try {
