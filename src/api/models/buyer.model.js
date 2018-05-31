@@ -149,7 +149,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      backgroundInfo: {
+      profile: {
         type: DataTypes.TEXT,
         allowNull: true
       },
