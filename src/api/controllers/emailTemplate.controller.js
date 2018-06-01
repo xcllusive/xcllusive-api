@@ -30,7 +30,9 @@ export const list = async (req, res, next) => {
     limit: perPage
   }
 
-  if (brokersEmail === true) {
+  console.log(JSON.parse(brokersEmail))
+
+  if (JSON.parse(brokersEmail)) {
     options.where = {
       brokersEmail: true
     }
