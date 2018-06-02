@@ -45,8 +45,6 @@ export const list = async (req, res, next) => {
       ]
     }
 
-    console.log(whereOptions)
-
     const logs = await models.BusinessLog.findAll({
       where: whereOptions,
       order: [['followUp', 'DESC']],
@@ -54,7 +52,9 @@ export const list = async (req, res, next) => {
         {
           model: models.Business,
           attributes: ['businessName']
-        }
+        },
+        { model: models.User, as: 'CreatedBy' },
+        { model: models.User, as: 'ModifiedBy' }
       ]
     })
 
@@ -66,7 +66,6 @@ export const list = async (req, res, next) => {
           : 'Get business log with succesfully'
     })
   } catch (error) {
-    console.log(error)
     return next(error)
   }
 }

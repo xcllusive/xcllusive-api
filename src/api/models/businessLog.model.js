@@ -43,10 +43,12 @@ export default (sequelize, DataTypes) => {
 
   BusinessLog.associate = models => {
     models.BusinessLog.belongsTo(models.User, {
-      foreignKey: 'createdBy_id'
+      foreignKey: 'createdBy_id',
+      as: 'CreatedBy'
     })
     models.BusinessLog.belongsTo(models.User, {
-      foreignKey: 'modifiedBy_id'
+      foreignKey: 'modifiedBy_id',
+      as: 'ModifiedBy'
     })
     models.BusinessLog.belongsTo(models.Business, {
       foreignKey: 'business_id'

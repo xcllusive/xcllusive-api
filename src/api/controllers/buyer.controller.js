@@ -556,6 +556,19 @@ export const createLog = async (req, res, next) => {
   }
 
   try {
+    const lastLog = await models.BuyerLog.findOne({
+      where: { buyer_id: req.body.buyer_id, business_id: req.body.business_id },
+      order: [['followUp', 'DESC']]
+    })
+
+    if (lastLog) {
+      console.log(lastLog)
+      await models.BuyerLog.update(
+        { followUpStatus: 'Done' },
+        { where: { id: lastLog.id } }
+      )
+    }
+
     const log = await models.BuyerLog.create(newLog)
 
     return res.status(201).json({
