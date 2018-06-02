@@ -13,7 +13,10 @@ export const get = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { businessId } = req.query
+  const { businessId, search } = req.query
+  const whereOptions = {
+    business_id: businessId
+  }
 
   try {
     // Verify exists buyer
@@ -27,8 +30,25 @@ export const list = async (req, res, next) => {
       })
     }
 
+    if (search) {
+      whereOptions.$or = [
+        {
+          text: {
+            $like: `%${search}%`
+          }
+        },
+        {
+          followUpStatus: {
+            $like: `%${search}%`
+          }
+        }
+      ]
+    }
+
+    console.log(whereOptions)
+
     const logs = await models.BusinessLog.findAll({
-      where: { business_id: businessId },
+      where: whereOptions,
       order: [['followUp', 'DESC']],
       include: [
         {
@@ -46,6 +66,7 @@ export const list = async (req, res, next) => {
           : 'Get business log with succesfully'
     })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 }
