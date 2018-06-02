@@ -614,7 +614,9 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 
   try {
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({
+      where: { id: idBusiness }
+    })
 
     if (!business) {
       throw new APIError({
@@ -634,8 +636,26 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       ]
     })
 
+    const array = []
+    const verifyContentBuyerLog = await buyersFromBusiness.map(async item => {
+      const logs = await models.BuyerLog.findAll({
+        where: {
+          buyer_id: item.buyer_id,
+          followUpStatus: 'Pending',
+          followUp: {
+            $lt: moment().toDate()
+          }
+        },
+        raw: true
+      })
+      if (logs.length) array.push(item)
+      return array
+    })
+
+    const response = await Promise.all(verifyContentBuyerLog)
+
     return res.status(201).json({
-      data: buyersFromBusiness,
+      data: response[0],
       message: 'Success'
     })
   } catch (error) {
