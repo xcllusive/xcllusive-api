@@ -84,7 +84,7 @@ export const update = async (req, res, next) => {
 export const remove = async (req, res, next) => {
   const { buyerRegister } = req.body
 
-  const { businessRegisterId } = req.params
+  const { buyerRegisterId } = req.params
 
   try {
     // const existsRegisterType = await models.Business.findAll({
@@ -101,7 +101,7 @@ export const remove = async (req, res, next) => {
     //   })
     // }
     if (buyerRegister === 1) {
-      await models.BuyerType.destroy({ where: { id: businessRegisterId } })
+      await models.BuyerType.destroy({ where: { id: buyerRegisterId } })
     }
 
     if (!buyerRegister) {
@@ -110,7 +110,7 @@ export const remove = async (req, res, next) => {
 
     return res
       .status(200)
-      .json({ message: `Buyer register ${businessRegisterId} removed with success` })
+      .json({ message: `Buyer register ${buyerRegisterId} removed with success` })
   } catch (error) {
     return next(error)
   }

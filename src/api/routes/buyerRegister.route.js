@@ -22,7 +22,7 @@ router
   .get(list)
 
 router
-  .route('/:buyerRegister')
+  .route('/:buyerRegisterId')
   .get(get)
   .put(update)
   .delete(remove)
