@@ -11,23 +11,21 @@ import {
   enquiryBusiness,
   emailToBuyer,
   sendEnquiryOwner,
-  getBuyersFromBusiness
+  getBuyersFromBusiness,
+  getGroupEmail
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
 
-import {
-  listUsers,
-  createUser,
-  replaceUser,
-  updateUser
-} from '../validations/business.validation'
+import * as validation from '../validations/business.validation'
 
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+
+router.route('/:idBusiness/group-email').get(validate(validation.getGroupEmail), getGroupEmail)
 
 router.route('/:idBusiness/buyer').get(getBuyersFromBusiness)
 

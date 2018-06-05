@@ -662,3 +662,50 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getGroupEmail = async (req, res, next) => {
+  const { idBusiness } = req.params
+
+  try {
+    // Verify exists business
+    const business = await models.Business.findOne({
+      where: { id: idBusiness }
+    })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Get buyers from business enquiry
+    const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
+      where: { business_id: idBusiness },
+      include: [
+        {
+          model: models.Buyer
+        }
+      ]
+    })
+
+    const getEmailBuyers = buyersFromBusiness.reduce((result, element) => {
+      if (element.Buyer.caReceived) {
+        result.push({
+          email: element.Buyer.email,
+          firstName: element.Buyer.firstName,
+          lastName: element.Buyer.surname
+        })
+      }
+      return result
+    }, [])
+
+    return res.status(201).json({
+      data: getEmailBuyers,
+      message: 'Success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
