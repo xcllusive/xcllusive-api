@@ -62,14 +62,17 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { buyerRegister } = req.body
-  const { label } = buyerRegister
+  const { label, buyerRegister } = req.body
 
   const { buyerRegisterId } = req.params
 
   try {
-    if (buyerRegister.buyerRegister === 1) {
+    if (buyerRegister === 1) {
       await models.BuyerType.update({ label }, { where: { id: buyerRegisterId } })
+    }
+
+    if (!buyerRegister) {
+      throw new Error(`Buyer register ${buyerRegister} does not exist`)
     }
 
     return res.status(200).json({ message: `Buyer register ${label} updated` })
