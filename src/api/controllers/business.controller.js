@@ -666,6 +666,8 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 export const getGroupEmail = async (req, res, next) => {
   const { idBusiness } = req.params
 
+  const response = []
+
   try {
     // Verify exists business
     const business = await models.Business.findOne({
@@ -690,19 +692,34 @@ export const getGroupEmail = async (req, res, next) => {
       ]
     })
 
-    const getEmailBuyers = buyersFromBusiness.reduce((result, element) => {
-      if (element.Buyer.caReceived) {
-        result.push({
-          email: element.Buyer.email,
-          firstName: element.Buyer.firstName,
-          lastName: element.Buyer.surname
+    for (let buyer of buyersFromBusiness) {
+      const log = await models.BuyerLog.findAll({
+        where: {
+          buyer_id: buyer.Buyer.id
+        }
+      })
+
+      const isPending = await log.reduce((tes, element) => {
+        if (element.followUpStatus === 'Pending') {
+          return true
+        } else {
+          return false
+        }
+      }, false)
+
+      if (buyer.Buyer.caReceived) {
+        response.push({
+          id: buyer.Buyer.id,
+          email: buyer.Buyer.email,
+          firstName: buyer.Buyer.firstName,
+          lastName: buyer.Buyer.surname,
+          isPending
         })
       }
-      return result
-    }, [])
+    }
 
     return res.status(201).json({
-      data: getEmailBuyers,
+      data: response,
       message: 'Success'
     })
   } catch (error) {
