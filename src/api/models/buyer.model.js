@@ -189,6 +189,7 @@ export default (sequelize, DataTypes) => {
     models.Buyer.hasMany(models.EnquiryBusinessBuyer, {
       foreignKey: 'buyer_id'
     })
+    models.Buyer.belongsTo(models.BuyerType, { foreignKey: 'typeId' })
   }
 
   return Buyer
