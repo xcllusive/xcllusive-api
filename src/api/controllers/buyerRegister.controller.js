@@ -62,12 +62,13 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { label, buyerRegister } = req.body
+  const { buyerRegister } = req.body
+  const { label } = buyerRegister
 
   const { buyerRegisterId } = req.params
 
   try {
-    if (buyerRegister === 1) {
+    if (buyerRegister.buyerRegister === 1) {
       await models.BuyerType.update({ label }, { where: { id: buyerRegisterId } })
     }
 
