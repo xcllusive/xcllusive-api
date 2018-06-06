@@ -726,3 +726,37 @@ export const getGroupEmail = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const sendGroupEmail = async (req, res, next) => {
+  const { to, subject, body } = req.body
+  const fileAttachment = req.files.attachment
+  const sentTo = []
+
+  try {
+    for (let buyer of JSON.parse(to)) {
+      const mailOptions = {
+        to: buyer.email,
+        from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+        subject,
+        html: body,
+        attachments: fileAttachment
+          ? [
+            {
+              filename: fileAttachment.name,
+              content: fileAttachment.data
+            }
+          ]
+          : []
+      }
+      const resMailer = await mailer.sendMail(mailOptions)
+      if (resMailer) sentTo.push(resMailer.envelope.to[0])
+    }
+
+    return res.status(201).json({
+      data: sentTo,
+      message: 'Send email successfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

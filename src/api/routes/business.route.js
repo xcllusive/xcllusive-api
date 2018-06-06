@@ -12,7 +12,8 @@ import {
   emailToBuyer,
   sendEnquiryOwner,
   getBuyersFromBusiness,
-  getGroupEmail
+  getGroupEmail,
+  sendGroupEmail
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -47,5 +48,7 @@ router.route('/enquiry-business').post(enquiryBusiness)
 router.route('/email-to-buyer').post(emailToBuyer)
 
 router.route('/send-enquiry-owner').post(sendEnquiryOwner)
+
+router.route('/send-group-email').post(sendGroupEmail)
 
 export default router
