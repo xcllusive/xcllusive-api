@@ -733,12 +733,23 @@ export const sendGroupEmail = async (req, res, next) => {
   const sentTo = []
 
   try {
+    const emailToOffice = await models.SystemSettings.findOne({where: 1})
     for (let buyer of JSON.parse(to)) {
       const mailOptions = {
         to: buyer.email,
-        from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+        from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
         subject,
-        html: body,
+        replyTo: buyer.replyTo ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
+        html: `
+        <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
+        
+        </br>
+        <p>${body}</p>
+        </br>
+
+        <p>Xcllusive Business Sales</p>
+        <p>www.xcllusive.com.au | (02) 9817 3331</p>
+        `,
         attachments: fileAttachment
           ? [
             {
