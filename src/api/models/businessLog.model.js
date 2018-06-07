@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
         unique: true
       },
       text: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
       },
       followUp: {

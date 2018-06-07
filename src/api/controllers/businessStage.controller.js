@@ -40,7 +40,7 @@ export const remove = async (req, res, next) => {
   const { businessStage } = req.body
 
   try {
-    await models.BusinessOwnersTime.destroy({ where: { businessStage } })
+    await models.businessStage.destroy({ where: { businessStage } })
     return res.status(200).json({ message: `Business register ${businessStage} removed with success` })
   } catch (error) {
     return next(error)

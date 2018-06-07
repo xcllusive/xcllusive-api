@@ -8,12 +8,14 @@ import {
   remove,
   getBusiness,
   updateListingAgent,
+  updateStageLost,
   enquiryBusiness,
   emailToBuyer,
   sendEnquiryOwner,
   getBuyersFromBusiness,
   getGroupEmail,
   sendGroupEmail
+
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -29,6 +31,8 @@ router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 router.route('/:idBusiness/group-email').get(validate(validation.getGroupEmail), getGroupEmail)
 
 router.route('/:idBusiness/buyer').get(getBuyersFromBusiness)
+
+router.route('/:idBusiness/stage-lost').put(updateStageLost)
 
 router
   .route('/')

@@ -145,10 +145,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true
       },
-      ownersTime: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       postCode: {
         type: DataTypes.INTEGER,
         allowNull: true
@@ -275,7 +271,6 @@ export default (sequelize, DataTypes) => {
     models.Business.belongsTo(models.BusinessSource, { foreignKey: 'sourceId' })
     models.Business.belongsTo(models.BusinessRating, { foreignKey: 'ratingId' })
     models.Business.belongsTo(models.BusinessIndustry, { foreignKey: 'industryId' })
-    models.Business.belongsTo(models.BusinessOwnersTime, { foreignKey: 'ownersTimeId' })
     models.Business.belongsTo(models.BusinessProduct, { foreignKey: 'productId' })
     models.Business.belongsTo(models.BusinessType, { foreignKey: 'typeId' })
     models.Business.belongsTo(models.BusinessStageNotSigned, {

@@ -45,10 +45,6 @@ export const getBusiness = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
-    const ownersTimeList = await models.BusinessOwnersTime.findAll({
-      raw: true,
-      attributes: ['id', 'label']
-    })
     const productList = await models.BusinessProduct.findAll({
       raw: true,
       attributes: ['id', 'label']
@@ -80,7 +76,6 @@ export const getBusiness = async (req, res, next) => {
       stageList: _mapValuesToArray(stageList),
       sourceList: _mapValuesToArray(sourceList),
       industryList: _mapValuesToArray(industryList),
-      ownersTimeList: _mapValuesToArray(ownersTimeList),
       productList: _mapValuesToArray(productList),
       ratingList: _mapValuesToArray(ratingList),
       typeList: _mapValuesToArray(typeList),
@@ -236,14 +231,6 @@ export const create = async (req, res, next) => {
 export const update = async (req, res, next) => {
   const { idBusiness } = req.params
 
-  if (!idBusiness || idBusiness === 'undefined') {
-    throw new APIError({
-      message: 'Business id does not exist',
-      status: 404,
-      isPublic: true
-    })
-  }
-
   const {
     businessName,
     firstNameV,
@@ -267,7 +254,6 @@ export const update = async (req, res, next) => {
     businessSource,
     businessRating,
     businessIndustry,
-    businessOwnersTime,
     businessProduct,
     businessType,
     listingAgent,
@@ -313,7 +299,6 @@ export const update = async (req, res, next) => {
     sourceId: businessSource === '' ? null : businessSource,
     ratingId: businessRating === '' ? null : businessRating,
     industryId: businessIndustry === '' ? null : businessIndustry,
-    ownersTimeId: businessOwnersTime === '' ? null : businessOwnersTime,
     productId: businessProduct === '' ? null : businessProduct,
     typeId: businessType === '' ? null : businessType,
     staffAccountName,
@@ -377,6 +362,62 @@ export const updateListingAgent = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: `Agent list on business BS${idBusiness} updated with success` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const updateStageLost = async (req, res, next) => {
+  const { idBusiness } = req.params
+  const updateBusiness = req.body
+
+  console.log(updateBusiness)
+
+  updateBusiness.modifiedBy_id = req.user.id
+  updateBusiness.stageId = 8
+
+  // Verify exists business
+  const business = await models.Business.findOne({ where: { id: idBusiness } })
+
+  if (!business) {
+    throw new APIError({
+      message: 'Business not found',
+      status: 404,
+      isPublic: true
+    })
+  }
+
+  try {
+    await models.Business.update(updateBusiness, { where: { id: idBusiness } })
+
+    if (updateBusiness.pendingDone) {
+      await models.BusinessLog.update({followUpStatus: 'Done'}, {where: {business_id: idBusiness}})
+    }
+
+    if (updateBusiness.followUpLog) {
+      await models.BusinessLog.create({
+        text:
+        `${updateBusiness.text}
+
+Lost Notes: ${updateBusiness.afterSalesNotes}
+
+Mark all Pending communications with this Vendor as Done: ${updateBusiness.pendingDone === true ? 'Yes' : 'No'}
+
+Did you meet with this vendor? ${updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'} : ${updateBusiness.recoveryStageNotWant}
+
+Did we want this business? ${updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'} : ${updateBusiness.recoveryStageNotSigned}
+
+`,
+        createdBy_id: req.user.id,
+        followUpStatus: 'Done',
+        followUp: moment(updateBusiness.date),
+        business_id: idBusiness
+      })
+    }
+
+    return res
+      .status(200)
+      .json({ message: `Business BS${idBusiness} updated with success` })
   } catch (error) {
     return next(error)
   }

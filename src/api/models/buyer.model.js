@@ -95,10 +95,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      ownersTime: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       postCode: {
         type: DataTypes.INTEGER,
         allowNull: true
