@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const ScoreRegisters = sequelize.define(
-    'ScoreRegisters',
+  const ScoreRegister = sequelize.define(
+    'ScoreRegister',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -30,5 +30,5 @@ export default (sequelize, DataTypes) => {
     }
   )
 
-  return ScoreRegisters
+  return ScoreRegister
 }
