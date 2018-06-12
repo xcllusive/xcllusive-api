@@ -436,6 +436,9 @@ export const receivedCA = async (req, res, next) => {
 export const listLog = async (req, res, next) => {
   const { idBuyer: id } = req.params
 
+  const limit = req.query.limit
+  const offset = req.skip
+
   try {
     // Verify exists buyer
     const buyer = await models.Buyer.findOne({ where: { id } })
@@ -448,7 +451,7 @@ export const listLog = async (req, res, next) => {
       })
     }
 
-    const logs = await models.BuyerLog.findAll({
+    const logs = await models.BuyerLog.findAndCountAll({
       where: { buyer_id: id },
       order: [['followUp', 'DESC']],
       include: [
@@ -456,11 +459,15 @@ export const listLog = async (req, res, next) => {
           model: models.Business,
           attributes: ['businessName']
         }
-      ]
+      ],
+      limit,
+      offset
     })
 
     return res.status(201).json({
       data: logs,
+      pageCount: logs.count,
+      itemCount: Math.ceil(logs.count / req.query.limit),
       message:
         logs.length === 0 ? 'Nothing buyer log found' : 'Get buyer log with succesfuly'
     })
@@ -562,7 +569,6 @@ export const createLog = async (req, res, next) => {
     })
 
     if (lastLog) {
-      console.log(lastLog)
       await models.BuyerLog.update(
         { followUpStatus: 'Done' },
         { where: { id: lastLog.id } }
@@ -573,7 +579,7 @@ export const createLog = async (req, res, next) => {
 
     return res.status(201).json({
       data: log,
-      message: 'Buyer log updated with succesfuly'
+      message: 'Buyer log created with succesfuly'
     })
   } catch (error) {
     return next(error)
