@@ -154,7 +154,9 @@ export const update = async (req, res, next) => {
 }
 
 export const remove = async (req, res, next) => {
-  const { businessRegisterType } = req.body
+  const { registerType } = req.body
+
+  console.log(req.body)
 
   const { businessRegister: id } = req.params
 
@@ -173,32 +175,32 @@ export const remove = async (req, res, next) => {
       })
     }
 
-    if (businessRegisterType === 1) {
+    if (registerType === 1) {
       await models.BusinessSource.destroy({ where: { id } })
     }
-    if (businessRegisterType === 2) {
+    if (registerType === 2) {
       await models.BusinessRating.destroy({ where: { id } })
     }
-    if (businessRegisterType === 3) {
+    if (registerType === 3) {
       await models.BusinessProduct.destroy({ where: { id } })
     }
-    if (businessRegisterType === 4) {
+    if (registerType === 4) {
       await models.BusinessIndustry.destroy({ where: { id } })
     }
-    if (businessRegisterType === 5) {
+    if (registerType === 5) {
       await models.BusinessType.destroy({ where: { id } })
     }
-    if (businessRegisterType === 7) {
+    if (registerType === 7) {
       await models.BusinessStage.destroy({ where: { id } })
     }
-    if (businessRegisterType === 8) {
+    if (registerType === 8) {
       await models.BusinessStageNotSigned.destroy({ where: { id } })
     }
-    if (businessRegisterType === 9) {
+    if (registerType === 9) {
       await models.BusinessStageNotWant.destroy({ where: { id } })
     }
-    if (!businessRegisterType) {
-      throw new Error(`Business register ${businessRegisterType} does not exist`)
+    if (!registerType) {
+      throw new Error(`Business register ${registerType} does not exist`)
     }
 
     return res
