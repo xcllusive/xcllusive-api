@@ -26,5 +26,11 @@ export default (sequelize, DataTypes) => {
     }
   )
 
+  SystemSettings.associate = models => {
+    models.SystemSettings.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id',
+      as: 'ModifiedBy'
+    })
+  }
   return SystemSettings
 }
