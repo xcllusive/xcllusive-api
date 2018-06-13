@@ -15,7 +15,15 @@ export default (sequelize, DataTypes) => {
       },
       label: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
+      },
+      weight: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      textReport: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
