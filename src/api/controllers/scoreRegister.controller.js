@@ -5,12 +5,10 @@ export const list = async (req, res, next) => {
 
   const limit = req.query.limit
   const offset = req.skip
-  const where = scoreRegister
-    ? {type: scoreRegister}
-    : null
+  const where = scoreRegister ? { type: scoreRegister } : null
 
   try {
-    const response = await models.ScoreRegister.findAndCountAll({where, limit, offset })
+    const response = await models.ScoreRegister.findAndCountAll({ where, limit, offset })
     return res.status(201).json({
       data: response,
       pageCount: response.count,
@@ -37,10 +35,10 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const { label, type } = req.body
+  const { label, type, textReport, weight } = req.body
 
   try {
-    await models.ScoreRegister.create({ label, type })
+    await models.ScoreRegister.create({ label, type, textReport, weight })
 
     return res.status(200).json({ message: `Buyer register ${label} created` })
   } catch (error) {
@@ -50,10 +48,13 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
   const { scoreRegisterId } = req.params
-  const { label } = req.body
+  const { label, textReport, weight } = req.body
 
   try {
-    await models.ScoreRegister.update({ label }, { where: { id: scoreRegisterId } })
+    await models.ScoreRegister.update(
+      { label, textReport, weight },
+      { where: { id: scoreRegisterId } }
+    )
     return res.status(200).json({ message: `Buyer register ${label} updated` })
   } catch (error) {
     return next(error)
