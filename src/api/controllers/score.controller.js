@@ -6,9 +6,15 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = business ? { business_id: business } : null
+  const include = [
+    { model: models.ScoreRegister, as: 'currentInterest' },
+    { model: models.ScoreRegister, as: 'infoTransMomen' },
+    { model: models.ScoreRegister, as: 'perceivedPrice' },
+    { model: models.ScoreRegister, as: 'perceivedRisk' }
+  ]
 
   try {
-    const response = await models.Score.findAndCountAll({ where, limit, offset })
+    const response = await models.Score.findAndCountAll({ where, limit, offset, include })
     return res.status(201).json({
       data: response,
       pageCount: response.count,

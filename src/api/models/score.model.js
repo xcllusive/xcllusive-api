@@ -9,33 +9,33 @@ export default (sequelize, DataTypes) => {
         unique: true,
         allowNull: false
       },
-      currentInterest: {
+      currentInterest_id: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
       },
       notesInterest: {
         type: DataTypes.TEXT,
         allowNull: true
       },
-      infoTransMomen: {
+      infoTransMomen_id: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
       },
       notesMomentum: {
         type: DataTypes.TEXT,
         allowNull: true
       },
-      perceivedPrice: {
+      perceivedPrice_id: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
       },
       notesPrice: {
         type: DataTypes.TEXT,
         allowNull: true
       },
-      perceivedRisk: {
+      perceivedRisk_id: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
       },
       notesRisk: {
         type: DataTypes.TEXT,
@@ -89,6 +89,22 @@ export default (sequelize, DataTypes) => {
     })
     models.Score.belongsTo(models.Business, {
       foreignKey: 'business_id'
+    })
+    models.Score.belongsTo(models.ScoreRegister, {
+      foreignKey: 'currentInterest_id',
+      as: 'currentInterest'
+    })
+    models.Score.belongsTo(models.ScoreRegister, {
+      foreignKey: 'infoTransMomen_id',
+      as: 'infoTransMomen'
+    })
+    models.Score.belongsTo(models.ScoreRegister, {
+      foreignKey: 'perceivedPrice_id',
+      as: 'perceivedPrice'
+    })
+    models.Score.belongsTo(models.ScoreRegister, {
+      foreignKey: 'perceivedRisk_id',
+      as: 'perceivedRisk'
     })
   }
 
