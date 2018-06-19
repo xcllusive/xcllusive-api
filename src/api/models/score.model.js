@@ -53,6 +53,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
+      dateSent: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
       createdBy_id: {
         type: DataTypes.INTEGER,
         allowNull: false
