@@ -8,6 +8,7 @@ import businessLogRoutes from './businessLog.route'
 import buyerRoutes from './buyer.route'
 import buyerRegisterRoutes from './buyerRegister.route'
 import emailTemplate from './emailTemplate.route'
+import scoreRoutes from './score.route'
 import scoreRegister from './scoreRegister.route'
 import systemSettingsRoutes from './systemSettings.route'
 
@@ -23,6 +24,7 @@ router.use('/business-log', businessLogRoutes)
 router.use('/buyer', buyerRoutes)
 router.use('/buyer-register', buyerRegisterRoutes)
 router.use('/email-template', emailTemplate)
+router.use('/score', scoreRoutes)
 router.use('/score-register', scoreRegister)
 
 module.exports = router
