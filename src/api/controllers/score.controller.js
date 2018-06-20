@@ -30,7 +30,13 @@ export const get = async (req, res, next) => {
 
   try {
     const response = await models.Score.findOne({
-      where: { id: scoreId }
+      where: { id: scoreId },
+      include: [
+        { model: models.ScoreRegister, as: 'currentInterest' },
+        { model: models.ScoreRegister, as: 'infoTransMomen' },
+        { model: models.ScoreRegister, as: 'perceivedPrice' },
+        { model: models.ScoreRegister, as: 'perceivedRisk' }
+      ]
     })
     return res.status(201).json({
       data: response
