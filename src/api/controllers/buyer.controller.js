@@ -96,6 +96,142 @@ export const list = async (req, res, next) => {
   }
 }
 
+export const listBusiness = async (req, res, next) => {
+  let search = req.query.search
+  let stageId = req.query.stageId
+  let whereOptions = {
+    where: {}
+  }
+
+  if (stageId && stageId.length > 0) {
+    if (parseInt(stageId)) {
+      whereOptions.where.stageId = {
+        $eq: `${stageId}`
+      }
+    } else {
+      const arrayStageId = JSON.parse(stageId)
+      whereOptions.where.stageId = {
+        $or: arrayStageId
+      }
+    }
+  }
+
+  if (search && search.length > 0) {
+    if (search.includes('BS') || search.includes('bs')) {
+      if (search.includes('BS')) search = search.replace(/BS/g, '')
+      if (search.includes('bs')) search = search.replace(/bs/g, '')
+      whereOptions.where.id = {
+        $eq: search
+      }
+    } else {
+      if (parseInt(search)) {
+        whereOptions.where.listedPrice = {
+          $lte: search * 1.1,
+          $gte: search * 0.9
+        }
+      } else {
+        whereOptions.where.$or = []
+        whereOptions.where.$or.push(
+          {
+            businessName: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            firstNameV: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            lastNameV: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            suburb: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            searchNote: {
+              $like: `%${search}%`
+            }
+          }
+        )
+      }
+    }
+  }
+
+  const options = {
+    attributes: [
+      'id',
+      'businessName',
+      'firstNameV',
+      'lastNameV',
+      'address1',
+      'industry',
+      'listedPrice',
+      'description',
+      'stageId',
+      'productId',
+      'industryId',
+      'suburb',
+      'state',
+      'postCode',
+      'typeId',
+      'notifyOwner'
+    ],
+    include: [
+      models.BusinessStage,
+      models.BusinessProduct
+    ]
+  }
+
+  try {
+    const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
+
+    const response = businesses.map(async business => {
+      // Get buyers from business enquiry
+      const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
+        where: { business_id: business.id },
+        include: [
+          {
+            model: models.Buyer
+          }
+        ]
+      })
+
+      const countFollowUpTask = await buyersFromBusiness.map(async enquiry => {
+        const logs = await models.BuyerLog.findAll({
+          where: {
+            buyer_id: enquiry.buyer_id,
+            followUpStatus: 'Pending',
+            followUp: {
+              $lte: moment().toDate()
+            }
+          },
+          raw: true
+        })
+
+        console.log('business: ' + business.id + ' logs: ' + logs.length)
+
+        return logs.length
+      })
+
+      console.log('countFollowUpTask', countFollowUpTask)
+
+      return {
+        business,
+        countFollowUpTask
+      }
+    })
+
+    return res.status(200).json(response)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 export const create = async (req, res, next) => {
   const newBuyer = req.body
 

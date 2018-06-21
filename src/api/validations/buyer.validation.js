@@ -131,3 +131,12 @@ export const finaliseLog = {
       .required()
   }
 }
+
+export const listBusiness = {
+  query: {
+    search: Joi.string()
+      .min(1),
+    stageId: Joi.string()
+      .min(1)
+  }
+}

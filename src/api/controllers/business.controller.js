@@ -92,7 +92,6 @@ export const getBusiness = async (req, res, next) => {
 export const list = async (req, res, next) => {
   let search = req.query.search
   let stageId = req.query.stageId
-  let 
   let whereOptions = {
     where: {}
   }
