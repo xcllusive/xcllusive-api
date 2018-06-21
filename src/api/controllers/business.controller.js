@@ -678,10 +678,10 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     })
 
     const array = []
-    const verifyContentBuyerLog = await buyersFromBusiness.map(async item => {
+    const verifyContentBuyerLog = await buyersFromBusiness.map(async enquiry => {
       const logs = await models.BuyerLog.findAll({
         where: {
-          buyer_id: item.buyer_id,
+          buyer_id: enquiry.buyer_id,
           followUpStatus: 'Pending',
           followUp: {
             $lte: moment().toDate()
@@ -690,7 +690,17 @@ export const getBuyersFromBusiness = async (req, res, next) => {
         raw: true
       })
       if (logs.length > 0) {
-        array.push(item)
+        // Get last log
+        const lastLog = await models.BuyerLog.findOne({
+          where: {
+            buyer_id: enquiry.buyer_id,
+            business_id: enquiry.business_id,
+            followUpStatus: 'Pending'
+          },
+          order: [['dateTimeCreated', 'DESC']],
+          raw: true
+        })
+        array.push({lastLog, enquiry})
       }
       return array
     })
