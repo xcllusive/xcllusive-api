@@ -641,7 +641,10 @@ export const finaliseLog = async (req, res, next) => {
       })
     }
 
-    await models.BuyerLog.update({followUpStatus: 'Done'}, {
+    await models.BuyerLog.update({
+      followUpStatus: 'Done',
+      modifiedBy_id: req.user.id
+    }, {
       where: {
         buyer_id: idBuyer,
         business_id: idBusiness

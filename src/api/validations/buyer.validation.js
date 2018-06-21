@@ -125,7 +125,7 @@ export const finaliseLog = {
       .min(1)
       .required()
   },
-  data: {
+  body: {
     idBusiness: Joi.number()
       .min(1)
       .required()
