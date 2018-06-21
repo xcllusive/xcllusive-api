@@ -494,7 +494,7 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
 
     const logs = await models.BuyerLog.findAndCountAll({
       where: { buyer_id: idBuyer, business_id: businessId },
-      order: [['followUp', 'DESC']],
+      order: [['dateTimeCreated', 'DESC']],
       include: [
         {
           model: models.Business,
