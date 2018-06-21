@@ -92,6 +92,7 @@ export const getBusiness = async (req, res, next) => {
 export const list = async (req, res, next) => {
   let search = req.query.search
   let stageId = req.query.stageId
+  let 
   let whereOptions = {
     where: {}
   }
@@ -697,12 +698,16 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       })
       if (logs.length > 0) {
         // Get last log
+        const where = {
+          buyer_id: enquiry.buyer_id,
+          business_id: enquiry.business_id,
+          followUpStatus: 'Pending'
+        }
+        if (showAll && JSON.parse(showAll)) {
+          delete where.followUpStatus
+        }
         const lastLog = await models.BuyerLog.findOne({
-          where: {
-            buyer_id: enquiry.buyer_id,
-            business_id: enquiry.business_id,
-            followUpStatus: 'Pending'
-          },
+          where,
           order: [['dateTimeCreated', 'DESC']],
           raw: true
         })
