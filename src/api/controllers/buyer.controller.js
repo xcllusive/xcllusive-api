@@ -187,10 +187,19 @@ export const listBusiness = async (req, res, next) => {
     ]
   }
 
+  const array = []
+
+  const asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  }
+
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
-    const response = businesses.map(async business => {
+    // await businesses.forEach(async business => {
+    await asyncForEach(businesses, async (business) => {
       // Get buyers from business enquiry
       const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
         where: { business_id: business.id },
@@ -201,8 +210,9 @@ export const listBusiness = async (req, res, next) => {
         ]
       })
 
-      const countFollowUpTask = await buyersFromBusiness.map(async enquiry => {
-        const logs = await models.BuyerLog.findAll({
+      // await buyersFromBusiness.forEach(async enquiry => {
+      await asyncForEach(buyersFromBusiness, async (enquiry) => {
+        const log = await models.BuyerLog.findAll({
           where: {
             buyer_id: enquiry.buyer_id,
             followUpStatus: 'Pending',
@@ -213,20 +223,24 @@ export const listBusiness = async (req, res, next) => {
           raw: true
         })
 
-        console.log('business: ' + business.id + ' logs: ' + logs.length)
+        console.log(log)
 
-        return logs.length
+        if (log.length > 0) {
+          array.push({
+            countFollowUpTask: log.length,
+            business
+          })
+          return log.length
+        } else {
+          array.push({
+            countFollowUpTask: 0,
+            business
+          })
+        }
       })
-
-      console.log('countFollowUpTask', countFollowUpTask)
-
-      return {
-        business,
-        countFollowUpTask
-      }
     })
-
-    return res.status(200).json(response)
+    console.log(array)
+    return res.status(200).json(array)
   } catch (err) {
     return next(err)
   }
