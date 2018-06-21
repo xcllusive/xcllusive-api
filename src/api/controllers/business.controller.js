@@ -684,12 +684,14 @@ export const getBuyersFromBusiness = async (req, res, next) => {
           buyer_id: item.buyer_id,
           followUpStatus: 'Pending',
           followUp: {
-            $lt: moment().toDate()
+            $lte: moment().toDate()
           }
         },
         raw: true
       })
-      if (logs.length) array.push(item)
+      if (logs.length > 0) {
+        array.push(item)
+      }
       return array
     })
 
