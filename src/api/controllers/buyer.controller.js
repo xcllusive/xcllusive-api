@@ -619,3 +619,40 @@ export const updateLog = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const finaliseLog = async (req, res, next) => {
+  const { idBuyer } = req.params
+  const { idBusiness } = req.body
+
+  try {
+    // Verify exists buyer and business
+    const enquiry = await models.EnquiryBusinessBuyer.findAll({
+      where: {
+        buyer_id: idBuyer,
+        business_id: idBusiness
+      }
+    })
+
+    if (!enquiry) {
+      throw new APIError({
+        message: 'Cannot find enquiries.',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    await models.BuyerLog.update({followUp: 'Done'}, {
+      where: {
+        buyer_id: idBuyer,
+        business_id: idBusiness
+      }
+    })
+
+    return res.status(201).json({
+      data: {},
+      message: 'All logs have been finalised'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

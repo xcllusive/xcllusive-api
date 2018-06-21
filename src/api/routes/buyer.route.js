@@ -13,7 +13,8 @@ import {
   updateLog,
   createLog,
   listBusinessesFromBuyerLog,
-  listBusinessesFromBuyer
+  listBusinessesFromBuyer,
+  finaliseLog
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -26,7 +27,10 @@ router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
 router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
 
 router.route('/log/:idLog').put(updateLog)
+
 router.route('/log').post(createLog)
+
+router.route('/:idBuyer/log/finalise').post(validate(validation.finaliseLog), finaliseLog)
 
 router
   .route('/log/from-business/:idBuyer')
