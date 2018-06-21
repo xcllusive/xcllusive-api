@@ -652,6 +652,7 @@ export const sendEnquiryOwner = async (req, res, next) => {
 
 export const getBuyersFromBusiness = async (req, res, next) => {
   const { idBusiness } = req.params
+  const { showAll } = req.query
 
   try {
     // Verify exists business
@@ -679,14 +680,19 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 
     const array = []
     const verifyContentBuyerLog = await buyersFromBusiness.map(async enquiry => {
+      const where = {
+        buyer_id: enquiry.buyer_id,
+        followUpStatus: 'Pending',
+        followUp: {
+          $lte: moment().toDate()
+        }
+      }
+      if (showAll && JSON.parse(showAll)) {
+        delete where.followUpStatus
+        delete where.followUp
+      }
       const logs = await models.BuyerLog.findAll({
-        where: {
-          buyer_id: enquiry.buyer_id,
-          followUpStatus: 'Pending',
-          followUp: {
-            $lte: moment().toDate()
-          }
-        },
+        where,
         raw: true
       })
       if (logs.length > 0) {
