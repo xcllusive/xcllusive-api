@@ -565,7 +565,7 @@ export const createLog = async (req, res, next) => {
   try {
     const lastLog = await models.BuyerLog.findOne({
       where: { buyer_id: req.body.buyer_id, business_id: req.body.business_id },
-      order: [['followUp', 'DESC']]
+      order: [['dateTimeCreated', 'DESC']]
     })
 
     if (lastLog) {
