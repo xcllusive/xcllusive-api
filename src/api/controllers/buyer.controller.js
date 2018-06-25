@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars'
 import moment from 'moment'
+import _ from 'lodash'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
@@ -212,7 +213,7 @@ export const listBusiness = async (req, res, next) => {
 
       // await buyersFromBusiness.forEach(async enquiry => {
       await asyncForEach(buyersFromBusiness, async (enquiry) => {
-        const log = await models.BuyerLog.findAll({
+        models.BuyerLog.findAll({
           where: {
             buyer_id: enquiry.buyer_id,
             followUpStatus: 'Pending',
@@ -221,26 +222,24 @@ export const listBusiness = async (req, res, next) => {
             }
           },
           raw: true
-        })
-
-        console.log(log)
-
-        if (log.length > 0) {
+        }).then(log => {
           array.push({
             countFollowUpTask: log.length,
             business
           })
-          return log.length
-        } else {
-          array.push({
-            countFollowUpTask: 0,
-            business
-          })
-        }
+        })
       })
     })
-    console.log(array)
-    return res.status(200).json(array)
+
+    const newArray = _.chain(array)
+      .groupBy('business.id')
+      .map(objects => {
+        return {
+          business: objects[0].business,
+          countFollowUpTask: _.sumBy(objects, 'countFollowUpTask')
+        }
+      }).value()
+    return res.status(200).json(newArray)
   } catch (err) {
     return next(err)
   }
