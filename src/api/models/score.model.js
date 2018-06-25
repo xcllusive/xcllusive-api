@@ -57,6 +57,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true
       },
+      total: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        default: 0
+      },
       createdBy_id: {
         type: DataTypes.INTEGER,
         allowNull: false
