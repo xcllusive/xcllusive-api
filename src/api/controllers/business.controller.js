@@ -682,10 +682,11 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     const verifyContentBuyerLog = await buyersFromBusiness.map(async enquiry => {
       const where = {
         buyer_id: enquiry.buyer_id,
-        followUpStatus: 'Pending',
+        business_id: idBusiness,
         followUp: {
           $lte: moment().toDate()
-        }
+        },
+        followUpStatus: 'Pending'
       }
       if (showAll && JSON.parse(showAll)) {
         delete where.followUpStatus
