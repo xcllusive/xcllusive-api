@@ -14,6 +14,14 @@ export const get = {
   }
 }
 
+export const initial = {
+  query: {
+    business: Joi.number()
+      .min(1)
+      .required()
+  }
+}
+
 export const create = {
   // body: {
   //   label: Joi.string()

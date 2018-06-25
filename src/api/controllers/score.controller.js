@@ -1,3 +1,4 @@
+import moment from 'moment'
 import models from '../../config/sequelize'
 
 export const list = async (req, res, next) => {
@@ -38,6 +39,7 @@ export const get = async (req, res, next) => {
         { model: models.ScoreRegister, as: 'perceivedRisk' }
       ]
     })
+
     return res.status(201).json({
       data: response
     })
@@ -85,6 +87,37 @@ export const remove = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: `Score ${scoreId} removed with success` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const initial = async (req, res, next) => {
+  const { business } = req.query
+
+  try {
+    const yours = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: business,
+        dateTimeCreated: {
+          $gt: moment().subtract(4, 'weeks')
+        }
+      }
+    })
+    const avg = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        dateTimeCreated: {
+          $gt: moment().subtract(4, 'weeks')
+        }
+      }
+    })
+
+    return res
+      .status(200)
+      .json({
+        data: {avg: avg.count, yours: yours.count},
+        message: 'Get data with success'
+      })
   } catch (error) {
     return next(error)
   }
