@@ -53,6 +53,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
+      notesEnquiries: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
       dateSent: {
         type: DataTypes.DATE,
         allowNull: true
