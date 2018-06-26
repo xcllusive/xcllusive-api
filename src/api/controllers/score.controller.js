@@ -111,11 +111,26 @@ export const initial = async (req, res, next) => {
         }
       }
     })
+    const lastScore = await models.Score.findOne({
+      where: {
+        business_id: business
+      },
+      order: [
+        [
+          'dateTimeCreated',
+          'DESC'
+        ]
+      ]
+    })
 
     return res
       .status(200)
       .json({
-        data: {avg: avg.count, yours: yours.count},
+        data: {
+          avg: avg.count,
+          yours: yours.count,
+          lastScore: lastScore
+        },
         message: 'Get data with success'
       })
   } catch (error) {
