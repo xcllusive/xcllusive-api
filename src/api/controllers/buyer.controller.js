@@ -188,14 +188,6 @@ export const listBusiness = async (req, res, next) => {
     ]
   }
 
-  const array = []
-
-  const asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array)
-    }
-  }
-
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
@@ -219,6 +211,7 @@ export const listBusiness = async (req, res, next) => {
         const log = await models.BuyerLog.findAll({
           where: {
             buyer_id: enquiry.buyer_id,
+            business_id: enquiry.business_id,
             followUpStatus: 'Pending',
             followUp: {
               $lte: moment().toDate()
