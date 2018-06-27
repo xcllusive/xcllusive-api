@@ -306,7 +306,7 @@ export const update = async (req, res, next) => {
     afterSalesNotes
   } = req.body
 
-  const business = {
+  const businessUpdated = {
     businessName,
     firstNameV,
     lastNameV,
@@ -352,7 +352,13 @@ export const update = async (req, res, next) => {
   }
 
   try {
-    await models.Business.update(business, { where: { id: idBusiness } })
+    const business = models.Business.findOne({ where: { id: idBusiness } })
+
+    if (!business.daysOnTheMarket && stage === 4) {
+      businessUpdated.daysOnTheMarket = moment()
+    }
+
+    await models.Business.update(businessUpdated, { where: { id: idBusiness } })
     return res
       .status(200)
       .json({ message: `Business BS${idBusiness} updated with success` })

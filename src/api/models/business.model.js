@@ -244,6 +244,10 @@ export default (sequelize, DataTypes) => {
       searchNote: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      daysOnTheMarket: {
+        type: DataTypes.DATE,
+        allowNull: true
       }
     },
     {
