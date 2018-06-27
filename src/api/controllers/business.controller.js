@@ -730,7 +730,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 export const getGroupEmail = async (req, res, next) => {
   const { idBusiness } = req.params
 
-  const response = []
+  // const response = []
 
   try {
     // Verify exists business
@@ -756,34 +756,37 @@ export const getGroupEmail = async (req, res, next) => {
       ]
     })
 
-    for (let buyer of buyersFromBusiness) {
-      const log = await models.BuyerLog.findAll({
+    const arrayGroupEmail = await Promise.all(buyersFromBusiness.map(async item => {
+      const logs = await models.BuyerLog.findAll({
         where: {
-          buyer_id: buyer.Buyer.id
+          buyer_id: item.buyer_id,
+          business_id: item.business_id
         }
       })
 
-      const isPending = await log.reduce((tes, element) => {
-        if (element.followUpStatus === 'Pending') {
-          return true
-        } else {
-          return false
-        }
-      }, false)
+      const isPending = await Promise.all(logs.map(log => {
+        return log.followUpStatus
+      }))
 
-      if (buyer.Buyer.caReceived) {
-        response.push({
-          id: buyer.Buyer.id,
-          email: buyer.Buyer.email,
-          firstName: buyer.Buyer.firstName,
-          lastName: buyer.Buyer.surname,
-          isPending
-        })
+      if (item.Buyer.caReceived) {
+        return {
+          id: item.Buyer.id,
+          email: item.Buyer.email,
+          firstName: item.Buyer.firstName,
+          lastName: item.Buyer.surname,
+          isPending: isPending.some(item => {
+            return item === 'Pending'
+          })
+        }
       }
-    }
+    }))
+
+    const filterArrayGroupEmail = arrayGroupEmail.filter(item => {
+      return item !== undefined
+    })
 
     return res.status(201).json({
-      data: response,
+      data: filterArrayGroupEmail,
       message: 'Success'
     })
   } catch (error) {
