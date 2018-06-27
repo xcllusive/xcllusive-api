@@ -199,10 +199,8 @@ export const listBusiness = async (req, res, next) => {
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
-    // await businesses.forEach(async business => {
-    await asyncForEach(businesses, async (business) => {
-      // Get buyers from business enquiry
-      const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
+    const buyersFromBusiness = await Promise.all(businesses.map(async business => {
+      const enquiries = await models.EnquiryBusinessBuyer.findAll({
         where: { business_id: business.id },
         include: [
           {
@@ -210,10 +208,15 @@ export const listBusiness = async (req, res, next) => {
           }
         ]
       })
+      return {
+        enquiries,
+        business
+      }
+    }))
 
-      // await buyersFromBusiness.forEach(async enquiry => {
-      await asyncForEach(buyersFromBusiness, async (enquiry) => {
-        models.BuyerLog.findAll({
+    const response = await Promise.all(buyersFromBusiness.map(async obj => {
+      const arrayLogsLength = await Promise.all(obj.enquiries.map(async enquiry => {
+        const log = await models.BuyerLog.findAll({
           where: {
             buyer_id: enquiry.buyer_id,
             followUpStatus: 'Pending',
@@ -222,24 +225,28 @@ export const listBusiness = async (req, res, next) => {
             }
           },
           raw: true
-        }).then(log => {
-          array.push({
-            countFollowUpTask: log.length,
-            business
-          })
         })
+        return log.length
+      }))
+      const lastScore = await models.Score.findOne({
+        where: {
+          business_id: obj.business.id
+        },
+        order: [
+          [
+            'dateTimeCreated',
+            'DESC'
+          ]
+        ]
       })
-    })
+      return {
+        business: obj.business,
+        countFollowUpTask: _.sum(arrayLogsLength),
+        lastScore
+      }
+    }))
 
-    const newArray = _.chain(array)
-      .groupBy('business.id')
-      .map(objects => {
-        return {
-          business: objects[0].business,
-          countFollowUpTask: _.sumBy(objects, 'countFollowUpTask')
-        }
-      }).value()
-    return res.status(200).json(newArray)
+    return res.status(200).json(response)
   } catch (err) {
     return next(err)
   }
