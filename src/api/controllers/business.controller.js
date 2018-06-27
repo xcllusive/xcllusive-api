@@ -92,6 +92,7 @@ export const getBusiness = async (req, res, next) => {
 export const list = async (req, res, next) => {
   let search = req.query.search
   let stageId = req.query.stageId
+  let filterLog = req.query.filterLog
   let whereOptions = {
     where: {}
   }
@@ -184,8 +185,38 @@ export const list = async (req, res, next) => {
     ]
   }
   try {
+    const response = {
+      data: [],
+      message: 'Get Businesses with sucessfuly'
+    }
+
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
-    return res.status(200).json(businesses)
+
+    if (filterLog && JSON.parse(filterLog)) {
+      const arrayBusinesses = await Promise.all(businesses.map(async business => {
+        const log = await models.BuyerLog.findAll({
+          where: {
+            business_id: business.id,
+            followUpStatus: 'Pending',
+            followUp: {
+              $lte: moment().toDate()
+            }
+          },
+          raw: true
+        })
+        if (log.length) {
+          return business
+        }
+      }))
+      console.log(arrayBusinesses)
+      response.data = arrayBusinesses.filter(item => {
+        return item !== undefined
+      })
+    } else {
+      response.data = businesses
+    }
+
+    return res.status(200).json(response)
   } catch (err) {
     return next(err)
   }
