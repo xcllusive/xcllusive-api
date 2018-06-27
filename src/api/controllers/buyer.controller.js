@@ -180,7 +180,8 @@ export const listBusiness = async (req, res, next) => {
       'state',
       'postCode',
       'typeId',
-      'notifyOwner'
+      'notifyOwner',
+      'dateTimeCreated'
     ],
     include: [
       models.BusinessStage,
