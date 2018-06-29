@@ -50,7 +50,6 @@ export const list = async (req, res, next) => {
       }
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))
-    console.log(options)
     return res.status(200).json(users)
   } catch (err) {
     return next(err)

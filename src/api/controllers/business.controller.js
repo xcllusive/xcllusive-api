@@ -766,7 +766,10 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     const response = await Promise.all(verifyContentBuyerLog)
 
     return res.status(201).json({
-      data: response[0],
+      data: {
+        array: response[0],
+        countAll: buyersFromBusiness.length
+      },
       message: 'Success'
     })
   } catch (error) {
