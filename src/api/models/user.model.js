@@ -89,10 +89,6 @@ export default (sequelize, DataTypes) => {
       dataRegion: {
         type: DataTypes.STRING,
         allowNull: false
-      },
-      broker: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true
       }
     },
     {

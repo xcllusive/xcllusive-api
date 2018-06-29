@@ -10,15 +10,15 @@ import {
 } from '../constants/roles'
 
 export const list = async (req, res, next) => {
-  const { search, admin, staff, introducer } = req.query
+  const { search, admin, broker, introducer } = req.query
 
   const isAdmin = admin ? JSON.parse(admin) : true
-  const isStaff = staff ? JSON.parse(staff) : true
+  const isBroker = broker ? JSON.parse(broker) : true
   const isIntroducer = introducer ? JSON.parse(introducer) : true
 
   const arrayType = []
   isAdmin && arrayType.push('Admin')
-  isStaff && arrayType.push('Staff')
+  isBroker && arrayType.push('Broker')
   isIntroducer && arrayType.push('Introducer')
 
   try {

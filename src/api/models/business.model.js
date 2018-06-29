@@ -161,7 +161,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      staffAccountName: {
+      brokerAccountName: {
         type: DataTypes.STRING,
         allowNull: true
       },

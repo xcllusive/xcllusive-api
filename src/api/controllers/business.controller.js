@@ -57,10 +57,10 @@ export const getBusiness = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
-    const usersStaff = await models.User.findAll({
+    const usersBroker = await models.User.findAll({
       raw: true,
       attributes: ['id', 'firstName', 'lastName'],
-      where: { userType: 'Staff' }
+      where: { userType: 'Broker' }
     })
     const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
       raw: true,
@@ -79,7 +79,7 @@ export const getBusiness = async (req, res, next) => {
       productList: _mapValuesToArray(productList),
       ratingList: _mapValuesToArray(ratingList),
       typeList: _mapValuesToArray(typeList),
-      usersStaff: _mapValuesToArray(usersStaff),
+      usersBroker: _mapValuesToArray(usersBroker),
       stageNotSignedList: _mapValuesToArray(stageNotSignedList),
       stageNotWantList: _mapValuesToArray(stageNotWantList)
     }
@@ -193,21 +193,23 @@ export const list = async (req, res, next) => {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
     if (filterLog && JSON.parse(filterLog)) {
-      const arrayBusinesses = await Promise.all(businesses.map(async business => {
-        const log = await models.BuyerLog.findAll({
-          where: {
-            business_id: business.id,
-            followUpStatus: 'Pending',
-            followUp: {
-              $lte: moment().toDate()
-            }
-          },
-          raw: true
+      const arrayBusinesses = await Promise.all(
+        businesses.map(async business => {
+          const log = await models.BuyerLog.findAll({
+            where: {
+              business_id: business.id,
+              followUpStatus: 'Pending',
+              followUp: {
+                $lte: moment().toDate()
+              }
+            },
+            raw: true
+          })
+          if (log.length) {
+            return business
+          }
         })
-        if (log.length) {
-          return business
-        }
-      }))
+      )
       console.log(arrayBusinesses)
       response.data = arrayBusinesses.filter(item => {
         return item !== undefined
@@ -288,7 +290,7 @@ export const update = async (req, res, next) => {
     businessProduct,
     businessType,
     listingAgent,
-    staffAccountName,
+    brokerAccountName,
     listedPrice,
     currentPrice,
     engagementFee,
@@ -332,7 +334,7 @@ export const update = async (req, res, next) => {
     industryId: businessIndustry === '' ? null : businessIndustry,
     productId: businessProduct === '' ? null : businessProduct,
     typeId: businessType === '' ? null : businessType,
-    staffAccountName,
+    brokerAccountName,
     listedPrice,
     currentPrice,
     engagementFee,
@@ -428,21 +430,29 @@ export const updateStageLost = async (req, res, next) => {
     await models.Business.update(updateBusiness, { where: { id: idBusiness } })
 
     if (updateBusiness.pendingDone) {
-      await models.BusinessLog.update({followUpStatus: 'Done'}, {where: {business_id: idBusiness}})
+      await models.BusinessLog.update(
+        { followUpStatus: 'Done' },
+        { where: { business_id: idBusiness } }
+      )
     }
 
     if (updateBusiness.followUpLog) {
       await models.BusinessLog.create({
-        text:
-        `${updateBusiness.text}
+        text: `${updateBusiness.text}
 
 Lost Notes: ${updateBusiness.afterSalesNotes}
 
-Mark all Pending communications with this Vendor as Done: ${updateBusiness.pendingDone === true ? 'Yes' : 'No'}
+Mark all Pending communications with this Vendor as Done: ${
+  updateBusiness.pendingDone === true ? 'Yes' : 'No'
+}
 
-Did you meet with this vendor? ${updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'} : ${updateBusiness.recoveryStageNotWant}
+Did you meet with this vendor? ${
+  updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
+} : ${updateBusiness.recoveryStageNotWant}
 
-Did we want this business? ${updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'} : ${updateBusiness.recoveryStageNotSigned}
+Did we want this business? ${
+  updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
+} : ${updateBusiness.recoveryStageNotSigned}
 
 `,
         createdBy_id: req.user.id,
@@ -748,7 +758,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
           order: [['dateTimeCreated', 'DESC']],
           raw: true
         })
-        array.push({lastLog, enquiry})
+        array.push({ lastLog, enquiry })
       }
       return array
     })
@@ -793,30 +803,34 @@ export const getGroupEmail = async (req, res, next) => {
       ]
     })
 
-    const arrayGroupEmail = await Promise.all(buyersFromBusiness.map(async item => {
-      const logs = await models.BuyerLog.findAll({
-        where: {
-          buyer_id: item.buyer_id,
-          business_id: item.business_id
+    const arrayGroupEmail = await Promise.all(
+      buyersFromBusiness.map(async item => {
+        const logs = await models.BuyerLog.findAll({
+          where: {
+            buyer_id: item.buyer_id,
+            business_id: item.business_id
+          }
+        })
+
+        const isPending = await Promise.all(
+          logs.map(log => {
+            return log.followUpStatus
+          })
+        )
+
+        if (item.Buyer.caReceived) {
+          return {
+            id: item.Buyer.id,
+            email: item.Buyer.email,
+            firstName: item.Buyer.firstName,
+            lastName: item.Buyer.surname,
+            isPending: isPending.some(item => {
+              return item === 'Pending'
+            })
+          }
         }
       })
-
-      const isPending = await Promise.all(logs.map(log => {
-        return log.followUpStatus
-      }))
-
-      if (item.Buyer.caReceived) {
-        return {
-          id: item.Buyer.id,
-          email: item.Buyer.email,
-          firstName: item.Buyer.firstName,
-          lastName: item.Buyer.surname,
-          isPending: isPending.some(item => {
-            return item === 'Pending'
-          })
-        }
-      }
-    }))
+    )
 
     const filterArrayGroupEmail = arrayGroupEmail.filter(item => {
       return item !== undefined
@@ -837,13 +851,15 @@ export const sendGroupEmail = async (req, res, next) => {
   const sentTo = []
 
   try {
-    const emailToOffice = await models.SystemSettings.findOne({where: 1})
+    const emailToOffice = await models.SystemSettings.findOne({ where: 1 })
     for (let buyer of JSON.parse(to)) {
       const mailOptions = {
         to: buyer.email,
         from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
         subject,
-        replyTo: buyer.replyTo ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
+        replyTo: buyer.replyTo
+          ? req.user.email
+          : `${req.user.email}, ${emailToOffice.emailOffice}`,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         
