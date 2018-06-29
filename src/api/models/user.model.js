@@ -43,7 +43,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
       listingAgent: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: true
       },
       password: {
