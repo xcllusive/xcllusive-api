@@ -1,5 +1,6 @@
 import moment from 'moment'
 import models from '../../config/sequelize'
+import APIError from '../utils/APIError'
 
 export const list = async (req, res, next) => {
   const { business } = req.query
@@ -132,6 +133,89 @@ export const initial = async (req, res, next) => {
           lastScore: lastScore
         },
         message: 'Get data with success'
+      })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const makePdf = async (req, res, next) => {
+  const { scoreId } = req.params
+
+  try {
+    // Verify exists score
+    const score = await models.Score.findOne({
+      where: { id: scoreId },
+      include: [
+        { model: models.Business, as: 'Business'},
+        { model: models.ScoreRegister, as: 'currentInterest' },
+        { model: models.ScoreRegister, as: 'infoTransMomen' },
+        { model: models.ScoreRegister, as: 'perceivedPrice' },
+        { model: models.ScoreRegister, as: 'perceivedRisk' }
+      ]
+    })
+
+    if (!score) {
+      throw new APIError({
+        message: 'Score not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const enquiriesBusiness = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: score.Business.id
+      }
+    })
+
+    const enquiriesTotalLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        dateTimeCreated: {
+          $gt: moment().subtract(4, 'weeks')
+        }
+      }
+    })
+
+    const enquiriesBusinessLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: score.Business.id,
+        dateTimeCreated: {
+          $gt: moment().subtract(4, 'weeks')
+        }
+      }
+    })
+
+    const businessesForSale = await models.Business.findAndCountAll({
+      where: { stageId: 4 }
+    })
+
+    const enquiries = await models.ScoreRegister.findOne({where: { label: score.diff}})
+
+    const response = {
+      business_name: score.Business.businessName,
+      score_generated: score.dateTimeCreated,
+      score_version: score.version,
+      total_enquiries: enquiriesBusiness.count,
+      total_enquiries_last_four_weeks: enquiriesBusinessLastFourWeeks.count,
+      average_enquiries_last_four_weeks: (enquiriesTotalLastFourWeeks.count / businessesForSale.count).toFixed(2),
+      currentInterest: score.currentInterest,
+      currentInterestNotes: score.notesInterest,
+      infoTransMomen: score.infoTransMomen,
+      notesMomentum: score.notesMomentum,
+      perceivedPrice: score.perceivedPrice,
+      notesPrice: score.notesPrice,
+      perceivedRisk: score.perceivedRisk,
+      notesRisk: score.notesRisk,
+      enquiries,
+      notesEnquiries: score.notesEnquiries
+    }
+
+    return res
+      .status(200)
+      .json({
+        response,
+        message: 'Generated pdf with success'
       })
   } catch (error) {
     return next(error)

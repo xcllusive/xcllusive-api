@@ -1,7 +1,7 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import { list, get, create, update, remove, initial } from '../controllers/score.controller'
+import { list, get, create, update, remove, initial, makePdf } from '../controllers/score.controller'
 import * as validation from '../validations/score.validation'
 
 import {
@@ -31,5 +31,9 @@ router
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
   .delete(validate(validation.remove), remove)
+
+router
+  .route('/:scoreId/generate-pdf')
+  .get(makePdf)
 
 export default router

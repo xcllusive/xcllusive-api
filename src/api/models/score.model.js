@@ -101,7 +101,8 @@ export default (sequelize, DataTypes) => {
       as: 'ModifiedBy'
     })
     models.Score.belongsTo(models.Business, {
-      foreignKey: 'business_id'
+      foreignKey: 'business_id',
+      as: 'Business'
     })
     models.Score.belongsTo(models.ScoreRegister, {
       foreignKey: 'currentInterest_id',
