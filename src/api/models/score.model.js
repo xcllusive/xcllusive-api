@@ -66,6 +66,10 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         default: 0
       },
+      version: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       createdBy_id: {
         type: DataTypes.INTEGER,
         allowNull: false
