@@ -190,7 +190,110 @@ export const makePdf = async (req, res, next) => {
       where: { stageId: 4 }
     })
 
-    const enquiries = await models.ScoreRegister.findOne({where: { label: score.diff}})
+    const enquiries = await models.ScoreRegister.findOne({
+      where: { label: score.diff}
+    })
+
+    const lastScore = await models.Score.findOne({
+      where: {
+        business_id: score.Business.id
+      },
+      order: [
+        [
+          'dateTimeCreated',
+          'DESC'
+        ]
+      ],
+      limit: [1, 1]
+    })
+
+    const last20BusinessSold = await models.Business.findAll({
+      where: {
+        stageId: 6
+      },
+      attributes: [
+        'businessName',
+        'dateTimeModified',
+        'daysOnTheMarket'
+      ],
+      order: [
+        [
+          'dateTimeModified',
+          'DESC'
+        ]
+      ],
+      include: [{
+        model: models.Score,
+        where: {
+          dateSent: {
+            $ne: null
+          }
+        }
+      }],
+      limit: 20
+    })
+
+    const chartNumberOfBusinessSold = {
+      column_10_20: 0,
+      column_21_30: 0,
+      column_31_40: 0,
+      column_41_50: 0,
+      column_51_60: 0,
+      column_61_70: 0,
+      column_71_80: 0,
+      column_81_90: 0
+    }
+
+    const chartDaysOnTheMarket = {
+      column_10_20: 0,
+      column_21_30: 0,
+      column_31_40: 0,
+      column_41_50: 0,
+      column_51_60: 0,
+      column_61_70: 0,
+      column_71_80: 0,
+      column_81_90: 0
+    }
+
+    last20BusinessSold.forEach(business => {
+      const daysOnTheMarket = moment().diff(business.daysOnTheMarket, 'days')
+      business.Scores.forEach(score => {
+        if (score.dateSent) {
+          if (score.total <= 20) {
+            chartNumberOfBusinessSold.column_10_20 = chartNumberOfBusinessSold.column_10_20 + 1
+            chartDaysOnTheMarket.column_10_20 = (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) / chartNumberOfBusinessSold.column_10_20
+          }
+          if (score.total > 20 && score.total < 31) {
+            chartNumberOfBusinessSold.column_21_30 = chartNumberOfBusinessSold.column_21_30 + 1
+            chartDaysOnTheMarket.column_21_30 = (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) / chartNumberOfBusinessSold.column_21_30
+          }
+          if (score.total > 30 && score.total < 41) {
+            chartNumberOfBusinessSold.column_31_40 = chartNumberOfBusinessSold.column_31_40 + 1
+            chartDaysOnTheMarket.column_31_40 = (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) / chartNumberOfBusinessSold.column_31_40
+          }
+          if (score.total > 40 && score.total < 51) {
+            chartNumberOfBusinessSold.column_41_50 = chartNumberOfBusinessSold.column_41_50 + 1
+            chartDaysOnTheMarket.column_41_50 = (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) / chartNumberOfBusinessSold.column_41_50
+          }
+          if (score.total > 50 && score.total < 61) {
+            chartNumberOfBusinessSold.column_51_60 = chartNumberOfBusinessSold.column_51_60 + 1
+            chartDaysOnTheMarket.column_51_60 = (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) / chartNumberOfBusinessSold.column_51_60
+          }
+          if (score.total > 60 && score.total < 71) {
+            chartNumberOfBusinessSold.column_61_70 = chartNumberOfBusinessSold.column_61_70 + 1
+            chartDaysOnTheMarket.column_61_70 = (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) / chartNumberOfBusinessSold.column_61_70
+          }
+          if (score.total > 70 && score.total < 81) {
+            chartNumberOfBusinessSold.column_71_80 = chartNumberOfBusinessSold.column_71_80 + 1
+            chartDaysOnTheMarket.column_71_80 = (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) / chartNumberOfBusinessSold.column_71_80
+          }
+          if (score.total > 80) {
+            chartNumberOfBusinessSold.column_81_90 = chartNumberOfBusinessSold.column_81_90 + 1
+            chartDaysOnTheMarket.column_81_90 = (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) / chartNumberOfBusinessSold.column_81_90
+          }
+        }
+      })
+    })
 
     const response = {
       business_name: score.Business.businessName,
@@ -208,7 +311,11 @@ export const makePdf = async (req, res, next) => {
       perceivedRisk: score.perceivedRisk,
       notesRisk: score.notesRisk,
       enquiries,
-      notesEnquiries: score.notesEnquiries
+      notesEnquiries: score.notesEnquiries,
+      lastScore,
+      last20BusinessSold,
+      chartNumberOfBusinessSold,
+      chartDaysOnTheMarket
     }
 
     return res
