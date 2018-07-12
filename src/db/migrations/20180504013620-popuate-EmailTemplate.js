@@ -75,6 +75,13 @@ module.exports = {
         subject: '',
         body: '',
         handlebars: '["buyer_name","owners_name","business_name","buyer_id"]'
+      },
+      {
+        title: 'Score Email',
+        description: '',
+        subject: '',
+        body: '',
+        handlebars: '["owners_name"]'
       }
     ])
   },

@@ -69,10 +69,7 @@ export const update = async (req, res, next) => {
   updateScore.modifiedBy_id = req.user.id
 
   try {
-    await models.Score.update(
-      updateScore,
-      { where: { id: scoreId } }
-    )
+    await models.Score.update(updateScore, { where: { id: scoreId } })
     return res.status(200).json({ message: 'Score updated with success' })
   } catch (error) {
     return next(error)
@@ -85,9 +82,7 @@ export const remove = async (req, res, next) => {
   try {
     await models.Score.destroy({ where: { id: scoreId } })
 
-    return res
-      .status(200)
-      .json({ message: `Score ${scoreId} removed with success` })
+    return res.status(200).json({ message: `Score ${scoreId} removed with success` })
   } catch (error) {
     return next(error)
   }
@@ -116,24 +111,17 @@ export const initial = async (req, res, next) => {
       where: {
         business_id: business
       },
-      order: [
-        [
-          'dateTimeCreated',
-          'DESC'
-        ]
-      ]
+      order: [['dateTimeCreated', 'DESC']]
     })
 
-    return res
-      .status(200)
-      .json({
-        data: {
-          avg: avg.count,
-          yours: yours.count,
-          lastScore: lastScore
-        },
-        message: 'Get data with success'
-      })
+    return res.status(200).json({
+      data: {
+        avg: avg.count,
+        yours: yours.count,
+        lastScore: lastScore
+      },
+      message: 'Get data with success'
+    })
   } catch (error) {
     return next(error)
   }
@@ -147,7 +135,7 @@ export const makePdf = async (req, res, next) => {
     const score = await models.Score.findOne({
       where: { id: scoreId },
       include: [
-        { model: models.Business, as: 'Business'},
+        { model: models.Business, as: 'Business' },
         { model: models.ScoreRegister, as: 'currentInterest' },
         { model: models.ScoreRegister, as: 'infoTransMomen' },
         { model: models.ScoreRegister, as: 'perceivedPrice' },
@@ -169,41 +157,40 @@ export const makePdf = async (req, res, next) => {
       }
     })
 
-    const enquiriesTotalLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll({
-      where: {
-        dateTimeCreated: {
-          $gt: moment().subtract(4, 'weeks')
+    const enquiriesTotalLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll(
+      {
+        where: {
+          dateTimeCreated: {
+            $gt: moment().subtract(4, 'weeks')
+          }
         }
       }
-    })
+    )
 
-    const enquiriesBusinessLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll({
-      where: {
-        business_id: score.Business.id,
-        dateTimeCreated: {
-          $gt: moment().subtract(4, 'weeks')
+    const enquiriesBusinessLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll(
+      {
+        where: {
+          business_id: score.Business.id,
+          dateTimeCreated: {
+            $gt: moment().subtract(4, 'weeks')
+          }
         }
       }
-    })
+    )
 
     const businessesForSale = await models.Business.findAndCountAll({
       where: { stageId: 4 }
     })
 
     const enquiries = await models.ScoreRegister.findOne({
-      where: { label: score.diff}
+      where: { label: score.diff }
     })
 
     const lastScore = await models.Score.findOne({
       where: {
         business_id: score.Business.id
       },
-      order: [
-        [
-          'dateTimeCreated',
-          'DESC'
-        ]
-      ],
+      order: [['dateTimeCreated', 'DESC']],
       limit: [1, 1]
     })
 
@@ -211,26 +198,27 @@ export const makePdf = async (req, res, next) => {
       where: {
         stageId: 6
       },
-      attributes: [
-        'businessName',
-        'dateTimeModified',
-        'daysOnTheMarket'
-      ],
-      order: [
-        [
-          'dateTimeModified',
-          'DESC'
-        ]
-      ],
-      include: [{
-        model: models.Score,
-        where: {
-          dateSent: {
-            $ne: null
+      attributes: ['businessName', 'dateTimeModified', 'daysOnTheMarket'],
+      order: [['dateTimeModified', 'DESC']],
+      include: [
+        {
+          model: models.Score,
+          where: {
+            dateSent: {
+              $ne: null
+            }
           }
         }
-      }],
+      ],
       limit: 20
+    })
+
+    const buyerFeedbackScore = await models.Score.findAll({
+      where: {
+        business_id: score.Business.id
+      },
+      order: [['dateTimeCreated', 'DESC']],
+      limit: 10
     })
 
     const chartNumberOfBusinessSold = {
@@ -260,36 +248,60 @@ export const makePdf = async (req, res, next) => {
       business.Scores.forEach(score => {
         if (score.dateSent) {
           if (score.total <= 20) {
-            chartNumberOfBusinessSold.column_10_20 = chartNumberOfBusinessSold.column_10_20 + 1
-            chartDaysOnTheMarket.column_10_20 = (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) / chartNumberOfBusinessSold.column_10_20
+            chartNumberOfBusinessSold.column_10_20 =
+              chartNumberOfBusinessSold.column_10_20 + 1
+            chartDaysOnTheMarket.column_10_20 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
+              chartNumberOfBusinessSold.column_10_20
           }
           if (score.total > 20 && score.total < 31) {
-            chartNumberOfBusinessSold.column_21_30 = chartNumberOfBusinessSold.column_21_30 + 1
-            chartDaysOnTheMarket.column_21_30 = (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) / chartNumberOfBusinessSold.column_21_30
+            chartNumberOfBusinessSold.column_21_30 =
+              chartNumberOfBusinessSold.column_21_30 + 1
+            chartDaysOnTheMarket.column_21_30 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
+              chartNumberOfBusinessSold.column_21_30
           }
           if (score.total > 30 && score.total < 41) {
-            chartNumberOfBusinessSold.column_31_40 = chartNumberOfBusinessSold.column_31_40 + 1
-            chartDaysOnTheMarket.column_31_40 = (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) / chartNumberOfBusinessSold.column_31_40
+            chartNumberOfBusinessSold.column_31_40 =
+              chartNumberOfBusinessSold.column_31_40 + 1
+            chartDaysOnTheMarket.column_31_40 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
+              chartNumberOfBusinessSold.column_31_40
           }
           if (score.total > 40 && score.total < 51) {
-            chartNumberOfBusinessSold.column_41_50 = chartNumberOfBusinessSold.column_41_50 + 1
-            chartDaysOnTheMarket.column_41_50 = (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) / chartNumberOfBusinessSold.column_41_50
+            chartNumberOfBusinessSold.column_41_50 =
+              chartNumberOfBusinessSold.column_41_50 + 1
+            chartDaysOnTheMarket.column_41_50 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
+              chartNumberOfBusinessSold.column_41_50
           }
           if (score.total > 50 && score.total < 61) {
-            chartNumberOfBusinessSold.column_51_60 = chartNumberOfBusinessSold.column_51_60 + 1
-            chartDaysOnTheMarket.column_51_60 = (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) / chartNumberOfBusinessSold.column_51_60
+            chartNumberOfBusinessSold.column_51_60 =
+              chartNumberOfBusinessSold.column_51_60 + 1
+            chartDaysOnTheMarket.column_51_60 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
+              chartNumberOfBusinessSold.column_51_60
           }
           if (score.total > 60 && score.total < 71) {
-            chartNumberOfBusinessSold.column_61_70 = chartNumberOfBusinessSold.column_61_70 + 1
-            chartDaysOnTheMarket.column_61_70 = (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) / chartNumberOfBusinessSold.column_61_70
+            chartNumberOfBusinessSold.column_61_70 =
+              chartNumberOfBusinessSold.column_61_70 + 1
+            chartDaysOnTheMarket.column_61_70 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
+              chartNumberOfBusinessSold.column_61_70
           }
           if (score.total > 70 && score.total < 81) {
-            chartNumberOfBusinessSold.column_71_80 = chartNumberOfBusinessSold.column_71_80 + 1
-            chartDaysOnTheMarket.column_71_80 = (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) / chartNumberOfBusinessSold.column_71_80
+            chartNumberOfBusinessSold.column_71_80 =
+              chartNumberOfBusinessSold.column_71_80 + 1
+            chartDaysOnTheMarket.column_71_80 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
+              chartNumberOfBusinessSold.column_71_80
           }
           if (score.total > 80) {
-            chartNumberOfBusinessSold.column_81_90 = chartNumberOfBusinessSold.column_81_90 + 1
-            chartDaysOnTheMarket.column_81_90 = (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) / chartNumberOfBusinessSold.column_81_90
+            chartNumberOfBusinessSold.column_81_90 =
+              chartNumberOfBusinessSold.column_81_90 + 1
+            chartDaysOnTheMarket.column_81_90 =
+              (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
+              chartNumberOfBusinessSold.column_81_90
           }
         }
       })
@@ -301,7 +313,9 @@ export const makePdf = async (req, res, next) => {
       score_version: score.version,
       total_enquiries: enquiriesBusiness.count,
       total_enquiries_last_four_weeks: enquiriesBusinessLastFourWeeks.count,
-      average_enquiries_last_four_weeks: (enquiriesTotalLastFourWeeks.count / businessesForSale.count).toFixed(2),
+      average_enquiries_last_four_weeks: (
+        enquiriesTotalLastFourWeeks.count / businessesForSale.count
+      ).toFixed(2),
       currentInterest: score.currentInterest,
       currentInterestNotes: score.notesInterest,
       infoTransMomen: score.infoTransMomen,
@@ -315,15 +329,14 @@ export const makePdf = async (req, res, next) => {
       lastScore,
       last20BusinessSold,
       chartNumberOfBusinessSold,
-      chartDaysOnTheMarket
+      chartDaysOnTheMarket,
+      buyerFeedbackScore
     }
 
-    return res
-      .status(200)
-      .json({
-        response,
-        message: 'Generated pdf with success'
-      })
+    return res.status(200).json({
+      response,
+      message: 'Generated pdf with success'
+    })
   } catch (error) {
     return next(error)
   }
