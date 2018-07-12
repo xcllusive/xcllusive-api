@@ -330,7 +330,8 @@ export const makePdf = async (req, res, next) => {
       last20BusinessSold,
       chartNumberOfBusinessSold,
       chartDaysOnTheMarket,
-      buyerFeedbackScore
+      buyerFeedbackScore,
+      totalScore: score.total
     }
 
     return res.status(200).json({

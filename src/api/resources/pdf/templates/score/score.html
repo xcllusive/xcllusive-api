@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>A4</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <style>
+    @page {
+      size: A4
+    }
+
+    body {
+      color: #4a4a4a;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    }
+
+    span {
+      font-family: Arial, serif;
+      font-weight: normal;
+      font-style: normal;
+      text-decoration: none
+    }
+
+    #myChart {
+      height: 380px !important;
+      width: 650px !important;
+    }
+
+    #myChart2 {
+      height: 330px !important;
+      width: 650px !important;
+    }
+
+    #myChart3 {
+      height: 330px !important;
+      width: 650px !important;
+    }
+
+    #myChart4 {
+      height: 350px !important;
+      width: 650px !important;
+    }
+
+    .cls_002 {
+      font-size: 18.1px;
+      color: rgb(159, 159, 159);
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .cls_004 {
+      font-size: 20.1px;
+      color: rgb(0, 92, 140);
+      font-weight: bold;
+    }
+
+    .cls_005 {
+      font-size: 16.1px;
+      color: rgb(119, 119, 119);
+      font-weight: bold;
+    }
+
+    .cls_008 {
+      font-size: 12.1px;
+      color: rgb(135, 135, 135);
+    }
+
+    .cls_009 {
+      font-size: 18.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    .cls_010 {
+      font-size: 16.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    .cls_011 {
+      font-size: 12.1px;
+      color: rgb(0, 0, 0);
+    }
+
+    .cls_015 {
+      font-size: 16.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    .cls_016 {
+      font-size: 12.1px;
+      color: rgb(33, 33, 33);
+    }
+
+    .cls_017 {
+      font-size: 12.1px;
+      color: rgb(33, 33, 33);
+      font-weight: bold;
+      position: absolute;
+      margin-top: -17px;
+      margin-left: 350px
+    }
+
+    .cls_018 {
+      font-size: 12.1px;
+      color: rgb(33, 33, 33);
+      font-weight: bold;
+    }
+
+    .cls_019 {
+      font-size: 12.1px;
+      color: rgb(135, 135, 135);
+    }
+
+    .cls_020 {
+      font-size: 12.1px;
+      color: rgb(33, 33, 33);
+    }
+
+    .cls_021 {
+      font-size: 48.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    .cls_022 {
+      font-size: 14.1px;
+      color: rgb(33, 33, 33);
+    }
+
+    #page-one p {
+      margin: 0;
+    }
+
+    .leftTopPage3 {
+      font-size: 18.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+      float: left;
+    }
+
+    .rightTopPage3 {
+      font-size: 18.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+      margin-left: 280px;
+    }
+
+    .topPage {
+      font-size: 18.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    #page-test .content table {}
+
+    #page-three table {
+      border-spacing: 0px;
+    }
+
+    #page-three table tr:first-child td {
+      height: 0px;
+      padding: 0px;
+      margin: 0;
+    }
+
+    #page-three .cel-left {
+      border-bottom: 1px solid black;
+      height: 170px;
+      vertical-align: initial;
+      padding: 0px
+    }
+
+    #page-three .cel-left h1 {
+      font-size: 16.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    #page-three .cel-left p {
+      font-size: 12.1px;
+      color: rgb(0, 0, 0);
+    }
+
+    #page-three .cel-left ul {
+      margin: 0;
+    }
+
+    #page-three .cel-left li p {
+      margin: 0;
+    }
+
+    #page-three .cel-right {
+      border-left: 1px solid black;
+      border-bottom: 1px solid black;
+      text-align: center;
+    }
+
+    #page-three .cel-right p,
+    img {
+      margin: 0;
+      margin-bottom: 5px;
+    }
+
+    #page-three .tableTitle {
+      font-size: 18.1px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    #page-three .content-cel-one p {
+      margin: 0;
+    }
+
+    table.blueTable {
+      font-family: Arial, Helvetica, sans-serif;
+      border: 1px solid #1C6EA4;
+      background-color: #EEEEEE;
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+
+    table.blueTable td,
+    table.blueTable th {
+      border: 1px solid #AAAAAA;
+      padding: 3px 2px;
+    }
+
+    table.blueTable tbody td {
+      font-size: 13px;
+      color: #000000;
+    }
+
+    table.blueTable tr:nth-child(even) {
+      background: #D0E4F5;
+    }
+
+    table.blueTable thead {
+      background: #1C6EA4;
+      background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+      background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+      background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+      border-bottom: 1px solid #444444;
+    }
+
+    table.blueTable thead th {
+      font-size: 15px;
+      font-weight: bold;
+      color: #FFFFFF;
+      text-align: center;
+      border-left: 2px solid #D0E4F5;
+    }
+
+    table.blueTable thead th:first-child {
+      border-left: none;
+    }
+
+    table.blueTable tfoot td {
+      font-size: 16px;
+    }
+
+    table.blueTable tfoot .links {
+      text-align: right;
+    }
+
+    table.blueTable tfoot .links a {
+      display: inline-block;
+      background: #1C6EA4;
+      color: #FFFFFF;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <section id="page-one" class="page">
+    <div style="position:absolute;left:155.00px;top:100.00px">
+      <img src='./img/buyerFeedback.jpeg' />
+      <p class="cls_004">For</p>
+      <p class="cls_004">{{business_name}}</p>
+      <p class="cls_005">Generated on the {{score_generated}}</p>
+      <p class="cls_005">Score {{score_version}}</p>
+      <div style="position:absolute;top:450.00px">
+        <span class="cls_002">What you can learn by reading this report:</span>
+        <ul style="width:450px" class="cls_006">
+          <li>How your business compares to other businesses that have been successfully sold by Xcllusive.</li>
+          <li>Which areas of your business sale that, if improved, should boost your business’s attractiveness on the current
+            market.
+          </li>
+          <li>Which areas of your business sale that if not improved could damage your likelihood of a successful sale.</li>
+        </ul>
+      </div>
+    </div>
+    <img style="position:absolute;margin-top:800px;margin-left:550px;width:150px;height:150px" src='./img/logo.jpg' />
+  </section>
+
+  <div style='page-break-before: always;'></div>
+
+  <section id="page-two" class="page">
+    <span class="cls_009">Introduction to the Buyer Feedback Score</span>
+    <br/>
+    <br/>
+    <span class="cls_010">What is the Buyer Feedback Score?</span>
+    <div class="cls_011">
+      <p>The Xcllusive Business Buyer Feedback Score Report is a method of reporting feedback from buyers who have enquired
+        about your business, designed to rank that feedback against other businesses. It is generated using up-to-date enquiry
+        data, historical business sales data and buyer feedback on how they see the different aspects of your business.</p>
+      <p>
+        The purpose of the report is to give you, the business owner, an insight into how the buyers market see your business, and
+        what you can do to increase the attractiveness of your business to buyers in the current market.
+      </p>
+    </div>
+    <span class="cls_010">How does it work?</span>
+    <br/>
+    <div class="cls_011">
+      <p>Using buyer feedback and current enquiry numbers, the Buyer Feedback Score ranks your business’s performance in the
+        current market against the scores of last 20 businesses sold. Each of these businesses have been ranked using exactly
+        the same criteria as your own.</p>
+      <p>
+        The final score is based on five segments identified over time to have the highest importance to buyers and to provide the
+        greatest indicator of sales success rates. The average of these scores is then used to calculate your total Buyer
+        Feedback Score. The five segments are as follows:
+      </p>
+      <ul>
+        <li>
+          <strong>Number of Enquiries:</strong> The number of enquiries your business has received over the past four weeks as compared
+          to the current average across all businesses.
+        </li>
+        <li>
+          <strong>Perceived Price from Buyer’s Position:</strong> The buyers’ response to the price of your business during direct
+          contact with enquirers of your business.
+        </li>
+        <li>
+          <strong>Information, Transparency, Momentum:</strong> How buyers’ perceive and feel about the availability/reliability
+          of information, the speed at which information is provided and owner co-operation throughout the enquiry process.
+        </li>
+        <li>
+          <strong>Current Interest:</strong> The current level of progress towards purchase and interest amongst the buyers who have
+          already enquired about your business.
+        </li>
+        <li>
+          <strong>Buyer’s Perceived Risk:</strong> The most common concerns or praise offered by buyers in regards to your business’s
+          security of income and sustainability after you exit the business.
+        </li>
+      </ul>
+      <p>
+        Each of these items will receive a score between 10 and 90; 10 being a very poor rating and 90 being an exemplary rating.
+        Each score range indicates that an action needs to be taken. This is explained in more detail on page 4 of this report.
+      </p>
+      <p>
+        As part of the report, you will also be given an indication as to where your business sale can be improved so as to boost
+        your score, and ultimately, your business attractiveness.
+      </p>
+      <span class="cls_010">How accurate is it?</span>
+      <p>
+        With the exception of the automatically generated enquiries score, all other scores are based off direct buyer feedback and
+        inputted by your agent as objectively as possible. With that in mind, there is some room for error. That is why this
+        score should be treated as guidance only. By assigning a predetermined value to common buyer feedback this report
+        removes subjectivity as best as possible in order to get down the practical science of buyer behaviour.
+      </p>
+      <span class="cls_010">Disclaimer</span>
+      <p>
+        The Xcllusive Business Sales Buyer Feedback Score Report is a method of reporting feedback from buyers who have enquired
+        about your business. Xcllusive does not guarantee that the findings are free from errors and reminds recipients that
+        it is for information purposes only and is not to be taken as business advice. Your agent may choose to include their
+        thoughts in response to the results. Once again, this is provided for information purposes and suggestion only and
+        is not to be taken as business advice.
+      </p>
+    </div>
+  </section>
+
+  <div style='page-break-before: always;'></div>
+
+  <section id="page-three" class="page">
+    <table>
+      <tbody>
+        <tr>
+          <td class="cel-left">
+            <p class="tableTitle">Buyer Feedback and Agent Notes</p>
+          </td>
+          <td class="cel-right">
+            <p class="tableTitle">Score</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="cel-left">
+            <h1>Number of Enquiries</h1>
+            <div class="content-cel-one">
+              <p>Total enquiries to date for this business:
+                <strong>{{total_enquiries}}</strong>
+              </p>
+              <p>Total enquiries last four weeks for this business:
+                <strong>{{total_enquiries_last_four_weeks}}</strong>
+              </p>
+              <p>Average enquiries last four weeks for all businesses:
+                <strong>{{average_enquiries_last_four_weeks}}</strong>
+              </p>
+            </div>
+
+
+
+            <p>{{enquiries.textReport}}</p>
+
+            <p>
+              <strong>Agents Notes:</strong>{{notesEnquiries}}</p>
+          </td>
+          <td class="cel-right">
+            <p>{{enquiries.weight}}</p>
+            <p>{{enquiries_subtitle}}</p>
+            <img src='{#image happy}' />
+          </td>
+        </tr>
+        <tr>
+          <td class="cel-left">
+            <h1>Perceived Price from Buyer’s Position</h1>
+            <p>{{perceivedPrice.textReport}}</p>
+            <p>
+              <strong>Agents Notes:</strong> {{notesPrice}}
+            </p>
+          </td>
+          <td class="cel-right">
+            <p>{{perceivedPrice.weight}}</p>
+            <p>perceivedPrice_subtitle</p>
+            <img src='{#image happy}' />
+          </td>
+        </tr>
+        <tr>
+          <td class="cel-left">
+            <h1>Information, Transparency, Momentum</h1>
+            <p>{{infoTransMomen.textReport}}</p>
+            <p>
+              <strong>Agents Notes:</strong> {{notesMomentum}}
+            </p>
+          </td>
+          <td class="cel-right">
+            <p>{{infoTransMomen.weight}}</p>
+            <p>{{infoTransMomen_subtitle}}</p>
+            <img src='{#image happy}' />
+          </td>
+        </tr>
+        <tr>
+          <td class="cel-left">
+            <h1>Current Interest</h1>
+            <p>{{currentInterest.textReport}}</p>
+            <p>
+              <strong>Agents Notes:</strong> {{currentInterestNotes}}
+            </p>
+          </td>
+          <td class="cel-right">
+            <p>{{currentInterestNotes.weight}}</p>
+            <p>{{currentInterestNotes_subtitle}}</p>
+            <img src='{#image happy}' />
+          </td>
+        </tr>
+        <tr>
+          <td class="cel-left">
+            <h1>Perceived Price from Buyer’s Position</h1>
+            <p>{{perceivedRisk.textReport}}</p>
+            <p>
+              <strong>Agents Notes:</strong> {{notesRisk}}
+            </p>
+          </td>
+          <td class="cel-right">
+            <p>{{perceivedRisk.weight}}</p>
+            <p>{{perceivedRisk_subtitle}}</p>
+            <img src='{#image happy}' />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div style='page-break-before: always;'></div>
+
+  <section id="page-four" class="page">
+    <div>
+      <span style="margin-left:200px" class="topPage">Your Buyer Feedback Score</span>
+      <div style="margin-top:10px; margin-left:270px; border-radius:100%; border:7px solid rgb(42, 102, 157);width:80px;height:80px;"></div>
+      <span style="position: absolute; margin-top:-82px; margin-left:292px;" class="cls_021">{{totalScore}}</span>
+    </div>
+    </br>
+    <span class="cls_009">How your business ranked in each Category</span>
+    <p class="cls_022">
+      This graph shows all your scores from page 3 as well as your calculated Buyer Feedback Score on the far right. The colours
+      on the background show three different colours, each with with an action associated with it. They are explained below:
+    </p>
+    <div>
+      <p class="cls_022" style="margin-left: 50px;">
+        <strong>Satisfactory:</strong> You have scored very well in this area and are well positioned for sale. Where you have scored
+        this, no action is required, but keep in mind that improvements never hurt.
+      </p>
+      <div style="position:absolute;margin-top:-47px; width:15; border: 15px solid rgba(1, 187, 32, 0.979)"></div>
+    </div>
+    <div>
+      <p class="cls_022" style="margin-left: 50px;">
+        <strong>Possible Improvement:</strong> This area could be improved. Though scoring in this range isn’t ‘bad’, without any
+        action being taken it could affect your business’s attrativeness.
+      </p>
+      <div style="position:absolute;margin-top:-50px; width:15; border: 15px solid rgba(248, 232, 13, 0.979)"></div>
+    </div>
+    <div>
+      <p class="cls_022" style="margin-left: 50px;">
+        <strong>Needs Urgent Attention:</strong> Action is required to improve this score. Receiving a feedback score in this range
+        represents a problem that will almost definitely impact on your business’s attractiveness.
+      </p>
+      <div style="position:absolute;margin-top:-51px; width:15; border: 15px solid rgba(243, 32, 32, 0.993) "></div>
+    </div>
+    <p class="cls_022">
+      Addressing issues in problem areas will definitely improve the saleability of your business, though bear in mind that areas
+      such as ‘Enquires’ and ‘Interest’ will ultimately be affected by the other areas. For example, providing more information
+      to buyers could help a buyer decide to proceed further with their enquiry and as a result, boost your ‘Interest’ score.
+    </p>
+    </br>
+    <canvas id="myChart"></canvas>
+  </section>
+
+  <div style='page-break-before: always;'></div>
+
+  <section id="page-five" class="page">
+    <span class="topPage">Last 20 Businesses Sold VS Business Score</span>
+    <p class="cls_022">
+      This graph displays how many of the
+      <strong> last 20 sold businesses sold</strong> by Xcllusive within each score range and where your business is currently placed
+      by comparison. As you can see; the greater the score, the more businesses sold. (please note that 81-90 level scores
+      are very rare)
+    </p>
+    <canvas id="myChart2"></canvas>
+    <p style="font-size:12px; margin-left:500px;">
+      *for full data see Appendix 1
+    </p>
+    <hr style="border-style: groove; border-bottom-width: 0px;"></hr>
+    <span class="topPage">Average Days on Market VS Business Score</span>
+    <p class="cls_022">
+      This graph shows how long on average it took to sell the
+      <strong> last 20 businesses</strong> , categorised by their score range, and where your business is currently placed by comparison.
+      As you can see, the higher the score, the quicker it sells.
+    </p>
+    <canvas id="myChart3"></canvas>
+    <p style="font-size:12px; margin-left:500px;">
+      *for full data see Appendix 1
+    </p>
+    <hr style="border-style: groove; border-bottom-width: 0px;"></hr>
+  </section>
+
+  <div style='page-break-before: always;'></div>
+
+  <section id="page-six" class="page">
+    <span class="topPage">Your Buyer Feedback Score progress over time</span>
+    <p>
+      How your Buyer Feedback Score has progressed over time.
+    </p>
+    <canvas id="myChart4"></canvas>
+    </br>
+    <p style="font-size:12px;">
+      *Note: if this is your first score this chart does not apply to you.
+    </p>
+    <span class="cls_009">What to do with your score</span>
+    <p>
+      The goal of the Buyer Feedback Score is to identify in what areas your business sale can be improved based on current feedback
+      and past business sales in order to increase your business’s attractiveness to current buyers. You will be getting
+      a phone call from Mark Attard over the next few days to discuss your results, however, if you would like to address
+      this sooner feel free to call your agent on 0430 599 001.
+    </p>
+    <p>
+      Good luck with your business sale
+    </p>
+    </br>
+    <div>
+      <p style="margin:0;">
+        <strong style "font-style:italic;">Xcllusive Business Sales</strong>
+      </p>
+      <p style="margin:0; font-style: italic;">
+        - Sell your Business with Certainty
+      </p>
+    </div>
+  </section>
+
+  <div style='page-break-before: always;'></div>
+
+  <section id="page-six" class="page">
+    <div style="text-align:center;">
+      <p style="margin:0" class="topPage">
+        <span style="color:black;">
+          <strong>Appendix1:</strong>
+        </span> Last 20 Businesses Sold</p>
+      <p style="margin:0" class="topPage">Detailed Comparative Analysis</p>
+    </div>
+    <div>
+      <div style="margin-top:10px; margin-left:270px; border-radius:100%; border:7px solid rgb(42, 102, 157);width:80px;height:80px;"></div>
+      <span style="position: absolute; margin-top:-60px; margin-left:100px;" class="topPage">Your Last Score:</span>
+      <span style="position: absolute; margin-top:-82px; margin-left:290px;" class="cls_021">33</span>
+    </div>
+    <p>
+      This chart displays sales data from the last 20 sold businesses and where your business is currently placed by comparison.
+      Only the last 20 sold businesses are used for these statistics so as to provide a more accurate representation of the
+      market as it exists today. These scores were generated just prior to each business being sold.
+    </p>
+    <p>
+      The point of this chart is to demonstrate how each score range affects different aspects of the business sale.
+    </p>
+    <table class="blueTable">
+      <thead>
+        <tr>
+          <th>Score just prior to Sale</th>
+          <th>No. of Businesses Sold</th>
+          <th>Average Days on the market</th>
+          <th>% Businesses Sold (Out of 20)</th>
+          <th>Average Value</th>
+          <th>Value Range</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10-20</td>
+          <td>cell2_1</td>
+          <td>cell3_1</td>
+          <td>cell4_1</td>
+          <td>cell5_1</td>
+          <td>cell6_1</td>
+        </tr>
+        <tr>
+          <td>21-30</td>
+          <td>cell2_2</td>
+          <td>cell3_2</td>
+          <td>cell4_2</td>
+          <td>cell5_2</td>
+          <td>cell6_2</td>
+        </tr>
+        <tr>
+          <td>31-40</td>
+          <td>cell2_3</td>
+          <td>cell3_3</td>
+          <td>cell4_3</td>
+          <td>cell5_3</td>
+          <td>cell6_3</td>
+        </tr>
+        <tr>
+          <td>41-50</td>
+          <td>cell2_4</td>
+          <td>cell3_4</td>
+          <td>cell4_4</td>
+          <td>cell5_4</td>
+          <td>cell6_4</td>
+        </tr>
+        <tr>
+          <td>51-60</td>
+          <td>cell2_5</td>
+          <td>cell3_5</td>
+          <td>cell4_5</td>
+          <td>cell5_5</td>
+          <td>cell6_5</td>
+        </tr>
+        <tr>
+          <td>61-70</td>
+          <td>cell2_6</td>
+          <td>cell3_6</td>
+          <td>cell4_6</td>
+          <td>cell5_6</td>
+          <td>cell6_6</td>
+        </tr>
+        <tr>
+          <td>71-80</td>
+          <td>cell2_7</td>
+          <td>cell3_7</td>
+          <td>cell4_7</td>
+          <td>cell5_7</td>
+          <td>cell6_7</td>
+        </tr>
+        <tr>
+          <td>81-90</td>
+          <td>cell2_8</td>
+          <td>cell3_8</td>
+          <td>cell4_8</td>
+          <td>cell5_8</td>
+          <td>cell6_8</td>
+        </tr>
+      </tbody>
+      </tr>
+    </table>
+    </table>
+    </table>
+    </table>
+    </br>
+    <hr style="border-style: groove; border-bottom-width: 0px;"></hr>
+    <span class="cls_009">A Quick Explanation:</span>
+    <p>
+      If you’re unsure about any items on the table, please find a brief explanation below:
+    </p>
+    <ul class="cls_006">
+      <li>
+        <strong>No. of Business Sold:</strong> Displays how many of the 20 most recent sold businesses were sold from the corresponding
+        score range
+      </li>
+      <li>
+        <strong>Average Days on the Market:</strong> Displays the average number of days the 20 most recently sold businesses took
+        to sell within each score range.</li>
+      <li>
+        <strong>% Businesses Sold:</strong> Displays the percentage of the 20 most recently sold businesses within each score range.</li>
+      <li>
+        <strong>Average Value:</strong> Displays the average price of the 20 most recently sold businesses within each score range</li>
+      <li>
+        <strong>Value Range:</strong> Displays the price range of the businesses represented within each score range.</li>
+    </ul>
+  </section>
+  <div style='page-break-before: always;'></div>
+</body>
+
+<script>      
+  var enquiries = 50, price = 20, information = 30, interest = 80, security = 10, total = 33;
+  if (enquiries < 30) backgroundColorEnquiries = "rgba(243, 32, 32, 0.993)"
+  if (enquiries >= 30 && enquiries <= 59) backgroundColorEnquiries = "rgba(248, 232, 13, 0.979)"
+  if (enquiries >= 60) backgroundColorEnquiries = "rgba(1, 187, 32, 0.979)"
+
+  if (price < 30) backgroundColorPrice = "rgba(243, 32, 32, 0.993)"
+  if (price >= 30 && price <= 59) backgroundColorPrice = "rgba(248, 232, 13, 0.979)"
+  if (price >= 60) backgroundColorPrice = "rgba(1, 187, 32, 0.979)"
+
+  if (information < 30) backgroundColorInformation = "rgba(243, 32, 32, 0.993)"
+  if (information >= 30 && information <= 59) backgroundColorInformation = "rgba(248, 232, 13, 0.979)"
+  if (information >= 60) backgroundColorInformation = "rgba(1, 187, 32, 0.979)"
+
+  if (interest < 30) backgroundColorInterest = "rgba(243, 32, 32, 0.993)"
+  if (interest >= 30 && interest <= 59) backgroundColorInterest = "rgba(248, 232, 13, 0.979)"
+  if (interest >= 60) backgroundColorInterest = "rgba(1, 187, 32, 0.979)"
+
+  if (security < 30) backgroundColorSecurity = "rgba(243, 32, 32, 0.993)"
+  if (security >= 30 && security <= 59) backgroundColorSecurity = "rgba(248, 232, 13, 0.979)"
+  if (security >= 60) backgroundColorSecurity = "rgba(1, 187, 32, 0.979)"
+
+  if (total < 30) backgroundColorTotal = "rgba(243, 32, 32, 0.993)"
+  if (total >= 30 && enquiries <= 59) backgroundColorTotal = "rgba(248, 232, 13, 0.979)"
+  if (total >= 60) backgroundColorTotal = "rgba(1, 187, 32, 0.979)"
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Enquiries", "Price", "Information", "Interest", "Security", "Total Score"],
+      datasets: [{
+        label: '',
+        data: [enquiries, price, information, interest, security, total],
+        backgroundColor: [
+          backgroundColorEnquiries,
+          backgroundColorPrice,
+          backgroundColorInformation,
+          backgroundColorInterest,
+          backgroundColorSecurity,
+          backgroundColorTotal
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: false,
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+</script>
+<script>      
+  var ctx = document.getElementById("myChart2").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["10-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-90"],
+      datasets: [{
+        label: 'Where you are',
+        data: [5, 8, 3, 5, 2, 3, 6, 5],
+        backgroundColor: [
+          'rgb(0, 0, 0)',
+          'rgb(102, 179, 255)',
+          'rgb(77, 166, 255)',
+          'rgb(51, 153, 255)',
+          'rgb(26, 140, 255)',
+          'rgb(0, 128, 255)',
+          'rgb(0, 115, 230)',
+          'rgb(0, 102, 204)'
+        ],
+        borderColor: [
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)',
+          'rgb(0, 68, 204)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: false,
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      title: {
+        display: true,
+        position: 'left',
+        fontSize: 14,
+        text: 'Numbers of Businesses Sold',
+      },
+      legend: {
+        display: true,
+        labels: {
+          fontColor: 'orange'
+        }
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: ['rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(178,31,31,1)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)'],
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+</script>
+<script>      
+  var ctx = document.getElementById("myChart3").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["10-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-90"],
+      datasets: [{
+        label: 'Where you are',
+        data: [{{ teste }}, 150, 300, 50, 0, 250, 190, 350],
+      backgroundColor: [
+        'rgb(255, 140, 102)',
+        'rgb(255, 121, 77)',
+        'rgb(255, 102, 51)',
+        'rgb(255, 83, 26)',
+        'rgb(26, 140, 255)',
+        'rgb(255, 64, 0)',
+        'rgb(230, 57, 0)',
+        'rgb(204, 51, 0)'
+      ],
+      borderColor: [
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)',
+        'rgb(153, 38, 0)'
+      ],
+      borderWidth: 1
+    }]
+  },
+    options: {
+      responsive: false,
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      title: {
+        display: true,
+        position: 'left',
+        fontSize: 14,
+        text: 'Days on the market',
+      },
+      legend: {
+        display: true
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+</script>
+<script>      
+  var ctx = document.getElementById("myChart4").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["01/07/2018", "02/07/2018", "03/07/2018", "04/07/2018"],
+      datasets: [{
+        data: [10, 35, 60, 40],
+        backgroundColor: [
+          'rgb(64, 191, 128)',
+          'rgb(57, 172, 115)',
+          'rgb(51, 153, 102)',
+          'rgb(45, 134, 89)'
+        ],
+        borderColor: [
+          'rgb(32, 96, 64)',
+          'rgb(32, 96, 64)',
+          'rgb(32, 96, 64)',
+          'rgb(32, 96, 64)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: false,
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      title: {
+        display: false,
+        position: 'left',
+        fontSize: 14,
+        text: 'Days on the market',
+      },
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+</script>
+
+</html>
