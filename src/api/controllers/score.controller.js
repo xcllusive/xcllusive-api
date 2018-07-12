@@ -1,6 +1,13 @@
 import moment from 'moment'
+import puppeteer from 'puppeteer'
+import handlebars from 'handlebars'
+import Util from 'util'
+import Fs from 'fs'
+import Path from 'path'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
+
+const ReadFile = Util.promisify(Fs.readFile)
 
 export const list = async (req, res, next) => {
   const { business } = req.query
@@ -307,7 +314,7 @@ export const makePdf = async (req, res, next) => {
       })
     })
 
-    const response = {
+    const context = {
       business_name: score.Business.businessName,
       score_generated: score.dateTimeCreated,
       score_version: score.version,
@@ -333,8 +340,42 @@ export const makePdf = async (req, res, next) => {
       buyerFeedbackScore
     }
 
+    const PDF_OPTIONS = {
+      path: `${__dirname}/output.pdf`,
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '15mm',
+        left: '15mm',
+        right: '15mm',
+        bottom: '15mm'
+      },
+      displayHeaderFooter: true,
+      headerTemplate: ' ',
+      footerTemplate: `
+      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+      <span style="float: left;">${context.business_name} buyer feedback ${context.score_version}</span>
+      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+      </div>`
+    }
+
+    const templatePath = Path.resolve('../', 'resources', 'pdf', 'templates', 'score', 'score.html')
+
+    const content = await ReadFile(templatePath, 'utf8')
+
+    const handlebarsCompiled = handlebars.compile(content)
+    const template = handlebarsCompiled(context)
+
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.emulateMedia('screen')
+    await page.goto(`data:text/html,${template}`, { waitUntil: 'networkidle2' })
+
+    await page.pdf(PDF_OPTIONS)
+    await browser.close()
+
     return res.status(200).json({
-      response,
+      context,
       message: 'Generated pdf with success'
     })
   } catch (error) {
