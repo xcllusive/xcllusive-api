@@ -772,6 +772,8 @@
   });
 </script>
 <script>      
+  var total = 33
+  if (total >= 31 && total <= 40) colorTotal = "rgb(0, 0, 0)"
   var ctx = document.getElementById("myChart2").getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
@@ -828,7 +830,6 @@
       scales: {
         yAxes: [{
           ticks: {
-            fontColor: ['rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(178,31,31,1)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)', 'rgba(44,44,44,0.8)'],
             beginAtZero: true
           }
         }]
