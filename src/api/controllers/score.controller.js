@@ -254,65 +254,101 @@ export const makePdf = async (req, res, next) => {
       column_81_90: 0
     }
 
+    const percBusinessSold = {
+      column_10_20: 0,
+      column_21_30: 0,
+      column_31_40: 0,
+      column_41_50: 0,
+      column_51_60: 0,
+      column_61_70: 0,
+      column_71_80: 0,
+      column_81_90: 0
+    }
+
     last20BusinessSold.forEach(business => {
       const daysOnTheMarket = moment().diff(business.daysOnTheMarket, 'days')
+
       business.Scores.forEach(score => {
         if (score.dateSent) {
           if (score.total <= 20) {
             chartNumberOfBusinessSold.column_10_20 =
               chartNumberOfBusinessSold.column_10_20 + 1
+
             chartDaysOnTheMarket.column_10_20 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
               chartNumberOfBusinessSold.column_10_20
+
+            percBusinessSold.column_10_20 = (percBusinessSold.column_10_20 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 20 && score.total < 31) {
             chartNumberOfBusinessSold.column_21_30 =
               chartNumberOfBusinessSold.column_21_30 + 1
+
             chartDaysOnTheMarket.column_21_30 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
               chartNumberOfBusinessSold.column_21_30
+
+            percBusinessSold.column_21_30 = (percBusinessSold.column_21_30 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 30 && score.total < 41) {
             chartNumberOfBusinessSold.column_31_40 =
               chartNumberOfBusinessSold.column_31_40 + 1
+
             chartDaysOnTheMarket.column_31_40 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
               chartNumberOfBusinessSold.column_31_40
+
+            percBusinessSold.column_31_40 = (percBusinessSold.column_31_40 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 40 && score.total < 51) {
             chartNumberOfBusinessSold.column_41_50 =
               chartNumberOfBusinessSold.column_41_50 + 1
+
             chartDaysOnTheMarket.column_41_50 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
               chartNumberOfBusinessSold.column_41_50
+
+            percBusinessSold.column_41_50 = (percBusinessSold.column_41_50 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 50 && score.total < 61) {
             chartNumberOfBusinessSold.column_51_60 =
               chartNumberOfBusinessSold.column_51_60 + 1
+
             chartDaysOnTheMarket.column_51_60 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
               chartNumberOfBusinessSold.column_51_60
+
+            percBusinessSold.column_51_60 = (percBusinessSold.column_51_60 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 60 && score.total < 71) {
             chartNumberOfBusinessSold.column_61_70 =
               chartNumberOfBusinessSold.column_61_70 + 1
+
             chartDaysOnTheMarket.column_61_70 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
               chartNumberOfBusinessSold.column_61_70
+
+            percBusinessSold.column_61_70 = (percBusinessSold.column_61_70 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 70 && score.total < 81) {
             chartNumberOfBusinessSold.column_71_80 =
               chartNumberOfBusinessSold.column_71_80 + 1
+
             chartDaysOnTheMarket.column_71_80 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
               chartNumberOfBusinessSold.column_71_80
+
+            percBusinessSold.column_71_80 = (percBusinessSold.column_71_80 * 100) / last20BusinessSold.lenght
           }
           if (score.total > 80) {
             chartNumberOfBusinessSold.column_81_90 =
               chartNumberOfBusinessSold.column_81_90 + 1
+
             chartDaysOnTheMarket.column_81_90 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
               chartNumberOfBusinessSold.column_81_90
+
+            percBusinessSold.column_81_90 = (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
           }
         }
       })
