@@ -6,6 +6,7 @@ import Fs from 'fs'
 import Path from 'path'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
+import { happy, neutral, sad } from '../constants/icons'
 
 const ReadFile = Util.promisify(Fs.readFile)
 
@@ -314,9 +315,35 @@ export const makePdf = async (req, res, next) => {
       })
     })
 
+    const renderSubtitle = weight => {
+      if (weight < 30) {
+        return 'Needs urgent attention'
+      }
+      if (weight >= 30 && weight <= 59) {
+        return 'Possible improvement'
+      }
+      if (weight >= 60) {
+        return 'Satisfactory'
+      }
+      return 'Not found score'
+    }
+
+    const renderSmile = weight => {
+      if (weight < 30) {
+        return sad
+      }
+      if (weight >= 30 && weight <= 59) {
+        return neutral
+      }
+      if (weight >= 60) {
+        return happy
+      }
+      return 'Not found score'
+    }
+
     const context = {
       business_name: score.Business.businessName,
-      score_generated: score.dateTimeCreated,
+      score_generated: moment(score.dateTimeCreated).format('L'),
       score_version: score.version,
       total_enquiries: enquiriesBusiness.count,
       total_enquiries_last_four_weeks: enquiriesBusinessLastFourWeeks.count,
@@ -339,11 +366,16 @@ export const makePdf = async (req, res, next) => {
       chartDaysOnTheMarket,
       buyerFeedbackScore,
       totalScore: score.total,
-      enquiries_subtitle: 'teste1',
-      currentInterest_subtitle: 'teste2',
-      infoTransMomen_subtitle: 'teste3',
-      perceivedPrice_subtitle: 'teste4',
-      perceivedRisk_subtitle: 'teste5'
+      enquiries_subtitle: renderSubtitle(enquiries.weight),
+      currentInterest_subtitle: renderSubtitle(score.currentInterest.weight),
+      infoTransMomen_subtitle: renderSubtitle(score.infoTransMomen.weight),
+      perceivedPrice_subtitle: renderSubtitle(score.perceivedPrice.weight),
+      perceivedRisk_subtitle: renderSubtitle(score.perceivedRisk.weight),
+      enquiries_icon: renderSmile(enquiries.weight),
+      currentInterest_icon: renderSmile(score.currentInterest.weight),
+      infoTransMomen_icon: renderSmile(score.infoTransMomen.weight),
+      perceivedPrice_icon: renderSmile(score.perceivedPrice.weight),
+      perceivedRisk_icon: renderSmile(score.perceivedRisk.weight)
     }
 
     const PDF_OPTIONS = {
@@ -380,10 +412,11 @@ export const makePdf = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.status(200).json({
-      context,
-      message: 'Generated pdf with success'
-    })
+    return res.sendFile(`${__dirname}/output.pdf`)
+    // return res.status(200).json({
+    //   context,
+    //   message: 'Generated pdf with success'
+    // })
   } catch (error) {
     return next(error)
   }
