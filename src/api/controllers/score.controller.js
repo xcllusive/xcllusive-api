@@ -338,7 +338,12 @@ export const makePdf = async (req, res, next) => {
       chartNumberOfBusinessSold,
       chartDaysOnTheMarket,
       buyerFeedbackScore,
-      totalScore: score.total
+      totalScore: score.total,
+      enquiries_subtitle: 'teste1',
+      currentInterest_subtitle: 'teste2',
+      infoTransMomen_subtitle: 'teste3',
+      perceivedPrice_subtitle: 'teste4',
+      perceivedRisk_subtitle: 'teste5'
     }
 
     const PDF_OPTIONS = {
@@ -360,7 +365,7 @@ export const makePdf = async (req, res, next) => {
       </div>`
     }
 
-    const templatePath = Path.resolve('../', 'resources', 'pdf', 'templates', 'score', 'score.html')
+    const templatePath = Path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'score', 'score.html')
 
     const content = await ReadFile(templatePath, 'utf8')
 
