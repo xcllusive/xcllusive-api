@@ -138,6 +138,9 @@ export const initial = async (req, res, next) => {
 export const makePdf = async (req, res, next) => {
   const { scoreId } = req.params
 
+  const templatePath = Path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'score', 'score.html')
+  const destPdfGenerated = Path.resolve('src', 'api', 'resources', 'pdf', 'generated', 'score', `${Date.now()}.pdf`)
+
   try {
     // Verify exists score
     const score = await models.Score.findOne({
@@ -206,7 +209,7 @@ export const makePdf = async (req, res, next) => {
       where: {
         stageId: 6
       },
-      attributes: ['businessName', 'dateTimeModified', 'daysOnTheMarket'],
+      attributes: ['businessName', 'listedPrice', 'dateTimeModified', 'daysOnTheMarket'],
       order: [['dateTimeModified', 'DESC']],
       include: [
         {
@@ -379,7 +382,7 @@ export const makePdf = async (req, res, next) => {
     }
 
     const PDF_OPTIONS = {
-      path: `${__dirname}/output.pdf`,
+      path: destPdfGenerated,
       format: 'A4',
       printBackground: true,
       margin: {
@@ -397,13 +400,9 @@ export const makePdf = async (req, res, next) => {
       </div>`
     }
 
-    const templatePath = Path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'score', 'score.html')
-
     const content = await ReadFile(templatePath, 'utf8')
-
     const handlebarsCompiled = handlebars.compile(content)
     const template = handlebarsCompiled(context)
-
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.emulateMedia('screen')
@@ -412,7 +411,7 @@ export const makePdf = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.sendFile(`${__dirname}/output.pdf`)
+    return res.sendFile(destPdfGenerated)
     // return res.status(200).json({
     //   context,
     //   message: 'Generated pdf with success'
