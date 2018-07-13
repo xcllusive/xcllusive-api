@@ -138,8 +138,24 @@ export const initial = async (req, res, next) => {
 export const makePdf = async (req, res, next) => {
   const { scoreId } = req.params
 
-  const templatePath = Path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'score', 'score.html')
-  const destPdfGenerated = Path.resolve('src', 'api', 'resources', 'pdf', 'generated', 'score', `${Date.now()}.pdf`)
+  const templatePath = Path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'templates',
+    'score',
+    'score.html'
+  )
+  const destPdfGenerated = Path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'score',
+    `${Date.now()}.pdf`
+  )
 
   try {
     // Verify exists score
@@ -265,6 +281,72 @@ export const makePdf = async (req, res, next) => {
       column_81_90: 0
     }
 
+    const chartScoreProgress = {
+      label_column_1: 0,
+      label_column_2: 0,
+      label_column_3: 0,
+      label_column_4: 0,
+      label_column_5: 0,
+      label_column_6: 0,
+      label_column_7: 0,
+      label_column_8: 0,
+      label_column_9: 0,
+      label_column_10: 0,
+      column_1: 0,
+      column_2: 0,
+      column_3: 0,
+      column_4: 0,
+      column_5: 0,
+      column_6: 0,
+      column_7: 0,
+      column_8: 0,
+      column_9: 0,
+      column_10: 0
+    }
+
+    buyerFeedbackScore.forEach(progress => {
+      if (progress.lenght === 1) {
+        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_1 = progress.total
+      }
+      if (progress.lenght === 2) {
+        chartScoreProgress.label_column_2 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_2 = progress.total
+      }
+      if (progress.lenght === 3) {
+        chartScoreProgress.label_column_3 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_3 = progress.total
+      }
+      if (progress.lenght === 4) {
+        chartScoreProgress.label_column_4 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_4 = progress.total
+      }
+      if (progress.lenght === 5) {
+        chartScoreProgress.label_column_5 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_5 = progress.total
+      }
+      if (progress.lenght === 6) {
+        chartScoreProgress.label_column_6 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_6 = progress.total
+      }
+      if (progress.lenght === 7) {
+        chartScoreProgress.label_column_7 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_7 = progress.total
+      }
+      if (progress.lenght === 8) {
+        chartScoreProgress.label_column_8 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_8 = progress.total
+      }
+      if (progress.lenght === 9) {
+        chartScoreProgress.label_column_9 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_9 = progress.total
+      }
+      if (progress.lenght === 10) {
+        chartScoreProgress.label_column_10 = moment(progress.dateTimeCreated).format('L')
+        chartScoreProgress.column_10 = progress.total
+      }
+    })
+
     last20BusinessSold.forEach(business => {
       const daysOnTheMarket = moment().diff(business.daysOnTheMarket, 'days')
 
@@ -278,7 +360,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
               chartNumberOfBusinessSold.column_10_20
 
-            percBusinessSold.column_10_20 = (percBusinessSold.column_10_20 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_10_20 =
+              (percBusinessSold.column_10_20 * 100) / last20BusinessSold.length
           }
           if (score.total > 20 && score.total < 31) {
             chartNumberOfBusinessSold.column_21_30 =
@@ -288,7 +371,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
               chartNumberOfBusinessSold.column_21_30
 
-            percBusinessSold.column_21_30 = (percBusinessSold.column_21_30 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_21_30 =
+              (percBusinessSold.column_21_30 * 100) / last20BusinessSold.length
           }
           if (score.total > 30 && score.total < 41) {
             chartNumberOfBusinessSold.column_31_40 =
@@ -298,7 +382,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
               chartNumberOfBusinessSold.column_31_40
 
-            percBusinessSold.column_31_40 = (percBusinessSold.column_31_40 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_31_40 =
+              (percBusinessSold.column_31_40 * 100) / last20BusinessSold.length
           }
           if (score.total > 40 && score.total < 51) {
             chartNumberOfBusinessSold.column_41_50 =
@@ -308,7 +393,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
               chartNumberOfBusinessSold.column_41_50
 
-            percBusinessSold.column_41_50 = (percBusinessSold.column_41_50 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_41_50 =
+              (chartNumberOfBusinessSold.column_41_50 * 100) / last20BusinessSold.length
           }
           if (score.total > 50 && score.total < 61) {
             chartNumberOfBusinessSold.column_51_60 =
@@ -318,7 +404,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
               chartNumberOfBusinessSold.column_51_60
 
-            percBusinessSold.column_51_60 = (percBusinessSold.column_51_60 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_51_60 =
+              (percBusinessSold.column_51_60 * 100) / last20BusinessSold.length
           }
           if (score.total > 60 && score.total < 71) {
             chartNumberOfBusinessSold.column_61_70 =
@@ -328,7 +415,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
               chartNumberOfBusinessSold.column_61_70
 
-            percBusinessSold.column_61_70 = (percBusinessSold.column_61_70 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_61_70 =
+              (percBusinessSold.column_61_70 * 100) / last20BusinessSold.length
           }
           if (score.total > 70 && score.total < 81) {
             chartNumberOfBusinessSold.column_71_80 =
@@ -338,7 +426,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
               chartNumberOfBusinessSold.column_71_80
 
-            percBusinessSold.column_71_80 = (percBusinessSold.column_71_80 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_71_80 =
+              (percBusinessSold.column_71_80 * 100) / last20BusinessSold.length
           }
           if (score.total > 80) {
             chartNumberOfBusinessSold.column_81_90 =
@@ -348,7 +437,8 @@ export const makePdf = async (req, res, next) => {
               (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
               chartNumberOfBusinessSold.column_81_90
 
-            percBusinessSold.column_81_90 = (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_81_90 =
+              (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
           }
         }
       })
@@ -414,7 +504,9 @@ export const makePdf = async (req, res, next) => {
       currentInterest_icon: renderSmile(score.currentInterest.weight),
       infoTransMomen_icon: renderSmile(score.infoTransMomen.weight),
       perceivedPrice_icon: renderSmile(score.perceivedPrice.weight),
-      perceivedRisk_icon: renderSmile(score.perceivedRisk.weight)
+      perceivedRisk_icon: renderSmile(score.perceivedRisk.weight),
+      percBusinessSold,
+      chartScoreProgress
     }
 
     const PDF_OPTIONS = {
@@ -431,7 +523,9 @@ export const makePdf = async (req, res, next) => {
       headerTemplate: ' ',
       footerTemplate: `
       <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-      <span style="float: left;">${context.business_name} buyer feedback ${context.score_version}</span>
+      <span style="float: left;">${context.business_name} buyer feedback ${
+  context.score_version
+}</span>
       <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
       </div>`
     }

@@ -597,7 +597,7 @@
     <div>
       <div style="margin-top:10px; margin-left:270px; border-radius:100%; border:7px solid rgb(42, 102, 157);width:80px;height:80px;"></div>
       <span style="position: absolute; margin-top:-60px; margin-left:100px;" class="topPage">Your Last Score:</span>
-      <span style="position: absolute; margin-top:-82px; margin-left:290px;" class="cls_021">33</span>
+      <span style="position: absolute; margin-top:-82px; margin-left:290px;" class="cls_021">{{lastScore}}</span>
     </div>
     <p>
       This chart displays sales data from the last 20 sold businesses and where your business is currently placed by comparison.
@@ -623,7 +623,7 @@
           <td>10-20</td>
           <td>{{chartNumberOfBusinessSold.column_10_20}}</td>
           <td>{{chartDaysOnTheMarket.column_10_20}}</td>
-          <td>{{percBusinessSold.column_10_20}}</td>
+          <td>{{percBusinessSold.column_10_20}} %</td>
           <td>cell5_1</td>
           <td>cell6_1</td>
         </tr>
@@ -631,7 +631,7 @@
           <td>21-30</td>
           <td>{{chartNumberOfBusinessSold.column_21_30}}</td>
           <td>{{chartDaysOnTheMarket.column_21_30}}</td>
-          <td>{{percBusinessSold.column_21_30}}</td>
+          <td>{{percBusinessSold.column_21_30}} %</td>
           <td>cell5_2</td>
           <td>cell6_2</td>
         </tr>
@@ -639,7 +639,7 @@
           <td>31-40</td>
           <td>{{chartNumberOfBusinessSold.column_31_40}}</td>
           <td>{{chartDaysOnTheMarket.column_31_40}}</td>
-          <td>{{percBusinessSold.column_31_40}}</td>
+          <td>{{percBusinessSold.column_31_40}} %</td>
           <td>cell5_3</td>
           <td>cell6_3</td>
         </tr>
@@ -647,7 +647,7 @@
           <td>41-50</td>
           <td>{{chartNumberOfBusinessSold.column_41_50}}</td>
           <td>{{chartDaysOnTheMarket.column_41_50}}</td>
-          <td>{{percBusinessSold.column_41_50}}</td>
+          <td>{{percBusinessSold.column_41_50}} %</td>
           <td>cell5_4</td>
           <td>cell6_4</td>
         </tr>
@@ -655,7 +655,7 @@
           <td>51-60</td>
           <td>{{chartNumberOfBusinessSold.column_51_60}}</td>
           <td>{{chartDaysOnTheMarket.column_51_60}}</td>
-          <td>{{percBusinessSold.column_51_60}}</td>
+          <td>{{percBusinessSold.column_51_60}} %</td>
           <td>cell5_5</td>
           <td>cell6_5</td>
         </tr>
@@ -663,7 +663,7 @@
           <td>61-70</td>
           <td>{{chartNumberOfBusinessSold.column_61_70}}</td>
           <td>{{chartDaysOnTheMarket.column_61_70}}</td>
-          <td>{{percBusinessSold.column_61_70}}</td>
+          <td>{{percBusinessSold.column_61_70}} %</td>
           <td>cell5_6</td>
           <td>cell6_6</td>
         </tr>
@@ -671,7 +671,7 @@
           <td>71-80</td>
           <td>{{chartNumberOfBusinessSold.column_71_80}}</td>
           <td>{{chartDaysOnTheMarket.column_71_80}}</td>
-          <td>{{percBusinessSold.column_71_80}}</td>
+          <td>{{percBusinessSold.column_71_80}} %</td>
           <td>cell5_7</td>
           <td>cell6_7</td>
         </tr>
@@ -679,7 +679,7 @@
           <td>81-90</td>
           <td>{{chartNumberOfBusinessSold.column_81_90}}</td>
           <td>{{chartDaysOnTheMarket.column_81_90}}</td>
-          <td>{{percBusinessSold.column_81_90}}</td>
+          <td>{{percBusinessSold.column_81_90}} %</td>
           <td>cell5_8</td>
           <td>cell6_8</td>
         </tr>
@@ -890,6 +890,58 @@
   });
 </script>
 <script>  
+
+  // var column1 = {{chartDaysOnTheMarket.column_10_20}};
+  // var column2 = {{chartDaysOnTheMarket.column_21_30}};
+  // var column3 = {{chartDaysOnTheMarket.column_31_40}};
+  // var column4 = {{chartDaysOnTheMarket.column_41_50}};
+  // var column5 = {{chartDaysOnTheMarket.column_51_60}};
+  // var column6 = {{chartDaysOnTheMarket.column_61_70}};
+  // var column7 = {{chartDaysOnTheMarket.column_71_80}};
+  // var column8 = {{chartDaysOnTheMarket.column_81_90}};
+  var column1 = 0;
+  var column2 = 300;
+  var column3 = 200;
+  var column4 = 500;
+  var column5 = 280;
+  var column6 = 150;
+  var column7 = 330;
+  var column8 = 440;
+  var total = {{totalScore}};
+
+  if (total >= 10 && total <= 20) colorColumn1 = "rgb(2, 121, 45)"
+  else {
+    colorColumn1 = "rgb(255, 102, 51)"
+  }
+  if (total >= 21 && total <= 30) colorColumn4 = "rgb(2, 121, 45)"
+  else {
+    colorColumn2 = "rgb(255, 102, 51)"
+  }
+  if (total >= 31 && total <= 40) colorColumn3 = "rgb(2, 121, 45)"
+  else {
+    colorColumn3 = "rgb(255, 102, 51)"
+  }
+  if (total >= 41 && total <= 50) colorColumn4 = "rgb(2, 121, 45)"
+  else {
+    colorColumn4 = "rgb(255, 102, 51)"
+  }
+  if (total >= 51 && total <= 60) colorColumn5 = "rgb(2, 121, 45)"
+  else {
+    colorColumn5 = "rgb(255, 102, 51)"
+  }
+  if (total >= 61 && total <= 70) colorColumn6 = "rgb(2, 121, 45)"
+  else {
+    colorColumn6 = "rgb(255, 102, 51)"
+  }
+  if (total >= 71 && total <= 80) colorColumn7 = "rgb(2, 121, 45)"
+  else {
+    colorColumn7 = "rgb(255, 102, 51)"
+  }
+  if (total >= 81 ) colorColumn8 = "rgb(2, 121, 45)"
+  else {
+    colorColumn8 = "rgb(255, 102, 51)"
+  }
+
   var ctx = document.getElementById("myChart3").getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
@@ -897,26 +949,16 @@
       labels: ["10-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80", "81-90"],
       datasets: [{
         label: 'Where you are',
-        data: [{{ teste }}, 150, 300, 50, 0, 250, 190, 350],
+        data: [column1, column2, column3, column4, column5, column6, column7, column8],
       backgroundColor: [
-        'rgb(255, 140, 102)',
-        'rgb(255, 121, 77)',
-        'rgb(255, 102, 51)',
-        'rgb(255, 83, 26)',
-        'rgb(26, 140, 255)',
-        'rgb(255, 64, 0)',
-        'rgb(230, 57, 0)',
-        'rgb(204, 51, 0)'
-      ],
-      borderColor: [
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)',
-        'rgb(153, 38, 0)'
+        colorColumn1,
+        colorColumn2,
+        colorColumn3,
+        colorColumn4,
+        colorColumn5,
+        colorColumn6,
+        colorColumn7,
+        colorColumn8
       ],
       borderWidth: 1
     }]
@@ -955,20 +997,20 @@
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ["01/07/2018", "02/07/2018", "03/07/2018", "04/07/2018"],
+      labels: [{{chartScoreProgress.label_column_1}}, {{chartScoreProgress.label_column_2}}, {{chartScoreProgress.label_column_3}}, {{chartScoreProgress.label_column_4}}, {{chartScoreProgress.label_column_5}}, {{chartScoreProgress.label_column_6}}, {{chartScoreProgress.label_column_7}}, {{chartScoreProgress.label_column_8}}, {{chartScoreProgress.label_column_9}}, {{chartScoreProgress.label_column_10}}],
       datasets: [{
-        data: [10, 35, 60, 40],
+        data: [{{chartScoreProgress.column_1}}, {{chartScoreProgress.column_2}}, {{chartScoreProgress.column_3}}, {{chartScoreProgress.column_4}}, {{chartScoreProgress.column_5}}, {{chartScoreProgress.column_6}}, {{chartScoreProgress.column_7}}, {{chartScoreProgress.column_8}}, {{chartScoreProgress.column_9}}, {{chartScoreProgress.column_10}}],
         backgroundColor: [
           'rgb(64, 191, 128)',
           'rgb(57, 172, 115)',
           'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
           'rgb(45, 134, 89)'
-        ],
-        borderColor: [
-          'rgb(32, 96, 64)',
-          'rgb(32, 96, 64)',
-          'rgb(32, 96, 64)',
-          'rgb(32, 96, 64)'
         ],
         borderWidth: 1
       }]
@@ -987,7 +1029,7 @@
         display: false,
         position: 'left',
         fontSize: 14,
-        text: 'Days on the market',
+        text: '',
       },
       legend: {
         display: false
