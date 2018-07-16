@@ -311,13 +311,13 @@
     <br/>
     <span class="cls_010">What is the Buyer Feedback Score?</span>
     <p>The Xcllusive Business Buyer Feedback Score Report is a method of reporting feedback from buyers who have enquired
-    <div class="cls_011">
-        about your business, designed to rank that feedback against other businesses. It is generated using up-to-date enquiry
-        data, historical business sales data and buyer feedback on how they see the different aspects of your business.</p>
-      <p>
-        The purpose of the report is to give you, the business owner, an insight into how the buyers market see your business, and
-        what you can do to increase the attractiveness of your business to buyers in the current market.
-      </p>
+      <div class="cls_011">
+        about your business, designed to rank that feedback against other businesses. It is generated using up-to-date enquiry data,
+        historical business sales data and buyer feedback on how they see the different aspects of your business.</p>
+    <p>
+      The purpose of the report is to give you, the business owner, an insight into how the buyers market see your business, and
+      what you can do to increase the attractiveness of your business to buyers in the current market.
+    </p>
     </div>
     <span class="cls_010">How does it work?</span>
     <br/>
@@ -597,7 +597,7 @@
     <div>
       <div style="margin-top:10px; margin-left:270px; border-radius:100%; border:7px solid rgb(42, 102, 157);width:80px;height:80px;"></div>
       <span style="position: absolute; margin-top:-60px; margin-left:100px;" class="topPage">Your Last Score:</span>
-      <span style="position: absolute; margin-top:-82px; margin-left:290px;" class="cls_021">{{lastScore}}</span>
+      <span style="position: absolute; margin-top:-82px; margin-left:290px;" class="cls_021">{{lastScore.total}}</span>
     </div>
     <p>
       This chart displays sales data from the last 20 sold businesses and where your business is currently placed by comparison.
@@ -624,7 +624,7 @@
           <td>{{chartNumberOfBusinessSold.column_10_20}}</td>
           <td>{{chartDaysOnTheMarket.column_10_20}}</td>
           <td>{{percBusinessSold.column_10_20}} %</td>
-          <td>cell5_1</td>
+          <td>$ {{averageValue.column_10_20}}</td>
           <td>cell6_1</td>
         </tr>
         <tr>
@@ -632,7 +632,7 @@
           <td>{{chartNumberOfBusinessSold.column_21_30}}</td>
           <td>{{chartDaysOnTheMarket.column_21_30}}</td>
           <td>{{percBusinessSold.column_21_30}} %</td>
-          <td>cell5_2</td>
+          <td>$ {{averageValue.column_21_30}}</td>
           <td>cell6_2</td>
         </tr>
         <tr>
@@ -640,7 +640,7 @@
           <td>{{chartNumberOfBusinessSold.column_31_40}}</td>
           <td>{{chartDaysOnTheMarket.column_31_40}}</td>
           <td>{{percBusinessSold.column_31_40}} %</td>
-          <td>cell5_3</td>
+          <td>$ {{averageValue.column_31_40}}</td>
           <td>cell6_3</td>
         </tr>
         <tr>
@@ -648,7 +648,7 @@
           <td>{{chartNumberOfBusinessSold.column_41_50}}</td>
           <td>{{chartDaysOnTheMarket.column_41_50}}</td>
           <td>{{percBusinessSold.column_41_50}} %</td>
-          <td>cell5_4</td>
+          <td>$ {{averageValue.column_41_50}}</td>
           <td>cell6_4</td>
         </tr>
         <tr>
@@ -656,7 +656,7 @@
           <td>{{chartNumberOfBusinessSold.column_51_60}}</td>
           <td>{{chartDaysOnTheMarket.column_51_60}}</td>
           <td>{{percBusinessSold.column_51_60}} %</td>
-          <td>cell5_5</td>
+          <td>$ {{averageValue.column_51_60}}</td>
           <td>cell6_5</td>
         </tr>
         <tr>
@@ -664,7 +664,7 @@
           <td>{{chartNumberOfBusinessSold.column_61_70}}</td>
           <td>{{chartDaysOnTheMarket.column_61_70}}</td>
           <td>{{percBusinessSold.column_61_70}} %</td>
-          <td>cell5_6</td>
+          <td>$ {{averageValue.column_61_70}}</td>
           <td>cell6_6</td>
         </tr>
         <tr>
@@ -672,7 +672,7 @@
           <td>{{chartNumberOfBusinessSold.column_71_80}}</td>
           <td>{{chartDaysOnTheMarket.column_71_80}}</td>
           <td>{{percBusinessSold.column_71_80}} %</td>
-          <td>cell5_7</td>
+          <td>$ {{averageValue.column_71_80}}</td>
           <td>cell6_7</td>
         </tr>
         <tr>
@@ -680,7 +680,7 @@
           <td>{{chartNumberOfBusinessSold.column_81_90}}</td>
           <td>{{chartDaysOnTheMarket.column_81_90}}</td>
           <td>{{percBusinessSold.column_81_90}} %</td>
-          <td>cell5_8</td>
+          <td>$ {{averageValue.column_81_90}}</td>
           <td>cell6_8</td>
         </tr>
       </tbody>
@@ -715,12 +715,12 @@
 </body>
 
 <script>      
-  var enquiries = {{enquiries.weight}};
-  var price = {{perceivedPrice.weight}};
-  var information = {{infoTransMomen.weight}}; 
-  var interest = {{currentInterest.weight}}; 
-  var security = {{perceivedRisk.weight}}; 
-  var total = {{totalScore}};
+  var enquiries = {{ enquiries.weight }};
+  var price = {{ perceivedPrice.weight }};
+  var information = {{ infoTransMomen.weight }};
+  var interest = {{ currentInterest.weight }};
+  var security = {{ perceivedRisk.weight }};
+  var total = {{ totalScore }};
   if (enquiries < 30) backgroundColorEnquiries = "rgba(243, 32, 32, 0.993)"
   if (enquiries >= 30 && enquiries <= 59) backgroundColorEnquiries = "rgba(248, 232, 13, 0.979)"
   if (enquiries >= 60) backgroundColorEnquiries = "rgba(1, 187, 32, 0.979)"
@@ -782,7 +782,7 @@
   // var column1 = {{chartNumberOfBusinessSold.column_10_20}};
   // var column2 = {{chartNumberOfBusinessSold.column_21_30}};
   // var column3 = {{chartNumberOfBusinessSold.column_31_40}};
-  // var column4 = {{chartNumberOfBusinessSold.column_41_50}};
+  var column4 = {{chartNumberOfBusinessSold.column_41_50}};
   // var column5 = {{chartNumberOfBusinessSold.column_51_60}};
   // var column6 = {{chartNumberOfBusinessSold.column_61_70}};
   // var column7 = {{chartNumberOfBusinessSold.column_71_80}};
@@ -790,12 +790,12 @@
   var column1 = 1;
   var column2 = 3;
   var column3 = 2;
-  var column4 = 5;
+  // var column4 = 5;
   var column5 = 2;
   var column6 = 1;
   var column7 = 1;
   var column8 = 4;
-  var total = {{totalScore}};
+  var total = {{ totalScore }};
 
   if (total >= 10 && total <= 20) colorColumn1 = "rgb(2, 121, 45)"
   else {
@@ -825,17 +825,17 @@
   else {
     colorColumn7 = "rgb(0, 128, 255)"
   }
-  if (total >= 81 ) colorColumn8 = "rgb(2, 121, 45)"
+  if (total >= 81) colorColumn8 = "rgb(2, 121, 45)"
   else {
     colorColumn8 = "rgb(0, 128, 255)"
   }
 
   Chart.plugins.register({
-    beforeDraw: function(c) {
-        var legends = c.legend.legendItems;
-        legends.forEach(function(e) {
-          e.fillStyle = 'rgb(2, 121, 45)';
-        });
+    beforeDraw: function (c) {
+      var legends = c.legend.legendItems;
+      legends.forEach(function (e) {
+        e.fillStyle = 'rgb(2, 121, 45)';
+      });
     }
   });
 
@@ -877,7 +877,7 @@
         text: 'Numbers of Businesses Sold',
       },
       legend: {
-        display: true        
+        display: true
       },
       scales: {
         yAxes: [{
@@ -907,7 +907,7 @@
   var column6 = 150;
   var column7 = 330;
   var column8 = 440;
-  var total = {{totalScore}};
+  var total = {{ totalScore }};
 
   if (total >= 10 && total <= 20) colorColumn1 = "rgb(2, 121, 45)"
   else {
@@ -937,7 +937,7 @@
   else {
     colorColumn7 = "rgb(255, 102, 51)"
   }
-  if (total >= 81 ) colorColumn8 = "rgb(2, 121, 45)"
+  if (total >= 81) colorColumn8 = "rgb(2, 121, 45)"
   else {
     colorColumn8 = "rgb(255, 102, 51)"
   }
@@ -950,19 +950,19 @@
       datasets: [{
         label: 'Where you are',
         data: [column1, column2, column3, column4, column5, column6, column7, column8],
-      backgroundColor: [
-        colorColumn1,
-        colorColumn2,
-        colorColumn3,
-        colorColumn4,
-        colorColumn5,
-        colorColumn6,
-        colorColumn7,
-        colorColumn8
-      ],
-      borderWidth: 1
-    }]
-  },
+        backgroundColor: [
+          colorColumn1,
+          colorColumn2,
+          colorColumn3,
+          colorColumn4,
+          colorColumn5,
+          colorColumn6,
+          colorColumn7,
+          colorColumn8
+        ],
+        borderWidth: 1
+      }]
+    },
     options: {
       responsive: false,
       layout: {
@@ -992,65 +992,67 @@
     }
   });
 </script>
-<script>      
+<script>
+  var label1 = {{chartScoreProgress.label_column_1}} 
+  var label2 = {{chartScoreProgress.label_column_2}} 
+  var label3 = {{chartScoreProgress.label_column_3}} 
+  var label4 = {{chartScoreProgress.label_column_4}} 
+  var label5 = {{chartScoreProgress.label_column_5}} 
+  var label6 = {{chartScoreProgress.label_column_6}} 
+  var label7 = {{chartScoreProgress.label_column_7}} 
+  var label8 = {{chartScoreProgress.label_column_8}} 
+  var label9 = {{chartScoreProgress.label_column_9}} 
+  var label10 = {{chartScoreProgress.label_column_10}} 
   var ctx = document.getElementById("myChart4").getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: [{{chartScoreProgress.label_column_1}}, {{chartScoreProgress.label_column_2}}, {{chartScoreProgress.label_column_3}}, {{chartScoreProgress.label_column_4}}, {{chartScoreProgress.label_column_5}}, {{chartScoreProgress.label_column_6}}, {{chartScoreProgress.label_column_7}}, {{chartScoreProgress.label_column_8}}, {{chartScoreProgress.label_column_9}}, {{chartScoreProgress.label_column_10}}],
-      datasets: [{
-        data: [{{chartScoreProgress.column_1}}, {{chartScoreProgress.column_2}}, {{chartScoreProgress.column_3}}, {{chartScoreProgress.column_4}}, {{chartScoreProgress.column_5}}, {{chartScoreProgress.column_6}}, {{chartScoreProgress.column_7}}, {{chartScoreProgress.column_8}}, {{chartScoreProgress.column_9}}, {{chartScoreProgress.column_10}}],
-        backgroundColor: [
-          'rgb(64, 191, 128)',
-          'rgb(57, 172, 115)',
-          'rgb(51, 153, 102)',
-          'rgb(51, 153, 102)',
-          'rgb(51, 153, 102)',
-          'rgb(51, 153, 102)',
-          'rgb(51, 153, 102)',
-          'rgb(51, 153, 102)',
-          'rgb(51, 153, 102)',
-          'rgb(45, 134, 89)'
-        ],
-        borderWidth: 1
+      labels: [label1, label2, label3, label4, label5, label6, label7, label8, label9, label10],
+  datasets: [{
+    data: [{{ chartScoreProgress.column_1 }}, {{ chartScoreProgress.column_2 }}, {{ chartScoreProgress.column_3 }}, {{ chartScoreProgress.column_4 }}, {{ chartScoreProgress.column_5 }}, {{ chartScoreProgress.column_6 }}, {{ chartScoreProgress.column_7 }}, {{ chartScoreProgress.column_8 }}, {{ chartScoreProgress.column_9 }}, {{ chartScoreProgress.column_10 }}],
+    backgroundColor: [
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)',
+      'rgb(51, 153, 102)'
+    ],
+      borderWidth: 1
       }]
     },
-    options: {
-      responsive: false,
+  options: {
+    responsive: false,
       layout: {
-        padding: {
-          left: 0,
+      padding: {
+        left: 0,
           right: 0,
-          top: 0,
-          bottom: 0
-        }
-      },
-      title: {
-        display: false,
-        position: 'left',
-        fontSize: 14,
-        text: '',
-      },
-      legend: {
-        display: false
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
+            top: 0,
+              bottom: 0
       }
+    },
+    title: {
+      display: false,
+        position: 'left',
+          fontSize: 14,
+            text: '',
+      },
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
     }
+  }
   });
 </script>
-<script>
-
-  function calcPercBusinessSold(valColumn) {
-    return 'text'
-  }
-
-</script>
-
 
 </html>

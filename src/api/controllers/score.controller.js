@@ -304,48 +304,101 @@ export const makePdf = async (req, res, next) => {
       column_10: 0
     }
 
+    const averageValue = {
+      column_10_20: 0,
+      column_21_30: 0,
+      column_31_40: 0,
+      column_41_50: 0,
+      column_51_60: 0,
+      column_61_70: 0,
+      column_71_80: 0,
+      column_81_90: 0
+    }
+
+    var count = 0
+
     buyerFeedbackScore.forEach(progress => {
-      if (progress.lenght === 1) {
-        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format('L')
+      count = count + 1
+
+      if (count === 1) {
+        var test1 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
+        chartScoreProgress.label_column_1 = test1.toString()
         chartScoreProgress.column_1 = progress.total
       }
-      if (progress.lenght === 2) {
-        chartScoreProgress.label_column_2 = moment(progress.dateTimeCreated).format('L')
+      if (count === 2) {
+        chartScoreProgress.label_column_2 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_2 = progress.total
       }
-      if (progress.lenght === 3) {
-        chartScoreProgress.label_column_3 = moment(progress.dateTimeCreated).format('L')
+      if (count === 3) {
+        chartScoreProgress.label_column_3 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_3 = progress.total
       }
-      if (progress.lenght === 4) {
-        chartScoreProgress.label_column_4 = moment(progress.dateTimeCreated).format('L')
+      if (count === 4) {
+        chartScoreProgress.label_column_4 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_4 = progress.total
       }
-      if (progress.lenght === 5) {
-        chartScoreProgress.label_column_5 = moment(progress.dateTimeCreated).format('L')
+      if (count === 5) {
+        chartScoreProgress.label_column_5 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_5 = progress.total
       }
-      if (progress.lenght === 6) {
-        chartScoreProgress.label_column_6 = moment(progress.dateTimeCreated).format('L')
+      if (count === 6) {
+        chartScoreProgress.label_column_6 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_6 = progress.total
       }
-      if (progress.lenght === 7) {
-        chartScoreProgress.label_column_7 = moment(progress.dateTimeCreated).format('L')
+      if (count === 7) {
+        chartScoreProgress.label_column_7 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_7 = progress.total
       }
-      if (progress.lenght === 8) {
-        chartScoreProgress.label_column_8 = moment(progress.dateTimeCreated).format('L')
+      if (count === 8) {
+        chartScoreProgress.label_column_8 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_8 = progress.total
       }
-      if (progress.lenght === 9) {
-        chartScoreProgress.label_column_9 = moment(progress.dateTimeCreated).format('L')
+      if (count === 9) {
+        chartScoreProgress.label_column_9 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_9 = progress.total
       }
-      if (progress.lenght === 10) {
-        chartScoreProgress.label_column_10 = moment(progress.dateTimeCreated).format('L')
+      if (count === 10) {
+        chartScoreProgress.label_column_10 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_10 = progress.total
       }
     })
+
+    const columnListedPrice = {
+      previous_10_20: 0,
+      previous_21_30: 0,
+      previous_31_40: 0,
+      previous_41_50: 0,
+      previous_51_60: 0,
+      previous_61_70: 0,
+      previous_71_80: 0,
+      previous_81_90: 0,
+      total_10_20: 0,
+      total_21_30: 0,
+      total_31_40: 0,
+      total_41_50: 0,
+      total_51_60: 0,
+      total_61_70: 0,
+      total_71_80: 0,
+      total_81_90: 0
+    }
 
     last20BusinessSold.forEach(business => {
       const daysOnTheMarket = moment().diff(business.daysOnTheMarket, 'days')
@@ -362,6 +415,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_10_20 =
               (percBusinessSold.column_10_20 * 100) / last20BusinessSold.length
+
+            if (chartNumberOfBusinessSold.column_10_20 === 1) {
+              columnListedPrice.previous_10_20 = business.listedPrice
+              columnListedPrice.total_10_20 = columnListedPrice.previous_10_20
+            }
+            if (chartNumberOfBusinessSold.column_10_20 > 1) {
+              columnListedPrice.total_10_20 =
+                columnListedPrice.previous_10_20 + business.listedPrice
+              columnListedPrice.previous_10_20 = business.listedPrice
+            }
+            averageValue.column_10_20 =
+              columnListedPrice.total_10_20 / chartNumberOfBusinessSold.column_10_20
           }
           if (score.total > 20 && score.total < 31) {
             chartNumberOfBusinessSold.column_21_30 =
@@ -373,6 +438,21 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_21_30 =
               (percBusinessSold.column_21_30 * 100) / last20BusinessSold.length
+
+            averageValue.column_21_30 =
+              business.listedPrice / chartNumberOfBusinessSold.column_21_30
+
+            if (chartNumberOfBusinessSold.column_21_30 === 1) {
+              columnListedPrice.previous_21_30 = business.listedPrice
+              columnListedPrice.total_21_30 = columnListedPrice.previous_21_30
+            }
+            if (chartNumberOfBusinessSold.column_21_30 > 1) {
+              columnListedPrice.total_21_30 =
+                columnListedPrice.previous_21_30 + business.listedPrice
+              columnListedPrice.previous_21_30 = business.listedPrice
+            }
+            averageValue.column_21_30 =
+              columnListedPrice.total_21_30 / chartNumberOfBusinessSold.column_21_30
           }
           if (score.total > 30 && score.total < 41) {
             chartNumberOfBusinessSold.column_31_40 =
@@ -384,6 +464,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_31_40 =
               (percBusinessSold.column_31_40 * 100) / last20BusinessSold.length
+
+            if (chartNumberOfBusinessSold.column_31_40 === 1) {
+              columnListedPrice.previous_31_40 = business.listedPrice
+              columnListedPrice.total_31_40 = columnListedPrice.previous_31_40
+            }
+            if (chartNumberOfBusinessSold.column_31_40 > 1) {
+              columnListedPrice.total_31_40 =
+                columnListedPrice.previous_31_40 + business.listedPrice
+              columnListedPrice.previous_31_40 = business.listedPrice
+            }
+            averageValue.column_31_40 =
+              columnListedPrice.total_31_40 / chartNumberOfBusinessSold.column_31_40
           }
           if (score.total > 40 && score.total < 51) {
             chartNumberOfBusinessSold.column_41_50 =
@@ -395,6 +487,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_41_50 =
               (chartNumberOfBusinessSold.column_41_50 * 100) / last20BusinessSold.length
+
+            if (chartNumberOfBusinessSold.column_41_50 === 1) {
+              columnListedPrice.previous_41_50 = business.listedPrice
+              columnListedPrice.total_41_50 = columnListedPrice.previous_41_50
+            }
+            if (chartNumberOfBusinessSold.column_41_50 > 1) {
+              columnListedPrice.total_41_50 =
+                columnListedPrice.previous_41_50 + business.listedPrice
+              columnListedPrice.previous_41_50 = business.listedPrice
+            }
+            averageValue.column_41_50 =
+              columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50
           }
           if (score.total > 50 && score.total < 61) {
             chartNumberOfBusinessSold.column_51_60 =
@@ -406,6 +510,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_51_60 =
               (percBusinessSold.column_51_60 * 100) / last20BusinessSold.length
+
+            if (chartNumberOfBusinessSold.column_51_60 === 1) {
+              columnListedPrice.previous_51_60 = business.listedPrice
+              columnListedPrice.total_51_60 = columnListedPrice.previous_51_60
+            }
+            if (chartNumberOfBusinessSold.column_51_60 > 1) {
+              columnListedPrice.total_51_60 =
+                columnListedPrice.previous_51_60 + business.listedPrice
+              columnListedPrice.previous_51_60 = business.listedPrice
+            }
+            averageValue.column_51_60 =
+              columnListedPrice.total_51_60 / chartNumberOfBusinessSold.column_51_60
           }
           if (score.total > 60 && score.total < 71) {
             chartNumberOfBusinessSold.column_61_70 =
@@ -417,6 +533,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_61_70 =
               (percBusinessSold.column_61_70 * 100) / last20BusinessSold.length
+
+            if (chartNumberOfBusinessSold.column_61_70 === 1) {
+              columnListedPrice.previous_61_70 = business.listedPrice
+              columnListedPrice.total_61_70 = columnListedPrice.previous_61_70
+            }
+            if (chartNumberOfBusinessSold.column_61_70 > 1) {
+              columnListedPrice.total_61_70 =
+                columnListedPrice.previous_61_70 + business.listedPrice
+              columnListedPrice.previous_61_70 = business.listedPrice
+            }
+            averageValue.column_61_70 =
+              columnListedPrice.total_61_70 / chartNumberOfBusinessSold.column_61_70
           }
           if (score.total > 70 && score.total < 81) {
             chartNumberOfBusinessSold.column_71_80 =
@@ -428,6 +556,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_71_80 =
               (percBusinessSold.column_71_80 * 100) / last20BusinessSold.length
+
+            if (chartNumberOfBusinessSold.column_71_80 === 1) {
+              columnListedPrice.previous_71_80 = business.listedPrice
+              columnListedPrice.total_71_80 = columnListedPrice.previous_71_80
+            }
+            if (chartNumberOfBusinessSold.column_71_80 > 1) {
+              columnListedPrice.total_71_80 =
+                columnListedPrice.previous_71_80 + business.listedPrice
+              columnListedPrice.previous_71_80 = business.listedPrice
+            }
+            averageValue.column_71_80 =
+              columnListedPrice.total_71_80 / chartNumberOfBusinessSold.column_71_80
           }
           if (score.total > 80) {
             chartNumberOfBusinessSold.column_81_90 =
@@ -439,6 +579,18 @@ export const makePdf = async (req, res, next) => {
 
             percBusinessSold.column_81_90 =
               (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
+
+            if (chartNumberOfBusinessSold.column_81_90 === 1) {
+              columnListedPrice.previous_81_90 = business.listedPrice
+              columnListedPrice.total_81_90 = columnListedPrice.previous_81_90
+            }
+            if (chartNumberOfBusinessSold.column_81_90 > 1) {
+              columnListedPrice.total_81_90 =
+                columnListedPrice.previous_81_90 + business.listedPrice
+              columnListedPrice.previous_81_90 = business.listedPrice
+            }
+            averageValue.column_81_90 =
+              columnListedPrice.total_81_90 / chartNumberOfBusinessSold.column_81_90
           }
         }
       })
@@ -472,7 +624,7 @@ export const makePdf = async (req, res, next) => {
 
     const context = {
       business_name: score.Business.businessName,
-      score_generated: moment(score.dateTimeCreated).format('L'),
+      score_generated: moment(score.dateTimeCreated).format('DD/MM/YYYY'),
       score_version: score.version,
       total_enquiries: enquiriesBusiness.count,
       total_enquiries_last_four_weeks: enquiriesBusinessLastFourWeeks.count,
@@ -506,7 +658,8 @@ export const makePdf = async (req, res, next) => {
       perceivedPrice_icon: renderSmile(score.perceivedPrice.weight),
       perceivedRisk_icon: renderSmile(score.perceivedRisk.weight),
       percBusinessSold,
-      chartScoreProgress
+      chartScoreProgress,
+      averageValue
     }
 
     const PDF_OPTIONS = {
