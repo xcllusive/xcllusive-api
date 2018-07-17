@@ -282,16 +282,16 @@ export const makePdf = async (req, res, next) => {
     }
 
     const chartScoreProgress = {
-      label_column_1: "-",
-      label_column_2: "-",
-      label_column_3: "-",
-      label_column_4: "-",
-      label_column_5: "-",
-      label_column_6: "-",
-      label_column_7: "-",
-      label_column_8: "-",
-      label_column_9: "-",
-      label_column_10: "-",
+      label_column_1: '-',
+      label_column_2: '-',
+      label_column_3: '-',
+      label_column_4: '-',
+      label_column_5: '-',
+      label_column_6: '-',
+      label_column_7: '-',
+      label_column_8: '-',
+      label_column_9: '-',
+      label_column_10: '-',
       column_1: 0,
       column_2: 0,
       column_3: 0,
@@ -313,6 +313,17 @@ export const makePdf = async (req, res, next) => {
       column_61_70: 0,
       column_71_80: 0,
       column_81_90: 0
+    }
+
+    const valueRangeArray = {
+      column_10_20: [],
+      column_21_30: [],
+      column_31_40: [],
+      column_41_50: [],
+      column_51_60: [],
+      column_61_70: [],
+      column_71_80: [],
+      column_81_90: []
     }
 
     var count = 0
@@ -409,8 +420,8 @@ export const makePdf = async (req, res, next) => {
               chartNumberOfBusinessSold.column_10_20 + 1
 
             chartDaysOnTheMarket.column_10_20 =
-              (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
-              chartNumberOfBusinessSold.column_10_20
+            Math.round((daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
+              chartNumberOfBusinessSold.column_10_20)
 
             percBusinessSold.column_10_20 =
               (percBusinessSold.column_10_20 * 100) / last20BusinessSold.length
@@ -426,14 +437,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_10_20 =
               columnListedPrice.total_10_20 / chartNumberOfBusinessSold.column_10_20
+
+            valueRangeArray.column_10_20.push(business.listedPrice)
           }
           if (score.total > 20 && score.total < 31) {
             chartNumberOfBusinessSold.column_21_30 =
               chartNumberOfBusinessSold.column_21_30 + 1
 
-            chartDaysOnTheMarket.column_21_30 =
+            Math.round(chartDaysOnTheMarket.column_21_30 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
-              chartNumberOfBusinessSold.column_21_30
+              chartNumberOfBusinessSold.column_21_30)
 
             percBusinessSold.column_21_30 =
               (percBusinessSold.column_21_30 * 100) / last20BusinessSold.length
@@ -452,14 +465,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_21_30 =
               columnListedPrice.total_21_30 / chartNumberOfBusinessSold.column_21_30
+
+            valueRangeArray.column_21_30.push(business.listedPrice)
           }
           if (score.total > 30 && score.total < 41) {
             chartNumberOfBusinessSold.column_31_40 =
               chartNumberOfBusinessSold.column_31_40 + 1
 
-            chartDaysOnTheMarket.column_31_40 =
+            Math.round(chartDaysOnTheMarket.column_31_40 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
-              chartNumberOfBusinessSold.column_31_40
+              chartNumberOfBusinessSold.column_31_40)
 
             percBusinessSold.column_31_40 =
               (percBusinessSold.column_31_40 * 100) / last20BusinessSold.length
@@ -475,14 +490,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_31_40 =
               columnListedPrice.total_31_40 / chartNumberOfBusinessSold.column_31_40
+
+            valueRangeArray.column_31_40.push(business.listedPrice)
           }
           if (score.total > 40 && score.total < 51) {
             chartNumberOfBusinessSold.column_41_50 =
               chartNumberOfBusinessSold.column_41_50 + 1
 
-            chartDaysOnTheMarket.column_41_50 =
+            Math.round(chartDaysOnTheMarket.column_41_50 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
-              chartNumberOfBusinessSold.column_41_50
+              chartNumberOfBusinessSold.column_41_50)
 
             percBusinessSold.column_41_50 =
               (chartNumberOfBusinessSold.column_41_50 * 100) / last20BusinessSold.length
@@ -498,14 +515,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_41_50 =
               columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50
+
+            valueRangeArray.column_41_50.push(business.listedPrice)
           }
           if (score.total > 50 && score.total < 61) {
             chartNumberOfBusinessSold.column_51_60 =
               chartNumberOfBusinessSold.column_51_60 + 1
 
-            chartDaysOnTheMarket.column_51_60 =
+            Math.round(chartDaysOnTheMarket.column_51_60 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
-              chartNumberOfBusinessSold.column_51_60
+              chartNumberOfBusinessSold.column_51_60)
 
             percBusinessSold.column_51_60 =
               (percBusinessSold.column_51_60 * 100) / last20BusinessSold.length
@@ -521,14 +540,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_51_60 =
               columnListedPrice.total_51_60 / chartNumberOfBusinessSold.column_51_60
+
+            valueRangeArray.column_51_60.push(business.listedPrice)
           }
           if (score.total > 60 && score.total < 71) {
             chartNumberOfBusinessSold.column_61_70 =
               chartNumberOfBusinessSold.column_61_70 + 1
 
-            chartDaysOnTheMarket.column_61_70 =
+            Math.round(chartDaysOnTheMarket.column_61_70 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
-              chartNumberOfBusinessSold.column_61_70
+              chartNumberOfBusinessSold.column_61_70)
 
             percBusinessSold.column_61_70 =
               (percBusinessSold.column_61_70 * 100) / last20BusinessSold.length
@@ -544,14 +565,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_61_70 =
               columnListedPrice.total_61_70 / chartNumberOfBusinessSold.column_61_70
+
+            valueRangeArray.column_61_70.push(business.listedPrice)
           }
           if (score.total > 70 && score.total < 81) {
             chartNumberOfBusinessSold.column_71_80 =
               chartNumberOfBusinessSold.column_71_80 + 1
 
-            chartDaysOnTheMarket.column_71_80 =
+            Math.round(chartDaysOnTheMarket.column_71_80 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
-              chartNumberOfBusinessSold.column_71_80
+              chartNumberOfBusinessSold.column_71_80)
 
             percBusinessSold.column_71_80 =
               (percBusinessSold.column_71_80 * 100) / last20BusinessSold.length
@@ -567,14 +590,16 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_71_80 =
               columnListedPrice.total_71_80 / chartNumberOfBusinessSold.column_71_80
+
+            valueRangeArray.column_71_80.push(business.listedPrice)
           }
           if (score.total > 80) {
             chartNumberOfBusinessSold.column_81_90 =
               chartNumberOfBusinessSold.column_81_90 + 1
 
-            chartDaysOnTheMarket.column_81_90 =
+            Math.round(chartDaysOnTheMarket.column_81_90 =
               (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
-              chartNumberOfBusinessSold.column_81_90
+              chartNumberOfBusinessSold.column_81_90)
 
             percBusinessSold.column_81_90 =
               (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
@@ -590,6 +615,8 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_81_90 =
               columnListedPrice.total_81_90 / chartNumberOfBusinessSold.column_81_90
+
+            valueRangeArray.column_81_90.push(business.listedPrice)
           }
         }
       })
@@ -658,7 +685,17 @@ export const makePdf = async (req, res, next) => {
       perceivedRisk_icon: renderSmile(score.perceivedRisk.weight),
       percBusinessSold,
       chartScoreProgress,
-      averageValue
+      averageValue,
+      valueRange: {
+        column_10_20: `${Math.min(...valueRangeArray.column_10_20)} - ${Math.max(...valueRangeArray.column_10_20)}`,
+        column_21_30: `${Math.min(...valueRangeArray.column_21_30)} - ${Math.max(...valueRangeArray.column_21_30)}`,
+        column_31_40: `${Math.min(...valueRangeArray.column_31_40)} - ${Math.max(...valueRangeArray.column_31_40)}`,
+        column_41_50: `${Math.min(...valueRangeArray.column_41_50)} - ${Math.max(...valueRangeArray.column_41_50)}`,
+        column_51_60: `${Math.min(...valueRangeArray.column_51_60)} - ${Math.max(...valueRangeArray.column_51_60)}`,
+        column_61_70: `${Math.min(...valueRangeArray.column_61_70)} - ${Math.max(...valueRangeArray.column_61_70)}`,
+        column_71_80: `${Math.min(...valueRangeArray.column_71_80)} - ${Math.max(...valueRangeArray.column_71_80)}`,
+        column_81_90: `${Math.min(...valueRangeArray.column_81_90)} - ${Math.max(...valueRangeArray.column_81_90)}`
+      }
     }
 
     const PDF_OPTIONS = {
