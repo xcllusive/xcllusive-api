@@ -282,16 +282,16 @@ export const makePdf = async (req, res, next) => {
     }
 
     const chartScoreProgress = {
-      label_column_1: 0,
-      label_column_2: 0,
-      label_column_3: 0,
-      label_column_4: 0,
-      label_column_5: 0,
-      label_column_6: 0,
-      label_column_7: 0,
-      label_column_8: 0,
-      label_column_9: 0,
-      label_column_10: 0,
+      label_column_1: "-",
+      label_column_2: "-",
+      label_column_3: "-",
+      label_column_4: "-",
+      label_column_5: "-",
+      label_column_6: "-",
+      label_column_7: "-",
+      label_column_8: "-",
+      label_column_9: "-",
+      label_column_10: "-",
       column_1: 0,
       column_2: 0,
       column_3: 0,
@@ -321,8 +321,7 @@ export const makePdf = async (req, res, next) => {
       count = count + 1
 
       if (count === 1) {
-        var test1 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
-        chartScoreProgress.label_column_1 = test1.toString()
+        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_1 = progress.total
       }
       if (count === 2) {

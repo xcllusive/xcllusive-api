@@ -782,7 +782,7 @@
   // var column1 = {{chartNumberOfBusinessSold.column_10_20}};
   // var column2 = {{chartNumberOfBusinessSold.column_21_30}};
   // var column3 = {{chartNumberOfBusinessSold.column_31_40}};
-  var column4 = {{chartNumberOfBusinessSold.column_41_50}};
+  var column4 = {{ chartNumberOfBusinessSold.column_41_50 }};
   // var column5 = {{chartNumberOfBusinessSold.column_51_60}};
   // var column6 = {{chartNumberOfBusinessSold.column_61_70}};
   // var column7 = {{chartNumberOfBusinessSold.column_71_80}};
@@ -993,65 +993,77 @@
   });
 </script>
 <script>
-  var label1 = {{chartScoreProgress.label_column_1}} 
-  var label2 = {{chartScoreProgress.label_column_2}} 
-  var label3 = {{chartScoreProgress.label_column_3}} 
-  var label4 = {{chartScoreProgress.label_column_4}} 
-  var label5 = {{chartScoreProgress.label_column_5}} 
-  var label6 = {{chartScoreProgress.label_column_6}} 
-  var label7 = {{chartScoreProgress.label_column_7}} 
-  var label8 = {{chartScoreProgress.label_column_8}} 
-  var label9 = {{chartScoreProgress.label_column_9}} 
-  var label10 = {{chartScoreProgress.label_column_10}} 
+  var label1 = "{{ chartScoreProgress.label_column_1 }}";
+  var label2 = "{{ chartScoreProgress.label_column_2 }}";
+  var label3 = "{{ chartScoreProgress.label_column_3 }}";
+  var label4 = "{{ chartScoreProgress.label_column_4 }}";
+  var label5 = "{{ chartScoreProgress.label_column_5 }}";
+  var label6 = "{{ chartScoreProgress.label_column_6 }}";
+  var label7 = "{{ chartScoreProgress.label_column_7 }}";
+  var label8 = "{{ chartScoreProgress.label_column_8 }}";
+  var label9 = "{{ chartScoreProgress.label_column_9 }}";
+  var label10 = "{{ chartScoreProgress.label_column_10 }}";
+
+  var column1 = {{ chartScoreProgress.column_1 }};
+  var column2 = {{ chartScoreProgress.column_2 }};
+  var column3 = {{ chartScoreProgress.column_3 }};
+  var column4 = {{ chartScoreProgress.column_4 }};
+  var column5 = {{ chartScoreProgress.column_5 }};
+  var column6 = {{ chartScoreProgress.column_6 }};
+  var column7 = {{ chartScoreProgress.column_7 }};
+  var column8 = {{ chartScoreProgress.column_8 }};
+  var column9 = {{ chartScoreProgress.column_9 }};
+  var column10 = {{ chartScoreProgress.column_10 }};
+
   var ctx = document.getElementById("myChart4").getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: [label1, label2, label3, label4, label5, label6, label7, label8, label9, label10],
-  datasets: [{
-    data: [{{ chartScoreProgress.column_1 }}, {{ chartScoreProgress.column_2 }}, {{ chartScoreProgress.column_3 }}, {{ chartScoreProgress.column_4 }}, {{ chartScoreProgress.column_5 }}, {{ chartScoreProgress.column_6 }}, {{ chartScoreProgress.column_7 }}, {{ chartScoreProgress.column_8 }}, {{ chartScoreProgress.column_9 }}, {{ chartScoreProgress.column_10 }}],
-    backgroundColor: [
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)',
-      'rgb(51, 153, 102)'
-    ],
-      borderWidth: 1
+      datasets: [{
+        data: [column1, column2, column3, column4, column5, column6, column7, column8, column9, column10],
+        backgroundColor: [
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)',
+          'rgb(51, 153, 102)'
+        ],
+        borderWidth: 1
       }]
     },
-  options: {
-    responsive: false,
-      layout: {
-      padding: {
-        left: 0,
-          right: 0,
-            top: 0,
-              bottom: 0
-      }
-    },
-    title: {
-      display: false,
-        position: 'left',
-          fontSize: 14,
-            text: '',
-      },
-    legend: {
-      display: false
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
+    options: {
+      responsive: false,
+        layout: {
+        padding: {
+          left: 0,
+            right: 0,
+              top: 0,
+                bottom: 0
         }
-      }]
+      },
+      title: {
+        display: false,
+          position: 'left',
+            fontSize: 14,
+              text: '',
+          },
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
     }
-  }
   });
 </script>
 
