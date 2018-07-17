@@ -332,7 +332,9 @@ export const makePdf = async (req, res, next) => {
       count = count + 1
 
       if (count === 1) {
-        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
+        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format(
+          'DD/MM/YYYY'
+        )
         chartScoreProgress.column_1 = progress.total
       }
       if (count === 2) {
@@ -419,9 +421,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_10_20 =
               chartNumberOfBusinessSold.column_10_20 + 1
 
-            chartDaysOnTheMarket.column_10_20 =
-            Math.round((daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
-              chartNumberOfBusinessSold.column_10_20)
+            chartDaysOnTheMarket.column_10_20 = Math.trunc(
+              (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
+                chartNumberOfBusinessSold.column_10_20
+            )
 
             percBusinessSold.column_10_20 =
               (percBusinessSold.column_10_20 * 100) / last20BusinessSold.length
@@ -433,10 +436,13 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_10_20 > 1) {
               columnListedPrice.total_10_20 =
                 columnListedPrice.previous_10_20 + business.listedPrice
-              columnListedPrice.previous_10_20 = business.listedPrice
+              columnListedPrice.previous_10_20 = columnListedPrice.total_10_20
             }
             averageValue.column_10_20 =
               columnListedPrice.total_10_20 / chartNumberOfBusinessSold.column_10_20
+            if (averageValue.column_10_20 > 999999) {
+              averageValue.column_10_20 = averageValue.column_10_20 + 'M'
+            } else averageValue.column_10_20 = averageValue.column_10_20 + 'K'
 
             valueRangeArray.column_10_20.push(business.listedPrice)
           }
@@ -444,9 +450,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_21_30 =
               chartNumberOfBusinessSold.column_21_30 + 1
 
-            Math.round(chartDaysOnTheMarket.column_21_30 =
+            chartDaysOnTheMarket.column_21_30 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
-              chartNumberOfBusinessSold.column_21_30)
+                chartNumberOfBusinessSold.column_21_30
+            )
 
             percBusinessSold.column_21_30 =
               (percBusinessSold.column_21_30 * 100) / last20BusinessSold.length
@@ -461,10 +468,13 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_21_30 > 1) {
               columnListedPrice.total_21_30 =
                 columnListedPrice.previous_21_30 + business.listedPrice
-              columnListedPrice.previous_21_30 = business.listedPrice
+              columnListedPrice.previous_21_30 = columnListedPrice.total_21_30
             }
             averageValue.column_21_30 =
               columnListedPrice.total_21_30 / chartNumberOfBusinessSold.column_21_30
+            if (averageValue.column_21_30 > 999999) {
+              averageValue.column_21_30 = averageValue.column_21_30 + 'M'
+            } else averageValue.column_21_30 = averageValue.column_21_30 + 'K'
 
             valueRangeArray.column_21_30.push(business.listedPrice)
           }
@@ -472,9 +482,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_31_40 =
               chartNumberOfBusinessSold.column_31_40 + 1
 
-            Math.round(chartDaysOnTheMarket.column_31_40 =
+            chartDaysOnTheMarket.column_31_40 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
-              chartNumberOfBusinessSold.column_31_40)
+                chartNumberOfBusinessSold.column_31_40
+            )
 
             percBusinessSold.column_31_40 =
               (percBusinessSold.column_31_40 * 100) / last20BusinessSold.length
@@ -486,10 +497,13 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_31_40 > 1) {
               columnListedPrice.total_31_40 =
                 columnListedPrice.previous_31_40 + business.listedPrice
-              columnListedPrice.previous_31_40 = business.listedPrice
+              columnListedPrice.previous_31_40 = columnListedPrice.total_31_40
             }
             averageValue.column_31_40 =
               columnListedPrice.total_31_40 / chartNumberOfBusinessSold.column_31_40
+            if (averageValue.column_31_40 > 999999) {
+              averageValue.column_31_40 = averageValue.column_31_40 + 'M'
+            } else averageValue.column_31_40 = averageValue.column_31_40 + 'K'
 
             valueRangeArray.column_31_40.push(business.listedPrice)
           }
@@ -497,9 +511,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_41_50 =
               chartNumberOfBusinessSold.column_41_50 + 1
 
-            Math.round(chartDaysOnTheMarket.column_41_50 =
+            chartDaysOnTheMarket.column_41_50 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
-              chartNumberOfBusinessSold.column_41_50)
+                chartNumberOfBusinessSold.column_41_50
+            )
 
             percBusinessSold.column_41_50 =
               (chartNumberOfBusinessSold.column_41_50 * 100) / last20BusinessSold.length
@@ -511,10 +526,14 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_41_50 > 1) {
               columnListedPrice.total_41_50 =
                 columnListedPrice.previous_41_50 + business.listedPrice
-              columnListedPrice.previous_41_50 = business.listedPrice
+              columnListedPrice.previous_41_50 = columnListedPrice.total_41_50
             }
-            averageValue.column_41_50 =
+            averageValue.column_41_50 = Math.trunc(
               columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50
+            )
+            if (averageValue.column_41_50 > 999999) {
+              averageValue.column_41_50 = averageValue.column_41_50 + 'M'
+            } else averageValue.column_41_50 = averageValue.column_41_50 + 'K'
 
             valueRangeArray.column_41_50.push(business.listedPrice)
           }
@@ -522,9 +541,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_51_60 =
               chartNumberOfBusinessSold.column_51_60 + 1
 
-            Math.round(chartDaysOnTheMarket.column_51_60 =
+            chartDaysOnTheMarket.column_51_60 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
-              chartNumberOfBusinessSold.column_51_60)
+                chartNumberOfBusinessSold.column_51_60
+            )
 
             percBusinessSold.column_51_60 =
               (percBusinessSold.column_51_60 * 100) / last20BusinessSold.length
@@ -536,10 +556,13 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_51_60 > 1) {
               columnListedPrice.total_51_60 =
                 columnListedPrice.previous_51_60 + business.listedPrice
-              columnListedPrice.previous_51_60 = business.listedPrice
+              columnListedPrice.previous_51_60 = columnListedPrice.total_51_60
             }
             averageValue.column_51_60 =
               columnListedPrice.total_51_60 / chartNumberOfBusinessSold.column_51_60
+            if (averageValue.column_51_60 > 999999) {
+              averageValue.column_51_60 = averageValue.column_51_60 + 'M'
+            } else averageValue.column_51_60 = averageValue.column_51_60 + 'K'
 
             valueRangeArray.column_51_60.push(business.listedPrice)
           }
@@ -547,9 +570,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_61_70 =
               chartNumberOfBusinessSold.column_61_70 + 1
 
-            Math.round(chartDaysOnTheMarket.column_61_70 =
+            chartDaysOnTheMarket.column_61_70 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
-              chartNumberOfBusinessSold.column_61_70)
+                chartNumberOfBusinessSold.column_61_70
+            )
 
             percBusinessSold.column_61_70 =
               (percBusinessSold.column_61_70 * 100) / last20BusinessSold.length
@@ -561,10 +585,13 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_61_70 > 1) {
               columnListedPrice.total_61_70 =
                 columnListedPrice.previous_61_70 + business.listedPrice
-              columnListedPrice.previous_61_70 = business.listedPrice
+              columnListedPrice.previous_61_70 = columnListedPrice.total_61_70
             }
             averageValue.column_61_70 =
               columnListedPrice.total_61_70 / chartNumberOfBusinessSold.column_61_70
+            if (averageValue.column_61_70 > 999999) {
+              averageValue.column_61_70 = averageValue.column_61_70 + 'M'
+            } else averageValue.column_61_70 = averageValue.column_61_70 + 'K'
 
             valueRangeArray.column_61_70.push(business.listedPrice)
           }
@@ -572,9 +599,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_71_80 =
               chartNumberOfBusinessSold.column_71_80 + 1
 
-            Math.round(chartDaysOnTheMarket.column_71_80 =
+            chartDaysOnTheMarket.column_71_80 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
-              chartNumberOfBusinessSold.column_71_80)
+                chartNumberOfBusinessSold.column_71_80
+            )
 
             percBusinessSold.column_71_80 =
               (percBusinessSold.column_71_80 * 100) / last20BusinessSold.length
@@ -586,10 +614,14 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_71_80 > 1) {
               columnListedPrice.total_71_80 =
                 columnListedPrice.previous_71_80 + business.listedPrice
-              columnListedPrice.previous_71_80 = business.listedPrice
+              columnListedPrice.previous_71_80 = columnListedPrice.total_71_80
             }
             averageValue.column_71_80 =
               columnListedPrice.total_71_80 / chartNumberOfBusinessSold.column_71_80
+
+            if (averageValue.column_71_80 > 999999) {
+              averageValue.column_71_80 = averageValue.column_71_80 + 'M'
+            } else averageValue.column_71_80 = averageValue.column_71_80 + 'K'
 
             valueRangeArray.column_71_80.push(business.listedPrice)
           }
@@ -597,9 +629,10 @@ export const makePdf = async (req, res, next) => {
             chartNumberOfBusinessSold.column_81_90 =
               chartNumberOfBusinessSold.column_81_90 + 1
 
-            Math.round(chartDaysOnTheMarket.column_81_90 =
+            chartDaysOnTheMarket.column_81_90 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
-              chartNumberOfBusinessSold.column_81_90)
+                chartNumberOfBusinessSold.column_81_90
+            )
 
             percBusinessSold.column_81_90 =
               (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
@@ -611,10 +644,14 @@ export const makePdf = async (req, res, next) => {
             if (chartNumberOfBusinessSold.column_81_90 > 1) {
               columnListedPrice.total_81_90 =
                 columnListedPrice.previous_81_90 + business.listedPrice
-              columnListedPrice.previous_81_90 = business.listedPrice
+              columnListedPrice.previous_81_90 = columnListedPrice.total_81_90
             }
             averageValue.column_81_90 =
               columnListedPrice.total_81_90 / chartNumberOfBusinessSold.column_81_90
+
+            if (averageValue.column_81_90 > 999999) {
+              averageValue.column_81_90 = averageValue.column_81_90 + 'M'
+            } else averageValue.column_81_90 = averageValue.column_81_90 + 'K'
 
             valueRangeArray.column_81_90.push(business.listedPrice)
           }
@@ -687,14 +724,30 @@ export const makePdf = async (req, res, next) => {
       chartScoreProgress,
       averageValue,
       valueRange: {
-        column_10_20: `${Math.min(...valueRangeArray.column_10_20)} - ${Math.max(...valueRangeArray.column_10_20)}`,
-        column_21_30: `${Math.min(...valueRangeArray.column_21_30)} - ${Math.max(...valueRangeArray.column_21_30)}`,
-        column_31_40: `${Math.min(...valueRangeArray.column_31_40)} - ${Math.max(...valueRangeArray.column_31_40)}`,
-        column_41_50: `${Math.min(...valueRangeArray.column_41_50)} - ${Math.max(...valueRangeArray.column_41_50)}`,
-        column_51_60: `${Math.min(...valueRangeArray.column_51_60)} - ${Math.max(...valueRangeArray.column_51_60)}`,
-        column_61_70: `${Math.min(...valueRangeArray.column_61_70)} - ${Math.max(...valueRangeArray.column_61_70)}`,
-        column_71_80: `${Math.min(...valueRangeArray.column_71_80)} - ${Math.max(...valueRangeArray.column_71_80)}`,
-        column_81_90: `${Math.min(...valueRangeArray.column_81_90)} - ${Math.max(...valueRangeArray.column_81_90)}`
+        column_10_20: `${Math.min(...valueRangeArray.column_10_20)} - ${Math.max(
+          ...valueRangeArray.column_10_20
+        )}`,
+        column_21_30: `${Math.min(...valueRangeArray.column_21_30)} - ${Math.max(
+          ...valueRangeArray.column_21_30
+        )}`,
+        column_31_40: `${Math.min(...valueRangeArray.column_31_40)} - ${Math.max(
+          ...valueRangeArray.column_31_40
+        )}`,
+        column_41_50: `${Math.min(...valueRangeArray.column_41_50)} - ${Math.max(
+          ...valueRangeArray.column_41_50
+        )}`,
+        column_51_60: `${Math.min(...valueRangeArray.column_51_60)} - ${Math.max(
+          ...valueRangeArray.column_51_60
+        )}`,
+        column_61_70: `${Math.min(...valueRangeArray.column_61_70)} - ${Math.max(
+          ...valueRangeArray.column_61_70
+        )}`,
+        column_71_80: `${Math.min(...valueRangeArray.column_71_80)} - ${Math.max(
+          ...valueRangeArray.column_71_80
+        )}`,
+        column_81_90: `${Math.min(...valueRangeArray.column_81_90)} - ${Math.max(
+          ...valueRangeArray.column_81_90
+        )}`
       }
     }
 
@@ -712,7 +765,7 @@ export const makePdf = async (req, res, next) => {
       headerTemplate: ' ',
       footerTemplate: `
       <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-      <span style="float: left;">${context.business_name} buyer feedback ${
+      <span style="float: left;">${context.business_name} - Buyer Feedback ${
   context.score_version
 }</span>
       <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
