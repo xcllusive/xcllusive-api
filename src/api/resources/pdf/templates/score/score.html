@@ -157,8 +157,6 @@
       font-weight: bold;
     }
 
-    #page-test .content table {}
-
     #page-three table {
       border-spacing: 0px;
     }
@@ -173,7 +171,9 @@
       border-bottom: 1px solid black;
       height: 170px;
       vertical-align: initial;
-      padding: 0px
+      padding: 0px;
+      max-width: 600px;
+      word-wrap: break-word;
     }
 
     #page-three .cel-left h1 {
@@ -1039,20 +1039,20 @@
     },
     options: {
       responsive: false,
-        layout: {
+      layout: {
         padding: {
           left: 0,
-            right: 0,
-              top: 0,
-                bottom: 0
+          right: 0,
+          top: 0,
+          bottom: 0
         }
       },
       title: {
         display: false,
-          position: 'left',
-            fontSize: 14,
-              text: '',
-          },
+        position: 'left',
+        fontSize: 14,
+        text: '',
+      },
       legend: {
         display: false
       },
