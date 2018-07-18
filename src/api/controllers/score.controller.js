@@ -685,7 +685,7 @@ export const makePdf = async (req, res, next) => {
       if (min === Infinity) min = 0
       if (max === -Infinity) max = 0
 
-      return `${numeral(min).format('0.0a')} - ${numeral(max).format('0.0a')}`
+      return `$${numeral(min).format('0.0a')} - $${numeral(max).format('0.0a')}`
     }
 
     const context = {
