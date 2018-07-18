@@ -7,6 +7,7 @@ import Path from 'path'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
 import { happy, neutral, sad } from '../constants/icons'
+import numeral from 'numeral'
 
 const ReadFile = Util.promisify(Fs.readFile)
 
@@ -67,9 +68,10 @@ export const create = async (req, res, next) => {
       where: {
         business_id: newScore.business_id
       },
-      order: [ [ 'dateTimeCreated', 'DESC' ]]
+      order: [['dateTimeCreated', 'DESC']]
     })
-    newScore.version = lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 0
+    newScore.version =
+      lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 0
     await models.Score.create(newScore)
 
     return res.status(200).json({ message: 'Score created' })
@@ -541,8 +543,12 @@ export const makePdf = async (req, res, next) => {
               columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50
             )
             if (averageValue.column_41_50 > 999999) {
-              averageValue.column_41_50 = averageValue.column_41_50 + 'M'
-            } else averageValue.column_41_50 = averageValue.column_41_50 + 'K'
+              averageValue.column_41_50 = numeral(averageValue.column_41_50).format(
+                '0.0a'
+              )
+            } else {
+              averageValue.column_41_50 = numeral(averageValue.column_41_50).format('0a')
+            }
 
             valueRangeArray.column_41_50.push(business.listedPrice)
           }
