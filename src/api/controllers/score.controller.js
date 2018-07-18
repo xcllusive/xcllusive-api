@@ -451,9 +451,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_10_20 =
               columnListedPrice.total_10_20 / chartNumberOfBusinessSold.column_10_20
-            if (averageValue.column_10_20 > 999999) {
-              averageValue.column_10_20 = averageValue.column_10_20 + 'M'
-            } else averageValue.column_10_20 = averageValue.column_10_20 + 'K'
+            averageValue.column_10_20 = numeral(averageValue.column_10_20).format('0.0a')
 
             valueRangeArray.column_10_20.push(business.listedPrice)
           }
@@ -483,9 +481,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_21_30 =
               columnListedPrice.total_21_30 / chartNumberOfBusinessSold.column_21_30
-            if (averageValue.column_21_30 > 999999) {
-              averageValue.column_21_30 = averageValue.column_21_30 + 'M'
-            } else averageValue.column_21_30 = averageValue.column_21_30 + 'K'
+            averageValue.column_21_30 = numeral(averageValue.column_21_30).format('0.0a')
 
             valueRangeArray.column_21_30.push(business.listedPrice)
           }
@@ -512,9 +508,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_31_40 =
               columnListedPrice.total_31_40 / chartNumberOfBusinessSold.column_31_40
-            if (averageValue.column_31_40 > 999999) {
-              averageValue.column_31_40 = averageValue.column_31_40 + 'M'
-            } else averageValue.column_31_40 = averageValue.column_31_40 + 'K'
+            averageValue.column_31_40 = numeral(averageValue.column_31_40).format('0.0a')
 
             valueRangeArray.column_31_40.push(business.listedPrice)
           }
@@ -542,13 +536,7 @@ export const makePdf = async (req, res, next) => {
             averageValue.column_41_50 = Math.trunc(
               columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50
             )
-            if (averageValue.column_41_50 > 999999) {
-              averageValue.column_41_50 = numeral(averageValue.column_41_50).format(
-                '0.0a'
-              )
-            } else {
-              averageValue.column_41_50 = numeral(averageValue.column_41_50).format('0a')
-            }
+            averageValue.column_41_50 = numeral(averageValue.column_41_50).format('0.0a')
 
             valueRangeArray.column_41_50.push(business.listedPrice)
           }
@@ -575,9 +563,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_51_60 =
               columnListedPrice.total_51_60 / chartNumberOfBusinessSold.column_51_60
-            if (averageValue.column_51_60 > 999999) {
-              averageValue.column_51_60 = averageValue.column_51_60 + 'M'
-            } else averageValue.column_51_60 = averageValue.column_51_60 + 'K'
+            averageValue.column_51_60 = numeral(averageValue.column_51_60).format('0.0a')
 
             valueRangeArray.column_51_60.push(business.listedPrice)
           }
@@ -604,9 +590,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_61_70 =
               columnListedPrice.total_61_70 / chartNumberOfBusinessSold.column_61_70
-            if (averageValue.column_61_70 > 999999) {
-              averageValue.column_61_70 = averageValue.column_61_70 + 'M'
-            } else averageValue.column_61_70 = averageValue.column_61_70 + 'K'
+            averageValue.total_61_70 = numeral(averageValue.total_61_70).format('0.0a')
 
             valueRangeArray.column_61_70.push(business.listedPrice)
           }
@@ -633,10 +617,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_71_80 =
               columnListedPrice.total_71_80 / chartNumberOfBusinessSold.column_71_80
-
-            if (averageValue.column_71_80 > 999999) {
-              averageValue.column_71_80 = averageValue.column_71_80 + 'M'
-            } else averageValue.column_71_80 = averageValue.column_71_80 + 'K'
+            averageValue.column_71_80 = numeral(averageValue.column_71_80).format('0.0a')
 
             valueRangeArray.column_71_80.push(business.listedPrice)
           }
@@ -663,10 +644,7 @@ export const makePdf = async (req, res, next) => {
             }
             averageValue.column_81_90 =
               columnListedPrice.total_81_90 / chartNumberOfBusinessSold.column_81_90
-
-            if (averageValue.column_81_90 > 999999) {
-              averageValue.column_81_90 = averageValue.column_81_90 + 'M'
-            } else averageValue.column_81_90 = averageValue.column_81_90 + 'K'
+            averageValue.column_81_90 = numeral(averageValue.column_81_90).format('0.0a')
 
             valueRangeArray.column_81_90.push(business.listedPrice)
           }
@@ -698,6 +676,16 @@ export const makePdf = async (req, res, next) => {
         return happy
       }
       return 'Not found score'
+    }
+
+    const renderValueRange = array => {
+      let min = Math.min(...array)
+      let max = Math.max(...array)
+
+      if (min === Infinity) min = 0
+      if (max === -Infinity) max = 0
+
+      return `${numeral(min).format('0.0a')} - ${numeral(max).format('0.0a')}`
     }
 
     const context = {
@@ -739,30 +727,14 @@ export const makePdf = async (req, res, next) => {
       chartScoreProgress,
       averageValue,
       valueRange: {
-        column_10_20: `${Math.min(...valueRangeArray.column_10_20)} - ${Math.max(
-          ...valueRangeArray.column_10_20
-        )}`,
-        column_21_30: `${Math.min(...valueRangeArray.column_21_30)} - ${Math.max(
-          ...valueRangeArray.column_21_30
-        )}`,
-        column_31_40: `${Math.min(...valueRangeArray.column_31_40)} - ${Math.max(
-          ...valueRangeArray.column_31_40
-        )}`,
-        column_41_50: `${Math.min(...valueRangeArray.column_41_50)} - ${Math.max(
-          ...valueRangeArray.column_41_50
-        )}`,
-        column_51_60: `${Math.min(...valueRangeArray.column_51_60)} - ${Math.max(
-          ...valueRangeArray.column_51_60
-        )}`,
-        column_61_70: `${Math.min(...valueRangeArray.column_61_70)} - ${Math.max(
-          ...valueRangeArray.column_61_70
-        )}`,
-        column_71_80: `${Math.min(...valueRangeArray.column_71_80)} - ${Math.max(
-          ...valueRangeArray.column_71_80
-        )}`,
-        column_81_90: `${Math.min(...valueRangeArray.column_81_90)} - ${Math.max(
-          ...valueRangeArray.column_81_90
-        )}`
+        column_10_20: renderValueRange(valueRangeArray.column_10_20),
+        column_21_30: renderValueRange(valueRangeArray.column_21_30),
+        column_31_40: renderValueRange(valueRangeArray.column_31_40),
+        column_41_50: renderValueRange(valueRangeArray.column_41_50),
+        column_51_60: renderValueRange(valueRangeArray.column_51_60),
+        column_61_70: renderValueRange(valueRangeArray.column_61_70),
+        column_71_80: renderValueRange(valueRangeArray.column_71_80),
+        column_81_90: renderValueRange(valueRangeArray.column_81_90)
       }
     }
 
