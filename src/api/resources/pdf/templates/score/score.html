@@ -741,7 +741,7 @@
   if (security >= 60) backgroundColorSecurity = "rgba(1, 187, 32, 0.979)"
 
   if (total < 30) backgroundColorTotal = "rgba(243, 32, 32, 0.993)"
-  if (total >= 30 && enquiries <= 59) backgroundColorTotal = "rgba(248, 232, 13, 0.979)"
+  if (total >= 30 && total <= 59) backgroundColorTotal = "rgba(248, 232, 13, 0.979)"
   if (total >= 60) backgroundColorTotal = "rgba(1, 187, 32, 0.979)"
   var ctx = document.getElementById("myChart").getContext('2d');
   var myChart = new Chart(ctx, {
@@ -893,7 +893,7 @@
   // var column1 = {{chartDaysOnTheMarket.column_10_20}};
   // var column2 = {{chartDaysOnTheMarket.column_21_30}};
   // var column3 = {{chartDaysOnTheMarket.column_31_40}};
-  var column4 = {{chartDaysOnTheMarket.column_41_50}};
+  var column4 = {{ chartDaysOnTheMarket.column_41_50 }};
   // var column5 = {{chartDaysOnTheMarket.column_51_60}};
   // var column6 = {{chartDaysOnTheMarket.column_61_70}};
   // var column7 = {{chartDaysOnTheMarket.column_71_80}};
