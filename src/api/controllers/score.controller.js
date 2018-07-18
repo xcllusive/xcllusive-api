@@ -63,6 +63,13 @@ export const create = async (req, res, next) => {
   newScore.modifiedBy_id = req.user.id
 
   try {
+    const lastVersion = await models.Score.findOne({
+      where: {
+        business_id: newScore.business_id
+      },
+      order: [ [ 'dateTimeCreated', 'DESC' ]]
+    })
+    newScore.version = lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 0
     await models.Score.create(newScore)
 
     return res.status(200).json({ message: 'Score created' })
@@ -210,7 +217,9 @@ export const makePdf = async (req, res, next) => {
     })
 
     const enquiries = await models.ScoreRegister.findOne({
-      where: { label: score.diff }
+      where: {
+        label: score.diff > 4 ? 4 : score.diff < -4 ? -4 : score.diff
+      }
     })
 
     const lastScore = await models.Score.findOne({
