@@ -2,14 +2,15 @@ import moment from 'moment'
 import puppeteer from 'puppeteer'
 import handlebars from 'handlebars'
 import Util from 'util'
-import Fs from 'fs'
+import fs from 'fs'
 import Path from 'path'
+import numeral from 'numeral'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
 import { happy, neutral, sad } from '../constants/icons'
-import numeral from 'numeral'
+import mailer from '../modules/mailer'
 
-const ReadFile = Util.promisify(Fs.readFile)
+const ReadFile = Util.promisify(fs.readFile)
 
 export const list = async (req, res, next) => {
   const { business } = req.query
@@ -771,11 +772,62 @@ export const makePdf = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.sendFile(destPdfGenerated)
-    // return res.status(200).json({
-    //   context,
-    //   message: 'Generated pdf with success'
-    // })
+    // Send Email
+
+    const settings = await models.SystemSettings.findOne({ where: 1 })
+
+    const broker = await models.User.findOne({
+      where: { id: score.Business.brokerAccountName }
+    })
+
+    // Verify exists template
+    const templateEmail = await models.EmailTemplate.findOne({
+      where: { title: 'Score Email' }
+    })
+
+    if (!templateEmail) {
+      throw new APIError({
+        message: 'The email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateEmailCompiled = handlebars.compile(templateEmail.body)
+    const contextTemplateEmail = {
+      owners_name: `${score.Business.firstNameV} - ${score.Business.lastNameV}`
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: [score.Business.vendorEmail, settings.emailOffice],
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: `Score - ${score.Business.businessName} - ${templateEmail.subject}`,
+      html: templateEmailCompiled(contextTemplateEmail),
+      replyTo: broker.email,
+      attachments: [
+        {
+          filename: `${templateEmail.title.trim()}.pdf`,
+          path: destPdfGenerated
+        }
+      ]
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // Updated caSent on Buyer
+    await models.Score.update({ dateSent: moment() }, { where: { id: scoreId } })
+
+    // remove pdf temp
+    await fs.unlink(destPdfGenerated)
+
+    // return res.sendFile(destPdfGenerated)
+    return res.status(200).json({
+      responseMailer,
+      message: 'Generated pdf with success'
+    })
   } catch (error) {
     return next(error)
   }

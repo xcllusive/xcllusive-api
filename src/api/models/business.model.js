@@ -161,10 +161,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      brokerAccountName: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       state: {
         type: DataTypes.STRING,
         allowNull: true
@@ -270,6 +266,10 @@ export default (sequelize, DataTypes) => {
     models.Business.belongsTo(models.User, {
       foreignKey: 'modifiedBy_id',
       as: 'ModifiedBy'
+    })
+    models.Business.belongsTo(models.User, {
+      foreignKey: 'brokerAccountName',
+      as: 'AsBrokerAccountName'
     })
     models.Business.belongsTo(models.BusinessStage, { foreignKey: 'stageId' })
     models.Business.belongsTo(models.BusinessSource, { foreignKey: 'sourceId' })

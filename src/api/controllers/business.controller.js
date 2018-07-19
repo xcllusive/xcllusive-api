@@ -13,7 +13,7 @@ export const getBusiness = async (req, res, next) => {
         return array.map((item, index) => ({
           key: index,
           text: `${item.firstName} ${item.lastName}`,
-          value: `${item.firstName} ${item.lastName}`
+          value: item.id
         }))
       }
       return array.map((item, index) => ({
