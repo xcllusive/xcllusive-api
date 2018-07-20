@@ -354,7 +354,7 @@ export const update = async (req, res, next) => {
   }
 
   try {
-    const business = models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({ where: { id: idBusiness } })
 
     if (!business.daysOnTheMarket && stage === 4) {
       businessUpdated.daysOnTheMarket = moment()
