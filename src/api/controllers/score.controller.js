@@ -73,9 +73,9 @@ export const create = async (req, res, next) => {
     })
     newScore.version =
       lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 1
-    await models.Score.create(newScore)
+    const score = await models.Score.create(newScore)
 
-    return res.status(200).json({ message: 'Score created' })
+    return res.status(200).json({ data: score, message: 'Score created' })
   } catch (error) {
     return next(error)
   }
