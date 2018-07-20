@@ -72,7 +72,7 @@ export const create = async (req, res, next) => {
       order: [['dateTimeCreated', 'DESC']]
     })
     newScore.version =
-      lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 0
+      lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 1
     await models.Score.create(newScore)
 
     return res.status(200).json({ message: 'Score created' })
