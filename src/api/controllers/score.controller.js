@@ -100,7 +100,7 @@ export const remove = async (req, res, next) => {
   try {
     await models.Score.destroy({ where: { id: scoreId } })
 
-    return res.status(200).json({ message: `Score ${scoreId} removed with success` })
+    return res.status(200).json({ message: 'Score removed with success' })
   } catch (error) {
     return next(error)
   }
