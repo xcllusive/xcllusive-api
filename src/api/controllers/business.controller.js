@@ -78,7 +78,7 @@ export const getBusiness = async (req, res, next) => {
     })
     const countAllEnquiry = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
-        business_id: business
+        business_id: idBusiness
       }
     })
     business.countAllEnquiry = countAllEnquiry.count
