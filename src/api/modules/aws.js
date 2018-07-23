@@ -15,10 +15,8 @@ export const uploadToS3 = (bucketName, file, fileName) => {
 
       s3bucket.upload(params, (err, data) => {
         if (err) {
-          console.log('error in callback: ', err)
           reject(err)
         }
-        console.log('success: ', data)
         resolve(data)
       })
     })
