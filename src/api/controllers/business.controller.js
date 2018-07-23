@@ -70,7 +70,7 @@ export const getBusiness = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
-    business.lastScore = await models.Score.findOne({
+    const lastScore = await models.Score.findOne({
       where: {
         business_id: idBusiness
       },
@@ -81,10 +81,11 @@ export const getBusiness = async (req, res, next) => {
         business_id: idBusiness
       }
     })
-    business.countAllEnquiry = countAllEnquiry.count
 
     const response = {
       business,
+      lastScore,
+      countAllEnquiry: countAllEnquiry.count,
       stageList: _mapValuesToArray(stageList),
       sourceList: _mapValuesToArray(sourceList),
       industryList: _mapValuesToArray(industryList),
