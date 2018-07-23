@@ -70,6 +70,18 @@ export const getBusiness = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
+    business.lastScore = await models.Score.findOne({
+      where: {
+        business_id: idBusiness
+      },
+      order: [['dateTimeCreated', 'DESC']]
+    })
+    const countAllEnquiry = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: business
+      }
+    })
+    business.countAllEnquiry = countAllEnquiry.count
 
     const response = {
       business,
