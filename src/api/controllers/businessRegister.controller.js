@@ -156,8 +156,6 @@ export const update = async (req, res, next) => {
 export const remove = async (req, res, next) => {
   const { registerType } = req.body
 
-  console.log(req.body)
-
   const { businessRegister: id } = req.params
 
   try {

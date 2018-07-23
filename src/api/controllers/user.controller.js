@@ -132,7 +132,6 @@ export const update = async (req, res, next) => {
       .status(200)
       .json({ message: `User ${req.body.firstName} updated with success` })
   } catch (err) {
-    console.log(err)
     return next(err)
   }
 }

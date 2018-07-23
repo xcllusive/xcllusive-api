@@ -223,7 +223,6 @@ export const list = async (req, res, next) => {
           }
         })
       )
-      console.log(arrayBusinesses)
       response.data = arrayBusinesses.filter(item => {
         return item !== undefined
       })
@@ -422,8 +421,6 @@ export const updateListingAgent = async (req, res, next) => {
 export const updateStageLost = async (req, res, next) => {
   const { idBusiness } = req.params
   const updateBusiness = req.body
-
-  console.log(updateBusiness)
 
   updateBusiness.modifiedBy_id = req.user.id
   updateBusiness.stageId = 8
