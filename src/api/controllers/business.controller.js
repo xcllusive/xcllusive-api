@@ -223,11 +223,11 @@ export const list = async (req, res, next) => {
           }
         })
       )
-      response.data = arrayBusinesses.filter(item => {
+      response.data = await arrayBusinesses.filter(item => {
         return item !== undefined
       })
     } else {
-      response.data = businesses
+      response.data = await businesses
     }
 
     return res.status(200).json(response)
