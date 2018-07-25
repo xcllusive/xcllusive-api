@@ -826,7 +826,7 @@ export const makePdf = async (req, res, next) => {
     // return res.sendFile(destPdfGenerated)
     return res.status(200).json({
       responseMailer,
-      message: 'Generated pdf with success'
+      message: 'Score sent with success'
     })
   } catch (error) {
     return next(error)
