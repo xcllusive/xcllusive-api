@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
       },
       header: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       body: {
         type: DataTypes.STRING,
@@ -27,7 +27,7 @@ export default (sequelize, DataTypes) => {
       },
       footer: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       handlebars: {
         type: DataTypes.STRING,

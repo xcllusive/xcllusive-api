@@ -7,10 +7,11 @@ import businessRegisterRoutes from './businessRegister.route'
 import businessLogRoutes from './businessLog.route'
 import buyerRoutes from './buyer.route'
 import buyerRegisterRoutes from './buyerRegister.route'
-import emailTemplate from './emailTemplate.route'
+import emailTemplateRoutes from './emailTemplate.route'
 import scoreRoutes from './score.route'
-import scoreRegister from './scoreRegister.route'
+import scoreRegisterRoutes from './scoreRegister.route'
 import systemSettingsRoutes from './systemSettings.route'
+import agreementTemplateRoutes from './agreementTemplate.route'
 
 const router = express.Router()
 
@@ -23,8 +24,9 @@ router.use('/business-register', businessRegisterRoutes)
 router.use('/business-log', businessLogRoutes)
 router.use('/buyer', buyerRoutes)
 router.use('/buyer-register', buyerRegisterRoutes)
-router.use('/email-template', emailTemplate)
+router.use('/email-template', emailTemplateRoutes)
 router.use('/score', scoreRoutes)
-router.use('/score-register', scoreRegister)
+router.use('/score-register', scoreRegisterRoutes)
+router.use('/agreement-template', agreementTemplateRoutes)
 
-module.exports = router
+export default router
