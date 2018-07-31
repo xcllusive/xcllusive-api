@@ -33,6 +33,46 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: '[]'
+      },
+      listedPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      appraisalHigh: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      appraisalLow: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      engagementFee: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      commissionPerc: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      commissionDiscount: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      introductionParties: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      commissionProperty: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      addressProperty: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      priceProperty: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     },
     {
