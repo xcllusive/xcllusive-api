@@ -6,14 +6,10 @@ export const get = async (req, res, next) => {
   const { idAgreement: id } = req.params
 
   try {
-    const template = await models.AgreementTemplate.findOne({ where: { id } })
-
-    if (JSON.parse(template.handlebars)) {
-      template.handlebars = JSON.parse(template.handlebars)
-    }
+    const agreement = await models.Agreement.findOne({ where: { id } })
 
     return res.status(201).json({
-      data: template,
+      data: agreement,
       message: 'Template get with success'
     })
   } catch (error) {
@@ -22,17 +18,17 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const newAgreementTemplate = req.body
+  const newAgreement = req.body
 
-  newAgreementTemplate.createdBy_id = req.user.id
-  newAgreementTemplate.modifiedBy_id = req.user.id
+  newAgreement.createdBy_id = req.user.id
+  newAgreement.modifiedBy_id = req.user.id
 
   try {
     // Create email template
-    const template = await models.AgreementTemplate.create(newAgreementTemplate)
+    const agreement = await models.Agreement.create(newAgreement)
 
     return res.status(201).json({
-      data: template,
+      data: agreement,
       message: 'Template agreement created with success'
     })
   } catch (error) {
@@ -41,28 +37,28 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idAgreementTemplate: id } = req.params
-  const editAgreementTemplate = req.body
+  const { idAgreement: id } = req.params
+  const editAgreement = req.body
 
-  editAgreementTemplate.modifiedBy_id = req.user.id
+  editAgreement.modifiedBy_id = req.user.id
 
   try {
-    const template = await models.AgreementTemplate.findOne({ where: { id } })
+    const agreement = await models.Agreement.findOne({ where: { id } })
 
-    if (!template) {
+    if (!agreement) {
       throw new APIError({
-        message: 'Template not found',
+        message: 'Agreement not found',
         status: 400,
         isPublic: true
       })
     }
 
-    const updatedTemplate = await models.AgreementTemplate.update(editAgreementTemplate, {
+    const updatedAgreement = await models.Agreement.update(editAgreement, {
       where: { id }
     })
 
     return res.status(201).json({
-      data: updatedTemplate,
+      data: updatedAgreement,
       message: 'Template updated with success'
     })
   } catch (error) {
