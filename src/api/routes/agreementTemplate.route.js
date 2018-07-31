@@ -4,8 +4,7 @@ import {
   get,
   list,
   create,
-  update,
-  sendEmail
+  update
 } from '../controllers/agreementTemplate.controller'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -27,7 +26,5 @@ router
   .route('/:idAgreementTemplate')
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
-
-router.route('/send-email').post(validate(validation.sendEmail), sendEmail)
 
 export default router

@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const EmailTemplate = sequelize.define(
+  const AgreementTemplate = sequelize.define(
     'AgreementTemplate',
     {
       id: {
@@ -47,14 +47,14 @@ export default (sequelize, DataTypes) => {
     }
   )
 
-  EmailTemplate.associate = models => {
-    models.Buyer.belongsTo(models.User, {
+  AgreementTemplate.associate = models => {
+    models.AgreementTemplate.belongsTo(models.User, {
       foreignKey: 'createdBy_id'
     })
-    models.Buyer.belongsTo(models.User, {
+    models.AgreementTemplate.belongsTo(models.User, {
       foreignKey: 'modifiedBy_id'
     })
   }
 
-  return EmailTemplate
+  return AgreementTemplate
 }

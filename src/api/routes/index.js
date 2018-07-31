@@ -12,6 +12,7 @@ import scoreRoutes from './score.route'
 import scoreRegisterRoutes from './scoreRegister.route'
 import systemSettingsRoutes from './systemSettings.route'
 import agreementTemplateRoutes from './agreementTemplate.route'
+import agreementRoutes from './agreement.route'
 
 const router = express.Router()
 
@@ -28,5 +29,6 @@ router.use('/email-template', emailTemplateRoutes)
 router.use('/score', scoreRoutes)
 router.use('/score-register', scoreRegisterRoutes)
 router.use('/agreement-template', agreementTemplateRoutes)
+router.use('/agreement', agreementRoutes)
 
 export default router

@@ -1,7 +1,5 @@
-import handlebars from 'handlebars'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
-import mailer from '../modules/mailer'
 
 export const get = async (req, res, next) => {
   const { idAgreementTemplate: id } = req.params
@@ -90,45 +88,6 @@ export const update = async (req, res, next) => {
     return res.status(201).json({
       data: updatedTemplate,
       message: 'Template updated with success'
-    })
-  } catch (error) {
-    return next(error)
-  }
-}
-
-export const sendEmail = async (req, res, next) => {
-  const newEmail = req.body
-
-  try {
-    // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: newEmail.buyerId } })
-
-    if (!buyer) {
-      throw new APIError({
-        message: 'Buyer not found',
-        status: 404,
-        isPublic: true
-      })
-    }
-
-    // const templateCompiled = Handlebars.compile(template.body)
-
-    // const context = {
-    //   firstName: 'Cayo'
-    // }
-
-    const mailOptions = {
-      to: buyer.email,
-      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
-      subject: newEmail.subject,
-      html: newEmail.body
-    }
-
-    const resMailer = await mailer.sendMail(mailOptions)
-
-    return res.status(201).json({
-      data: resMailer,
-      message: 'Send email successfuly'
     })
   } catch (error) {
     return next(error)
