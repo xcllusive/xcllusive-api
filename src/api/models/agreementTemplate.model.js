@@ -73,6 +73,14 @@ export default (sequelize, DataTypes) => {
       priceProperty: {
         type: DataTypes.INTEGER,
         allowNull: true
+      },
+      propertyOptions: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
+      },
+      optionIntroductionBuyer: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
       }
     },
     {
