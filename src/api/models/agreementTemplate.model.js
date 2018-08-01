@@ -51,11 +51,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       commissionPerc: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: true
       },
       commissionDiscount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: true
       },
       introductionParties: {
@@ -63,7 +63,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       commissionProperty: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: true
       },
       addressProperty: {
