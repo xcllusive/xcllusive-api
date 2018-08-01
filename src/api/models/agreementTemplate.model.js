@@ -18,15 +18,15 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
       header: {
-        type: DataTypes.STRING,
+        type: DataTypes.LONGTEXT,
         allowNull: true
       },
       body: {
-        type: DataTypes.STRING,
+        type: DataTypes.LONGTEXT,
         allowNull: true
       },
       footer: {
-        type: DataTypes.STRING,
+        type: DataTypes.LONGTEXT,
         allowNull: true
       },
       handlebars: {
