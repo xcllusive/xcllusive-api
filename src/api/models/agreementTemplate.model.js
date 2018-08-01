@@ -59,7 +59,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       introductionParties: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
       },
       commissionProperty: {
