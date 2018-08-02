@@ -48,7 +48,8 @@ export default (sequelize, DataTypes) => {
       },
       introductionParties: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: ''
       },
       commissionProperty: {
         type: DataTypes.FLOAT,
@@ -64,11 +65,13 @@ export default (sequelize, DataTypes) => {
       },
       propertyOptions: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false
       },
       optionIntroductionBuyer: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false
       }
     },
     {
