@@ -34,18 +34,6 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: '[]'
       },
-      listedPrice: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      appraisalHigh: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      appraisalLow: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
       engagementFee: {
         type: DataTypes.INTEGER,
         allowNull: true
