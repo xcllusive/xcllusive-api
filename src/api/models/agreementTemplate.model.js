@@ -45,7 +45,8 @@ export default (sequelize, DataTypes) => {
       },
       commissionDiscount: {
         type: DataTypes.FLOAT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 20.0
       },
       introductionParties: {
         type: DataTypes.TEXT,
@@ -54,7 +55,8 @@ export default (sequelize, DataTypes) => {
       },
       commissionProperty: {
         type: DataTypes.FLOAT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 2.5
       },
       addressProperty: {
         type: DataTypes.STRING,
