@@ -32,7 +32,8 @@ export default (sequelize, DataTypes) => {
       handlebars: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: '[]'
+        defaultValue:
+          '["owner_first_name", "owner_last_name", "owner_phone", "business_abn", "business_address", "forsale_business_known","conducted_at", "listed_price", "appraisal_high", "appraisal_low", "engagement_fee", "commission_perc", "commission_discount", "introduction_parties", "commission_property", "address_property", "price_property"]'
       },
       engagementFee: {
         type: DataTypes.INTEGER,
@@ -44,15 +45,18 @@ export default (sequelize, DataTypes) => {
       },
       commissionDiscount: {
         type: DataTypes.FLOAT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 20.0
       },
       introductionParties: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: ''
       },
       commissionProperty: {
         type: DataTypes.FLOAT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 2.5
       },
       addressProperty: {
         type: DataTypes.STRING,
@@ -64,11 +68,13 @@ export default (sequelize, DataTypes) => {
       },
       propertyOptions: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false
       },
       optionIntroductionBuyer: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false
       }
     },
     {
