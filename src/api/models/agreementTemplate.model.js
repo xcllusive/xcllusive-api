@@ -60,7 +60,8 @@ export default (sequelize, DataTypes) => {
       },
       addressProperty: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: ''
       },
       priceProperty: {
         type: DataTypes.INTEGER,
