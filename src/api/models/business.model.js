@@ -292,6 +292,10 @@ export default (sequelize, DataTypes) => {
     models.Business.hasMany(models.Score, {
       foreignKey: 'business_id'
     })
+    models.Business.belongsTo(models.Agreement, {
+      foreignKey: 'agreement_id',
+      as: 'Agreement'
+    })
   }
 
   return Business

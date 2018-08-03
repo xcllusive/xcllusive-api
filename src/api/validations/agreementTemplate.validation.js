@@ -8,6 +8,16 @@ export default {
         .required()
     }
   },
+  preview: {
+    params: {
+      idAgreementTemplate: Joi.number()
+        .min(1)
+        .required()
+    }
+    // body: {
+    //   values: Joi.object().required()
+    // }
+  },
   list: {
     query: {
       perPage: Joi.number(),

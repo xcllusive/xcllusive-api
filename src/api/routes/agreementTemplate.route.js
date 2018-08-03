@@ -4,7 +4,8 @@ import {
   get,
   list,
   create,
-  update
+  update,
+  preview
 } from '../controllers/agreementTemplate.controller'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -26,5 +27,9 @@ router
   .route('/:idAgreementTemplate')
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
+
+router
+  .route('/preview/:idAgreementTemplate')
+  .post(validate(validation.preview), preview)
 
 export default router

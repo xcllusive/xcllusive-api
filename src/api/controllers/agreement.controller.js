@@ -18,18 +18,32 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const newAgreement = req.body
-
-  newAgreement.createdBy_id = req.user.id
-  newAgreement.modifiedBy_id = req.user.id
+  req.body.newAgreement.createdBy_id = req.user.id
 
   try {
-    // Create email template
-    const agreement = await models.Agreement.create(newAgreement)
+    const business = await models.Business.findOne({
+      where: { id: req.body.business.id}
+    })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    const agreement = await models.Agreement.create(req.body.newAgreement)
+
+    await models.Business.update({ agreement: agreement.id }, {
+      where: {
+        id: business.id
+      }
+    })
 
     return res.status(201).json({
       data: agreement,
-      message: 'Template agreement created with success'
+      message: 'Agreement created with success'
     })
   } catch (error) {
     return next(error)

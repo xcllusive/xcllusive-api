@@ -18,7 +18,7 @@ const router = express.Router()
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
 router
-  .route('/')
+  .route('/generate')
   .post(validate(validation.create), create)
 
 router

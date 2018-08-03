@@ -1,3 +1,4 @@
+import handlebars from 'handlebars'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
@@ -14,6 +15,54 @@ export const get = async (req, res, next) => {
     return res.status(201).json({
       data: template,
       message: 'Template get with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const preview = async (req, res, next) => {
+  const { idAgreementTemplate: id} = req.params
+  const { values } = req.body
+
+  try {
+    const template = await models.AgreementTemplate.findOne({where: { id }})
+
+    const body = `
+    ${template.header}
+    </br>
+    ${template.body}
+    </br>
+    ${template.footer}
+    `
+
+    const bodyHandlebars = handlebars.compile(body)
+
+    const context = {
+      owner_first_name: values ? values.firstNameV : '',
+      owner_last_name: values ? values.lastNameV : '',
+      owner_phone: values ? values.vendorPhone1 : '',
+      business_abn: values ? values.businessABN : '',
+      business_address: values ? values.address : '',
+      forsale_business_known: values ? values.forSaleBusinessKnown : '',
+      conducted_at: values ? values.conductedAt : '',
+      listed_price: values ? values.listedPrice : '',
+      appraisal_high: values ? values.appraisalHigh : '',
+      appraisal_low: values ? values.appraisalLow : '',
+      engagement_fee: values ? values.engagementFee : '',
+      commission_perc: values ? values.commissionPerc : '',
+      commission_discount: values ? values.commissionDiscount : '',
+      introduction_parties: values ? values.introductionParties : '',
+      commission_property: values ? values.commissionProperty : '',
+      address_property: values ? values.addressProperty : '',
+      price_property: values ? values.priceProperty : ''
+    }
+
+    const bodyCompiled = bodyHandlebars(context)
+
+    return res.status(201).json({
+      data: bodyCompiled,
+      message: 'Preview generated with success'
     })
   } catch (error) {
     return next(error)

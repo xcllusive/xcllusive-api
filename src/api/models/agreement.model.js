@@ -35,10 +35,6 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'modifiedBy_id',
       as: 'ModifiedBy'
     })
-    models.Agreement.belongsTo(models.Business, {
-      foreignKey: 'business_id',
-      as: 'Business'
-    })
   }
 
   return Agreement
