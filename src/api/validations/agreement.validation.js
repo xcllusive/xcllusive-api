@@ -10,12 +10,8 @@ export default {
   },
   create: {
     body: {
-      title: Joi.string().required(),
-      state: Joi.string().required(),
-      header: Joi.string(),
-      body: Joi.string(),
-      footer: Joi.string(),
-      handlebars: Joi.string()
+      body: Joi.string().required(),
+      businessId: Joi.number().required()
     }
   },
   update: {
@@ -30,8 +26,15 @@ export default {
   },
   sendEmail: {
     body: {
-      email: Joi.string().email().required(),
-      refreshToken: Joi.string().required()
+      body: Joi.string().required(),
+      businessId: Joi.number().required()
+      // mail: Joi.object().keys({
+      //   to: Joi.string()
+      //     .required('To is required.')
+      //     .email('Invalid email address.'),
+      //   subject: Joi.string().required('Subject is required.'),
+      //   body: Joi.string().required('Body is required.')
+      // })
     }
   }
 }

@@ -1,3 +1,7 @@
+import Path from 'path'
+import fs from 'fs'
+import handlebars from 'handlebars'
+import puppeteer from 'puppeteer'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
@@ -18,14 +22,19 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  req.body.newAgreement.createdBy_id = req.user.id
+  const { body, businessId } = req.body
+
+  const newAgreement = {
+    createdBy_id: req.user.id,
+    body
+  }
 
   try {
-    const business = await models.Business.findOne({
-      where: { id: req.body.business.id}
+    const getBusiness = await models.Business.findOne({
+      where: { id: businessId}
     })
 
-    if (!business) {
+    if (!getBusiness) {
       throw new APIError({
         message: 'Business not found',
         status: 400,
@@ -33,18 +42,67 @@ export const create = async (req, res, next) => {
       })
     }
 
-    const agreement = await models.Agreement.create(req.body.newAgreement)
+    const agreement = await models.Agreement.create(newAgreement)
 
     await models.Business.update({ agreement: agreement.id }, {
       where: {
-        id: business.id
+        id: businessId
       }
     })
 
-    return res.status(201).json({
-      data: agreement,
-      message: 'Agreement created with success'
+    const destPdfGenerated = Path.resolve(
+      'src',
+      'api',
+      'resources',
+      'pdf',
+      'generated',
+      'agreement',
+      `${Date.now()}.pdf`
+    )
+
+    const PDF_OPTIONS = {
+      path: destPdfGenerated,
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '15mm',
+        left: '15mm',
+        right: '15mm',
+        bottom: '15mm'
+      },
+      displayHeaderFooter: true,
+      headerTemplate: ' ',
+      footerTemplate: `
+      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+      <span style="float: left;"></span>
+      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+      </div>`
+    }
+
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.emulateMedia('screen')
+    await page.goto(`data:text/html,${newAgreement.body}`)
+
+    await page.pdf(PDF_OPTIONS)
+    await browser.close()
+
+    // const file = fs.createReadStream(destPdfGenerated)
+    // const stat = fs.statSync(destPdfGenerated)
+    // res.setHeader('Content-Length', stat.size)
+    // res.setHeader('Content-Type', 'application/pdf')
+    // res.setHeader('Content-Disposition', 'attachment; filename=Agreement.pdf')
+    // file.pipe(res)
+
+    return res.download(destPdfGenerated, function (err) {
+      if (err) {
+        console.log('Error')
+        console.log(err)
+      } else {
+        console.log('Success')
+      }
     })
+    // return res.status(201).sendFile(destPdfGenerated)
   } catch (error) {
     return next(error)
   }
@@ -81,37 +139,109 @@ export const update = async (req, res, next) => {
 }
 
 export const sendEmail = async (req, res, next) => {
-  const newEmail = req.body
+  const { body, businessId, mail } = req.body
+
+  const newAgreement = {
+    createdBy_id: req.user.id,
+    body
+  }
 
   try {
-    // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: newEmail.buyerId } })
+    const getBusiness = await models.Business.findOne({
+      where: { id: businessId}
+    })
 
-    if (!buyer) {
+    if (!getBusiness) {
       throw new APIError({
-        message: 'Buyer not found',
-        status: 404,
+        message: 'Business not found',
+        status: 400,
         isPublic: true
       })
     }
 
-    // const templateCompiled = Handlebars.compile(template.body)
+    const agreement = await models.Agreement.create(newAgreement)
 
-    // const context = {
-    //   firstName: 'Cayo'
-    // }
+    await models.Business.update({ agreement: agreement.id }, {
+      where: {
+        id: businessId
+      }
+    })
 
-    const mailOptions = {
-      to: buyer.email,
-      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
-      subject: newEmail.subject,
-      html: newEmail.body
+    const destPdfGenerated = Path.resolve(
+      'src',
+      'api',
+      'resources',
+      'pdf',
+      'generated',
+      'agreement',
+      `${Date.now()}.pdf`
+    )
+
+    const PDF_OPTIONS = {
+      path: destPdfGenerated,
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '15mm',
+        left: '15mm',
+        right: '15mm',
+        bottom: '15mm'
+      },
+      displayHeaderFooter: true,
+      headerTemplate: ' ',
+      footerTemplate: `
+      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+      <span style="float: left;"></span>
+      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+      </div>`
     }
 
-    const resMailer = await mailer.sendMail(mailOptions)
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.emulateMedia('screen')
+    await page.goto(`data:text/html,${newAgreement.body}`)
+
+    await page.pdf(PDF_OPTIONS)
+    await browser.close()
+
+    const broker = await models.User.findOne({
+      where: { id: getBusiness.brokerAccountName }
+    })
+
+    // Compile the template to use variables
+    const templateCompiled = handlebars.compile(mail.body)
+    const context = {
+      business_name: getBusiness.businessName,
+      owner_full_name: getBusiness.listingAgent,
+      broker_full_name: `${broker.firstName} ${broker.lastName}`,
+      broker_email: broker.email,
+      broker_phone: broker.phoneHome,
+      broker_mobile: broker.phoneMobile,
+      broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${broker.postCode}`
+    }
+
+    const mailOptions = {
+      to: mail.to,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: mail.subject,
+      html: templateCompiled(context),
+      replyTo: broker.email,
+      attachments: [
+        {
+          filename: mail.attachment,
+          path: destPdfGenerated
+        }
+      ]
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // remove pdf temp
+    await fs.unlink(destPdfGenerated)
 
     return res.status(201).json({
-      data: resMailer,
+      data: responseMailer,
       message: 'Send email successfuly'
     })
   } catch (error) {
