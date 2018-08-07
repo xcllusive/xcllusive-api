@@ -44,7 +44,7 @@ export const create = async (req, res, next) => {
 
     const agreement = await models.Agreement.create(newAgreement)
 
-    await models.Business.update({ agreement: agreement.id }, {
+    await models.Business.update({ agreement_id: agreement.id }, {
       where: {
         id: businessId
       }
@@ -161,7 +161,7 @@ export const sendEmail = async (req, res, next) => {
 
     const agreement = await models.Agreement.create(newAgreement)
 
-    await models.Business.update({ agreement: agreement.id }, {
+    await models.Business.update({ agreement_id: agreement.id }, {
       where: {
         id: businessId
       }
