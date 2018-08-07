@@ -36,5 +36,15 @@ export default {
       //   body: Joi.string().required('Body is required.')
       // })
     }
+  },
+  getEmailTemplate: {
+    params: {
+      idEmailTemplate: Joi.number()
+        .min(1)
+        .required()
+    },
+    query: {
+      businessId: Joi.number().min(1).required()
+    }
   }
 }

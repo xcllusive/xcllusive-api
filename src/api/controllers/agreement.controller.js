@@ -227,7 +227,7 @@ export const sendEmail = async (req, res, next) => {
     }
 
     attachments.push({
-      filename: mail.attachment,
+      filename: mail.attachmentName,
       path: destPdfGenerated
     })
 
@@ -256,6 +256,53 @@ export const sendEmail = async (req, res, next) => {
     return res.status(201).json({
       data: responseMailer,
       message: 'Send email successfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getEmailTemplate = async (req, res, next) => {
+  const { idEmailTemplate: id } = req.params
+  const { businessId } = req.query
+
+  try {
+    const getBusiness = await models.Business.findOne({
+      where: { id: businessId}
+    })
+
+    if (!getBusiness) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    const template = await models.EmailTemplate.findOne({ where: { id } })
+
+    const broker = await models.User.findOne({
+      where: { id: getBusiness.brokerAccountName }
+    })
+
+    // Compile the template to use variables
+    const templateCompiled = handlebars.compile(template.body)
+    const context = {
+      business_name: getBusiness.businessName,
+      owner_full_name: getBusiness.listingAgent,
+      broker_full_name: `${broker.firstName} ${broker.lastName}`,
+      broker_email: broker.email,
+      broker_phone: broker.phoneHome,
+      broker_mobile: broker.phoneMobile,
+      broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${broker.postCode}`
+    }
+
+    return res.status(201).json({
+      data: {
+        subject: template.subject,
+        body: templateCompiled(context)
+      },
+      message: 'Template get with success'
     })
   } catch (error) {
     return next(error)

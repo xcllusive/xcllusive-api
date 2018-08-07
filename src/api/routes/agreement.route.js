@@ -4,7 +4,8 @@ import {
   get,
   generate,
   update,
-  sendEmail
+  sendEmail,
+  getEmailTemplate
 } from '../controllers/agreement.controller'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -25,6 +26,9 @@ router
   .route('/:idAgreement')
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
+
+router.route('/template-compiled/:idEmailTemplate')
+  .get(validate(validation.getEmailTemplate), getEmailTemplate)
 
 router.route('/send-email').post(validate(validation.sendEmail), sendEmail)
 
