@@ -8,7 +8,7 @@ export default {
         .required()
     }
   },
-  create: {
+  generate: {
     body: {
       body: Joi.string().required(),
       businessId: Joi.number().required()

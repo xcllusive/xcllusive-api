@@ -21,7 +21,7 @@ export const get = async (req, res, next) => {
   }
 }
 
-export const create = async (req, res, next) => {
+export const generate = async (req, res, next) => {
   const { body, businessId } = req.body
 
   const newAgreement = {
@@ -41,14 +41,6 @@ export const create = async (req, res, next) => {
         isPublic: true
       })
     }
-
-    const agreement = await models.Agreement.create(newAgreement)
-
-    await models.Business.update({ agreement_id: agreement.id }, {
-      where: {
-        id: businessId
-      }
-    })
 
     const destPdfGenerated = Path.resolve(
       'src',
@@ -87,22 +79,17 @@ export const create = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    // const file = fs.createReadStream(destPdfGenerated)
-    // const stat = fs.statSync(destPdfGenerated)
-    // res.setHeader('Content-Length', stat.size)
-    // res.setHeader('Content-Type', 'application/pdf')
-    // res.setHeader('Content-Disposition', 'attachment; filename=Agreement.pdf')
-    // file.pipe(res)
-
-    return res.download(destPdfGenerated, function (err) {
+    return res.download(destPdfGenerated, (err) => {
       if (err) {
-        console.log('Error')
-        console.log(err)
-      } else {
-        console.log('Success')
+        // remove pdf temp
+        fs.unlink(destPdfGenerated)
+        throw new APIError({
+          message: 'Error on send pdf',
+          status: 500,
+          isPublic: true
+        })
       }
     })
-    // return res.status(201).sendFile(destPdfGenerated)
   } catch (error) {
     return next(error)
   }
@@ -172,13 +159,19 @@ export const sendEmail = async (req, res, next) => {
       })
     }
 
-    const agreement = await models.Agreement.create(newAgreement)
+    if (getBusiness.agreement_id) {
+      await models.Agreement.update(newAgreement, {where: {
+        id: getBusiness.agreement_id
+      }})
+    } else {
+      const agreement = await models.Agreement.create(newAgreement)
 
-    await models.Business.update({ agreement_id: agreement.id }, {
-      where: {
-        id: businessId
-      }
-    })
+      await models.Business.update({ agreement_id: agreement.id }, {
+        where: {
+          id: businessId
+        }
+      })
+    }
 
     const destPdfGenerated = Path.resolve(
       'src',

@@ -2,7 +2,7 @@ import express from 'express'
 import validate from 'express-validation'
 import {
   get,
-  create,
+  generate,
   update,
   sendEmail
 } from '../controllers/agreement.controller'
@@ -19,7 +19,7 @@ router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
 router
   .route('/generate')
-  .post(validate(validation.create), create)
+  .post(validate(validation.generate), generate)
 
 router
   .route('/:idAgreement')
