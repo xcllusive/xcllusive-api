@@ -139,7 +139,20 @@ export const update = async (req, res, next) => {
 }
 
 export const sendEmail = async (req, res, next) => {
-  const { body, businessId, mail } = req.body
+  const { body, businessId } = req.body
+  const attachment = req.files.attachment
+  const mail = JSON.parse(req.body.mail)
+
+  const attachments = []
+
+  // Verify file is pdf
+  if (attachment && !/\/pdf$/.test(attachment.mimetype)) {
+    throw new APIError({
+      message: 'Expect pdf file',
+      status: 400,
+      isPublic: true
+    })
+  }
 
   const newAgreement = {
     createdBy_id: req.user.id,
@@ -220,18 +233,25 @@ export const sendEmail = async (req, res, next) => {
       broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${broker.postCode}`
     }
 
+    attachments.push({
+      filename: mail.attachment,
+      path: destPdfGenerated
+    })
+
+    if (attachment) {
+      attachments.push({
+        filename: attachment.name,
+        content: attachment.data
+      })
+    }
+
     const mailOptions = {
       to: mail.to,
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: mail.subject,
       html: templateCompiled(context),
       replyTo: broker.email,
-      attachments: [
-        {
-          filename: mail.attachment,
-          path: destPdfGenerated
-        }
-      ]
+      attachments
     }
 
     // Send Email
