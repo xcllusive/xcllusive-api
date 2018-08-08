@@ -9,6 +9,10 @@ export default (sequelize, DataTypes) => {
         unique: true,
         allowNull: false
       },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
       state: {
         type: DataTypes.STRING,
         allowNull: false
