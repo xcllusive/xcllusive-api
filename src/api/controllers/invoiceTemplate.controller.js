@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
@@ -21,7 +22,6 @@ export const list = async (req, res, next) => {
   const offset = req.skip
 
   const options = {
-    attributes: ['id', 'title', 'state'],
     limit: limit || 50,
     offset
   }
@@ -50,6 +50,20 @@ export const create = async (req, res, next) => {
   newInvoiceTemplate.modifiedBy_id = req.user.id
 
   try {
+    const templatesOfSameState = await models.InvoiceTemplate.findAll({
+      where: {
+        state: newInvoiceTemplate.state
+      }
+    })
+
+    if (!_.isEmpty(templatesOfSameState)) {
+      throw new APIError({
+        message: 'State is exists',
+        status: 403,
+        isPublic: true
+      })
+    }
+
     // Create email template
     const template = await models.InvoiceTemplate.create(newInvoiceTemplate)
 
