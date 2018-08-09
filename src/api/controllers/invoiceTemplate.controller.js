@@ -2,7 +2,7 @@ import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
 export const get = async (req, res, next) => {
-  const { idInvoiceemplate: id } = req.params
+  const { idInvoiceTemplate: id } = req.params
 
   try {
     const template = await models.InvoiceTemplate.findOne({ where: { id } })
