@@ -6,17 +6,17 @@ import {
   create,
   update,
   remove
-} from '../controllers/invoice.controller'
+} from '../controllers/invoiceTemplate.controller'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
 
-import validation from '../validations/invoice.validation'
+import validation from '../validations/invoiceTemplate.validation'
 
-import { BUSINESS_MENU } from '../constants/roles'
+import { SYSTEM_SETTINGS_MENU } from '../constants/roles'
 
 const router = express.Router()
 
-router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+router.use(authMiddleware).use(authorizeMiddleware({ roles: [SYSTEM_SETTINGS_MENU] }))
 
 router
   .route('/')
@@ -24,7 +24,7 @@ router
   .post(validate(validation.create), create)
 
 router
-  .route('/:idInvoice')
+  .route('/:idInvoiceTemplate')
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
   .delete(validate(validation.remove), remove)

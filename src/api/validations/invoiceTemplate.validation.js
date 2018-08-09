@@ -3,32 +3,28 @@ import Joi from 'joi'
 export default {
   get: {
     params: {
-      idInvoice: Joi.number()
+      idInvoiceTemplate: Joi.number()
         .min(1)
         .required()
     }
   },
   list: {
     query: {
-      businessId: Joi.number()
-        .min(1)
-        .required(),
-      limit: Joi.number().min(1)
+      limit: Joi.number(),
+      state: Joi.string().max(128)
     }
   },
   create: {
     body: {
-
     }
   },
   update: {
     body: {
-
     }
   },
   remove: {
     params: {
-      idInvoice: Joi.number()
+      idInvoiceTemplate: Joi.number()
         .min(1)
         .required()
     }

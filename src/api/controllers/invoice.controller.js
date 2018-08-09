@@ -1,4 +1,5 @@
-// import APIError from '../utils/APIError'
+import _ from 'lodash'
+import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
 export const get = async (req, res, next) => {
@@ -42,12 +43,33 @@ export const list = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const newInvoice = req.body
+  const { invoice, businessId } = req.body
+
+  invoice.createdBy_id = req.user.id
+  invoice.modifiedBy_id = req.user.id
 
   try {
-    const invoiceCreated = await models.Invoice.create(newInvoice)
-    invoiceCreated.createdBy_id = req.user.id
-    invoiceCreated.modifiedBy_id = req.user.id
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Get number of invoices
+    const invoices = models.Invoice.findAndCountAll({
+      where: {
+        business_id: businessId
+      }})
+
+    invoice.business_id = business.id
+    invoice.ref = `${invoices.count + 1}${_.trim(business.businessName).substring(0, 10)}`
+
+    const invoiceCreated = await models.Invoice.create(invoice)
 
     return res.status(201).json({
       data: invoiceCreated,
@@ -73,6 +95,20 @@ export const update = async (req, res, next) => {
       data: editedInvoice,
       message: 'Invoice updated with success'
     })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const remove = async (req, res, next) => {
+  const { idInvoice: id } = req.params
+
+  try {
+    await models.Invoice.destroy({ where: { id } })
+
+    return res
+      .status(200)
+      .json({ message: `Invoice ${id} removed with success` })
   } catch (error) {
     return next(error)
   }

@@ -42,5 +42,16 @@ export default (sequelize, DataTypes) => {
     }
   )
 
+  InvoiceTemplate.associate = models => {
+    models.InvoiceTemplate.belongsTo(models.User, {
+      foreignKey: 'createdBy_id',
+      as: 'CreatedBy'
+    })
+    models.InvoiceTemplate.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id',
+      as: 'ModifiedBy'
+    })
+  }
+
   return InvoiceTemplate
 }

@@ -14,6 +14,7 @@ import systemSettingsRoutes from './systemSettings.route'
 import agreementTemplateRoutes from './agreementTemplate.route'
 import agreementRoutes from './agreement.route'
 import invoiceRoutes from './invoice.route'
+import invoiceTemplateRoutes from './invoiceTemplate.route'
 
 const router = express.Router()
 
@@ -31,6 +32,7 @@ router.use('/score', scoreRoutes)
 router.use('/score-register', scoreRegisterRoutes)
 router.use('/agreement-template', agreementTemplateRoutes)
 router.use('/agreement', agreementRoutes)
-router.use('/invoices', invoiceRoutes)
+router.use('/invoice', invoiceRoutes)
+router.use('/invoice-template', invoiceTemplateRoutes)
 
 export default router
