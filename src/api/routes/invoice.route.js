@@ -2,6 +2,7 @@ import express from 'express'
 import validate from 'express-validation'
 import {
   get,
+  getLast,
   list,
   create,
   update,
@@ -17,6 +18,10 @@ import { BUSINESS_MENU } from '../constants/roles'
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+
+router
+  .route('/last')
+  .get(validate(validation.getLast), getLast)
 
 router
   .route('/')

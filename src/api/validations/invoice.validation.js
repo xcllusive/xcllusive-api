@@ -8,6 +8,11 @@ export default {
         .required()
     }
   },
+  getLast: {
+    query: {
+      businessId: Joi.number().min(1)
+    }
+  },
   list: {
     query: {
       businessId: Joi.number()

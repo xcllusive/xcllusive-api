@@ -17,6 +17,25 @@ export const get = async (req, res, next) => {
   }
 }
 
+export const getLast = async (req, res, next) => {
+  const { businessId } = req.query
+
+  try {
+    const invoice = await models.Invoice.findOne({
+      where: {
+        business_id: businessId
+      },
+      order: [['dateTimeCreated', 'DESC']]
+    })
+    return res.status(201).json({
+      data: invoice,
+      message: 'Get last invoice with succesfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const list = async (req, res, next) => {
   const { limit, businessId } = req.query
   const offset = req.skip
