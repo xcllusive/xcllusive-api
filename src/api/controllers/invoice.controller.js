@@ -45,7 +45,7 @@ export const list = async (req, res, next) => {
       where: {
         business_id: businessId
       },
-      order: [['followUp', 'DESC']],
+      order: [['date', 'DESC']],
       limit,
       offset
     })
