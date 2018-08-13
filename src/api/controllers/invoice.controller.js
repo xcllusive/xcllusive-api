@@ -45,7 +45,7 @@ export const list = async (req, res, next) => {
       where: {
         business_id: businessId
       },
-      order: [['date', 'DESC']],
+      order: [['dateTimeCreated', 'DESC']],
       limit,
       offset
     })
@@ -83,7 +83,8 @@ export const create = async (req, res, next) => {
     const invoices = models.Invoice.findAndCountAll({
       where: {
         business_id: businessId
-      }})
+      }
+    })
 
     invoice.business_id = business.id
     invoice.ref = `${invoices.count + 1}${_.trim(business.businessName).substring(0, 10)}`
@@ -125,9 +126,7 @@ export const remove = async (req, res, next) => {
   try {
     await models.Invoice.destroy({ where: { id } })
 
-    return res
-      .status(200)
-      .json({ message: `Invoice ${id} removed with success` })
+    return res.status(200).json({ message: `Invoice ${id} removed with success` })
   } catch (error) {
     return next(error)
   }

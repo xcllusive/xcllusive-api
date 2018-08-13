@@ -112,9 +112,7 @@ export const remove = async (req, res, next) => {
   try {
     await models.InvoiceTemplate.destroy({ where: { id } })
 
-    return res
-      .status(200)
-      .json({ message: `Invoice template${id} removed with success` })
+    return res.status(200).json({ message: `Invoice template${id} removed with success` })
   } catch (error) {
     return next(error)
   }

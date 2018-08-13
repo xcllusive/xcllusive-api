@@ -13,10 +13,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      date: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
       state: {
         type: DataTypes.STRING,
         allowNull: false
@@ -43,6 +39,10 @@ export default (sequelize, DataTypes) => {
       },
       total: {
         type: DataTypes.FLOAT,
+        allowNull: true
+      },
+      dateSent: {
+        type: DataTypes.DATE,
         allowNull: true
       }
     },
