@@ -80,14 +80,16 @@ export const create = async (req, res, next) => {
     }
 
     // Get number of invoices
-    const invoices = models.Invoice.findAndCountAll({
+    const invoices = await models.Invoice.findAndCountAll({
       where: {
         business_id: businessId
       }
     })
 
+    console.log(JSON.stringify(invoices))
+
     invoice.business_id = business.id
-    invoice.ref = `${invoices.count + 1}${business.businessName.substring(0, 10).trim()}`
+    invoice.ref = `${invoices.count + 1}${business.businessName.substring(0, 10).replace(/\s/g, '').toUpperCase()}`
 
     const invoiceCreated = await models.Invoice.create(invoice)
 
