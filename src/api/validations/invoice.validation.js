@@ -37,5 +37,12 @@ export default {
         .min(1)
         .required()
     }
+  },
+  makePdf: {
+    params: {
+      idInvoice: Joi.number()
+        .min(1)
+        .required()
+    }
   }
 }

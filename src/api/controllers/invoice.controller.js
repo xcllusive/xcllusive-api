@@ -1,6 +1,13 @@
 import _ from 'lodash'
+import moment from 'moment'
+import puppeteer from 'puppeteer'
+import handlebars from 'handlebars'
+import util from 'util'
+import fs from 'fs'
+import path from 'path'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
+import mailer from '../modules/mailer'
 
 export const get = async (req, res, next) => {
   const { idInvoice: id } = req.params
@@ -130,6 +137,105 @@ export const remove = async (req, res, next) => {
     await models.Invoice.destroy({ where: { id } })
 
     return res.status(200).json({ message: `Invoice ${id} removed with success` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const makePdf = async (req, res, next) => {
+  const { idInvoice } = req.params
+
+  const templatePath = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'templates',
+    'invoice',
+    'invoice.html'
+  )
+  const destPdfGenerated = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'invoice',
+    `${Date.now()}.pdf`
+  )
+
+  const readFile = util.promisify(fs.readFile)
+
+  try {
+    // Verify exists score
+    const invoice = await models.Invoice.findOne({
+      where: { id: idInvoice },
+      include: [
+        { model: models.Business, as: 'Business' }
+      ]
+    })
+
+    if (!invoice) {
+      throw new APIError({
+        message: 'Invoice not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const context = {
+      ref: invoice.ref,
+      officeDetails: invoice.officeDetails,
+      bankDetails: invoice.bankDetails,
+      to: invoice.to,
+      description: invoice.description,
+      amount: invoice.amount,
+      total: invoice.total,
+      created: moment(invoice.dateTimeCreated).format('LL')
+    }
+
+    const PDF_OPTIONS = {
+      path: destPdfGenerated,
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '5mm',
+        left: '5mm',
+        right: '5mm',
+        bottom: '5mm'
+      },
+      displayHeaderFooter: false,
+      headerTemplate: ' ',
+      footerTemplate: `
+      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+      <span style="float: left;"></span>
+      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+      </div>`,
+      scale: 0.8
+    }
+
+    const content = await readFile(templatePath, 'utf8')
+    const handlebarsCompiled = handlebars.compile(content)
+    const template = handlebarsCompiled(context)
+    const browser = await puppeteer.launch()
+    // const browser = await puppeteer.launch({headless: false})
+    const page = await browser.newPage()
+    await page.emulateMedia('screen')
+    await page.goto(`data:text/html,${template}`)
+
+    await page.pdf(PDF_OPTIONS)
+    await browser.close()
+
+    return res.download(destPdfGenerated, (err) => {
+      fs.unlink(destPdfGenerated)
+      if (err) {
+        throw new APIError({
+          message: 'Error on send pdf',
+          status: 500,
+          isPublic: true
+        })
+      }
+    })
   } catch (error) {
     return next(error)
   }

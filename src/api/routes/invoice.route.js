@@ -6,7 +6,8 @@ import {
   list,
   create,
   update,
-  remove
+  remove,
+  makePdf
 } from '../controllers/invoice.controller'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -18,6 +19,10 @@ import { BUSINESS_MENU } from '../constants/roles'
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+
+router
+  .route('/:idInvoice/download-pdf')
+  .get(validate(validation.makePdf), makePdf)
 
 router
   .route('/last')
