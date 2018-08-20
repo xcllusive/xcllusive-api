@@ -44,6 +44,10 @@ export default (sequelize, DataTypes) => {
       dateSent: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      paymentTerms: {
+        type: DataTypes.TEXT,
+        allowNull: true
       }
     },
     {
