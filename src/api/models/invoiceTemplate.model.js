@@ -28,6 +28,10 @@ export default (sequelize, DataTypes) => {
       description: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      paymentTerms: {
+        type: DataTypes.TEXT,
+        allowNull: true
       }
     },
     {
