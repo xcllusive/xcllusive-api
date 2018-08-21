@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import numeral from 'numeral'
 import moment from 'moment'
 import puppeteer from 'puppeteer'
 import handlebars from 'handlebars'
@@ -189,9 +189,9 @@ export const makePdf = async (req, res, next) => {
       bankDetails: invoice.bankDetails,
       to: invoice.to,
       description: invoice.description,
-      amount: invoice.amount,
-      total: invoice.total,
-      gst: (invoice.amount * 10) / 100,
+      amount: numeral(invoice.amount).format('0,0.00'),
+      total: numeral(invoice.total).format('0,0.00'),
+      gst: numeral((invoice.amount * 10) / 100).format('0,0.00'),
       payment_terms: invoice.paymentTerms,
       created: moment(invoice.dateTimeCreated).format('LL')
     }
@@ -318,10 +318,10 @@ export const sendEmail = async (req, res, next) => {
       format: 'A4',
       printBackground: true,
       margin: {
-        top: '10mm',
-        left: '10mm',
-        right: '10mm',
-        bottom: '10mm'
+        top: '15mm',
+        left: '15mm',
+        right: '15mm',
+        bottom: '15mm'
       },
       displayHeaderFooter: false,
       headerTemplate: ' ',

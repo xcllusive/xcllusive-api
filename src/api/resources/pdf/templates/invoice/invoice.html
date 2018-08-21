@@ -8,11 +8,10 @@
   <style>
     .invoice-box {
       margin: auto;
-      /* padding: 30px; */
-      font-size: 16px;
+      font-size: 18px;
       line-height: 24px;
       font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-      color: #555;
+      color: #000;
     }
 
     .invoice-box p {
@@ -112,6 +111,10 @@
         display: block;
         text-align: center;
       }
+    }
+
+    .invoice-box table tr.information table td.footer {
+      padding-top: 200px
     }
 
     /** RTL **/
@@ -233,7 +236,7 @@
         <td colspan="1">
           <table>
             <tr>
-              <td>
+              <td class="footer">
                 {{{bankDetails}}}
                 <!-- Sparksuite, Inc.
                 <br> 12345 Sunny Road
