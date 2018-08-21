@@ -201,10 +201,10 @@ export const makePdf = async (req, res, next) => {
       format: 'A4',
       printBackground: true,
       margin: {
-        top: '10mm',
-        left: '10mm',
-        right: '10mm',
-        bottom: '10mm'
+        top: '15mm',
+        left: '15mm',
+        right: '15mm',
+        bottom: '15mm'
       },
       displayHeaderFooter: false,
       headerTemplate: ' ',
@@ -277,6 +277,16 @@ export const sendEmail = async (req, res, next) => {
     `${Date.now()}.pdf`
   )
 
+  const destPdfGeneratedAgreement = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'agreement',
+    `${Date.now()}.pdf`
+  )
+
   const readFile = util.promisify(fs.readFile)
 
   try {
@@ -300,15 +310,53 @@ export const sendEmail = async (req, res, next) => {
       where: { id: invoice.Business.brokerAccountName }
     })
 
+    // Agreement
+    if (mail.attachAgreement) {
+      const agreement = await models.Agreement.findOne({where: {id: invoice.Business.agreement_id}})
+
+      const PDF_OPTIONS = {
+        path: destPdfGeneratedAgreement,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '15mm',
+          left: '15mm',
+          right: '15mm',
+          bottom: '15mm'
+        },
+        displayHeaderFooter: true,
+        headerTemplate: ' ',
+        footerTemplate: `
+        <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+        <span style="float: left;"></span>
+        <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+        </div>`
+      }
+
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      await page.emulateMedia('screen')
+      await page.goto(`data:text/html,${agreement.body}`)
+
+      await page.pdf(PDF_OPTIONS)
+      await browser.close()
+
+      attachments.push({
+        filename: mail.attachmentAgreement,
+        path: destPdfGeneratedAgreement
+      })
+    }
+    // End Agreement
+
     const context = {
       ref: invoice.ref,
       officeDetails: invoice.officeDetails,
       bankDetails: invoice.bankDetails,
       to: invoice.to,
       description: invoice.description,
-      amount: invoice.amount,
-      total: invoice.total,
-      gst: (invoice.amount * 10) / 100,
+      amount: numeral(invoice.amount).format('0,0.00'),
+      total: numeral(invoice.total).format('0,0.00'),
+      gst: numeral((invoice.amount * 10) / 100).format('0,0.00'),
       payment_terms: invoice.paymentTerms,
       created: moment(invoice.dateTimeCreated).format('LL')
     }
@@ -370,6 +418,7 @@ export const sendEmail = async (req, res, next) => {
 
     // remove pdf temp
     await fs.unlink(destPdfGenerated)
+    await fs.unlink(destPdfGeneratedAgreement)
 
     return res.status(201).json({
       data: responseMailer,

@@ -1,5 +1,8 @@
-import Path from 'path'
+import util from 'util'
 import fs from 'fs'
+import path from 'path'
+import moment from 'moment'
+import numeral from 'numeral'
 import handlebars from 'handlebars'
 import puppeteer from 'puppeteer'
 import APIError from '../utils/APIError'
@@ -42,7 +45,7 @@ export const generate = async (req, res, next) => {
       })
     }
 
-    const destPdfGenerated = Path.resolve(
+    const destPdfGeneratedAgreement = path.resolve(
       'src',
       'api',
       'resources',
@@ -53,7 +56,7 @@ export const generate = async (req, res, next) => {
     )
 
     const PDF_OPTIONS = {
-      path: destPdfGenerated,
+      path: destPdfGeneratedAgreement,
       format: 'A4',
       printBackground: true,
       margin: {
@@ -79,8 +82,8 @@ export const generate = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.download(destPdfGenerated, (err) => {
-      fs.unlink(destPdfGenerated)
+    return res.download(destPdfGeneratedAgreement, (err) => {
+      fs.unlink(destPdfGeneratedAgreement)
       if (err) {
         throw new APIError({
           message: 'Error on send pdf',
@@ -131,6 +134,36 @@ export const sendEmail = async (req, res, next) => {
 
   const attachments = []
 
+  const destPdfGeneratedAgreement = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'agreement',
+    `${Date.now()}.pdf`
+  )
+
+  const templatepath = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'templates',
+    'invoice',
+    'invoice.html'
+  )
+
+  const destPdfGeneratedInvoice = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'invoice',
+    `${Date.now()}.pdf`
+  )
+
   // Verify file is pdf
   if (attachment && !/\/pdf$/.test(attachment.mimetype)) {
     throw new APIError({
@@ -172,18 +205,77 @@ export const sendEmail = async (req, res, next) => {
       })
     }
 
-    const destPdfGenerated = Path.resolve(
-      'src',
-      'api',
-      'resources',
-      'pdf',
-      'generated',
-      'agreement',
-      `${Date.now()}.pdf`
-    )
+    if (mail.attachInvoice) {
+      const readFile = util.promisify(fs.readFile)
+
+      // Verify exists score
+      const invoice = await models.Invoice.findOne({
+        where: {
+          business_id: businessId
+        },
+        order: [['dateTimeCreated', 'DESC']]
+      })
+
+      if (!invoice) {
+        throw new APIError({
+          message: 'Invoice not found',
+          status: 404,
+          isPublic: true
+        })
+      }
+
+      const context = {
+        ref: invoice.ref,
+        officeDetails: invoice.officeDetails,
+        bankDetails: invoice.bankDetails,
+        to: invoice.to,
+        description: invoice.description,
+        amount: numeral(invoice.amount).format('0,0.00'),
+        total: numeral(invoice.total).format('0,0.00'),
+        gst: numeral((invoice.amount * 10) / 100).format('0,0.00'),
+        payment_terms: invoice.paymentTerms,
+        created: moment(invoice.dateTimeCreated).format('LL')
+      }
+
+      const PDF_OPTIONS = {
+        path: destPdfGeneratedInvoice,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '15mm',
+          left: '15mm',
+          right: '15mm',
+          bottom: '15mm'
+        },
+        displayHeaderFooter: false,
+        headerTemplate: ' ',
+        footerTemplate: `
+      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+      <span style="float: left;"></span>
+      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+      </div>`,
+        scale: 0.8
+      }
+
+      const content = await readFile(templatepath, 'utf8')
+      const handlebarsCompiled = handlebars.compile(content)
+      const template = handlebarsCompiled(context)
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      await page.emulateMedia('screen')
+      await page.goto(`data:text/html,${template}`)
+
+      await page.pdf(PDF_OPTIONS)
+      await browser.close()
+
+      attachments.push({
+        filename: mail.attachmentInvoice,
+        path: destPdfGeneratedInvoice
+      })
+    }
 
     const PDF_OPTIONS = {
-      path: destPdfGenerated,
+      path: destPdfGeneratedAgreement,
       format: 'A4',
       printBackground: true,
       margin: {
@@ -226,8 +318,8 @@ export const sendEmail = async (req, res, next) => {
     }
 
     attachments.push({
-      filename: mail.attachmentName,
-      path: destPdfGenerated
+      filename: mail.attachmentAgreement,
+      path: destPdfGeneratedAgreement
     })
 
     if (attachment) {
@@ -250,7 +342,8 @@ export const sendEmail = async (req, res, next) => {
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // remove pdf temp
-    await fs.unlink(destPdfGenerated)
+    await fs.unlink(destPdfGeneratedAgreement)
+    await fs.unlink(destPdfGeneratedInvoice)
 
     return res.status(201).json({
       data: responseMailer,
