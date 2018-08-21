@@ -85,7 +85,8 @@
     }
 
     .invoice-box table tr.total td .values {
-      display: block
+      display: block;
+      font-weight: bold;
     }
 
     .invoice-box table tr.total td.payment_terms {
@@ -145,7 +146,7 @@
               <td class="subtitle">
                 <h1>Tax Invoice</h1>
                 Invoice #: {{ref}}
-                <br> Created: {{created}}
+                <br> Date: {{created}}
                 <!-- <br> Due: February 1, 2015 -->
               </td>
             </tr>
@@ -216,14 +217,12 @@
       <tr class="total">
         <td class="payment_terms">
           <span class="values">Payment Terms: </span>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe dignissimos voluptatibus beatae consequatur rerum?
-            Facere aliquam mollitia repellendus nobis, repudiandae quos sapiente eum vitae distinctio magnam quia doloremque
-            eaque enim!</p>
+          <p>{{{payment_terms}}}</p>
         </td>
 
         <td>
-          <span class="values"> SubTotal: $ {{total}}</span>
-          <span class="values"> (10%): </span>
+          <span class="values"> SubTotal: $ {{amount}}</span>
+          <span class="values"> (10%): $ {{gst}}</span>
           <span class="values"> Total: $ {{total}}</span>
           <!-- <span class="values"> Balance Due: $385.00</span> -->
         </td>

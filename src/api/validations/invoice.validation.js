@@ -44,5 +44,23 @@ export default {
         .min(1)
         .required()
     }
+  },
+  sendEmail: {
+    body: {
+      mail: Joi.object().required(),
+      invoiceId: Joi.string()
+        .min(1)
+        .required(),
+      businessId: Joi.string()
+        .min(1)
+        .required()
+      // mail: Joi.object().keys({
+      //   to: Joi.string()
+      //     .required('To is required.')
+      //     .email('Invalid email address.'),
+      //   subject: Joi.string().required('Subject is required.'),
+      //   body: Joi.string().required('Body is required.')
+      // })
+    }
   }
 }

@@ -191,6 +191,8 @@ export const makePdf = async (req, res, next) => {
       description: invoice.description,
       amount: invoice.amount,
       total: invoice.total,
+      gst: (invoice.amount * 10) / 100,
+      payment_terms: invoice.paymentTerms,
       created: moment(invoice.dateTimeCreated).format('LL')
     }
 
@@ -199,10 +201,10 @@ export const makePdf = async (req, res, next) => {
       format: 'A4',
       printBackground: true,
       margin: {
-        top: '5mm',
-        left: '5mm',
-        right: '5mm',
-        bottom: '5mm'
+        top: '10mm',
+        left: '10mm',
+        right: '10mm',
+        bottom: '10mm'
       },
       displayHeaderFooter: false,
       headerTemplate: ' ',
@@ -235,6 +237,143 @@ export const makePdf = async (req, res, next) => {
           isPublic: true
         })
       }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const sendEmail = async (req, res, next) => {
+  const { invoiceId, mail } = req.body
+  const attachment = req.files.attachment
+
+  const attachments = []
+
+  // Verify file is pdf
+  if (attachment && !/\/pdf$/.test(attachment.mimetype)) {
+    throw new APIError({
+      message: 'Expect pdf file',
+      status: 400,
+      isPublic: true
+    })
+  }
+
+  const templatePath = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'templates',
+    'invoice',
+    'invoice.html'
+  )
+  const destPdfGenerated = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'invoice',
+    `${Date.now()}.pdf`
+  )
+
+  const readFile = util.promisify(fs.readFile)
+
+  try {
+    // Verify exists score
+    const invoice = await models.Invoice.findOne({
+      where: { id: invoiceId },
+      include: [
+        { model: models.Business, as: 'Business' }
+      ]
+    })
+
+    if (!invoice) {
+      throw new APIError({
+        message: 'Invoice not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const broker = await models.User.findOne({
+      where: { id: invoice.Business.brokerAccountName }
+    })
+
+    const context = {
+      ref: invoice.ref,
+      officeDetails: invoice.officeDetails,
+      bankDetails: invoice.bankDetails,
+      to: invoice.to,
+      description: invoice.description,
+      amount: invoice.amount,
+      total: invoice.total,
+      gst: (invoice.amount * 10) / 100,
+      payment_terms: invoice.paymentTerms,
+      created: moment(invoice.dateTimeCreated).format('LL')
+    }
+
+    const PDF_OPTIONS = {
+      path: destPdfGenerated,
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '10mm',
+        left: '10mm',
+        right: '10mm',
+        bottom: '10mm'
+      },
+      displayHeaderFooter: false,
+      headerTemplate: ' ',
+      footerTemplate: `
+    <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+    <span style="float: left;"></span>
+    <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+    </div>`,
+      scale: 0.8
+    }
+
+    const content = await readFile(templatePath, 'utf8')
+    const handlebarsCompiled = handlebars.compile(content)
+    const template = handlebarsCompiled(context)
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.emulateMedia('screen')
+    await page.goto(`data:text/html,${template}`)
+
+    await page.pdf(PDF_OPTIONS)
+    await browser.close()
+
+    attachments.push({
+      filename: mail.attachmentName,
+      path: destPdfGenerated
+    })
+
+    if (attachment) {
+      attachments.push({
+        filename: attachment.name,
+        content: attachment.data
+      })
+    }
+
+    const mailOptions = {
+      to: mail.to,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: mail.subject,
+      html: mail.body,
+      replyTo: broker.email,
+      attachments
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // remove pdf temp
+    await fs.unlink(destPdfGenerated)
+
+    return res.status(201).json({
+      data: responseMailer,
+      message: 'Send email successfuly'
     })
   } catch (error) {
     return next(error)

@@ -7,7 +7,8 @@ import {
   create,
   update,
   remove,
-  makePdf
+  makePdf,
+  sendEmail
 } from '../controllers/invoice.controller'
 
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -38,5 +39,7 @@ router
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
   .delete(validate(validation.remove), remove)
+
+router.route('/send-email').post(validate(validation.sendEmail), sendEmail)
 
 export default router
