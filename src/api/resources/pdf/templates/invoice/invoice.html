@@ -47,7 +47,7 @@
     }
 
     .invoice-box table tr.top table td.subtitle {
-      font-size: 16px;
+      font-size: 18px;
       color: #333;
       vertical-align: middle;
     }
@@ -154,7 +154,7 @@
 
               <td class="subtitle">
                 <h1>Tax Invoice</h1>
-                Invoice #: {{ref}}
+                Invoice Ref.: {{ref}}
                 <br> Date: {{created}}
                 <!-- <br> Due: February 1, 2015 -->
               </td>
@@ -233,8 +233,8 @@
 
         <td>
           <span class="values"> SubTotal: $ {{amount}}</span>
-          <span class="values"> (10%): $ {{gst}}</span>
-          <span class="values"> Total: $ {{total}}</span>
+          <span class="values"> GST (10%): $ {{gst}}</span>
+          <span class="values"> Total (including GST): $ {{total}}</span>
           <!-- <span class="values"> Balance Due: $385.00</span> -->
         </td>
 
