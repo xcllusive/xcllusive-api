@@ -91,8 +91,8 @@ export const create = async (req, res, next) => {
       const err = { message: 'User already exists', status: 400, isPublic: true }
       throw err
     }
-    await models.User.create(req.body)
-    return res.status(200).json({ message: 'User created with success' })
+    const newUser = await models.User.create(req.body)
+    return res.status(200).json({data: newUser, message: 'User created with success' })
   } catch (err) {
     return next(err)
   }
