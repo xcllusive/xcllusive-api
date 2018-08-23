@@ -158,6 +158,10 @@ export default (sequelize, DataTypes) => {
       modifiedBy_id: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+      businessType: {
+        type: DataTypes.TEXT,
+        allowNull: true
       }
     },
     {
