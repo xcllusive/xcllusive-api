@@ -26,7 +26,13 @@ export const list = async (req, res, next) => {
   ]
 
   try {
-    const response = await models.Score.findAndCountAll({ where, limit, offset, include })
+    const response = await models.Score.findAndCountAll({
+      where,
+      limit,
+      offset,
+      include,
+      order: [['dateTimeCreated', 'DESC']]
+    })
     return res.status(201).json({
       data: response,
       pageCount: response.count,
