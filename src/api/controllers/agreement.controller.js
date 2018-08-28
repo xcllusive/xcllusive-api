@@ -178,6 +178,8 @@ export const sendEmail = async (req, res, next) => {
     body
   }
 
+  let invoice = null
+
   try {
     const getBusiness = await models.Business.findOne({
       where: { id: businessId}
@@ -209,7 +211,7 @@ export const sendEmail = async (req, res, next) => {
       const readFile = util.promisify(fs.readFile)
 
       // Verify exists score
-      const invoice = await models.Invoice.findOne({
+      invoice = await models.Invoice.findOne({
         where: {
           business_id: businessId
         },
@@ -344,6 +346,13 @@ export const sendEmail = async (req, res, next) => {
     // remove pdf temp
     await fs.unlink(destPdfGeneratedAgreement)
     await fs.unlink(destPdfGeneratedInvoice)
+
+    if (mail.attachInvoice) {
+    // Update Date sent
+      await models.Invoice.update({dateSent: moment()}, {
+        where: { id: invoice.id }
+      })
+    }
 
     return res.status(201).json({
       data: responseMailer,

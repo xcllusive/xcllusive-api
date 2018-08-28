@@ -420,6 +420,11 @@ export const sendEmail = async (req, res, next) => {
     await fs.unlink(destPdfGenerated)
     await fs.unlink(destPdfGeneratedAgreement)
 
+    // Update Date sent
+    await models.Invoice.update({dateSent: moment()}, {
+      where: { id: invoiceId }
+    })
+
     return res.status(201).json({
       data: responseMailer,
       message: 'Send email successfuly'
