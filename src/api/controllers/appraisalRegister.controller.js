@@ -45,7 +45,7 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const { label, appraisalRegister } = req.body
+  const { label, type: appraisalRegister } = req.body
 
   try {
     if (appraisalRegister === 1) {
