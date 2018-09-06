@@ -47,13 +47,13 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { appraisalRegisterID } = req.params
+  const { appraisalRegisterId } = req.params
   const { label } = req.body
 
   try {
     await models.AppraisalRegister.update(
       { label },
-      { where: { id: appraisalRegisterID } }
+      { where: { id: appraisalRegisterId } }
     )
     return res.status(200).json({ message: `Appraisal register ${label} updated` })
   } catch (error) {
