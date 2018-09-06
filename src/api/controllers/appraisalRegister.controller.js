@@ -45,15 +45,10 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const { label, type: appraisalRegister } = req.body
+  const { label, type } = req.body
 
   try {
-    if (appraisalRegister === 1) {
-      await models.AppraisalRegister.create({ label })
-    }
-    if (!appraisalRegister) {
-      throw new Error(`Appraisal register ${appraisalRegister} does not exist`)
-    }
+    await models.AppraisalRegister.create({ label, type })
 
     return res.status(200).json({ message: `Appraisal register ${label} created` })
   } catch (error) {
