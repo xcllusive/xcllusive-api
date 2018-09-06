@@ -38,9 +38,9 @@ export const create = async (req, res, next) => {
   const { label, type } = req.body
 
   try {
-    await models.AppraisalRegister.create({ label, type })
+    const appraisal = await models.AppraisalRegister.create({ label, type })
 
-    return res.status(200).json({ message: `Appraisal register ${label} created` })
+    return res.status(200).json({ data: appraisal, message: `Appraisal register ${label} created` })
   } catch (error) {
     return next(error)
   }
