@@ -47,7 +47,9 @@ export const create = async (req, res, next) => {
   try {
     const appraisal = await models.Appraisal.create(newAppraisal)
 
-    return res.status(200).json({ data: appraisal, message: `Appraisal ${appraisal.id} created` })
+    return res
+      .status(200)
+      .json({ data: appraisal, message: `Appraisal ${appraisal.id} created` })
   } catch (error) {
     return next(error)
   }
@@ -56,14 +58,12 @@ export const create = async (req, res, next) => {
 export const update = async (req, res, next) => {
   const { appraisalId } = req.params
   const updatedValues = req.body
+  console.log(updatedValues)
 
   updatedValues.updatedBy_id = req.user.id
 
   try {
-    await models.Appraisal.update(
-      { updatedValues },
-      { where: { id: appraisalId } }
-    )
+    await models.Appraisal.update({ updatedValues }, { where: { id: appraisalId } })
     return res.status(200).json({ message: `Appraisal ${appraisalId} updated` })
   } catch (error) {
     return next(error)

@@ -2067,7 +2067,7 @@ export default (sequelize, DataTypes) => {
       sentDate: {
         type: DataTypes.DATE,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: null
       }
     },
     {
