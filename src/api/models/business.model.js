@@ -296,6 +296,9 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'agreement_id',
       as: 'Agreement'
     })
+    models.Business.hasMany(models.Appraisal, {
+      foreignKey: 'business_id'
+    })
   }
 
   return Business

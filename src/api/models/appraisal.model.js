@@ -9,16 +9,6 @@ export default (sequelize, DataTypes) => {
         unique: true,
         allowNull: false
       },
-      businessName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: ''
-      },
-      businessABN: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: ''
-      },
       firstName: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -53,16 +43,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
-      },
-      businessType: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      businessIndustry: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
       },
       productsServices: {
         type: DataTypes.TEXT,
@@ -2121,6 +2101,20 @@ export default (sequelize, DataTypes) => {
       ]
     }
   )
+
+  Appraisal.associate = models => {
+    models.Appraisal.belongsTo(models.User, {
+      foreignKey: 'createdBy_id',
+      as: 'CreatedBy'
+    })
+    models.Appraisal.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id',
+      as: 'ModifiedBy'
+    })
+    models.Appraisal.belongsTo(models.Business, {
+      foreignKey: 'business_id'
+    })
+  }
 
   return Appraisal
 }
