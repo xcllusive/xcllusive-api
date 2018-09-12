@@ -9,36 +9,6 @@ export default (sequelize, DataTypes) => {
         unique: true,
         allowNull: false
       },
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      streetName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      suburb: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      postCode: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: 0
-      },
       confirmBusinessDetail: {
         type: DataTypes.BOOLEAN,
         allowNull: true,

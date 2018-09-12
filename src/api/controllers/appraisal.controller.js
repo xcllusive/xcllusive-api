@@ -24,7 +24,12 @@ export const get = async (req, res, next) => {
 
   try {
     const response = await models.Appraisal.findOne({
-      where: { id: appraisald }
+      where: { id: appraisald },
+      include: [
+        { model: models.Business },
+        { model: models.User, as: 'CreatedBy' },
+        { model: models.User, as: 'ModifiedBy' }
+      ]
     })
     return res.status(201).json({
       data: response
@@ -36,6 +41,8 @@ export const get = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
   const newAppraisal = req.body
+
+  newAppraisal.createdBy_id = req.user.id
 
   try {
     const appraisal = await models.Appraisal.create(newAppraisal)
@@ -49,6 +56,8 @@ export const create = async (req, res, next) => {
 export const update = async (req, res, next) => {
   const { appraisalId } = req.params
   const updatedValues = req.body
+
+  updatedValues.updatedBy_id = req.user.id
 
   try {
     await models.Appraisal.update(
