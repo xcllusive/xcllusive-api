@@ -20,11 +20,11 @@ export const list = async (req, res, next) => {
 }
 
 export const get = async (req, res, next) => {
-  const { appraisald } = req.params
+  const { appraisalId } = req.params
 
   try {
     const response = await models.Appraisal.findOne({
-      where: { id: appraisald },
+      where: { id: appraisalId },
       include: [
         { model: models.Business },
         { model: models.User, as: 'CreatedBy' },
@@ -58,12 +58,11 @@ export const create = async (req, res, next) => {
 export const update = async (req, res, next) => {
   const { appraisalId } = req.params
   const updatedValues = req.body
-  console.log(updatedValues)
 
   updatedValues.updatedBy_id = req.user.id
 
   try {
-    await models.Appraisal.update({ updatedValues }, { where: { id: appraisalId } })
+    await models.Appraisal.update(updatedValues, { where: { id: appraisalId } })
     return res.status(200).json({ message: `Appraisal ${appraisalId} updated` })
   } catch (error) {
     return next(error)

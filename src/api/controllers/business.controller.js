@@ -365,6 +365,16 @@ export const update = async (req, res, next) => {
     modifiedBy_id: req.user.id
   }
 
+  req.body.stageId = req.body.stage === '' ? undefined : req.body.stage
+  req.body.sourceId = req.body.businessSource === '' ? undefined : req.body.businessSource
+  req.body.ratingId = req.body.businessRating === '' ? undefined : req.body.businessRating
+  req.body.industryId = req.body.businessIndustry === '' ? undefined : req.body.businessIndustry
+  req.body.productId = req.body.businessProduct === '' ? undefined : req.body.businessProduct
+  req.body.typeId = req.body.businessType === '' ? undefined : req.body.businessType
+  req.body.depositeTakenDate = depositeTakenDate instanceof Date ? depositeTakenDate : undefined
+  req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
+  req.body.modifiedBy_id = req.user.id
+
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
 
@@ -372,7 +382,8 @@ export const update = async (req, res, next) => {
       businessUpdated.daysOnTheMarket = moment()
     }
 
-    await models.Business.update(businessUpdated, { where: { id: idBusiness } })
+    await models.Business.update(req.body, { where: { id: idBusiness } })
+
     return res
       .status(200)
       .json({ message: `Business BS${idBusiness} updated with success` })
