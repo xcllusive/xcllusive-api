@@ -8,7 +8,11 @@ export const list = async (req, res, next) => {
   const where = appraisalRegister ? { type: appraisalRegister } : null
 
   try {
-    const response = await models.AppraisalRegister.findAndCountAll({ where, limit, offset })
+    const response = await models.AppraisalRegister.findAndCountAll({
+      where,
+      limit,
+      offset
+    })
     return res.status(201).json({
       data: response,
       pageCount: response.count,
@@ -35,12 +39,14 @@ export const get = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const { label, type } = req.body
+  const { label, type, points } = req.body
 
   try {
-    const appraisal = await models.AppraisalRegister.create({ label, type })
+    const appraisal = await models.AppraisalRegister.create({ label, type, points })
 
-    return res.status(200).json({ data: appraisal, message: `Appraisal register ${label} created` })
+    return res
+      .status(200)
+      .json({ data: appraisal, message: `Appraisal register ${label} created` })
   } catch (error) {
     return next(error)
   }
@@ -48,11 +54,11 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
   const { appraisalRegisterId } = req.params
-  const { label } = req.body
+  const { label, points } = req.body
 
   try {
     await models.AppraisalRegister.update(
-      { label },
+      { label, points },
       { where: { id: appraisalRegisterId } }
     )
     return res.status(200).json({ message: `Appraisal register ${label} updated` })

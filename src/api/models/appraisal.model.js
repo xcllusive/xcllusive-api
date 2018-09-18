@@ -2068,6 +2068,46 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null
+      },
+      riskList: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      criticalIssuesList: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      valueDriversList: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      labelSliderBR: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      descriptionBR: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      labelSliderMarket: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      descriptionMarket: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      confirmBusinessAnalysis: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     },
     {

@@ -16,6 +16,10 @@ export default (sequelize, DataTypes) => {
       label: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      points: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     },
     {
