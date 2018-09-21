@@ -2084,25 +2084,15 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: ''
       },
-      labelSliderBR: {
-        type: DataTypes.STRING,
+      valueSliderBR: {
+        type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 50
       },
-      descriptionBR: {
-        type: DataTypes.STRING,
+      valueSliderMarket: {
+        type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: ''
-      },
-      labelSliderMarket: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
-      descriptionMarket: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
+        defaultValue: 50
       },
       confirmBusinessAnalysis: {
         type: DataTypes.BOOLEAN,
