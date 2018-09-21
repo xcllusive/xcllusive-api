@@ -1,4 +1,5 @@
 import models from '../../config/sequelize'
+import APIError from '../utils/APIError'
 
 export const list = async (req, res, next) => {
   const { appraisalRegister } = req.query
@@ -71,6 +72,18 @@ export const remove = async (req, res, next) => {
   const { appraisalRegisterId } = req.params
 
   try {
+    const appraisalRegister = await models.AppraisalRegister.findOne({
+      where: { id: appraisalRegisterId }
+    })
+
+    if (!appraisalRegister) {
+      throw new APIError({
+        message: 'Appraisal register not found',
+        status: 400,
+        isPublic: true
+      })
+    }
+
     await models.AppraisalRegister.destroy({ where: { id: appraisalRegisterId } })
 
     return res
