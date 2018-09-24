@@ -73,7 +73,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       specialNotes: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TEXT,
         allowNull: true
       },
       sold: {
