@@ -14,8 +14,11 @@ import {
   sendEnquiryOwner,
   getBuyersFromBusiness,
   getGroupEmail,
-  sendGroupEmail
-
+  sendGroupEmail,
+  getStageSold,
+  createStageSold,
+  updateStageSold,
+  finaliseStageSold
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -28,11 +31,22 @@ const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
-router.route('/:idBusiness/group-email').get(validate(validation.getGroupEmail), getGroupEmail)
+router
+  .route('/:idBusiness/group-email')
+  .get(validate(validation.getGroupEmail), getGroupEmail)
 
 router.route('/:idBusiness/buyer').get(getBuyersFromBusiness)
 
 router.route('/:idBusiness/stage-lost').put(updateStageLost)
+
+router
+  .route('/:idBusiness/sold')
+  .get(getStageSold)
+  .post(createStageSold)
+
+router.route('/:idBusiness/sold/:idSold').put(updateStageSold)
+
+router.route('/:idBusiness/sold/:idSold/finalise').post(finaliseStageSold)
 
 router
   .route('/')

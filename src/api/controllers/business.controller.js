@@ -915,3 +915,72 @@ export const sendGroupEmail = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getStageSold = async (req, res, next) => {
+  const { idBusiness } = req.params
+
+  try {
+    const sold = await models.BusinessSold.findOne({ where: { business_id: idBusiness} })
+
+    return res.status(201).json({
+      data: sold,
+      message: 'Get sold successfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const createStageSold = async (req, res, next) => {
+  const { idBusiness } = req.params
+  const newSold = req.body
+
+  newSold.business_id = idBusiness
+  newSold.createddBy_id = req.user.id
+  newSold.modifiedBy_id = req.user.id
+
+  try {
+    const sold = await models.BusinessSold.create(newSold)
+
+    return res.status(201).json({
+      data: sold,
+      message: 'Create with successfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const updateStageSold = async (req, res, next) => {
+  const { idBusiness } = req.params
+  const updatedSold = req.body
+
+  updatedSold.business_id = idBusiness
+  updatedSold.modifiedBy_id = req.user.id
+
+  try {
+    await models.BusinessSold.update(updatedSold, { where: { id: updatedSold.id } })
+
+    return res.status(201).json({
+      data: null,
+      message: 'Update with successfuly'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const finaliseStageSold = async (req, res, next) => {
+  const { idBusiness, idSold } = req.params
+
+  try {
+    await models.BusinessSold.update({sold: true, modifiedBy_id: req.user.id}, { where: { id: idSold } })
+    await models.Business.update({stageId: 6, modifiedBy_id: req.user.id}, { where: { id: idBusiness } })
+    return res.status(201).json({
+      data: null,
+      message: 'Stage change to Sold'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
