@@ -80,6 +80,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      trend: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {
