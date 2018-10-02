@@ -11,8 +11,8 @@ export const list = async (req, res, next) => {
   }
 
   if (type) whereOptions.businessType = { $like: `%${type}%` }
-  if (priceRangeStart) whereOptions.priceRangeStart = priceRangeStart
-  if (priceRangeEnd) whereOptions.priceRangeEnd = priceRangeEnd
+  if (priceRangeStart) whereOptions.soldPrice = { $gte: priceRangeStart }
+  if (priceRangeEnd) whereOptions.soldPrice = { $lte: priceRangeEnd }
   if (trend) whereOptions.trend = trend
 
   try {

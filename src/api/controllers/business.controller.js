@@ -347,7 +347,7 @@ export const update = async (req, res, next) => {
     industryId: businessIndustry === '' ? null : businessIndustry,
     productId: businessProduct === '' ? null : businessProduct,
     typeId: businessType === '' ? null : businessType,
-    brokerAccountName,
+    brokerAccountName: brokerAccountName === '' ? null : brokerAccountName,
     listedPrice,
     currentPrice,
     engagementFee,
