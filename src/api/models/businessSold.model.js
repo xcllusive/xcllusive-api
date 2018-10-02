@@ -84,6 +84,11 @@ export default (sequelize, DataTypes) => {
       trend: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      soldDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: Date.now()
       }
     },
     {

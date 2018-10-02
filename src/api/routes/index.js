@@ -16,7 +16,8 @@ import agreementRoutes from './agreement.route'
 import invoiceRoutes from './invoice.route'
 import invoiceTemplateRoutes from './invoiceTemplate.route'
 import appraisalRegisterRoutes from './appraisalRegister.route'
-import appraisalRouters from './appraisal.route'
+import appraisalRouter from './appraisal.route'
+import comparableDaraRoutes from './comparableData.route'
 
 const router = express.Router()
 
@@ -37,6 +38,7 @@ router.use('/agreement', agreementRoutes)
 router.use('/invoice', invoiceRoutes)
 router.use('/invoice-template', invoiceTemplateRoutes)
 router.use('/appraisal-register', appraisalRegisterRoutes)
-router.use('/appraisal', appraisalRouters)
+router.use('/appraisal', appraisalRouter)
+router.use('/comparable-data', comparableDaraRoutes)
 
 export default router
