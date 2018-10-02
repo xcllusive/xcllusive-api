@@ -293,7 +293,8 @@ export const update = async (req, res, next) => {
   req.body.sourceId = businessSource === '' ? undefined : businessSource
   req.body.ratingId = businessRating === '' ? undefined : businessRating
   req.body.industryId = businessIndustry === '' ? undefined : businessIndustry
-  req.body.productId = businessProduct === '' ? undefined : businessType
+  req.body.productId = businessProduct === '' ? undefined : businessProduct
+  req.body.typeId = businessType === '' ? undefined : businessType
   req.body.depositeTakenDate =
     depositeTakenDate instanceof Date ? depositeTakenDate : undefined
   req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
