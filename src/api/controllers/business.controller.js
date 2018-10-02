@@ -249,7 +249,8 @@ export const create = async (req, res, next) => {
     sourceNotes: req.body.sourceNotes,
     description: req.body.description,
     stageId: 1, // Potencial Listing
-    createdBy_id: req.user.id
+    createdBy_id: req.user.id,
+    modifiedBy_id: req.user.id
   }
 
   try {
