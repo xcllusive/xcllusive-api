@@ -87,8 +87,7 @@ export default (sequelize, DataTypes) => {
       },
       soldDate: {
         type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: Date.now()
+        allowNull: true
       }
     },
     {

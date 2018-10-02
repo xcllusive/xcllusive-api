@@ -13,7 +13,16 @@ export const list = async (req, res, next) => {
   if (type) whereOptions.businessType = { $like: `%${type}%` }
   if (priceRangeStart) whereOptions.soldPrice = { $gte: priceRangeStart }
   if (priceRangeEnd) whereOptions.soldPrice = { $lte: priceRangeEnd }
-  if (trend) whereOptions.trend = trend
+  if (trend) {
+    if (!JSON.parse(trend)) {
+      throw new APIError({
+        message: 'Trend is not array',
+        status: 404,
+        isPublic: true
+      })
+    }
+    whereOptions.trend = { $or: JSON.parse(trend) }
+  }
 
   try {
     const businessesSold = await models.BusinessSold.findAndCountAll({
