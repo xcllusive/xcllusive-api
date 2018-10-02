@@ -278,109 +278,33 @@ export const update = async (req, res, next) => {
   const { idBusiness } = req.params
 
   const {
-    businessName,
-    firstNameV,
-    lastNameV,
-    vendorPhone1,
-    vendorPhone2,
-    vendorPhone3,
-    vendorEmail,
-    sourceNotes,
-    description,
-    businessNameSecondary,
-    businessABN,
-    businessURL,
-    address1,
-    suburb,
-    state,
-    postCode,
-    data120DayGuarantee,
-    notifyOwner,
     stage,
     businessSource,
     businessRating,
     businessIndustry,
     businessProduct,
     businessType,
-    listingAgent,
     brokerAccountName,
-    listedPrice,
-    currentPrice,
-    engagementFee,
-    commissionPerc,
-    minimumCharge,
-    appraisalHigh,
-    appraisalLow,
-    depositeTaken,
     depositeTakenDate,
-    commissionSold,
-    settlementDate,
-    soldPrice,
-    attachedPurchaser,
-    searchNote,
-    afterSalesNotes
+    settlementDate
   } = req.body
 
-  const businessUpdated = {
-    businessName,
-    firstNameV,
-    lastNameV,
-    vendorPhone1,
-    vendorPhone2,
-    vendorPhone3,
-    vendorEmail,
-    sourceNotes,
-    description,
-    businessNameSecondary,
-    businessABN,
-    businessURL,
-    address1,
-    suburb,
-    state,
-    postCode,
-    data120DayGuarantee,
-    notifyOwner,
-    listingAgent,
-    stageId: stage === '' ? null : stage,
-    sourceId: businessSource === '' ? null : businessSource,
-    ratingId: businessRating === '' ? null : businessRating,
-    industryId: businessIndustry === '' ? null : businessIndustry,
-    productId: businessProduct === '' ? null : businessProduct,
-    typeId: businessType === '' ? null : businessType,
-    brokerAccountName: brokerAccountName === '' ? null : brokerAccountName,
-    listedPrice,
-    currentPrice,
-    engagementFee,
-    commissionPerc,
-    minimumCharge,
-    appraisalHigh,
-    appraisalLow,
-    depositeTaken,
-    depositeTakenDate: depositeTakenDate instanceof Date ? depositeTakenDate : null,
-    commissionSold,
-    settlementDate: settlementDate instanceof Date ? settlementDate : null,
-    soldPrice,
-    attachedPurchaser,
-    searchNote,
-    afterSalesNotes,
-    modifiedBy_id: req.user.id
-  }
-
-  req.body.stageId = req.body.stage === '' ? undefined : req.body.stage
-  req.body.sourceId = req.body.businessSource === '' ? undefined : req.body.businessSource
-  req.body.ratingId = req.body.businessRating === '' ? undefined : req.body.businessRating
-  req.body.industryId = req.body.businessIndustry === '' ? undefined : req.body.businessIndustry
-  req.body.productId = req.body.businessProduct === '' ? undefined : req.body.businessProduct
-  req.body.typeId = req.body.businessType === '' ? undefined : req.body.businessType
-  req.body.depositeTakenDate = depositeTakenDate instanceof Date ? depositeTakenDate : undefined
+  req.body.stageId = stage === '' ? undefined : stage
+  req.body.sourceId = businessSource === '' ? undefined : businessSource
+  req.body.ratingId = businessRating === '' ? undefined : businessRating
+  req.body.industryId = businessIndustry === '' ? undefined : businessIndustry
+  req.body.productId = businessProduct === '' ? undefined : businessType
+  req.body.depositeTakenDate =
+    depositeTakenDate instanceof Date ? depositeTakenDate : undefined
   req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
+  req.body.brokerAccountName = brokerAccountName === '' ? undefined : brokerAccountName
   req.body.modifiedBy_id = req.user.id
 
   try {
     const business = await models.Business.findOne({ where: { id: idBusiness } })
 
     if (!business.daysOnTheMarket && stage === 4) {
-      businessUpdated.daysOnTheMarket = moment()
+      req.body.daysOnTheMarket = moment()
     }
 
     await models.Business.update(req.body, { where: { id: idBusiness } })
@@ -921,7 +845,7 @@ export const getStageSold = async (req, res, next) => {
   const { idBusiness } = req.params
 
   try {
-    const sold = await models.BusinessSold.findOne({ where: { business_id: idBusiness} })
+    const sold = await models.BusinessSold.findOne({ where: { business_id: idBusiness } })
 
     return res.status(201).json({
       data: sold,
@@ -975,8 +899,14 @@ export const finaliseStageSold = async (req, res, next) => {
   const { idBusiness, idSold } = req.params
 
   try {
-    await models.BusinessSold.update({sold: true, modifiedBy_id: req.user.id}, { where: { id: idSold } })
-    await models.Business.update({stageId: 6, modifiedBy_id: req.user.id}, { where: { id: idBusiness } })
+    await models.BusinessSold.update(
+      { sold: true, modifiedBy_id: req.user.id },
+      { where: { id: idSold } }
+    )
+    await models.Business.update(
+      { stageId: 6, modifiedBy_id: req.user.id },
+      { where: { id: idBusiness } }
+    )
     return res.status(201).json({
       data: null,
       message: 'Stage change to Sold'
