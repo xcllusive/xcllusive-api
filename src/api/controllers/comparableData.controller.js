@@ -13,6 +13,14 @@ export const list = async (req, res, next) => {
   if (type) whereOptions.businessType = { $like: `%${type}%` }
   if (priceRangeStart) whereOptions.soldPrice = { $gte: priceRangeStart }
   if (priceRangeEnd) whereOptions.soldPrice = { $lte: priceRangeEnd }
+  if (priceRangeStart && priceRangeEnd) {
+    whereOptions.soldPrice = {
+      $and: {
+        $gte: priceRangeStart,
+        $lte: priceRangeEnd
+      }
+    }
+  }
   if (trend) {
     if (!JSON.parse(trend)) {
       throw new APIError({
