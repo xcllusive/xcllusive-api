@@ -1,6 +1,7 @@
-import moment from 'moment'
+import _ from 'lodash'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
+import { stringify } from 'querystring'
 
 export const list = async (req, res, next) => {
   const { limit, type, priceRangeStart, priceRangeEnd, trend } = req.query
@@ -47,7 +48,75 @@ export const list = async (req, res, next) => {
       message: 'Get businesses sold with sucessfuly'
     }
     return res.status(200).json(response)
-  } catch (err) {
-    return next(err)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const get = async (req, res, next) => {
+  const { idAppraisal } = req.params
+
+  try {
+    const appraisal = await models.Appraisal.findOne({ where: { id: idAppraisal } })
+
+    if (!appraisal) {
+      throw new APIError({
+        message: 'Appraisal not found',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    if (
+      !appraisal.comparableDataSelectedList ||
+      appraisal.comparableDataSelectedList === ''
+    ) {
+      throw new APIError({
+        message: 'Appraisal selected list is empty',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    const businessSoldselectedListOnlyId = JSON.parse(
+      appraisal.comparableDataSelectedList
+    )
+
+    const comparableDataSelectedList = await models.BusinessSold.findAll({
+      where: { id: Array.from(businessSoldselectedListOnlyId) }
+    })
+
+    return res
+      .status(200)
+      .json({ data: comparableDataSelectedList, message: 'Get Selected list' })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const save = async (req, res, next) => {
+  const { appraisalId, selectedList } = req.body
+
+  if (selectedList.isArray()) {
+    throw new APIError({
+      message: 'Selected list is not array',
+      status: 400,
+      isPublic: true
+    })
+  }
+
+  const selectedListOnlyId = _.map(selectedList, 'id')
+
+  try {
+    await models.Appraisal.update(
+      {
+        comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
+      },
+      { where: { id: appraisalId } }
+    )
+
+    return res.status(200).json({ data: null, message: 'Get Selected list' })
+  } catch (error) {
+    return next(error)
   }
 }

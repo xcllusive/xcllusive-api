@@ -908,6 +908,10 @@ export const finaliseStageSold = async (req, res, next) => {
       { stageId: 6, modifiedBy_id: req.user.id },
       { where: { id: idBusiness } }
     )
+    await models.BusinessLog.update(
+      { followUpStatus: 'Done' },
+      { where: { business_id: idBusiness } }
+    )
     return res.status(201).json({
       data: null,
       message: 'Stage change to Sold'

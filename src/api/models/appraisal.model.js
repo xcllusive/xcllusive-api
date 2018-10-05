@@ -2098,6 +2098,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      comparableDataSelectedList: {
+        type: DataTypes.TEXT,
+        allowNull: true
       }
     },
     {
