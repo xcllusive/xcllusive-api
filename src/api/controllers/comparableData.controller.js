@@ -97,13 +97,13 @@ export const get = async (req, res, next) => {
 export const save = async (req, res, next) => {
   const { appraisalId, selectedList } = req.body
 
-  if (selectedList.isArray()) {
-    throw new APIError({
-      message: 'Selected list is not array',
-      status: 400,
-      isPublic: true
-    })
-  }
+  // if (selectedList.isArray()) {
+  //   throw new APIError({
+  //     message: 'Selected list is not array',
+  //     status: 400,
+  //     isPublic: true
+  //   })
+  // }
 
   const selectedListOnlyId = _.map(selectedList, 'id')
 
