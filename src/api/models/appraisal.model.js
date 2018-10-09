@@ -534,407 +534,407 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01: {
+      aaRow1: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow01Year1: {
+      aaRow1Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01Year2: {
+      aaRow1Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01Year3: {
+      aaRow1Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01Year4: {
+      aaRow1Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01Year5: {
+      aaRow1Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01Year6: {
+      aaRow1Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01Year7: {
+      aaRow1Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow01YesNo: {
+      aaRow1YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow02: {
+      aaRow2: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow02Year1: {
+      aaRow2Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02Year2: {
+      aaRow2Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02Year3: {
+      aaRow2Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02Year4: {
+      aaRow2Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02Year5: {
+      aaRow2Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02Year6: {
+      aaRow2Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02Year7: {
+      aaRow2Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow02YesNo: {
+      aaRow2YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow03: {
+      aaRow3: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow03Year1: {
+      aaRow3Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03Year2: {
+      aaRow3Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03Year3: {
+      aaRow3Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03Year4: {
+      aaRow3Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03Year5: {
+      aaRow3Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03Year6: {
+      aaRow3Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03Year7: {
+      aaRow3Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow03YesNo: {
+      aaRow3YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow04: {
+      aaRow4: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow04Year1: {
+      aaRow4Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04Year2: {
+      aaRow4Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04Year3: {
+      aaRow4Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04Year4: {
+      aaRow4Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04Year5: {
+      aaRow4Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04Year6: {
+      aaRow4Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04Year7: {
+      aaRow4Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow04YesNo: {
+      aaRow4YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow05: {
+      aaRow5: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow05Year1: {
+      aaRow5Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05Year2: {
+      aaRow5Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05Year3: {
+      aaRow5Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05Year4: {
+      aaRow5Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05Year5: {
+      aaRow5Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05Year6: {
+      aaRow5Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05Year7: {
+      aaRow5Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow05YesNo: {
+      aaRow5YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow06: {
+      aaRow6: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow06Year1: {
+      aaRow6Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06Year2: {
+      aaRow6Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06Year3: {
+      aaRow6Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06Year4: {
+      aaRow6Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06Year5: {
+      aaRow6Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06Year6: {
+      aaRow6Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06Year7: {
+      aaRow6Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow06YesNo: {
+      aaRow6YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow07: {
+      aaRow7: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow07Year1: {
+      aaRow7Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07Year2: {
+      aaRow7Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07Year3: {
+      aaRow7Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07Year4: {
+      aaRow7Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07Year5: {
+      aaRow7Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07Year6: {
+      aaRow7Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07Year7: {
+      aaRow7Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow07YesNo: {
+      aaRow7YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow08: {
+      aaRow8: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow08Year1: {
+      aaRow8Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08Year2: {
+      aaRow8Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08Year3: {
+      aaRow8Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08Year4: {
+      aaRow8Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08Year5: {
+      aaRow8Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08Year6: {
+      aaRow8Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08Year7: {
+      aaRow8Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow08YesNo: {
+      aaRow8YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
       },
-      aaRow09: {
+      aaRow9: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      aaRow09Year1: {
+      aaRow9Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09Year2: {
+      aaRow9Year2: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09Year3: {
+      aaRow9Year3: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09Year4: {
+      aaRow9Year4: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09Year5: {
+      aaRow9Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09Year6: {
+      aaRow9Year6: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09Year7: {
+      aaRow9Year7: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
       },
-      aaRow09YesNo: {
+      aaRow9YesNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
