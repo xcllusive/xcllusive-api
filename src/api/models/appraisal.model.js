@@ -1949,6 +1949,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: ''
       },
+      owner1HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       owner1AnnualWage: {
         type: DataTypes.DOUBLE,
         allowNull: true,
@@ -1958,6 +1963,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
+      },
+      owner2HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
       },
       owner2AnnualWage: {
         type: DataTypes.DOUBLE,
@@ -1969,6 +1979,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: ''
       },
+      owner3HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       owner3AnnualWage: {
         type: DataTypes.DOUBLE,
         allowNull: true,
@@ -1978,6 +1993,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
+      },
+      owner4HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
       },
       owner4AnnualWage: {
         type: DataTypes.DOUBLE,
@@ -1989,6 +2009,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: ''
       },
+      owner5HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       owner5AnnualWage: {
         type: DataTypes.DOUBLE,
         allowNull: true,
@@ -1999,6 +2024,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: ''
       },
+      owner6HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       owner6AnnualWage: {
         type: DataTypes.DOUBLE,
         allowNull: true,
@@ -2008,6 +2038,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
+      },
+      owner7HoursPWeek: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
       },
       owner7AnnualWage: {
         type: DataTypes.DOUBLE,
