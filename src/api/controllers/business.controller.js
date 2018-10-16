@@ -846,7 +846,9 @@ export const getStageSold = async (req, res, next) => {
   const { idBusiness } = req.params
 
   try {
-    const sold = await models.BusinessSold.findOne({ where: { business_id: idBusiness } })
+    const sold = await models.BusinessSold.findOne({
+      where: { business_id: idBusiness }
+    })
 
     return res.status(201).json({
       data: sold,

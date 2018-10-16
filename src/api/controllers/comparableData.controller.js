@@ -38,7 +38,18 @@ export const list = async (req, res, next) => {
       where: whereOptions,
       order: [['soldDate', 'DESC']],
       limit,
-      offset
+      offset,
+      include: [
+        {
+          model: models.Appraisal,
+          as: 'Appraisal',
+          required: false,
+          where: {
+            business_id: { $col: 'BusinessSold.business_id' },
+            appraisalFinal: true
+          }
+        }
+      ]
     })
 
     const response = {
