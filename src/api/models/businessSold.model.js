@@ -118,10 +118,6 @@ export default (sequelize, DataTypes) => {
     models.BusinessSold.belongsTo(models.Business, {
       foreignKey: 'business_id'
     })
-    models.BusinessSold.hasMany(models.Appraisal, {
-      foreignKey: 'appraisal_id',
-      as: 'Appraisal'
-    })
   }
 
   return BusinessSold
