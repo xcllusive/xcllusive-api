@@ -2137,6 +2137,11 @@ export default (sequelize, DataTypes) => {
       comparableDataSelectedList: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      appraisalFinal: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     },
     {
