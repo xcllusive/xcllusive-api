@@ -88,6 +88,10 @@ export default (sequelize, DataTypes) => {
       soldDate: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      agreedWageForMainOwner: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     },
     {

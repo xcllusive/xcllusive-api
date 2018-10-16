@@ -2137,6 +2137,21 @@ export default (sequelize, DataTypes) => {
       comparableDataSelectedList: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      pricingMethod: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 1
+      },
+      appraisalFinal: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      confirmComparableData: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     },
     {
