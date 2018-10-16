@@ -2143,15 +2143,60 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 1
       },
-      appraisalFinal: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false
-      },
       confirmComparableData: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      sumMEbitdaLastYear: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMEbitdaAvg: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMPebitdaLastYear: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMPebitdaAvg: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMEbitdaLastYearWithStock: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMEbitdaAvgWithStock: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMPebitdaLastYearWithStock: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMPebitdaAvgWithStock: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumMTO: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sumAssetsValue: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
       }
     },
     {
