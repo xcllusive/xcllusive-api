@@ -164,7 +164,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
-      seasonalAdjusment: {
+      seasonalAdjustment: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0
