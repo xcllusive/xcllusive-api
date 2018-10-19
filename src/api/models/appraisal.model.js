@@ -2197,6 +2197,26 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
+      },
+      sliderRiskPremium: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sliderMarketPremium: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      sliderNegotiationPremium: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      agreedValue: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
       }
     },
     {
