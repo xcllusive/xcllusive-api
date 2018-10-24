@@ -2217,6 +2217,196 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
+      },
+      confirmPricing: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      notesAndAssumptions1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions1YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions2YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions3: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions3YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions4: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions4YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions5YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions6YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions7: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions7YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions8: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions8YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions9: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions9YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions10: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions10YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      notesAndAssumptions11: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions11YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions12: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions12YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions13: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions13YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      notesAndAssumptions14: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions14YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      notesAndAssumptions15: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions15YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      notesAndAssumptions16: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions16YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      notesAndAssumptions17: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions17YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      notesAndAssumptions18: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
+      notesAndAssumptions18YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      confirmNotesAndAssumptions: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     },
     {
