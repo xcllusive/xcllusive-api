@@ -2220,7 +2220,7 @@ export default (sequelize, DataTypes) => {
       },
       confirmPricing: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       notesAndAssumptions1: {
