@@ -2230,7 +2230,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions1YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions2: {
@@ -2240,7 +2240,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions2YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions3: {
@@ -2250,7 +2250,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions3YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions4: {
@@ -2260,7 +2260,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions4YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions5: {
@@ -2270,7 +2270,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions5YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions6: {
@@ -2280,7 +2280,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions6YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions7: {
@@ -2290,7 +2290,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions7YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions8: {
@@ -2300,7 +2300,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions8YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions9: {
@@ -2310,7 +2310,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions9YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions10: {
@@ -2320,7 +2320,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions10YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       notesAndAssumptions11: {
@@ -2330,7 +2330,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions11YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions12: {
@@ -2340,17 +2340,17 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions12YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions13: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         defaultValue: ''
       },
       notesAndAssumptions13YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: true
       },
       notesAndAssumptions14: {
@@ -2360,7 +2360,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions14YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       notesAndAssumptions15: {
@@ -2370,7 +2370,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions15YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       notesAndAssumptions16: {
@@ -2380,7 +2380,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions16YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       notesAndAssumptions17: {
@@ -2390,7 +2390,7 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions17YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       notesAndAssumptions18: {
@@ -2400,12 +2400,17 @@ export default (sequelize, DataTypes) => {
       },
       notesAndAssumptions18YesNo: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
         defaultValue: false
       },
       confirmNotesAndAssumptions: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: false
+      },
+      downloaded: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
         defaultValue: false
       }
     },

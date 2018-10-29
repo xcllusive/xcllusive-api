@@ -82,6 +82,13 @@ module.exports = {
         subject: '',
         body: '',
         handlebars: '["owners_name"]'
+      },
+      {
+        title: 'Appraisal Email',
+        description: '',
+        subject: '',
+        body: '',
+        handlebars: '["owners_name", "business_name"]'
       }
     ])
   },
