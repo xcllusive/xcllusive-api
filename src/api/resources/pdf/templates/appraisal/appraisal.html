@@ -45,10 +45,34 @@
       text-decoration: none;
     }
 
+    /* page one */
+
+    #page-one .page-one__title {
+      font-size: 26px;
+      color: rgb(0, 6, 12);
+      font-weight: bold;
+    }
+
+    #page-one .page-one__business_name {
+      font-size: 26px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    #page-one .page-one__logo {
+      width: 50px;
+    }
+
+    #page-one .page-one__date {
+      font-size: 16px;
+      color: rgb(0, 6, 12);
+      font-weight: bold;
+    }
+
     /* Page two */
 
     #page-two {
-      position: relative;
+      /* position: relative; */
     }
 
     #page-two h1 {
@@ -56,12 +80,25 @@
     }
 
     #page-two .content {
-      position: absolute;
+      /* position: absolute;
       top: 50%;
       left: 50%;
       height: 30%;
       width: 50%;
-      margin: -15% 0 0 -25%;
+      margin: -15% 0 0 -25%; */
+    }
+
+    /* page three */
+
+    #page-three .page-three__title {
+      font-size: 18px;
+      color: rgb(42, 102, 157);
+      font-weight: bold;
+    }
+
+    #page-three .page-three__text {
+      font-size: 14.1px;
+      color: rgb(33, 33, 33);
     }
 
     table .center {
@@ -91,7 +128,22 @@
 
 <body>
   <section id="page-one" class="page">
-    <h1>Page 1</h1>
+    <div class="page-one__logo">
+      <img style="width: 50px" src="img/logo.jgp" />
+      <span class="page-one__title">LOGO HERE</span>
+    </div>
+    <div style="margin-top:30%; margin-left:25%; width:3">
+      <span class="page-one__title">Sales Inspection Report and</span>
+      <br />
+      <span class="page-one__title">Business Appraisal for</span>
+      <br />
+      <span class="page-one__business_name">VIP Cleaning Hornsby dfbshfs dsfsdf </span>
+    </div>
+    <div style="margin-top:50%; margin-left:40%; width:3">
+      <span class="page-one__date">Private and Confidential</span>
+      <br />
+      <span class="page-one__date">4/10/2018</span>
+    </div>
   </section>
 
   <div style="page-break-after: always;"></div>
@@ -133,6 +185,67 @@
         </tbody>
       </table>
     </div>
+  </section>
+
+  <div style="page-break-after: always;"></div>
+
+  <section id="page-three" class="page">
+    <div>
+      <span class="page-three__title">Purpose of this appraisal</span>
+      <p class="page-three__text">
+        The purpose of this appraisal is to communicate our opinion of what we believe we can sell the above
+        business for.
+      </p>
+      <p class="page-three__text">
+        This document is not a valuation. Information provided is based upon information provided to Xcllusive
+        Business Sales Pty Ltd by the recipient. Before relying on the appraisal, you should seek independent
+        advice from you accountant, solicitor and business advisor.
+      </p>
+
+    </div>
+    <div>
+      <span class="page-three__title">The information this appraisal is based upon</span>
+      <p class="page-three__text">
+        This appraisal is based upon the operating assets and goodwill of the business. Therefore this
+        appraisal excludes any real estate, cash, investments, accounts receivable, and any other nonoperating
+        assets, as well as, accounts payable, short and long-term debt, and other non-operating
+        liabilities.
+      </p>
+      <p class="page-three__text">
+        This appraisal is based on the financial and business information provided to us by the directors and/
+        or proprietors and/or their advisors of the above business verbally or in writing, and the summary and
+        details of this information is stated throughout this document as we understand it. We have not
+        verified, checked or audited these statements in any way.
+      </p>
+
+    </div>
+    <div>
+      <span class="page-three__title">Business appraisal method</span>
+      <p class="page-three__text">
+        The method used for appraising the business is done from the purchaser’s point of view, viewing the
+        business objectively and as an investment. When determining the sale price of the above business,
+        the following factors are being taken into consideration.
+      </p>
+      <p class="page-three__text">
+        1. Other possible investment opportunities from the purchaser’s point of view other than purchasing a
+        private business.
+      </p>
+      <p class="page-three__text">
+        2. Level of risk in the above business, its advantages and disadvantages.
+      </p>
+      <p class="page-three__text">
+        3. Comparison of this business with other businesses on the market.
+      </p>
+      <p class="page-three__text">
+        4. Our own business sales experience.
+      </p>
+    </div>
+  </section>
+
+  <div style="page-break-after: always;"></div>
+
+  <section id="page-four" class="page">
+
   </section>
 
 </body>
