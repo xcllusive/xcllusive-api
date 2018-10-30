@@ -1,4 +1,12 @@
+import util from 'util'
+import fs from 'fs'
+import path from 'path'
+import handlebars from 'handlebars'
+import puppeteer from 'puppeteer'
 import models from '../../config/sequelize'
+import APIError from '../utils/APIError'
+import models from '../../config/sequelize'
+import mailer from '../modules/mailer'
 
 export const list = async (req, res, next) => {
   const { businessId } = req.query
@@ -78,6 +86,94 @@ export const remove = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: `Appraisal ${appraisalId} removed with success` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const generatePdf = async (req, res, next) => {
+  const { appraisalId } = req.params
+
+  const templatePath = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'templates',
+    'appraisal',
+    'appraisal.html'
+  )
+
+  const destPdfGenerated = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'appraisal',
+    `${Date.now()}.pdf`
+  )
+
+  const readFile = util.promisify(fs.readFile)
+
+  try {
+    // Verify exists appraisal
+    const appraisal = await models.Appraisal.findOne({
+      where: { id: appraisalId },
+      include: [{ model: models.Business, as: 'Business' }]
+    })
+
+    if (!appraisal) {
+      throw new APIError({
+        message: 'Appraisal not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const context = {}
+
+    const PDF_OPTIONS = {
+      path: destPdfGenerated,
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '15mm',
+        left: '15mm',
+        right: '15mm',
+        bottom: '15mm'
+      },
+      displayHeaderFooter: false,
+      headerTemplate: ' ',
+      footerTemplate: `
+      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+      <span style="float: left;"></span>
+      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+      </div>`,
+      scale: 0.8
+    }
+
+    const content = await readFile(templatePath, 'utf8')
+    const handlebarsCompiled = handlebars.compile(content)
+    const template = handlebarsCompiled(context)
+    const browser = await puppeteer.launch()
+    // const browser = await puppeteer.launch({headless: false})
+    const page = await browser.newPage()
+    await page.emulateMedia('screen')
+    await page.goto(`data:text/html,${template}`)
+    await page.pdf(PDF_OPTIONS)
+    await browser.close()
+
+    return res.download(destPdfGenerated, err => {
+      fs.unlink(destPdfGenerated)
+      if (err) {
+        throw new APIError({
+          message: 'Error on download pdf',
+          status: 500,
+          isPublic: true
+        })
+      }
+    })
   } catch (error) {
     return next(error)
   }

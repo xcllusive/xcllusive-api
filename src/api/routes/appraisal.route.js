@@ -5,7 +5,8 @@ import {
   list,
   create,
   update,
-  remove
+  remove,
+  generatePdf
 } from '../controllers/appraisal.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -26,5 +27,7 @@ router
   .get(get)
   .put(update)
   .delete(remove)
+
+router.route('/:appraisalId/generate').post(generatePdf)
 
 export default router
