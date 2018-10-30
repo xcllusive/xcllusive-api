@@ -5,7 +5,6 @@ import handlebars from 'handlebars'
 import puppeteer from 'puppeteer'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
-import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 
 export const list = async (req, res, next) => {
