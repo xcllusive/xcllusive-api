@@ -2,13 +2,138 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
+  <title>Example Domain</title>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    body {
+      background-color: #f0f0f2;
+      margin: 0;
+      padding: 0;
+      font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    table {
+      page-break-inside: auto
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: auto
+    }
+
+    thead {
+      display: table-header-group
+    }
+
+    tfoot {
+      display: table-footer-group
+    }
+
+    div {
+      width: 600px;
+      margin: 5em auto;
+      padding: 50px;
+      background-color: #fff;
+      border-radius: 1em;
+    }
+
+    a:link,
+    a:visited {
+      color: #38488f;
+      text-decoration: none;
+    }
+
+    /* Page two */
+
+    #page-two {
+      position: relative;
+    }
+
+    #page-two h1 {
+      text-align: center
+    }
+
+    #page-two .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 30%;
+      width: 50%;
+      margin: -15% 0 0 -25%;
+    }
+
+    table .center {
+      margin-left: auto;
+      margin-right: auto;
+
+    }
+
+    table.center td {
+      width: 100px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        background-color: #fff;
+      }
+
+      div {
+        width: auto;
+        margin: 0 auto;
+        border-radius: 0;
+        padding: 1em;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <section id="page-one" class="page">
+    <h1>Page 1</h1>
+  </section>
+
+  <div style="page-break-after: always;"></div>
+
+  <section id="page-two" class="page">
+    <div class="content">
+      <h1>Sales Inspection Report and Business Appraisal For:</h1>
+
+      <table class="center" style="width: 600px;">
+        <tbody>
+          <tr>
+            <td align="right" style="vertical-align: top; width: 100px;">The Business:</td>
+            <td>VIP Cleaning Hornsby</td>
+          </tr>
+          <tr>
+            <td align="right" style="vertical-align: top; width: 100px;">ABN:</td>
+            <td>77 103 638 239</td>
+          </tr>
+          <tr>
+            <td align="right" style="vertical-align: top; width: 100px;">Business Address:</td>
+            <td>498 Windsor Rd , Baulkham Hills, NSW, 2153</td>
+          </tr>
+          <tr>
+            <td align="right" style="vertical-align: top; width: 100px;">Principal:</td>
+            <td>Maria Kioulafas</td>
+          </tr>
+          <tr>
+            <td align="right" style="vertical-align: top; width: 100px;">Prepared By:</td>
+            <td>
+              Xcllusive Business Sales Pty Ltd (The Agent) G14, 1-15 Barr Street Balmain NSW 2041 (02) 9817 3331
+              <br />
+              www.xcllusive.com.au
+              <br />
+              Lic: 172 3536
+              <br />
+              ABN: 99 144 870 762 4/10/2018
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
 </body>
 
