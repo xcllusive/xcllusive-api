@@ -923,8 +923,19 @@ export const finaliseStageSold = async (req, res, next) => {
   }
 }
 
-export const getQtdeBusinessStageUser = async () => {
-  // const { userId } = req.params
-  console.log('entrei')
-  return 'hello'
+export const getQtdeBusinessStageUser = async (req, res, next) => {
+  const { userId } = req.params
+  console.log('entrei', userId)
+
+  try {
+    const business = await models.Business.findOne({
+      where: { brokerAccountName: userId },
+      and: { id: 200 }
+    })
+    return res.status(201).json({
+      data: business
+    })
+  } catch (error) {
+    return next(error)
+  }
 }
