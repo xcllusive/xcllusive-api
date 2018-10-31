@@ -18,7 +18,8 @@ import {
   getStageSold,
   createStageSold,
   updateStageSold,
-  finaliseStageSold
+  finaliseStageSold,
+  getQtdeBusinessStageUser
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -68,5 +69,8 @@ router.route('/email-to-buyer').post(emailToBuyer)
 router.route('/send-enquiry-owner').post(sendEnquiryOwner)
 
 router.route('/send-group-email').post(sendGroupEmail)
+
+/* test */
+router.route('/qtde-business-stage-user').get(getQtdeBusinessStageUser)
 
 export default router

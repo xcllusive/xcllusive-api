@@ -184,62 +184,60 @@ export const listBusiness = async (req, res, next) => {
       'dateTimeCreated',
       'daysOnTheMarket'
     ],
-    include: [
-      models.BusinessStage,
-      models.BusinessProduct
-    ]
+    include: [models.BusinessStage, models.BusinessProduct]
   }
 
   try {
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
-    const buyersFromBusiness = await Promise.all(businesses.map(async business => {
-      const enquiries = await models.EnquiryBusinessBuyer.findAll({
-        where: { business_id: business.id },
-        include: [
-          {
-            model: models.Buyer
-          }
-        ]
-      })
-      return {
-        enquiries,
-        business
-      }
-    }))
-
-    const response = await Promise.all(buyersFromBusiness.map(async obj => {
-      const arrayLogsLength = await Promise.all(obj.enquiries.map(async enquiry => {
-        const log = await models.BuyerLog.findAll({
-          where: {
-            buyer_id: enquiry.buyer_id,
-            business_id: enquiry.business_id,
-            followUpStatus: 'Pending',
-            followUp: {
-              $lte: moment().toDate()
+    const buyersFromBusiness = await Promise.all(
+      businesses.map(async business => {
+        const enquiries = await models.EnquiryBusinessBuyer.findAll({
+          where: { business_id: business.id },
+          include: [
+            {
+              model: models.Buyer
             }
-          },
-          raw: true
-        })
-        return log.length
-      }))
-      const lastScore = await models.Score.findOne({
-        where: {
-          business_id: obj.business.id
-        },
-        order: [
-          [
-            'dateTimeCreated',
-            'DESC'
           ]
-        ]
+        })
+        return {
+          enquiries,
+          business
+        }
       })
-      return {
-        business: obj.business,
-        countFollowUpTask: _.sum(arrayLogsLength),
-        lastScore
-      }
-    }))
+    )
+
+    const response = await Promise.all(
+      buyersFromBusiness.map(async obj => {
+        const arrayLogsLength = await Promise.all(
+          obj.enquiries.map(async enquiry => {
+            const log = await models.BuyerLog.findAll({
+              where: {
+                buyer_id: enquiry.buyer_id,
+                business_id: enquiry.business_id,
+                followUpStatus: 'Pending',
+                followUp: {
+                  $lte: moment().toDate()
+                }
+              },
+              raw: true
+            })
+            return log.length
+          })
+        )
+        const lastScore = await models.Score.findOne({
+          where: {
+            business_id: obj.business.id
+          },
+          order: [['dateTimeCreated', 'DESC']]
+        })
+        return {
+          business: obj.business,
+          countFollowUpTask: _.sum(arrayLogsLength),
+          lastScore
+        }
+      })
+    )
 
     return res.status(200).json(response)
   } catch (err) {
@@ -398,7 +396,9 @@ export const sendCA = async (req, res, next) => {
       data: {
         mail: responseMailer
       },
-      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+      message: `Email sent successfully to ${buyer.firstName} ${buyer.surname} <${
+        buyer.email
+      }>`
     })
   } catch (error) {
     return next(error)
@@ -510,7 +510,9 @@ export const sendIM = async (req, res, next) => {
       data: {
         mail: responseMailer
       },
-      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+      message: `Email sent successfully to ${buyer.firstName} ${buyer.surname} <${
+        buyer.email
+      }>`
     })
   } catch (error) {
     return next(error)
@@ -577,7 +579,9 @@ export const receivedCA = async (req, res, next) => {
 
     return res.status(201).json({
       data: upload,
-      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+      message: `Email sent successfully to ${buyer.firstName} ${buyer.surname} <${
+        buyer.email
+      }>`
     })
   } catch (error) {
     return next(error)
@@ -619,8 +623,7 @@ export const listLog = async (req, res, next) => {
       data: logs,
       pageCount: logs.count,
       itemCount: Math.ceil(logs.count / req.query.limit),
-      message:
-        logs.length === 0 ? 'Nothing buyer log found' : 'Get buyer log with succesfuly'
+      message: logs.length === 0 ? 'Nothing buyer log found' : 'Get buyer log succesfully'
     })
   } catch (error) {
     return next(error)
@@ -663,7 +666,7 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       message:
         logs.length === 0
           ? 'No business found for buyer'
-          : 'Get business from buyer with succesfuly'
+          : 'Get business from buyer succesfully'
     })
   } catch (error) {
     return next(error)
@@ -695,7 +698,7 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
 
     return res.status(201).json({
       data: buyers,
-      message: 'Get businesses from buyer with succesfuly'
+      message: 'Get businesses from buyer succesfully'
     })
   } catch (error) {
     return next(error)
@@ -730,7 +733,7 @@ export const createLog = async (req, res, next) => {
 
     return res.status(201).json({
       data: log,
-      message: 'Buyer log created with succesfuly'
+      message: 'Buyer log created succesfully'
     })
   } catch (error) {
     return next(error)
@@ -764,7 +767,7 @@ export const updateLog = async (req, res, next) => {
 
     return res.status(201).json({
       data: log,
-      message: 'Buyer log updated with succesfuly'
+      message: 'Buyer log updated succesfully'
     })
   } catch (error) {
     return next(error)
@@ -792,15 +795,18 @@ export const finaliseLog = async (req, res, next) => {
       })
     }
 
-    await models.BuyerLog.update({
-      followUpStatus: 'Done',
-      modifiedBy_id: req.user.id
-    }, {
-      where: {
-        buyer_id: idBuyer,
-        business_id: idBusiness
+    await models.BuyerLog.update(
+      {
+        followUpStatus: 'Done',
+        modifiedBy_id: req.user.id
+      },
+      {
+        where: {
+          buyer_id: idBuyer,
+          business_id: idBusiness
+        }
       }
-    })
+    )
 
     return res.status(201).json({
       data: {},

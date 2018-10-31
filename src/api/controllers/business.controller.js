@@ -922,3 +922,9 @@ export const finaliseStageSold = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getQtdeBusinessStageUser = async () => {
+  // const { userId } = req.params
+  console.log('entrei')
+  return 'hello'
+}
