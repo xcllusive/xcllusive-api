@@ -924,18 +924,174 @@ export const finaliseStageSold = async (req, res, next) => {
 }
 
 export const getQtdeBusinessStageUser = async (req, res, next) => {
-  const { userId } = req.params
-  console.log('entrei', userId)
-
   try {
-    const business = await models.Business.findOne({
-      where: { brokerAccountName: userId },
-      and: { id: 200 }
+    const businessPotentialListing = await models.Business.count({
+      where: { $and: { brokerAccountName: req.user.id, stageId: 1 } }
+    })
+    const businessListingNegotiation = await models.Business.count({
+      where: { $and: { brokerAccountName: req.user.id, stageId: 2 } }
+    })
+    const businessSalesMemo = await models.Business.count({
+      where: { $and: { brokerAccountName: req.user.id, stageId: 3 } }
+    })
+    const businessForSale = await models.Business.count({
+      where: { $and: { brokerAccountName: req.user.id, stageId: 4 } }
+    })
+    const businessSold = await models.Business.count({
+      where: { $and: { brokerAccountName: req.user.id, stageId: 6 } }
+    })
+    const businessWithdrawn = await models.Business.count({
+      where: { $and: { brokerAccountName: req.user.id, stageId: 7 } }
     })
     return res.status(201).json({
-      data: business
+      data: {
+        businessPotentialListing,
+        businessListingNegotiation,
+        businessSalesMemo,
+        businessForSale,
+        businessSold,
+        businessWithdrawn
+      }
     })
   } catch (error) {
     return next(error)
+  }
+}
+
+export const getAllPerUser = async (req, res, next) => {
+  let search = req.query.search
+  let stageId = req.query.stageId
+  let filterLog = req.query.filterLog
+  let whereOptions = {
+    where: {}
+  }
+
+  whereOptions.where.brokerAccountName = {
+    $eq: req.user.id
+  }
+
+  if (stageId && stageId.length > 0) {
+    if (parseInt(stageId)) {
+      whereOptions.where.stageId = {
+        $eq: `${stageId}`
+      }
+    } else {
+      const arrayStageId = JSON.parse(stageId)
+      whereOptions.where.stageId = {
+        $or: arrayStageId
+      }
+    }
+  }
+
+  if (search && search.length > 0) {
+    if (search.includes('BS') || search.includes('bs')) {
+      if (search.includes('BS')) search = search.replace(/BS/g, '')
+      if (search.includes('bs')) search = search.replace(/bs/g, '')
+      whereOptions.where.id = {
+        $eq: search
+      }
+    } else {
+      if (parseInt(search)) {
+        whereOptions.where.listedPrice = {
+          $lte: search * 1.1,
+          $gte: search * 0.9
+        }
+      } else {
+        whereOptions.where.$or = []
+        whereOptions.where.$or.push(
+          {
+            businessName: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            firstNameV: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            lastNameV: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            suburb: {
+              $like: `%${search}%`
+            }
+          },
+          {
+            searchNote: {
+              $like: `%${search}%`
+            }
+          }
+        )
+      }
+    }
+  }
+
+  const options = {
+    attributes: [
+      'id',
+      'businessName',
+      'firstNameV',
+      'lastNameV',
+      'address1',
+      'industry',
+      'listedPrice',
+      'description',
+      'stageId',
+      'productId',
+      'industryId',
+      'suburb',
+      'state',
+      'postCode',
+      'typeId',
+      'notifyOwner'
+    ],
+    include: [
+      models.BusinessStage,
+      models.BusinessProduct
+      // {
+      //   model: models.BusinessIndustry,
+      //   where: { label: { $like: `%${search}%` } }
+      // }
+    ]
+  }
+  try {
+    const response = {
+      data: [],
+      message: 'Get Businesses with sucessfuly'
+    }
+
+    const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
+
+    if (filterLog && JSON.parse(filterLog)) {
+      const arrayBusinesses = await Promise.all(
+        businesses.map(async business => {
+          const log = await models.BuyerLog.findAll({
+            where: {
+              business_id: business.id,
+              followUpStatus: 'Pending',
+              followUp: {
+                $lte: moment().toDate()
+              }
+            },
+            raw: true
+          })
+          if (log.length) {
+            return business
+          }
+        })
+      )
+      response.data = await arrayBusinesses.filter(item => {
+        return item !== undefined
+      })
+    } else {
+      response.data = await businesses
+    }
+
+    return res.status(200).json(response)
+  } catch (err) {
+    return next(err)
   }
 }

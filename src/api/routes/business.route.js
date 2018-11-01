@@ -19,7 +19,8 @@ import {
   createStageSold,
   updateStageSold,
   finaliseStageSold,
-  getQtdeBusinessStageUser
+  getQtdeBusinessStageUser,
+  getAllPerUser
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -31,6 +32,9 @@ import * as validation from '../validations/business.validation'
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+
+router.route('/qtde-business-stage-user').get(getQtdeBusinessStageUser)
+router.route('/businesses-user').get(getAllPerUser)
 
 router
   .route('/:idBusiness/group-email')
@@ -69,8 +73,5 @@ router.route('/email-to-buyer').post(emailToBuyer)
 router.route('/send-enquiry-owner').post(sendEnquiryOwner)
 
 router.route('/send-group-email').post(sendGroupEmail)
-
-/* test */
-router.route('/qtde-business-stage-user').get(getQtdeBusinessStageUser)
 
 export default router

@@ -104,6 +104,10 @@ export const listBusiness = async (req, res, next) => {
     where: {}
   }
 
+  whereOptions.where.brokerAccountName = {
+    $eq: req.user.id
+  }
+
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId)) {
       whereOptions.where.stageId = {
