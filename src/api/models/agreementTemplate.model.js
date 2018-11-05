@@ -30,7 +30,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       handlebars: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
         defaultValue:
           '["owner_first_name", "owner_last_name", "owner_phone", "business_abn", "business_address", "forsale_business_known","conducted_at", "listed_price", "appraisal_high", "appraisal_low", "engagement_fee", "commission_perc", "commission_discount", "introduction_parties", "commission_property", "address_property", "price_property"]'
