@@ -250,7 +250,8 @@ export const create = async (req, res, next) => {
     description: req.body.description,
     stageId: 1, // Potencial Listing
     createdBy_id: req.user.id,
-    modifiedBy_id: req.user.id
+    modifiedBy_id: req.user.id,
+    brokerAccountName: req.user.id
   }
 
   try {
