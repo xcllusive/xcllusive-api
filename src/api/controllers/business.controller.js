@@ -250,7 +250,8 @@ export const create = async (req, res, next) => {
     description: req.body.description,
     stageId: 1, // Potencial Listing
     createdBy_id: req.user.id,
-    modifiedBy_id: req.user.id
+    modifiedBy_id: req.user.id,
+    brokerAccountName: req.user.id
   }
 
   try {
@@ -390,16 +391,16 @@ export const updateStageLost = async (req, res, next) => {
 Lost Notes: ${updateBusiness.afterSalesNotes}
 
 Mark all Pending communications with this Vendor as Done: ${
-  updateBusiness.pendingDone === true ? 'Yes' : 'No'
-}
+          updateBusiness.pendingDone === true ? 'Yes' : 'No'
+        }
 
 Did you meet with this vendor? ${
-  updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
-} : ${updateBusiness.recoveryStageNotWant}
+          updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
+        } : ${updateBusiness.recoveryStageNotWant}
 
 Did we want this business? ${
-  updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
-} : ${updateBusiness.recoveryStageNotSigned}
+          updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
+        } : ${updateBusiness.recoveryStageNotSigned}
 
 `,
         createdBy_id: req.user.id,
@@ -526,11 +527,11 @@ export const emailToBuyer = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -615,11 +616,11 @@ export const sendEnquiryOwner = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -822,11 +823,11 @@ export const sendGroupEmail = async (req, res, next) => {
         `,
         attachments: fileAttachment
           ? [
-            {
-              filename: fileAttachment.name,
-              content: fileAttachment.data
-            }
-          ]
+              {
+                filename: fileAttachment.name,
+                content: fileAttachment.data
+              }
+            ]
           : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
