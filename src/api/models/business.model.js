@@ -125,10 +125,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
-      listingAgent: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       location: {
         type: DataTypes.STRING,
         allowNull: true
@@ -298,6 +294,10 @@ export default (sequelize, DataTypes) => {
     })
     models.Business.hasMany(models.Appraisal, {
       foreignKey: 'business_id'
+    })
+    models.Business.belongsTo(models.Users, {
+      foreignKey: 'listingAgent_id',
+      as: 'listingAgent'
     })
   }
 

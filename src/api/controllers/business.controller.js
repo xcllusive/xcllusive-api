@@ -346,19 +346,6 @@ export const updateListingAgent = async (req, res, next) => {
     })
   }
 
-  // Verify exists template
-  const template = await models.EmailTemplate.findOne({
-    where: { title: 'Agent assign to business' }
-  })
-
-  if (!template) {
-    throw new APIError({
-      message: 'The email template not found',
-      status: 404,
-      isPublic: true
-    })
-  }
-
   try {
     // Verify exists business
     const business = await models.Business.findOne({ where: { id: idBusiness } })
@@ -373,7 +360,7 @@ export const updateListingAgent = async (req, res, next) => {
 
     // Verify exists template
     const template = await models.EmailTemplate.findOne({
-      where: { title: 'Agent assign to business' }
+      where: { title: 'Agent reassign to business' }
     })
 
     if (!template) {
@@ -387,8 +374,8 @@ export const updateListingAgent = async (req, res, next) => {
     // Compile the template to use variables
     const templateCompiled = Handlebars.compile(template.body)
     const context = {
-      agent_full_name: `${listingAgentName}`
-      // business_name: business.businessName,
+      agent_full_name: listingAgentName,
+      business_name: business.businessName
     }
 
     // Set email options
@@ -400,11 +387,11 @@ export const updateListingAgent = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -459,16 +446,16 @@ export const updateStageLost = async (req, res, next) => {
 Lost Notes: ${updateBusiness.afterSalesNotes}
 
 Mark all Pending communications with this Vendor as Done: ${
-  updateBusiness.pendingDone === true ? 'Yes' : 'No'
-}
+          updateBusiness.pendingDone === true ? 'Yes' : 'No'
+        }
 
 Did you meet with this vendor? ${
-  updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
-} : ${updateBusiness.recoveryStageNotWant}
+          updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
+        } : ${updateBusiness.recoveryStageNotWant}
 
 Did we want this business? ${
-  updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
-} : ${updateBusiness.recoveryStageNotSigned}
+          updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
+        } : ${updateBusiness.recoveryStageNotSigned}
 
 `,
         createdBy_id: req.user.id,
@@ -595,11 +582,11 @@ export const emailToBuyer = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -684,11 +671,11 @@ export const sendEnquiryOwner = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
         : []
     }
 
@@ -891,11 +878,11 @@ export const sendGroupEmail = async (req, res, next) => {
         `,
         attachments: fileAttachment
           ? [
-            {
-              filename: fileAttachment.name,
-              content: fileAttachment.data
-            }
-          ]
+              {
+                filename: fileAttachment.name,
+                content: fileAttachment.data
+              }
+            ]
           : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
