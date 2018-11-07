@@ -347,6 +347,61 @@ export const updateListingAgent = async (req, res, next) => {
   }
 
   try {
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: idBusiness } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify exists template
+    const template = await models.EmailTemplate.findOne({
+      where: { title: 'Agent reassign to business' }
+    })
+
+    if (!template) {
+      throw new APIError({
+        message: 'The email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      agent_full_name: listingAgentName,
+      business_name: business.businessName
+    }
+
+    // Set email options
+    const mailOptions = {
+      // to: business.vendorEmail,
+      to: 'bayesrox@gmail.com',
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      subject: template.subject,
+      html: templateCompiled(context),
+      attachments: template.enableAttachment
+        ? [
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
+        : []
+    }
+
+    // Send Email
+    await mailer.sendMail(mailOptions)
+  } catch (error) {
+    return next(error)
+  }
+
+  try {
     await models.Business.update(data, { where: { id: idBusiness } })
     return res
       .status(200)

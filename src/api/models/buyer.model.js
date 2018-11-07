@@ -100,11 +100,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       priceFrom: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: true
       },
       priceTo: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: true
       },
       scanfilePath: {
@@ -132,15 +132,15 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
       telephone1: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       telephone2: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       telephone3: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       attachmentUrl: {
