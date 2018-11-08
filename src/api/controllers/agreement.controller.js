@@ -34,7 +34,7 @@ export const generate = async (req, res, next) => {
 
   try {
     const getBusiness = await models.Business.findOne({
-      where: { id: businessId}
+      where: { id: businessId }
     })
 
     if (!getBusiness) {
@@ -82,7 +82,7 @@ export const generate = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.download(destPdfGeneratedAgreement, (err) => {
+    return res.download(destPdfGeneratedAgreement, err => {
       fs.unlink(destPdfGeneratedAgreement)
       if (err) {
         throw new APIError({
@@ -182,7 +182,7 @@ export const sendEmail = async (req, res, next) => {
 
   try {
     const getBusiness = await models.Business.findOne({
-      where: { id: businessId}
+      where: { id: businessId }
     })
 
     if (!getBusiness) {
@@ -194,17 +194,22 @@ export const sendEmail = async (req, res, next) => {
     }
 
     if (getBusiness.agreement_id) {
-      await models.Agreement.update(newAgreement, {where: {
-        id: getBusiness.agreement_id
-      }})
+      await models.Agreement.update(newAgreement, {
+        where: {
+          id: getBusiness.agreement_id
+        }
+      })
     } else {
       const agreement = await models.Agreement.create(newAgreement)
 
-      await models.Business.update({ agreement_id: agreement.id }, {
-        where: {
-          id: businessId
+      await models.Business.update(
+        { agreement_id: agreement.id },
+        {
+          where: {
+            id: businessId
+          }
         }
-      })
+      )
     }
 
     if (mail.attachInvoice) {
@@ -311,12 +316,16 @@ export const sendEmail = async (req, res, next) => {
     const templateCompiled = handlebars.compile(mail.body)
     const context = {
       business_name: getBusiness.businessName,
-      owner_full_name: getBusiness.listingAgent,
+      owner_full_name: `${getBusiness.listingAgent.firstName} ${
+        getBusiness.listingAgent.lastName
+      }`,
       broker_full_name: `${broker.firstName} ${broker.lastName}`,
       broker_email: broker.email,
       broker_phone: broker.phoneHome,
       broker_mobile: broker.phoneMobile,
-      broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${broker.postCode}`
+      broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${
+        broker.postCode
+      }`
     }
 
     attachments.push({
@@ -348,10 +357,13 @@ export const sendEmail = async (req, res, next) => {
     await fs.unlink(destPdfGeneratedInvoice)
 
     if (mail.attachInvoice) {
-    // Update Date sent
-      await models.Invoice.update({dateSent: moment()}, {
-        where: { id: invoice.id }
-      })
+      // Update Date sent
+      await models.Invoice.update(
+        { dateSent: moment() },
+        {
+          where: { id: invoice.id }
+        }
+      )
     }
 
     return res.status(201).json({
@@ -369,7 +381,7 @@ export const getEmailTemplate = async (req, res, next) => {
 
   try {
     const getBusiness = await models.Business.findOne({
-      where: { id: businessId}
+      where: { id: businessId }
     })
 
     if (!getBusiness) {
@@ -395,7 +407,9 @@ export const getEmailTemplate = async (req, res, next) => {
       broker_email: broker.email,
       broker_phone: broker.phoneHome,
       broker_mobile: broker.phoneMobile,
-      broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${broker.postCode}`
+      broker_address: `${broker.street}, ${broker.suburb} - ${broker.state} - ${
+        broker.postCode
+      }`
     }
 
     return res.status(201).json({

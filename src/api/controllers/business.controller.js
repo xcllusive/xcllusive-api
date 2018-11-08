@@ -259,7 +259,7 @@ export const create = async (req, res, next) => {
       where: { id: req.user.id },
       attributes: ['firstName', 'lastName']
     })
-    newBusiness.listingAgent = `${user.firstName} ${user.lastName}`
+    newBusiness.listingAgent_id = user.id
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
       text: 'New  Business',
@@ -330,12 +330,12 @@ export const remove = async (req, res, next) => {
 }
 
 export const updateListingAgent = async (req, res, next) => {
-  const { listingAgentName } = req.body
+  const { listingAgentId } = req.body
 
   const { idBusiness } = req.params
 
   const data = {
-    listingAgent: listingAgentName
+    listingAgent: listingAgentId
   }
 
   if (!idBusiness || idBusiness === 'undefined') {
@@ -371,27 +371,39 @@ export const updateListingAgent = async (req, res, next) => {
       })
     }
 
+    // Verify exists listingAgent
+    const listingAgent = await models.User.findOne({
+      where: { id: listingAgentId }
+    })
+
+    if (!listingAgent) {
+      throw new APIError({
+        message: 'Listing agent not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
     // Compile the template to use variables
     const templateCompiled = Handlebars.compile(template.body)
     const context = {
-      agent_full_name: listingAgentName,
+      agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
       business_name: business.businessName
     }
 
     // Set email options
     const mailOptions = {
-      // to: business.vendorEmail,
-      to: 'bayesrox@gmail.com',
+      to: listingAgent.email,
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -446,16 +458,16 @@ export const updateStageLost = async (req, res, next) => {
 Lost Notes: ${updateBusiness.afterSalesNotes}
 
 Mark all Pending communications with this Vendor as Done: ${
-          updateBusiness.pendingDone === true ? 'Yes' : 'No'
-        }
+  updateBusiness.pendingDone === true ? 'Yes' : 'No'
+}
 
 Did you meet with this vendor? ${
-          updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
-        } : ${updateBusiness.recoveryStageNotWant}
+  updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
+} : ${updateBusiness.recoveryStageNotWant}
 
 Did we want this business? ${
-          updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
-        } : ${updateBusiness.recoveryStageNotSigned}
+  updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
+} : ${updateBusiness.recoveryStageNotSigned}
 
 `,
         createdBy_id: req.user.id,
@@ -582,11 +594,11 @@ export const emailToBuyer = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -671,11 +683,11 @@ export const sendEnquiryOwner = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          {
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }
+        ]
         : []
     }
 
@@ -878,11 +890,11 @@ export const sendGroupEmail = async (req, res, next) => {
         `,
         attachments: fileAttachment
           ? [
-              {
-                filename: fileAttachment.name,
-                content: fileAttachment.data
-              }
-            ]
+            {
+              filename: fileAttachment.name,
+              content: fileAttachment.data
+            }
+          ]
           : []
       }
       const resMailer = await mailer.sendMail(mailOptions)

@@ -474,7 +474,9 @@ export const sendIM = async (req, res, next) => {
     const context = {
       buyer_name: `${buyer.firstName} ${buyer.surname}`,
       business_name: business.businessName,
-      listing_agent: business.listingAgent,
+      listing_agent: `${business.listingAgent.firstName} ${
+        business.listingAgent.lastName
+      }`,
       listing_agent_email: business.vendorEmail,
       listing_agent_phone: business.vendorPhone1
     }
