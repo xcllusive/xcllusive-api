@@ -31,7 +31,7 @@ export const getBusiness = async (req, res, next) => {
       include: [
         { model: models.User, as: 'CreatedBy' },
         { model: models.User, as: 'ModifiedBy' },
-        { model: models.User, as: 'listingAgent'}
+        { model: models.User, as: 'listingAgent' }
       ]
     })
     const stageList = await models.BusinessStage.findAll({
@@ -431,18 +431,18 @@ export const updateStageLost = async (req, res, next) => {
   updateBusiness.modifiedBy_id = req.user.id
   updateBusiness.stageId = 8
 
-  // Verify exists business
-  const business = await models.Business.findOne({ where: { id: idBusiness } })
-
-  if (!business) {
-    throw new APIError({
-      message: 'Business not found',
-      status: 404,
-      isPublic: true
-    })
-  }
-
   try {
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: idBusiness } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
     await models.Business.update(updateBusiness, { where: { id: idBusiness } })
 
     if (updateBusiness.pendingDone) {
@@ -1162,5 +1162,41 @@ export const getAllPerUser = async (req, res, next) => {
     return res.status(200).json(response)
   } catch (err) {
     return next(err)
+  }
+}
+
+export const updateStageMemo = async (req, res, next) => {
+  const { idBusiness } = req.params
+  const updateMemo = req.body
+
+  updateMemo.modifiedBy_id = req.user.id
+  updateMemo.stageId = 3
+
+  try {
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: idBusiness } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    await models.Business.update(updateMemo, { where: { id: idBusiness } })
+
+    if (updateMemo.pendingDone) {
+      await models.BusinessLog.update(
+        { followUpStatus: 'Done' },
+        { where: { business_id: idBusiness } }
+      )
+    }
+
+    return res
+      .status(200)
+      .json({ data: business, message: `Business BS${idBusiness} changed to sales memo` })
+  } catch (error) {
+    return next(error)
   }
 }

@@ -20,7 +20,8 @@ import {
   updateStageSold,
   finaliseStageSold,
   getQtdeBusinessStageUser,
-  getAllPerUser
+  getAllPerUser,
+  updateStageMemo
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -33,7 +34,10 @@ const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
+router.route(':/:idBusiness/stage-sales-memo').put(updateStageMemo)
+
 router.route('/qtde-business-stage-user').get(getQtdeBusinessStageUser)
+
 router.route('/businesses-user').get(getAllPerUser)
 
 router
