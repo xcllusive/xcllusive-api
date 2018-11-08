@@ -255,12 +255,39 @@ export const create = async (req, res, next) => {
     brokerAccountName: req.user.id
   }
 
+  let template = null
+  let listingAgent = null
+
   try {
-    const user = await models.User.findOne({
-      where: { id: req.user.id },
-      attributes: ['firstName', 'lastName']
-    })
-    newBusiness.listingAgent_id = user.id
+    if (req.body.listingAgent) {
+      // Verify exists template
+      template = await models.EmailTemplate.findOne({
+        where: { title: 'Agent assign to business' }
+      })
+
+      if (!template) {
+        throw new APIError({
+          message: 'The email template not found',
+          status: 404,
+          isPublic: true
+        })
+      }
+
+      // Verify exists listingAgent
+      listingAgent = await models.User.findOne({
+        where: { id: req.body.listingAgent }
+      })
+
+      if (!listingAgent) {
+        throw new APIError({
+          message: 'Listing agent not found',
+          status: 404,
+          isPublic: true
+        })
+      }
+    }
+
+    newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
       text: 'New  Business',
@@ -270,7 +297,36 @@ export const create = async (req, res, next) => {
       business_id: business.get('id')
     })
 
-    return res.status(200).json({ message: 'Business created with success' })
+    if (req.body.listingAgent) {
+      // Compile the template to use variables
+      const templateCompiled = Handlebars.compile(template.body)
+      const context = {
+        agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
+        agent_first_name: listingAgent.firstName,
+        business_name: business.businessName
+      }
+
+      // Set email options
+      const mailOptions = {
+        to: listingAgent.email,
+        from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+        subject: template.subject,
+        html: templateCompiled(context),
+        attachments: template.enableAttachment
+          ? [
+            {
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }
+          ]
+          : []
+      }
+
+      // Send Email
+      await mailer.sendMail(mailOptions)
+    }
+
+    return res.status(200).json({ message: 'Business created sucessfully' })
   } catch (error) {
     return next(error)
   }
@@ -336,7 +392,7 @@ export const updateListingAgent = async (req, res, next) => {
   const { idBusiness } = req.params
 
   const data = {
-    listingAgent: listingAgentId
+    listingAgent_id: listingAgentId
   }
 
   if (!idBusiness || idBusiness === 'undefined') {
@@ -385,11 +441,18 @@ export const updateListingAgent = async (req, res, next) => {
       })
     }
 
+    // Verify logged user
+    const user = await models.User.findOne({
+      where: { id: req.user.id }
+    })
+
     // Compile the template to use variables
     const templateCompiled = Handlebars.compile(template.body)
     const context = {
       agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
-      business_name: business.businessName
+      agent_first_name: listingAgent.firstName,
+      business_name: business.businessName,
+      user_name: user.firstName
     }
 
     // Set email options
@@ -413,6 +476,8 @@ export const updateListingAgent = async (req, res, next) => {
   } catch (error) {
     return next(error)
   }
+
+  console.log(data)
 
   try {
     await models.Business.update(data, { where: { id: idBusiness } })
@@ -995,22 +1060,22 @@ export const finaliseStageSold = async (req, res, next) => {
 export const getQtdeBusinessStageUser = async (req, res, next) => {
   try {
     const businessPotentialListing = await models.Business.count({
-      where: { $and: { brokerAccountName: req.user.id, stageId: 1 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 1 } }
     })
     const businessListingNegotiation = await models.Business.count({
-      where: { $and: { brokerAccountName: req.user.id, stageId: 2 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 2 } }
     })
     const businessSalesMemo = await models.Business.count({
-      where: { $and: { brokerAccountName: req.user.id, stageId: 3 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 3 } }
     })
     const businessForSale = await models.Business.count({
-      where: { $and: { brokerAccountName: req.user.id, stageId: 4 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 4 } }
     })
     const businessSold = await models.Business.count({
-      where: { $and: { brokerAccountName: req.user.id, stageId: 6 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 6 } }
     })
     const businessWithdrawn = await models.Business.count({
-      where: { $and: { brokerAccountName: req.user.id, stageId: 7 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 7 } }
     })
     return res.status(201).json({
       data: {
@@ -1035,7 +1100,7 @@ export const getAllPerUser = async (req, res, next) => {
     where: {}
   }
 
-  whereOptions.where.brokerAccountName = {
+  whereOptions.where.listingAgent_id = {
     $eq: req.user.id
   }
 
