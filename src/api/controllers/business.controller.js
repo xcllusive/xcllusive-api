@@ -30,7 +30,8 @@ export const getBusiness = async (req, res, next) => {
       where: { id: idBusiness },
       include: [
         { model: models.User, as: 'CreatedBy' },
-        { model: models.User, as: 'ModifiedBy' }
+        { model: models.User, as: 'ModifiedBy' },
+        { model: models.User, as: 'listingAgent'}
       ]
     })
     const stageList = await models.BusinessStage.findAll({
