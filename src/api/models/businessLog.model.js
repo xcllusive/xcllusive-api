@@ -16,10 +16,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true
       },
-      status: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       followUpStatus: {
         type: DataTypes.STRING,
         allowNull: true

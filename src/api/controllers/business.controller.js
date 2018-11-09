@@ -293,7 +293,7 @@ export const create = async (req, res, next) => {
     await models.BusinessLog.create({
       text: 'New  Business',
       createdBy_id: req.user.id,
-      status: 'Pending',
+      followUpStatus: 'Pending',
       followUp: moment(),
       business_id: business.get('id')
     })
