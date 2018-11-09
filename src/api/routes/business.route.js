@@ -21,7 +21,8 @@ import {
   finaliseStageSold,
   getQtdeBusinessStageUser,
   getAllPerUser,
-  updateStageMemo
+  updateStageMemo,
+  uploadIM
 } from '../controllers/business.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
@@ -33,6 +34,8 @@ import * as validation from '../validations/business.validation'
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+
+router.route('/upload-im').post(validate(validation.uploadedIM), uploadIM)
 
 router.route('/:idBusiness/stage-sales-memo').put(updateStageMemo)
 

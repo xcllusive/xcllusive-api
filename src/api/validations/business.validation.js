@@ -7,3 +7,11 @@ export const getGroupEmail = {
       .required()
   }
 }
+
+export const uploadedIM = {
+  body: {
+    businessId: Joi.number()
+      .min(1)
+      .required()
+  }
+}

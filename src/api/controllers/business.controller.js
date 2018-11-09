@@ -3,6 +3,7 @@ import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
+import { uploadToS3 } from '../modules/aws'
 
 export const getBusiness = async (req, res, next) => {
   const { idBusiness } = req.params
@@ -476,8 +477,6 @@ export const updateListingAgent = async (req, res, next) => {
   } catch (error) {
     return next(error)
   }
-
-  console.log(data)
 
   try {
     await models.Business.update(data, { where: { id: idBusiness } })
@@ -1261,6 +1260,61 @@ export const updateStageMemo = async (req, res, next) => {
     return res
       .status(200)
       .json({ data: business, message: `Business BS${idBusiness} changed to sales memo` })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const uploadIM = async (req, res, next) => {
+  const { businessId } = req.body
+  const file = req.files.imFile
+
+  try {
+    // Verify exists business
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Verify file received
+    if (!file) {
+      throw new APIError({
+        message: 'Expect one file upload named imFile',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    // Verify file is pdf
+    if (!/\/pdf$/.test(file.mimetype)) {
+      throw new APIError({
+        message: 'Expect pdf file',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    // VERIFY WITH BRUNO
+    // Upload file to aws s3
+    const upload = await uploadToS3(
+      'xcllusive-certificate-authority',
+      file,
+      `${business.businessName}_IM_${business.id}.pdf`
+    )
+
+    // updated IM uploaded on business
+    await models.Business.update(
+      { imUploaded: true, imUrl: upload.Location },
+      { where: { id: businessId } }
+    )
+    return res
+      .status(200)
+      .json({ message: `IM on business BS${business.id} uploaded successfully` })
   } catch (error) {
     return next(error)
   }

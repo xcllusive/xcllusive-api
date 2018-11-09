@@ -240,6 +240,14 @@ export default (sequelize, DataTypes) => {
       daysOnTheMarket: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      imUploaded: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
+      },
+      imUrl: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {

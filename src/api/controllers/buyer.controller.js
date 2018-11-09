@@ -425,7 +425,10 @@ export const sendIM = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: { id: businessId },
+      include: [{ model: models.User, as: 'listingAgent' }]
+    })
 
     if (!business) {
       throw new APIError({
@@ -489,9 +492,13 @@ export const sendIM = async (req, res, next) => {
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
+          // {
+          //   filename: `${template.title.trim()}.pdf`,
+          //   path: template.attachmentPath
+          // },
           {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
+            filename: `${business.businessName.trim()}_IM_${business.id}.pdf`,
+            path: business.imUrl
           }
         ]
         : []
