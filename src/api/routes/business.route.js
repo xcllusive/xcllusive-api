@@ -34,7 +34,7 @@ const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
-router.route(':/:idBusiness/stage-sales-memo').put(updateStageMemo)
+router.route('/:idBusiness/stage-sales-memo').put(updateStageMemo)
 
 router.route('/qtde-business-stage-user').get(getQtdeBusinessStageUser)
 
