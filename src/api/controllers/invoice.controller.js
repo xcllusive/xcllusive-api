@@ -154,6 +154,7 @@ export const makePdf = async (req, res, next) => {
     'invoice',
     'invoice.html'
   )
+
   const destPdfGenerated = path.resolve(
     'src',
     'api',
@@ -170,9 +171,7 @@ export const makePdf = async (req, res, next) => {
     // Verify exists score
     const invoice = await models.Invoice.findOne({
       where: { id: idInvoice },
-      include: [
-        { model: models.Business, as: 'Business' }
-      ]
+      include: [{ model: models.Business, as: 'Business' }]
     })
 
     if (!invoice) {
@@ -228,7 +227,7 @@ export const makePdf = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.download(destPdfGenerated, (err) => {
+    return res.download(destPdfGenerated, err => {
       fs.unlink(destPdfGenerated)
       if (err) {
         throw new APIError({
@@ -293,9 +292,7 @@ export const sendEmail = async (req, res, next) => {
     // Verify exists score
     const invoice = await models.Invoice.findOne({
       where: { id: invoiceId },
-      include: [
-        { model: models.Business, as: 'Business' }
-      ]
+      include: [{ model: models.Business, as: 'Business' }]
     })
 
     if (!invoice) {
@@ -312,7 +309,9 @@ export const sendEmail = async (req, res, next) => {
 
     // Agreement
     if (mail.attachAgreement) {
-      const agreement = await models.Agreement.findOne({where: {id: invoice.Business.agreement_id}})
+      const agreement = await models.Agreement.findOne({
+        where: { id: invoice.Business.agreement_id }
+      })
 
       const PDF_OPTIONS = {
         path: destPdfGeneratedAgreement,
@@ -421,9 +420,12 @@ export const sendEmail = async (req, res, next) => {
     await fs.unlink(destPdfGeneratedAgreement)
 
     // Update Date sent
-    await models.Invoice.update({dateSent: moment()}, {
-      where: { id: invoiceId }
-    })
+    await models.Invoice.update(
+      { dateSent: moment() },
+      {
+        where: { id: invoiceId }
+      }
+    )
 
     return res.status(201).json({
       data: responseMailer,
