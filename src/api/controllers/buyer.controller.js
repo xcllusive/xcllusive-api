@@ -510,9 +510,15 @@ export const sendIM = async (req, res, next) => {
     // Updated caSent on Buyer
     await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
 
+    // const loggedUser = await models.User.findOne({
+    //   where: { id: req.user.id }
+    // })
+
     // Insert in log
     await models.BuyerLog.create({
-      text: `Send Information Sales Memorandum to Buyer ${buyer.id}`,
+      text: business.notifyOwner
+        ? `IM Sent to Buyer ${buyer.id} by ${req.user.id}`
+        : `IM Sent to Buyer ${buyer.id}`,
       followUpStatus: 'Done',
       followUp: moment().add(1, 'days'),
       business_id: businessId,
