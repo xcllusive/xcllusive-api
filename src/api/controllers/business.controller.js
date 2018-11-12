@@ -968,7 +968,7 @@ export const sendGroupEmail = async (req, res, next) => {
 
     return res.status(201).json({
       data: sentTo,
-      message: 'Send email successfuly'
+      message: 'Group emails sent successfully'
     })
   } catch (error) {
     return next(error)

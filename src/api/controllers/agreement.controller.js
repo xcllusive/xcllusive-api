@@ -26,7 +26,6 @@ export const get = async (req, res, next) => {
 
 export const generate = async (req, res, next) => {
   const { body, businessId } = req.body
-
   const newAgreement = {
     createdBy_id: req.user.id,
     body
@@ -54,6 +53,8 @@ export const generate = async (req, res, next) => {
       'agreement',
       `${Date.now()}.pdf`
     )
+
+    console.log(destPdfGeneratedAgreement)
 
     const PDF_OPTIONS = {
       path: destPdfGeneratedAgreement,

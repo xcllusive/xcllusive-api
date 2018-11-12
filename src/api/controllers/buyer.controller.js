@@ -186,7 +186,8 @@ export const listBusiness = async (req, res, next) => {
       'typeId',
       'notifyOwner',
       'dateTimeCreated',
-      'daysOnTheMarket'
+      'daysOnTheMarket',
+      'vendorPhone1'
     ],
     include: [models.BusinessStage, models.BusinessProduct]
   }
@@ -390,7 +391,7 @@ export const sendCA = async (req, res, next) => {
     // Insert in log
     await models.BuyerLog.create({
       followUpStatus: 'Pending',
-      text: 'Confidentiality Agreement Sent',
+      text: 'CA Sent',
       followUp: moment().add(7, 'days'),
       business_id: businessId,
       buyer_id: buyerId
@@ -439,13 +440,13 @@ export const sendIM = async (req, res, next) => {
     }
 
     // Verify notifyOwner on business
-    if (!business.notifyOwner) {
-      throw new APIError({
-        message: 'Notify Owner is to false',
-        status: 400,
-        isPublic: true
-      })
-    }
+    // if (!business.notifyOwner) {
+    //   throw new APIError({
+    //     message: 'Notify Owner is to false',
+    //     status: 400,
+    //     isPublic: true
+    //   })
+    // }
 
     // Verify business attach to buyer
     const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
@@ -596,6 +597,15 @@ export const receivedCA = async (req, res, next) => {
       { where: { id: buyerId } }
     )
 
+    // Insert in log
+    await models.BuyerLog.create({
+      text: 'CA Received',
+      followUpStatus: 'Done',
+      followUp: moment().toDate(),
+      business_id: businessId,
+      buyer_id: buyerId
+    })
+
     return res.status(201).json({
       data: upload,
       message: `Email sent successfully to ${buyer.firstName} ${buyer.surname} <${
@@ -627,7 +637,7 @@ export const listLog = async (req, res, next) => {
 
     const logs = await models.BuyerLog.findAndCountAll({
       where: { buyer_id: id },
-      order: [['followUp', 'DESC']],
+      order: [['dateTimeCreated', 'DESC']],
       include: [
         {
           model: models.Business,
@@ -678,8 +688,17 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       offset: req.skip
     })
 
+    const lastLog = await models.BuyerLog.findOne({
+      where: { buyer_id: idBuyer, business_id: businessId, followUpStatus: 'Pending' },
+      order: [['dateTimeCreated', 'DESC']],
+      raw: true
+    })
+
+    console.log(lastLog)
+
     return res.status(201).json({
       data: logs,
+      lastLog,
       pageCount: logs.count,
       itemCount: Math.ceil(logs.count / req.query.limit),
       message:
