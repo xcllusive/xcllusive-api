@@ -84,7 +84,7 @@ export const generate = async (req, res, next) => {
     await browser.close()
 
     return res.download(destPdfGeneratedAgreement, err => {
-      fs.unlink(destPdfGeneratedAgreement)
+      // fs.unlink(destPdfGeneratedAgreement)
       if (err) {
         throw new APIError({
           message: 'Error on send pdf',
