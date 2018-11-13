@@ -32,6 +32,10 @@ export default (sequelize, DataTypes) => {
       paymentTerms: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      fromOfficeDescription: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {
