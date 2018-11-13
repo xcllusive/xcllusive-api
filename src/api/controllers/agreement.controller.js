@@ -54,8 +54,6 @@ export const generate = async (req, res, next) => {
       `${Date.now()}.pdf`
     )
 
-    console.log(destPdfGeneratedAgreement)
-
     const PDF_OPTIONS = {
       path: destPdfGeneratedAgreement,
       format: 'A4',
@@ -82,6 +80,25 @@ export const generate = async (req, res, next) => {
 
     await page.pdf(PDF_OPTIONS)
     await browser.close()
+
+    if (getBusiness.agreement_id) {
+      await models.Agreement.update(newAgreement, {
+        where: {
+          id: getBusiness.agreement_id
+        }
+      })
+    } else {
+      const agreement = await models.Agreement.create(newAgreement)
+
+      await models.Business.update(
+        { agreement_id: agreement.id },
+        {
+          where: {
+            id: businessId
+          }
+        }
+      )
+    }
 
     return res.download(destPdfGeneratedAgreement, err => {
       // fs.unlink(destPdfGeneratedAgreement)
@@ -311,16 +328,14 @@ export const sendEmail = async (req, res, next) => {
     await browser.close()
 
     const broker = await models.User.findOne({
-      where: { id: getBusiness.brokerAccountName }
+      where: { id: getBusiness.listingAgent_id }
     })
 
     // Compile the template to use variables
     const templateCompiled = handlebars.compile(mail.body)
     const context = {
       business_name: getBusiness.businessName,
-      owner_full_name: `${getBusiness.listingAgent.firstName} ${
-        getBusiness.listingAgent.lastName
-      }`,
+      owner_full_name: `${getBusiness.firstNameV} ${getBusiness.lastNameV}`,
       broker_full_name: `${broker.firstName} ${broker.lastName}`,
       broker_email: broker.email,
       broker_phone: broker.phoneHome,
@@ -355,8 +370,24 @@ export const sendEmail = async (req, res, next) => {
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // remove pdf temp
-    await fs.unlink(destPdfGeneratedAgreement)
-    await fs.unlink(destPdfGeneratedInvoice)
+    await fs.unlink(destPdfGeneratedAgreement, err => {
+      if (err) {
+        throw new APIError({
+          message: 'Error on send email',
+          status: 500,
+          isPublic: true
+        })
+      }
+    })
+    await fs.unlink(destPdfGeneratedInvoice, err => {
+      if (err) {
+        throw new APIError({
+          message: 'Error on send email',
+          status: 500,
+          isPublic: true
+        })
+      }
+    })
 
     if (mail.attachInvoice) {
       // Update Date sent
@@ -397,7 +428,7 @@ export const getEmailTemplate = async (req, res, next) => {
     const template = await models.EmailTemplate.findOne({ where: { id } })
 
     const broker = await models.User.findOne({
-      where: { id: getBusiness.brokerAccountName }
+      where: { id: getBusiness.listingAgent_id }
     })
 
     // Compile the template to use variables

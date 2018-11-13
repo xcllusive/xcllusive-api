@@ -33,7 +33,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
         defaultValue:
-          '["owner_first_name", "owner_last_name", "owner_phone", "business_abn", "business_address", "forsale_business_known","conducted_at", "listed_price", "appraisal_high", "appraisal_low", "engagement_fee", "commission_perc", "commission_discount", "introduction_parties", "commission_property", "address_property", "price_property"]'
+          '["owner_first_name", "owner_last_name", "owner_phone", "business_abn", "business_address", "business_known_as","conducted_at", "listed_price", "appraisal_high", "appraisal_low", "engagement_fee", "commission_perc", "commission_discount", "introduction_parties", "commission_property", "address_property", "price_property"]'
       },
       engagementFee: {
         type: DataTypes.INTEGER,
@@ -58,11 +58,6 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 2.5
       },
-      addressProperty: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
-      },
       priceProperty: {
         type: DataTypes.INTEGER,
         allowNull: true
@@ -76,6 +71,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      minimumCommission: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 15000
       }
     },
     {

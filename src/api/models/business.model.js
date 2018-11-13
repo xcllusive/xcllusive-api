@@ -248,6 +248,14 @@ export default (sequelize, DataTypes) => {
       imUrl: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      businessKnownAs: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      conductedAt: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {

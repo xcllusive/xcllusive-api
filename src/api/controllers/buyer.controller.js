@@ -511,9 +511,11 @@ export const sendIM = async (req, res, next) => {
     // Updated caSent on Buyer
     await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
 
-    // const loggedUser = await models.User.findOne({
+    // const test = await models.User.findOne({
     //   where: { id: req.user.id }
     // })
+
+    // console.log(test)
 
     // Insert in log
     await models.BuyerLog.create({

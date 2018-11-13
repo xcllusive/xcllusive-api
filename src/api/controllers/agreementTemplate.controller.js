@@ -22,11 +22,11 @@ export const get = async (req, res, next) => {
 }
 
 export const preview = async (req, res, next) => {
-  const { idAgreementTemplate: id} = req.params
+  const { idAgreementTemplate: id } = req.params
   const { values } = req.body
 
   try {
-    const template = await models.AgreementTemplate.findOne({where: { id }})
+    const template = await models.AgreementTemplate.findOne({ where: { id } })
 
     const body = `
     ${template.header}
@@ -38,13 +38,15 @@ export const preview = async (req, res, next) => {
 
     const bodyHandlebars = handlebars.compile(body)
 
+    console.log(values.engagementFee)
+
     const context = {
       owner_first_name: values ? values.firstNameV : '',
       owner_last_name: values ? values.lastNameV : '',
       owner_phone: values ? values.vendorPhone1 : '',
       business_abn: values ? values.businessABN : '',
       business_address: values ? values.address : '',
-      forsale_business_known: values ? values.forSaleBusinessKnown : '',
+      business_known_as: values ? values.businessKnownAs : '',
       conducted_at: values ? values.conductedAt : '',
       listed_price: values ? values.listedPrice : '',
       appraisal_high: values ? values.appraisalHigh : '',
