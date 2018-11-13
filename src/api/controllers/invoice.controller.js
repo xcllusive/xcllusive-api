@@ -228,7 +228,15 @@ export const makePdf = async (req, res, next) => {
     await browser.close()
 
     return res.download(destPdfGenerated, err => {
-      fs.unlink(destPdfGenerated)
+      fs.unlink(destPdfGenerated, error => {
+        if (error) {
+          throw new APIError({
+            message: 'Error on send pdf',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
       if (err) {
         throw new APIError({
           message: 'Error on send pdf',
