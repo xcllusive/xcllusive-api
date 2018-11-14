@@ -5,7 +5,7 @@ import handlebars from 'handlebars'
 import puppeteer from 'puppeteer'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
-import mailer from '../modules/mailer'
+// import mailer from '../modules/mailer'
 
 export const list = async (req, res, next) => {
   const { businessId } = req.query
@@ -52,6 +52,19 @@ export const create = async (req, res, next) => {
   newAppraisal.createdBy_id = req.user.id
 
   try {
+    // Verify exists appraisal to change the stage to appraisal if you do not have any
+    const haveAppraisal = await models.Appraisal.findOne({
+      where: { business_id: newAppraisal.business_id }
+    })
+    if (!haveAppraisal) {
+      const updateBusiness = req.body
+      updateBusiness.modifiedBy_id = req.user.id
+      updateBusiness.stageId = 9
+      await models.Business.update(updateBusiness, {
+        where: { id: newAppraisal.business_id }
+      })
+    }
+
     const appraisal = await models.Appraisal.create(newAppraisal)
 
     return res

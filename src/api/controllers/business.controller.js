@@ -171,6 +171,8 @@ export const list = async (req, res, next) => {
     }
   }
 
+  console.log(whereOptions)
+
   const options = {
     attributes: [
       'id',
@@ -1059,7 +1061,7 @@ export const finaliseStageSold = async (req, res, next) => {
 export const getQtdeBusinessStageUser = async (req, res, next) => {
   try {
     const businessPotentialListing = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 1 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: [1, 10, 11, 12] } }
     })
     const businessListingNegotiation = await models.Business.count({
       where: { $and: { listingAgent_id: req.user.id, stageId: 2 } }
@@ -1076,6 +1078,9 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
     const businessWithdrawn = await models.Business.count({
       where: { $and: { listingAgent_id: req.user.id, stageId: 7 } }
     })
+    const businessAppraisal = await models.Business.count({
+      where: { $and: { listingAgent_id: req.user.id, stageId: 9 } }
+    })
     return res.status(201).json({
       data: {
         businessPotentialListing,
@@ -1083,7 +1088,8 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
         businessSalesMemo,
         businessForSale,
         businessSold,
-        businessWithdrawn
+        businessWithdrawn,
+        businessAppraisal
       }
     })
   } catch (error) {
@@ -1105,8 +1111,14 @@ export const getAllPerUser = async (req, res, next) => {
 
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId)) {
-      whereOptions.where.stageId = {
-        $eq: `${stageId}`
+      if (parseInt(stageId) === 1) {
+        whereOptions.where.stageId = {
+          $in: [1, 11, 10, 12]
+        }
+      } else {
+        whereOptions.where.stageId = {
+          $eq: `${stageId}`
+        }
       }
     } else {
       const arrayStageId = JSON.parse(stageId)
@@ -1161,6 +1173,7 @@ export const getAllPerUser = async (req, res, next) => {
       }
     }
   }
+  console.log(whereOptions)
 
   const options = {
     attributes: [
