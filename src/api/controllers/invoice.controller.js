@@ -94,10 +94,10 @@ export const create = async (req, res, next) => {
     })
 
     invoice.business_id = business.id
-    invoice.ref = `${invoices.count + 1}${business.businessName
-      .substring(0, 10)
+    invoice.ref = `${business.id}${business.businessName
+      .substring(0, 3)
       .replace(/\s/g, '')
-      .toUpperCase()}`
+      .toUpperCase()}${invoices.count + 1}`
 
     const invoiceCreated = await models.Invoice.create(invoice)
 
