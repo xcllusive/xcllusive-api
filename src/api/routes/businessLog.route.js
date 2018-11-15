@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { list, get } from '../controllers/businessLog.controller'
+import { list, get, save, finalise } from '../controllers/businessLog.controller'
 
 import { BUSINESS_MENU } from '../constants/roles'
 
@@ -12,6 +12,11 @@ router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
 
 router.route('/').get(list)
 
-router.route('/:idBusiness').get(get)
+router.route('/:idBusiness/finalise').post(finalise)
+
+router
+  .route('/:idBusiness')
+  .get(get)
+  .put(save)
 
 export default router

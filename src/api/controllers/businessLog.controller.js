@@ -1,3 +1,4 @@
+import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
@@ -65,6 +66,44 @@ export const list = async (req, res, next) => {
           ? 'Nothing business log found'
           : 'Get business log with succesfully'
     })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const save = async (req, res, next) => {
+  const { idBusiness } = req.params
+  const newLog = req.body
+
+  try {
+    await models.BusinessLog.update(
+      { followUpStatus: 'Done' },
+      { where: { business_id: idBusiness } }
+    )
+
+    await models.BusinessLog.create({
+      text: newLog.businessLog_text,
+      createdBy_id: req.user.id,
+      followUpStatus: 'Pending',
+      followUp: moment(newLog.businessLog_followUp),
+      business_id: idBusiness
+    })
+    return res.status(200).json({ message: 'Business log Saved' })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const finalise = async (req, res, next) => {
+  const { idBusiness } = req.params
+
+  try {
+    await models.BusinessLog.update(
+      { followUpStatus: 'Done' },
+      { where: { business_id: idBusiness } }
+    )
+
+    return res.status(200).json({ message: 'Business log finalised' })
   } catch (error) {
     return next(error)
   }
