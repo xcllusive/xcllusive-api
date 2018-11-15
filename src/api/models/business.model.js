@@ -145,10 +145,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
-      recID: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
       sort: {
         type: DataTypes.STRING,
         allowNull: true
