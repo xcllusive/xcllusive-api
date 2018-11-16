@@ -228,6 +228,7 @@ export const makePdf = async (req, res, next) => {
     await browser.close()
 
     return res.download(destPdfGenerated, err => {
+      console.log(err)
       fs.unlink(destPdfGenerated, error => {
         if (error) {
           throw new APIError({
@@ -246,6 +247,7 @@ export const makePdf = async (req, res, next) => {
       }
     })
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 }
