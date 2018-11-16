@@ -41,6 +41,22 @@ module.exports = {
       {
         id: 10,
         label: 'Data Gathering'
+      },
+      {
+        id: 11,
+        label: 'Meeting'
+      },
+      {
+        id: 12,
+        label: 'Closing Stage'
+      },
+      {
+        id: 13,
+        label: 'Sold by Owner'
+      },
+      {
+        id: 14,
+        label: 'On Hold'
       }
     ])
   },

@@ -218,7 +218,9 @@ export const makePdf = async (req, res, next) => {
     const content = await readFile(templatePath, 'utf8')
     const handlebarsCompiled = handlebars.compile(content)
     const template = handlebarsCompiled(context)
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
     // const browser = await puppeteer.launch({headless: false})
     const page = await browser.newPage()
     await page.emulateMedia('screen')
@@ -342,7 +344,9 @@ export const sendEmail = async (req, res, next) => {
         </div>`
       }
 
-      const browser = await puppeteer.launch()
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
       const page = await browser.newPage()
       await page.emulateMedia('screen')
       await page.goto(`data:text/html,${agreement.body}`)
@@ -393,7 +397,9 @@ export const sendEmail = async (req, res, next) => {
     const content = await readFile(templatePath, 'utf8')
     const handlebarsCompiled = handlebars.compile(content)
     const template = handlebarsCompiled(context)
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.goto(`data:text/html,${template}`)

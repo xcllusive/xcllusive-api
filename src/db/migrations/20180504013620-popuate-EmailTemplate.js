@@ -8,7 +8,7 @@ module.exports = {
         subject: '',
         body: '',
         handlebars:
-          '["owner_first_name","agent_full_name","agent_first_name","agent_email","agent_desk_phone","agent_mobile"]'
+          '["business_name","owner_first_name","agent_full_name","agent_first_name","agent_email","agent_desk_phone","agent_mobile"]'
       },
       {
         title: 'IM Approved',
@@ -45,7 +45,7 @@ module.exports = {
         subject: '',
         body: '',
         handlebars:
-          '["buyer_name","buyer_phone","buyer_idl", "buyer_address", "owner_name"]'
+          '["buyer_name","buyer_phone","buyer_id", "buyer_address", "owner_name"]'
       },
       {
         title: 'Send Business IM',
@@ -89,6 +89,31 @@ module.exports = {
         subject: '',
         body: '',
         handlebars: '["owners_name", "business_name"]'
+      },
+      {
+        title: 'Agent reassign to business',
+        description: '',
+        subject: '',
+        body: '',
+        handlebars:
+          '["business_name","owner_first_name","agent_full_name","agent_first_name","agent_email","agent_desk_phone","agent_mobile"]'
+      },
+      {
+        title: 'Broker Email',
+        description: '',
+        subject: '',
+        body: '',
+        handlebars:
+          '["business_name","buyer_name","buyers_contact_number","buyers_email"]',
+        brokersEmail: 1
+      },
+      {
+        title: 'Agreement Email',
+        description: '',
+        subject: '',
+        body: '',
+        handlebars:
+          '["business_name","owner_full_name","broker_full_name","broker_email","broker_phone","broker_mobile", "broker_address"]'
       }
     ])
   },
