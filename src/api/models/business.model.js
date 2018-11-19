@@ -9,10 +9,6 @@ export default (sequelize, DataTypes) => {
         unique: true,
         allowNull: true
       },
-      businessCat: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       commissionPerc: {
         type: DataTypes.FLOAT,
         allowNull: true
@@ -23,14 +19,6 @@ export default (sequelize, DataTypes) => {
       },
       conclusionDate: {
         type: DataTypes.DATE,
-        allowNull: true
-      },
-      listed: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      active: {
-        type: DataTypes.STRING,
         allowNull: true
       },
       address1: {
@@ -45,23 +33,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      businessDescriptionShort: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       businessName: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      businessNameLabel: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       businessNameSecondary: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      businessPartner: {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -70,18 +46,6 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       businessURL: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      chartSelScore: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      countAttBuyers: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      country: {
         type: DataTypes.STRING,
         allowNull: true
       },
@@ -105,10 +69,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true
       },
-      dayGeneratedIWP: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-      },
       description: {
         type: DataTypes.STRING,
         allowNull: true
@@ -125,16 +85,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true
       },
-      location: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       lostDate: {
         type: DataTypes.DATE,
-        allowNull: true
-      },
-      mailingAddressV: {
-        type: DataTypes.STRING,
         allowNull: true
       },
       notifyOwner: {
@@ -143,10 +95,6 @@ export default (sequelize, DataTypes) => {
       },
       postCode: {
         type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      sort: {
-        type: DataTypes.STRING,
         allowNull: true
       },
       sourceNotes: {

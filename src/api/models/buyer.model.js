@@ -9,10 +9,6 @@ export default (sequelize, DataTypes) => {
         unique: true,
         allowNull: false
       },
-      region: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       buyerNotes: {
         type: DataTypes.TEXT,
         allowNull: true
@@ -55,18 +51,6 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: false
       },
-      checkAddress: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      checkEmail: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      country: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       displayName: {
         type: DataTypes.STRING,
         allowNull: true
@@ -89,10 +73,6 @@ export default (sequelize, DataTypes) => {
       },
       mailingAddress: {
         type: DataTypes.INTEGER,
-        allowNull: true
-      },
-      newsletter: {
-        type: DataTypes.STRING,
         allowNull: true
       },
       postCode: {

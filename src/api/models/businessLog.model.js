@@ -19,10 +19,6 @@ export default (sequelize, DataTypes) => {
       followUpStatus: {
         type: DataTypes.STRING,
         allowNull: true
-      },
-      businessRecid: {
-        type: DataTypes.INTEGER,
-        allowNull: true
       }
     },
     {
