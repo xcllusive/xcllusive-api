@@ -6,6 +6,7 @@ import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 import { uploadToS3 } from '../modules/aws'
 import { transformQueryAndCleanNull } from '../utils/sharedFunctionsObject'
+import Sequelize from 'sequelize'
 
 export const get = async (req, res, next) => {
   const { idBuyer: id } = req.params
@@ -58,6 +59,14 @@ export const list = async (req, res, next) => {
         }
       })
     })
+    whereOptions.where.$or.push(
+      Sequelize.where(
+        Sequelize.fn('concat', Sequelize.col('firstName'), ' ', Sequelize.col('surname')),
+        {
+          $like: `%${search}%`
+        }
+      )
+    )
   }
 
   const options = {
@@ -695,8 +704,6 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       order: [['dateTimeCreated', 'DESC']],
       raw: true
     })
-
-    console.log(lastLog)
 
     return res.status(201).json({
       data: logs,

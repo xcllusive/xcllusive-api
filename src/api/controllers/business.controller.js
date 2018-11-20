@@ -1116,6 +1116,7 @@ export const getAllPerUser = async (req, res, next) => {
           $in: [1, 11, 10, 12]
         }
       } else {
+        console.log('OOLLAAAA')
         whereOptions.where.stageId = {
           $eq: `${stageId}`
         }
