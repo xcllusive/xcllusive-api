@@ -37,36 +37,54 @@ export const get = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { search, perPage } = req.query
+  let { search, perPage } = req.query
   const paramsSearch = [
     'surname',
     'firstName',
     'email',
+    'telephone1Number',
     'telephone1',
     'telephone2',
     'telephone3',
     'emailOptional'
   ]
-  const whereOptions = {}
+  let whereOptions = {
+    where: {}
+  }
 
-  if (search) {
-    whereOptions.where = {}
-    whereOptions.where.$or = []
-    paramsSearch.map(item => {
-      whereOptions.where.$or.push({
-        [item]: {
-          $like: `%${search}%`
-        }
-      })
-    })
-    whereOptions.where.$or.push(
-      Sequelize.where(
-        Sequelize.fn('concat', Sequelize.col('firstName'), ' ', Sequelize.col('surname')),
-        {
-          $like: `%${search}%`
-        }
-      )
-    )
+  if (search && search.length > 0) {
+    if (search.includes('B') || search.includes('b')) {
+      if (search.includes('B')) search = search.replace(/B/g, '')
+      if (search.includes('b')) search = search.replace(/b/g, '')
+      whereOptions.where.id = {
+        $eq: search
+      }
+    } else {
+      if (search) {
+        whereOptions.where = {}
+        whereOptions.where.$or = []
+        paramsSearch.map(item => {
+          whereOptions.where.$or.push({
+            [item]: {
+              $like: `%${search}%`
+            }
+          })
+        })
+        whereOptions.where.$or.push(
+          Sequelize.where(
+            Sequelize.fn(
+              'concat',
+              Sequelize.col('firstName'),
+              ' ',
+              Sequelize.col('surname')
+            ),
+            {
+              $like: `%${search}%`
+            }
+          )
+        )
+      }
+    }
   }
 
   const options = {
@@ -76,6 +94,7 @@ export const list = async (req, res, next) => {
       'surname',
       'email',
       'streetName',
+      'telephone1Number',
       'telephone1',
       'telephone2',
       'caSent',
@@ -519,12 +538,6 @@ export const sendIM = async (req, res, next) => {
 
     // Updated caSent on Buyer
     await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
-
-    // const test = await models.User.findOne({
-    //   where: { id: req.user.id }
-    // })
-
-    // console.log(test)
 
     // Insert in log
     await models.BuyerLog.create({

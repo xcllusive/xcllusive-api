@@ -142,6 +142,10 @@ export default (sequelize, DataTypes) => {
       businessType: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      telephone1Number: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {
