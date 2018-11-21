@@ -1,6 +1,5 @@
 import path from 'path'
 
-// import .env variables
 require('dotenv-safe').load({
   path: path.join(__dirname, '../../.env')
 })
@@ -9,7 +8,7 @@ module.exports = {
   env: process.env.NODE_ENV,
   port: process.env.PORT,
   jwtSecret: process.env.JWT_SECRET,
-  jwtExpirationInterval: process.env.JWT_EXPIRATION_MINUTES,
+  jwtExpirationInterval: process.env.JWT_EXPIRATION_HOURS,
   mysql: {
     uri:
       process.env.NODE_ENV === 'development'

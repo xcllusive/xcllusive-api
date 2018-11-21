@@ -1,17 +1,14 @@
 import jwt from 'jsonwebtoken'
 import { intersection } from 'lodash'
-
 import APIError from '../utils/APIError'
 import { jwtSecret } from '../../config/vars'
-
-import { Roles } from '../models/user.model'
 
 const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   const error = err || info
   const logIn = Promise.promisify(req.logIn)
   const apiError = new APIError({
     message: error ? error.message : 'Unauthorized',
-    status: httpStatus.UNAUTHORIZED,
+    status: 401,
     stack: error ? error.stack : undefined
   })
 
@@ -24,12 +21,12 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
 
   if (roles === LOGGED_USER) {
     if (user.role !== 'admin' && req.params.userId !== user._id.toString()) {
-      apiError.status = httpStatus.FORBIDDEN
+      apiError.status = 401
       apiError.message = 'Forbidden'
       return next(apiError)
     }
   } else if (!roles.includes(user.role)) {
-    apiError.status = httpStatus.FORBIDDEN
+    apiError.status = 401
     apiError.message = 'Forbidden'
     return next(apiError)
   } else if (err || !user) {
@@ -81,7 +78,7 @@ export const authorizeMiddleware = settings => {
     if (roles && roles.length > 0) {
       const tokenRoles = JSON.parse(req.user.roles)
       if (!intersection(roles, tokenRoles).length > 0) {
-        return res.status(403).send({ message: 'Not Authorized' })
+        return res.status(401).send({ message: 'Not Authorized' })
       }
     }
 

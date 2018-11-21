@@ -1,6 +1,6 @@
 {
-  "name": "excllusive-api",
-  "version": "0.0.1",
+  "name": "xcllusive-api",
+  "version": "1.0.10",
   "description": "Xcllusive RESTful API",
   "author": "Bruno da Silva Valenga <brunodasilvalenga@gmail.com>",
   "main": "src/index.js",

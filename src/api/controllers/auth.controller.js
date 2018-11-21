@@ -1,14 +1,12 @@
 import jwt from 'jsonwebtoken'
-import moment from 'moment-timezone'
+// import moment from 'moment-timezone'
 
 import { jwtExpirationInterval, jwtSecret } from '../../config/vars'
 import models from '../../config/sequelize'
 
 const jwtSignUser = user => {
   return jwt.sign(user, jwtSecret, {
-    expiresIn: moment()
-      .add(jwtExpirationInterval, 'minutes')
-      .unix()
+    expiresIn: `${jwtExpirationInterval} h`
   })
 }
 
