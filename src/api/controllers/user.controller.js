@@ -9,6 +9,20 @@ import {
   SYSTEM_SETTINGS_MENU
 } from '../constants/roles'
 
+export const getLogged = async (req, res, next) => {
+  try {
+    const userLogged = await models.User.findOne({
+      where: { id: req.user.id }
+    })
+
+    return res.status(201).json({
+      data: userLogged
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const list = async (req, res, next) => {
   const { search, admin, broker, introducer } = req.query
 
@@ -92,7 +106,7 @@ export const create = async (req, res, next) => {
       throw err
     }
     const newUser = await models.User.create(req.body)
-    return res.status(200).json({data: newUser, message: 'User created with success' })
+    return res.status(200).json({ data: newUser, message: 'User created with success' })
   } catch (err) {
     return next(err)
   }

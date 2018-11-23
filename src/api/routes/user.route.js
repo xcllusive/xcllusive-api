@@ -1,7 +1,7 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import { list, create, update, remove } from '../controllers/user.controller'
+import { list, create, update, remove, getLogged } from '../controllers/user.controller'
 
 import { SYSTEM_SETTINGS_MENU } from '../constants/roles'
 
@@ -24,5 +24,7 @@ router
   .post(create)
   .put(update)
   .delete(remove)
+
+router.route('/user-logged').get(getLogged)
 
 export default router
