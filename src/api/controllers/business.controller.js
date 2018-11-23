@@ -1316,7 +1316,7 @@ export const uploadIM = async (req, res, next) => {
     // VERIFY WITH BRUNO
     // Upload file to aws s3
     const upload = await uploadToS3(
-      'xcllusive-certificate-authority',
+      'xcllusive-im',
       file,
       `${business.businessName}_IM_${business.id}.pdf`
     )
