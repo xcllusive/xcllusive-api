@@ -75,12 +75,12 @@ export const authorizeMiddleware = settings => {
       return res.status(403).send({ message: 'Not Authorized' })
     }
 
-    if (roles && roles.length > 0) {
-      const tokenRoles = JSON.parse(req.user.roles)
-      if (!intersection(roles, tokenRoles).length > 0) {
-        return res.status(401).send({ message: 'Not Authorized' })
-      }
-    }
+    // if (roles && roles.length > 0) {
+    //   const tokenRoles = JSON.parse(req.user.roles)
+    //   if (!intersection(roles, tokenRoles).length > 0) {
+    //     return res.status(401).send({ message: 'Not Authorized' })
+    //   }
+    // }
 
     return next()
   }
