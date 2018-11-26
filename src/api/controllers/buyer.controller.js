@@ -106,7 +106,8 @@ export const list = async (req, res, next) => {
       'priceFrom',
       'priceTo',
       'emailOptional',
-      'attachmentUrl'
+      'attachmentUrl',
+      'scanfilePath'
     ],
     limit: perPage
   }
