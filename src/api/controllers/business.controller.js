@@ -306,7 +306,8 @@ export const create = async (req, res, next) => {
       const context = {
         agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
         agent_first_name: listingAgent.firstName,
-        business_name: business.businessName
+        business_name: business.businessName,
+        business_id: business.id
       }
 
       // Set email options
@@ -455,7 +456,8 @@ export const updateListingAgent = async (req, res, next) => {
       agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
       agent_first_name: listingAgent.firstName,
       business_name: business.businessName,
-      user_name: user.firstName
+      user_name: user.firstName,
+      business_id: business.id
     }
 
     // Set email options
