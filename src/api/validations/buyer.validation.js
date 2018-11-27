@@ -20,9 +20,7 @@ export const createBuyer = {
     firstName: Joi.string()
       .max(128)
       .required(),
-    surname: Joi.string()
-      .max(128)
-      .required()
+    surname: Joi.string().max(128)
   }
 }
 
@@ -134,9 +132,7 @@ export const finaliseLog = {
 
 export const listBusiness = {
   query: {
-    search: Joi.string()
-      .min(1),
-    stageId: Joi.string()
-      .min(1)
+    search: Joi.string().min(1),
+    stageId: Joi.string().min(1)
   }
 }
