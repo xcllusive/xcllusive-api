@@ -57,7 +57,7 @@ export default (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       emailOptional: {
         type: DataTypes.STRING,

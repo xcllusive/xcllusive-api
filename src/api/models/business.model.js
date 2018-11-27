@@ -35,7 +35,7 @@ export default (sequelize, DataTypes) => {
       },
       businessName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       businessNameSecondary: {
         type: DataTypes.STRING,
@@ -119,11 +119,11 @@ export default (sequelize, DataTypes) => {
       },
       lastNameV: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       vendorEmail: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       vendorFax: {
         type: DataTypes.STRING,

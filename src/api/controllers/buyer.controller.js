@@ -53,38 +53,24 @@ export const list = async (req, res, next) => {
   }
 
   if (search && search.length > 0) {
-    if (search.includes('B') || search.includes('b')) {
-      if (search.includes('B')) search = search.replace(/B/g, '')
-      if (search.includes('b')) search = search.replace(/b/g, '')
-      whereOptions.where.id = {
-        $eq: search
-      }
-    } else {
-      if (search) {
-        whereOptions.where = {}
-        whereOptions.where.$or = []
-        paramsSearch.map(item => {
-          whereOptions.where.$or.push({
-            [item]: {
-              $like: `%${search}%`
-            }
-          })
-        })
-        whereOptions.where.$or.push(
-          Sequelize.where(
-            Sequelize.fn(
-              'concat',
-              Sequelize.col('firstName'),
-              ' ',
-              Sequelize.col('surname')
-            ),
-            {
-              $like: `%${search}%`
-            }
-          )
-        )
-      }
-    }
+    whereOptions.where = {}
+    whereOptions.where.$or = []
+    paramsSearch.map(item => {
+      whereOptions.where.$or.push({
+        [item]: {
+          $like: `%${search}%`
+        }
+      })
+    })
+    whereOptions.where.$or.push(
+      Sequelize.where(
+        Sequelize.fn('concat', Sequelize.col('firstName'), ' ', Sequelize.col('surname')),
+        {
+          $like: `%${search}%`
+        }
+      )
+    )
+    // }
   }
 
   const options = {
