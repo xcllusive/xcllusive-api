@@ -109,7 +109,7 @@ export default (sequelize, DataTypes) => {
       },
       surname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       telephone1: {
         type: DataTypes.STRING,
