@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { intersection } from 'lodash'
 import APIError from '../utils/APIError'
 import { jwtSecret } from '../../config/vars'
+import { IGNORE_ROUTES } from '../constants/roles'
 
 const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   const error = err || info
@@ -75,12 +76,16 @@ export const authorizeMiddleware = settings => {
       return res.status(403).send({ message: 'Not Authorized' })
     }
 
-    // if (roles && roles.length > 0) {
-    //   const tokenRoles = JSON.parse(req.user.roles)
-    //   if (!intersection(roles, tokenRoles).length > 0) {
-    //     return res.status(401).send({ message: 'Not Authorized' })
-    //   }
-    // }
+    if (IGNORE_ROUTES.includes(req.originalUrl)) {
+      return next()
+    }
+
+    if (roles && roles.length > 0) {
+      const tokenRoles = JSON.parse(req.user.roles)
+      if (!intersection(roles, tokenRoles).length > 0) {
+        return res.status(403).send({ message: 'Not Authorized' })
+      }
+    }
 
     return next()
   }

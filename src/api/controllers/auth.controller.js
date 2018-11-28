@@ -6,7 +6,7 @@ import models from '../../config/sequelize'
 
 const jwtSignUser = user => {
   return jwt.sign(user, jwtSecret, {
-    expiresIn: `${jwtExpirationInterval} h`
+    expiresIn: `${jwtExpirationInterval} m`
   })
 }
 
