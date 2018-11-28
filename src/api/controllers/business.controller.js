@@ -171,8 +171,6 @@ export const list = async (req, res, next) => {
     }
   }
 
-  console.log(whereOptions)
-
   const options = {
     attributes: [
       'id',
@@ -1110,7 +1108,7 @@ export const getAllPerUser = async (req, res, next) => {
   whereOptions.where.listingAgent_id = {
     $eq: req.user.id
   }
-
+  console.log(stageId)
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId)) {
       if (parseInt(stageId) === 1) {
@@ -1118,7 +1116,6 @@ export const getAllPerUser = async (req, res, next) => {
           $in: [1, 11, 10, 12]
         }
       } else {
-        console.log('OOLLAAAA')
         whereOptions.where.stageId = {
           $eq: `${stageId}`
         }
@@ -1176,7 +1173,6 @@ export const getAllPerUser = async (req, res, next) => {
       }
     }
   }
-  console.log(whereOptions)
 
   const options = {
     attributes: [
@@ -1213,25 +1209,25 @@ export const getAllPerUser = async (req, res, next) => {
     }
 
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
-
     if (filterLog && JSON.parse(filterLog)) {
       const arrayBusinesses = await Promise.all(
         businesses.map(async business => {
-          const log = await models.BuyerLog.findAll({
+          const log = await models.BusinessLog.findAll({
             where: {
               business_id: business.id,
               followUpStatus: 'Pending',
               followUp: {
-                $lte: moment().toDate()
+                $gte: moment()
               }
             },
             raw: true
           })
           if (log.length) {
-            return business
+            return Object.assign(business, { log })
           }
         })
       )
+      // console.log(arrayBusinesses)
       response.data = await arrayBusinesses.filter(item => {
         return item !== undefined
       })
