@@ -1061,22 +1061,10 @@ export const finaliseStageSold = async (req, res, next) => {
 export const getQtdeBusinessStageUser = async (req, res, next) => {
   try {
     const businessPotentialListing = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: [1, 10, 11, 12] } }
-    })
-    const businessListingNegotiation = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 2 } }
-    })
-    const businessSalesMemo = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 3 } }
+      where: { $and: { listingAgent_id: req.user.id, stageId: 1 } }
     })
     const businessForSale = await models.Business.count({
       where: { $and: { listingAgent_id: req.user.id, stageId: 4 } }
-    })
-    const businessSold = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 6 } }
-    })
-    const businessWithdrawn = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 7 } }
     })
     const businessAppraisal = await models.Business.count({
       where: { $and: { listingAgent_id: req.user.id, stageId: 9 } }
@@ -1084,11 +1072,7 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
     return res.status(201).json({
       data: {
         businessPotentialListing,
-        businessListingNegotiation,
-        businessSalesMemo,
         businessForSale,
-        businessSold,
-        businessWithdrawn,
         businessAppraisal
       }
     })
@@ -1108,17 +1092,10 @@ export const getAllPerUser = async (req, res, next) => {
   whereOptions.where.listingAgent_id = {
     $eq: req.user.id
   }
-  console.log(stageId)
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId)) {
-      if (parseInt(stageId) === 1) {
-        whereOptions.where.stageId = {
-          $in: [1, 11, 10, 12]
-        }
-      } else {
-        whereOptions.where.stageId = {
-          $eq: `${stageId}`
-        }
+      whereOptions.where.stageId = {
+        $eq: `${stageId}`
       }
     } else {
       const arrayStageId = JSON.parse(stageId)
@@ -1193,14 +1170,7 @@ export const getAllPerUser = async (req, res, next) => {
       'typeId',
       'notifyOwner'
     ],
-    include: [
-      models.BusinessStage,
-      models.BusinessProduct
-      // {
-      //   model: models.BusinessIndustry,
-      //   where: { label: { $like: `%${search}%` } }
-      // }
-    ]
+    include: [models.BusinessStage, models.BusinessProduct]
   }
   try {
     const response = {
@@ -1222,8 +1192,15 @@ export const getAllPerUser = async (req, res, next) => {
             },
             raw: true
           })
+          const businessPotentialListing = await models.Business.count({
+            where: { $and: { listingAgent_id: req.user.id, stageId: 1 } }
+          })
           if (log.length) {
-            return Object.assign(business, { log })
+            return {
+              business,
+              log,
+              businessPotentialListing
+            }
           }
         })
       )
