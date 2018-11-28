@@ -1217,7 +1217,7 @@ export const getAllPerUser = async (req, res, next) => {
               business_id: business.id,
               followUpStatus: 'Pending',
               followUp: {
-                $gte: moment()
+                $lte: moment()
               }
             },
             raw: true
