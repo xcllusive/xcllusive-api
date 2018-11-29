@@ -863,3 +863,182 @@ export const finaliseLog = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getBuyersFromBusiness = async (req, res, next) => {
+  const { idBusiness } = req.params
+  const { showAll } = req.query
+
+  try {
+    // Verify exists business
+    const business = await models.Business.findOne({
+      where: { id: idBusiness }
+    })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Get buyers from business enquiry
+    const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
+      where: { business_id: idBusiness },
+      include: [
+        {
+          model: models.Buyer
+        }
+      ]
+    })
+
+    const array = []
+    const verifyContentBuyerLog = await buyersFromBusiness.map(async enquiry => {
+      const where = {
+        buyer_id: enquiry.buyer_id,
+        business_id: idBusiness,
+        followUp: {
+          $lte: moment().toDate()
+        },
+        followUpStatus: 'Pending'
+      }
+      if (showAll && JSON.parse(showAll)) {
+        delete where.followUpStatus
+        delete where.followUp
+      }
+      const logs = await models.BuyerLog.findAll({
+        where,
+        raw: true
+      })
+      if (logs.length > 0) {
+        // Get last log
+        const where = {
+          buyer_id: enquiry.buyer_id,
+          business_id: enquiry.business_id,
+          followUpStatus: 'Pending'
+        }
+        if (showAll && JSON.parse(showAll)) {
+          delete where.followUpStatus
+        }
+        const lastLog = await models.BuyerLog.findOne({
+          where,
+          order: [['dateTimeCreated', 'DESC']],
+          raw: true
+        })
+        array.push({ lastLog, enquiry })
+      }
+      return array
+    })
+
+    const response = await Promise.all(verifyContentBuyerLog)
+
+    return res.status(201).json({
+      data: {
+        array: response[0],
+        countAll: buyersFromBusiness.length
+      },
+      message: 'Success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getBusinessFromBuyer = async (req, res, next) => {
+  const { idBusiness } = req.params
+
+  const _mapValuesToArray = array => {
+    if (array.length > 0) {
+      if (array[0].firstName) {
+        return array.map((item, index) => ({
+          key: index,
+          text: `${item.firstName} ${item.lastName}`,
+          value: item.id
+        }))
+      }
+      return array.map((item, index) => ({
+        key: index,
+        text: item.label,
+        value: item.id
+      }))
+    }
+    return []
+  }
+
+  try {
+    const business = await models.Business.findOne({
+      where: { id: idBusiness },
+      include: [
+        { model: models.User, as: 'CreatedBy' },
+        { model: models.User, as: 'ModifiedBy' },
+        { model: models.User, as: 'listingAgent' }
+      ]
+    })
+    const stageList = await models.BusinessStage.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const sourceList = await models.BusinessSource.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const industryList = await models.BusinessIndustry.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const productList = await models.BusinessProduct.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const ratingList = await models.BusinessRating.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const typeList = await models.BusinessType.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const usersBroker = await models.User.findAll({
+      raw: true,
+      attributes: ['id', 'firstName', 'lastName'],
+      where: { userType: 'Broker' }
+    })
+    const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const stageNotWantList = await models.BusinessStageNotWant.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
+    const lastScore = await models.Score.findOne({
+      where: {
+        business_id: idBusiness
+      },
+      order: [['dateTimeCreated', 'DESC']]
+    })
+    const countAllEnquiry = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: idBusiness
+      }
+    })
+
+    const response = {
+      business,
+      lastScore,
+      countAllEnquiry: countAllEnquiry.count,
+      stageList: _mapValuesToArray(stageList),
+      sourceList: _mapValuesToArray(sourceList),
+      industryList: _mapValuesToArray(industryList),
+      productList: _mapValuesToArray(productList),
+      ratingList: _mapValuesToArray(ratingList),
+      typeList: _mapValuesToArray(typeList),
+      usersBroker: _mapValuesToArray(usersBroker),
+      stageNotSignedList: _mapValuesToArray(stageNotSignedList),
+      stageNotWantList: _mapValuesToArray(stageNotWantList)
+    }
+    return res.status(200).json(response)
+  } catch (err) {
+    return next(err)
+  }
+}

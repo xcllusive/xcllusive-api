@@ -75,13 +75,12 @@ export const authorizeMiddleware = settings => {
     if (!user) {
       return res.status(403).send({ message: 'Not Authorized' })
     }
-
-    if (IGNORE_ROUTES.includes(req.originalUrl)) {
+    if (IGNORE_ROUTES.includes(req.baseUrl)) {
       return next()
     }
-
     if (roles && roles.length > 0) {
       const tokenRoles = JSON.parse(req.user.roles)
+      // console.log(roles, tokenRoles)
       if (!intersection(roles, tokenRoles).length > 0) {
         return res.status(403).send({ message: 'Not Authorized' })
       }
