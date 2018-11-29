@@ -240,7 +240,8 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'stageNotWantId'
     })
     models.Business.hasMany(models.BusinessLog, {
-      foreignKey: 'business_id'
+      foreignKey: 'business_id',
+      as: 'BusinessLog'
     })
     models.Business.hasMany(models.EnquiryBusinessBuyer, {
       foreignKey: 'business_id'
