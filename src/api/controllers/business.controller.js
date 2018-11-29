@@ -1169,8 +1169,15 @@ export const getAllPerUser = async (req, res, next) => {
         .json({ data: response, message: 'Get businesses succesfuly.' })
     }
 
-    const response = await models.Business.findAll(Object.assign(whereOptions, {
-      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId']
+    const response = await models.Business.findAndCountAll(Object.assign(whereOptions, {
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: { $col: 'Business.id' }
+        }
+      }
     }))
 
     return res.status(200).json({ data: response, message: 'Get businesses succesfuly.' })
