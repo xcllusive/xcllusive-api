@@ -15,7 +15,9 @@ import {
   listBusinessesFromBuyerLog,
   listBusinessesFromBuyer,
   finaliseLog,
-  listBusiness
+  listBusiness,
+  getBuyersFromBusiness,
+  getBusinessFromBuyer
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -24,6 +26,10 @@ import { BUYER_MENU } from '../constants/roles'
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUYER_MENU] }))
+
+router.route('/from-business/:idBusiness').get(getBuyersFromBusiness)
+
+router.route('/business-from-buyer/:idBusiness').get(getBusinessFromBuyer)
 
 router.route('/business').get(validate(validation.listBusiness), listBusiness)
 
