@@ -1142,7 +1142,7 @@ export const getAllPerUser = async (req, res, next) => {
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId)) {
       whereOptions.where.stageId = {
-        $eq: `${stageId}`
+        $eq: `${parseInt(stageId)}`
       }
     }
   }
@@ -1161,7 +1161,8 @@ export const getAllPerUser = async (req, res, next) => {
               $lte: moment()
             }
           }
-        }
+        },
+        raw: true
       }))
 
       return res
@@ -1177,7 +1178,8 @@ export const getAllPerUser = async (req, res, next) => {
         where: {
           business_id: { $col: 'Business.id' }
         }
-      }
+      },
+      raw: true
     }))
 
     return res.status(200).json({ data: response, message: 'Get businesses succesfuly.' })
