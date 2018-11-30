@@ -1191,7 +1191,7 @@ export const getAllPerUser = async (req, res, next) => {
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId)) {
       whereOptions.where.stageId = {
-        $eq: `${stageId}`
+        $eq: `${parseInt(stageId)}`
       }
     }
   }
