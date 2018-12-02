@@ -56,8 +56,7 @@ const sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
   logging: false
 })
 
-fs
-  .readdirSync(`${__dirname}/../api/models`)
+fs.readdirSync(`${__dirname}/../api/models`)
   .filter(file => {
     return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   })

@@ -188,7 +188,8 @@ export const list = async (req, res, next) => {
       'state',
       'postCode',
       'typeId',
-      'notifyOwner'
+      'notifyOwner',
+      'vendorEmail'
     ],
     include: [
       models.BusinessStage,
