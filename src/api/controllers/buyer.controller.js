@@ -493,11 +493,9 @@ export const sendIM = async (req, res, next) => {
     const context = {
       buyer_name: `${buyer.firstName} ${buyer.surname}`,
       business_name: business.businessName,
-      listing_agent: `${business.listingAgent.firstName} ${
-        business.listingAgent.lastName
-      }`,
-      listing_agent_email: business.vendorEmail,
-      listing_agent_phone: business.vendorPhone1
+      agents_name: `${business.listingAgent.firstName} ${business.listingAgent.lastName}`,
+      agents_email: business.vendorEmail,
+      agents_phone: business.vendorPhone1
     }
 
     // Set email options
@@ -1040,5 +1038,123 @@ export const getBusinessFromBuyer = async (req, res, next) => {
     return res.status(200).json(response)
   } catch (err) {
     return next(err)
+  }
+}
+
+export const getGroupEmail = async (req, res, next) => {
+  const { idBusiness } = req.params
+
+  // const response = []
+
+  try {
+    // Verify exists business
+    const business = await models.Business.findOne({
+      where: { id: idBusiness }
+    })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Get buyers from business enquiry
+    const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
+      where: { business_id: idBusiness },
+      include: [
+        {
+          model: models.Buyer
+        }
+      ]
+    })
+
+    const arrayGroupEmail = await Promise.all(
+      buyersFromBusiness.map(async item => {
+        const logs = await models.BuyerLog.findAll({
+          where: {
+            buyer_id: item.buyer_id,
+            business_id: item.business_id
+          }
+        })
+
+        const isPending = await Promise.all(
+          logs.map(log => {
+            return log.followUpStatus
+          })
+        )
+
+        if (item.Buyer.caReceived) {
+          return {
+            id: item.Buyer.id,
+            email: item.Buyer.email,
+            firstName: item.Buyer.firstName,
+            lastName: item.Buyer.surname,
+            isPending: isPending.some(item => {
+              return item === 'Pending'
+            })
+          }
+        }
+      })
+    )
+
+    const filterArrayGroupEmail = arrayGroupEmail.filter(item => {
+      return item !== undefined
+    })
+
+    return res.status(201).json({
+      data: filterArrayGroupEmail,
+      message: 'Success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const sendGroupEmail = async (req, res, next) => {
+  const { to, subject, body } = req.body
+  const fileAttachment = req.files.attachment
+  const sentTo = []
+
+  try {
+    const emailToOffice = await models.SystemSettings.findOne({ where: 1 })
+    for (let buyer of JSON.parse(to)) {
+      const mailOptions = {
+        to: buyer.email,
+        from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
+        subject,
+        replyTo: buyer.replyTo
+          ? req.user.email
+          : `${req.user.email}, ${emailToOffice.emailOffice}`,
+        html: `
+        <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
+        
+        </br>
+        <p>${body}</p>
+        </br>
+
+        <p>Xcllusive Business Sales</p>
+        <p>www.xcllusive.com.au | (02) 9817 3331</p>
+        `,
+        attachments: fileAttachment
+          ? [
+            {
+              filename: fileAttachment.name,
+              content: fileAttachment.data
+            }
+          ]
+          : []
+      }
+      const resMailer = await mailer.sendMail(mailOptions)
+      if (resMailer) sentTo.push(resMailer.envelope.to[0])
+    }
+
+    return res.status(201).json({
+      data: sentTo,
+      message: 'Group emails sent successfully'
+    })
+  } catch (error) {
+    return next(error)
   }
 }

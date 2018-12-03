@@ -17,7 +17,9 @@ import {
   finaliseLog,
   listBusiness,
   getBuyersFromBusiness,
-  getBusinessFromBuyer
+  getBusinessFromBuyer,
+  getGroupEmail,
+  sendGroupEmail
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -38,6 +40,12 @@ router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
 router.route('/log/:idLog').put(updateLog)
 
 router.route('/log').post(createLog)
+
+router
+  .route('/:idBusiness/group-email')
+  .get(validate(validation.getGroupEmail), getGroupEmail)
+
+router.route('/send-group-email').post(sendGroupEmail)
 
 router.route('/:idBuyer/log/finalise').post(validate(validation.finaliseLog), finaliseLog)
 

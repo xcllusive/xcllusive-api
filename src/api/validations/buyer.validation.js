@@ -134,3 +134,11 @@ export const listBusiness = {
     stageId: Joi.string().min(1)
   }
 }
+
+export const getGroupEmail = {
+  params: {
+    idBusiness: Joi.number()
+      .min(1)
+      .required()
+  }
+}
