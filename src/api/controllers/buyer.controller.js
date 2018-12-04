@@ -404,11 +404,17 @@ export const sendCA = async (req, res, next) => {
     // Updated caSent on Buyer
     await models.Buyer.update({ caSent: true }, { where: { id: buyerId } })
 
+    // Updated all logs Pending to Done
+    await models.BuyerLog.update(
+      { followUpStatus: 'Done' },
+      { where: { buyer_id: buyerId } }
+    )
+
     // Insert in log
     await models.BuyerLog.create({
       followUpStatus: 'Pending',
       text: 'CA Sent',
-      followUp: moment().add(7, 'days'),
+      followUp: moment().add(1, 'days'),
       business_id: businessId,
       buyer_id: buyerId
     })
@@ -527,12 +533,18 @@ export const sendIM = async (req, res, next) => {
     // Updated caSent on Buyer
     await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
 
+    // Updated all logs Pending to Done
+    await models.BuyerLog.update(
+      { followUpStatus: 'Done' },
+      { where: { buyer_id: buyerId } }
+    )
+
     // Insert in log
     await models.BuyerLog.create({
       text: business.notifyOwner
         ? `IM Sent to Buyer ${buyer.id} by ${req.user.id}`
         : `IM Sent to Buyer ${buyer.id}`,
-      followUpStatus: 'Done',
+      followUpStatus: 'Pending',
       followUp: moment().add(1, 'days'),
       business_id: businessId,
       buyer_id: buyerId
@@ -609,11 +621,17 @@ export const receivedCA = async (req, res, next) => {
       { where: { id: buyerId } }
     )
 
+    // Updated all logs Pending to Done
+    await models.BuyerLog.update(
+      { followUpStatus: 'Done' },
+      { where: { buyer_id: buyerId } }
+    )
+
     // Insert in log
     await models.BuyerLog.create({
       text: 'CA Received',
-      followUpStatus: 'Done',
-      followUp: moment().toDate(),
+      followUpStatus: 'Pending',
+      followUp: moment().add(1, 'days'),
       business_id: businessId,
       buyer_id: buyerId
     })
