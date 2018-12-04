@@ -27,7 +27,8 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'business_id'
     })
     models.EnquiryBusinessBuyer.belongsTo(models.Buyer, {
-      foreignKey: 'buyer_id'
+      foreignKey: 'buyer_id',
+      as: 'Buyer'
     })
   }
 

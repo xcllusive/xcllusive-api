@@ -216,7 +216,8 @@ export const listBusiness = async (req, res, next) => {
           where: { business_id: business.id },
           include: [
             {
-              model: models.Buyer
+              model: models.Buyer,
+              as: 'Buyer'
             }
           ]
         })
@@ -494,8 +495,10 @@ export const sendIM = async (req, res, next) => {
       buyer_name: `${buyer.firstName} ${buyer.surname}`,
       business_name: business.businessName,
       agents_name: `${business.listingAgent.firstName} ${business.listingAgent.lastName}`,
-      agents_email: business.vendorEmail,
-      agents_phone: business.vendorPhone1
+      agents_email: business.listingAgent.email,
+      agents_phone: business.listingAgent.phoneMobile
+        ? business.listingAgent.phoneMobile
+        : business.listingAgent.phoneWork
     }
 
     // Set email options
@@ -880,60 +883,61 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       })
     }
 
+    // count buyers from business enquiry
+    const countAllBuyersFromBusiness = await models.EnquiryBusinessBuyer.count({
+      where: { business_id: idBusiness }
+    })
+
+    const whereBuyerLog = {
+      buyer_id: { $col: 'EnquiryBusinessBuyer.buyer_id' },
+      followUp: {
+        $lte: moment().toDate()
+      },
+      followUpStatus: 'Pending'
+    }
+
+    const whereBuyer = {
+      $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }]
+    }
+
+    if (showAll && JSON.parse(showAll)) {
+      delete whereBuyerLog.followUpStatus
+      delete whereBuyerLog.followUp
+      delete whereBuyer['$or']
+    }
+
     // Get buyers from business enquiry
-    const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
-      where: { business_id: idBusiness },
+    const buyersFromBusiness = await models.Buyer.findAll({
+      attributes: ['id', 'caReceived', 'scanfilePath', 'firstName', 'surname'],
+      where: whereBuyer,
       include: [
         {
-          model: models.Buyer
-        }
-      ]
-    })
-
-    const array = []
-    const verifyContentBuyerLog = await buyersFromBusiness.map(async enquiry => {
-      const where = {
-        buyer_id: enquiry.buyer_id,
-        business_id: idBusiness,
-        followUp: {
-          $lte: moment().toDate()
+          attributes: ['buyer_id', 'business_id'],
+          model: models.EnquiryBusinessBuyer,
+          as: 'EnquiryBusinessBuyer',
+          where: { business_id: idBusiness }
         },
-        followUpStatus: 'Pending'
-      }
-      if (showAll && JSON.parse(showAll)) {
-        delete where.followUpStatus
-        delete where.followUp
-      }
-      const logs = await models.BuyerLog.findAll({
-        where,
-        raw: true
-      })
-      if (logs.length > 0) {
-        // Get last log
-        const where = {
-          buyer_id: enquiry.buyer_id,
-          business_id: enquiry.business_id,
-          followUpStatus: 'Pending'
+        {
+          attributes: [
+            'buyer_id',
+            'business_id',
+            'followUp',
+            'followUpStatus',
+            'text',
+            'dateTimeCreated'
+          ],
+          model: models.BuyerLog,
+          as: 'BuyerLog',
+          where: whereBuyerLog
         }
-        if (showAll && JSON.parse(showAll)) {
-          delete where.followUpStatus
-        }
-        const lastLog = await models.BuyerLog.findOne({
-          where,
-          order: [['dateTimeCreated', 'DESC']],
-          raw: true
-        })
-        array.push({ lastLog, enquiry })
-      }
-      return array
+      ],
+      order: [[{ model: models.BuyerLog, as: 'BuyerLog' }, 'followUp', 'DESC']]
     })
-
-    const response = await Promise.all(verifyContentBuyerLog)
 
     return res.status(201).json({
       data: {
-        array: response[0],
-        countAll: buyersFromBusiness.length
+        array: buyersFromBusiness,
+        countAll: countAllBuyersFromBusiness
       },
       message: 'Success'
     })
@@ -1065,7 +1069,8 @@ export const getGroupEmail = async (req, res, next) => {
       where: { business_id: idBusiness },
       include: [
         {
-          model: models.Buyer
+          model: models.Buyer,
+          as: 'Buyer'
         }
       ]
     })

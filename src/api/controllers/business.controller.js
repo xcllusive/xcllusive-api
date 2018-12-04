@@ -803,7 +803,8 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       where: { business_id: idBusiness },
       include: [
         {
-          model: models.Buyer
+          model: models.Buyer,
+          as: 'Buyer'
         }
       ]
     })
@@ -884,7 +885,8 @@ export const getGroupEmail = async (req, res, next) => {
       where: { business_id: idBusiness },
       include: [
         {
-          model: models.Buyer
+          model: models.Buyer,
+          as: 'Buyer'
         }
       ]
     })

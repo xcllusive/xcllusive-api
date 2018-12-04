@@ -42,7 +42,8 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'modifiedBy_id'
     })
     models.BuyerLog.belongsTo(models.Buyer, {
-      foreignKey: 'buyer_id'
+      foreignKey: 'buyer_id',
+      as: 'Buyer'
     })
     models.BuyerLog.belongsTo(models.Business, {
       foreignKey: 'business_id'
