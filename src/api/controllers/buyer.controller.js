@@ -38,7 +38,7 @@ export const get = async (req, res, next) => {
 
 export const list = async (req, res, next) => {
   let { search, perPage } = req.query
-  const paramsSearch = [
+  let paramsSearch = [
     'surname',
     'firstName',
     'email',
@@ -50,6 +50,11 @@ export const list = async (req, res, next) => {
   ]
   let whereOptions = {
     where: {}
+  }
+
+  if (search.substring(0, 1) === 'B' && search.substring(1, 2) > 0) {
+    paramsSearch = ['id']
+    search = search.replace(/B/g, '')
   }
 
   if (search && search.length > 0) {

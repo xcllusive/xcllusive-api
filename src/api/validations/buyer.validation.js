@@ -14,11 +14,9 @@ export const listBuyers = {
 
 export const createBuyer = {
   body: {
-    email: Joi.string().email(),
     firstName: Joi.string()
       .max(128)
-      .required(),
-    surname: Joi.string().max(128)
+      .required()
   }
 }
 
