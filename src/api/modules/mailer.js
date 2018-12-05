@@ -1,6 +1,7 @@
 import path from 'path'
 import nodemailer from 'nodemailer'
 import hbs from 'nodemailer-express-handlebars'
+import inlineBase64 from 'nodemailer-plugin-inline-base64'
 
 import { mail } from '../../config/vars'
 
@@ -18,5 +19,7 @@ transport.use(
     extName: '.html'
   })
 )
+
+transport.use('compile', inlineBase64({ cidPrefix: 'xcllusive_img' }))
 
 export default transport
