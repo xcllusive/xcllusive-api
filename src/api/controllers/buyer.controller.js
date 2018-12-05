@@ -916,6 +916,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 
     const whereBuyerLog = {
       buyer_id: { $col: 'EnquiryBusinessBuyer.buyer_id' },
+      business_id: idBusiness,
       followUp: {
         $lte: moment().toDate()
       },
