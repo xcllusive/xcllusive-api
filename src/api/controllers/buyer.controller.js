@@ -441,7 +441,7 @@ export const sendIM = async (req, res, next) => {
   const { buyerId, businessId } = req.body
 
   try {
-    // Verify exists buyer
+    // // Verify exists buyer
     const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
 
     if (!buyer) {
@@ -452,7 +452,7 @@ export const sendIM = async (req, res, next) => {
       })
     }
 
-    // Verify exists business
+    // // Verify exists business
     const business = await models.Business.findOne({
       where: { id: businessId },
       include: [{ model: models.User, as: 'listingAgent' }]
@@ -466,14 +466,14 @@ export const sendIM = async (req, res, next) => {
       })
     }
 
-    // Verify notifyOwner on business
-    // if (!business.notifyOwner) {
-    //   throw new APIError({
-    //     message: 'Notify Owner is to false',
-    //     status: 400,
-    //     isPublic: true
-    //   })
-    // }
+    // // Verify notifyOwner on business
+    // // if (!business.notifyOwner) {
+    // //   throw new APIError({
+    // //     message: 'Notify Owner is to false',
+    // //     status: 400,
+    // //     isPublic: true
+    // //   })
+    // // }
 
     // Verify business attach to buyer
     const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
@@ -544,11 +544,14 @@ export const sendIM = async (req, res, next) => {
       { where: { buyer_id: buyerId } }
     )
 
+    const userLogged = await models.User.findOne({
+      // attributes: ['firstName', 'lastName'],
+      where: { id: req.user.id }
+    })
+
     // Insert in log
     await models.BuyerLog.create({
-      text: business.notifyOwner
-        ? `IM Sent to Buyer ${buyer.id} by ${req.user.id}`
-        : `IM Sent to Buyer ${buyer.id}`,
+      text: `IM Sent to Buyer by ${userLogged.firstName} ${userLogged.lastName}`,
       followUpStatus: 'Pending',
       followUp: moment().add(1, 'days'),
       business_id: businessId,
@@ -712,7 +715,7 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
 
     const logs = await models.BuyerLog.findAndCountAll({
       where: { buyer_id: idBuyer, business_id: businessId },
-      order: [['dateTimeCreated', 'DESC']],
+      order: [['followUp', 'DESC']],
       include: [
         {
           model: models.Business,
