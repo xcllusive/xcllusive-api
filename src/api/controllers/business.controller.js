@@ -658,7 +658,7 @@ export const emailToBuyer = async (req, res, next) => {
     const mailOptions = {
       to: buyer.email,
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
-      subject: `${business.businessName} - ${template.subject}`,
+      subject: `${template.subject}`,
       html: templateCompiled(context),
       attachments: template.enableAttachment
         ? [
@@ -686,7 +686,7 @@ export const emailToBuyer = async (req, res, next) => {
       data: {
         mail: responseMailer
       },
-      message: `Send email successfuly to ${buyer.firstName} <${buyer.email}>`
+      message: `Send email successfully to ${buyer.firstName} <${buyer.email}>`
     })
   } catch (error) {
     return next(error)
