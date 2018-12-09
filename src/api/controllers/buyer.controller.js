@@ -207,7 +207,8 @@ export const listBusiness = async (req, res, next) => {
       'notifyOwner',
       'dateTimeCreated',
       'daysOnTheMarket',
-      'vendorPhone1'
+      'vendorPhone1',
+      'imUrl'
     ],
     include: [models.BusinessStage, models.BusinessProduct]
   }
@@ -221,6 +222,7 @@ export const listBusiness = async (req, res, next) => {
           where: { business_id: business.id },
           include: [
             {
+              where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
               model: models.Buyer,
               as: 'Buyer'
             }
@@ -232,7 +234,7 @@ export const listBusiness = async (req, res, next) => {
         }
       })
     )
-
+    // cayo
     const response = await Promise.all(
       buyersFromBusiness.map(async obj => {
         const arrayLogsLength = await Promise.all(
@@ -911,7 +913,16 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 
     // count buyers from business enquiry
     const countAllBuyersFromBusiness = await models.EnquiryBusinessBuyer.count({
-      where: { business_id: idBusiness }
+      where: { business_id: idBusiness },
+      include: [
+        {
+          model: models.Buyer,
+          as: 'Buyer',
+          where: {
+            $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }]
+          }
+        }
+      ]
     })
 
     const whereBuyerLog = {
@@ -930,7 +941,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     if (showAll && JSON.parse(showAll)) {
       delete whereBuyerLog.followUpStatus
       delete whereBuyerLog.followUp
-      delete whereBuyer['$or']
+      // delete whereBuyer['$or']
     }
 
     // Get buyers from business enquiry
