@@ -502,16 +502,20 @@ export const sendIM = async (req, res, next) => {
       })
     }
 
+    const brokerDetails = await models.User.findOne({
+      where: { id: business.brokerAccountName }
+    })
+
     // Compile the template to use variables
     const templateCompiled = Handlebars.compile(template.body)
     const context = {
       buyer_name: `${buyer.firstName} ${buyer.surname}`,
       business_name: business.businessName,
-      agents_name: `${business.listingAgent.firstName} ${business.listingAgent.lastName}`,
-      agents_email: business.listingAgent.email,
-      agents_phone: business.listingAgent.phoneMobile
-        ? business.listingAgent.phoneMobile
-        : business.listingAgent.phoneWork
+      agents_name: `${brokerDetails.firstName} ${brokerDetails.lastName}`,
+      agents_email: brokerDetails.email,
+      agents_phone: brokerDetails.phoneMobile
+        ? brokerDetails.phoneMobile
+        : brokerDetails.phoneWork
     }
 
     // Set email options
@@ -971,7 +975,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       ],
       order: [[{ model: models.BuyerLog, as: 'BuyerLog' }, 'followUp', 'DESC']]
     })
-
+    console.log(buyersFromBusiness.length)
     return res.status(201).json({
       data: {
         array: buyersFromBusiness,
@@ -1128,7 +1132,8 @@ export const getGroupEmail = async (req, res, next) => {
           })
         )
 
-        if (item.Buyer.caReceived) {
+        console.log('aqui', item.Buyer.caReceived, item.Buyer.scanfilePath)
+        if (item.Buyer.caReceived || item.Buyer.scanfilePath !== '') {
           return {
             id: item.Buyer.id,
             email: item.Buyer.email,
