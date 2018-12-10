@@ -1,6 +1,5 @@
 import Handlebars from 'handlebars'
 import moment from 'moment'
-import _ from 'lodash'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
@@ -118,7 +117,7 @@ export const list = async (req, res, next) => {
 }
 
 export const listBusiness = async (req, res, next) => {
-  let search = req.query.search
+  // let search = req.query.search
   let stageId = req.query.stageId
   let whereOptions = {
     where: {}
@@ -141,51 +140,51 @@ export const listBusiness = async (req, res, next) => {
     }
   }
 
-  if (search && search.length > 0) {
-    if (search.includes('BS') || search.includes('bs')) {
-      if (search.includes('BS')) search = search.replace(/BS/g, '')
-      if (search.includes('bs')) search = search.replace(/bs/g, '')
-      whereOptions.where.id = {
-        $eq: search
-      }
-    } else {
-      if (parseInt(search)) {
-        whereOptions.where.listedPrice = {
-          $lte: search * 1.1,
-          $gte: search * 0.9
-        }
-      } else {
-        whereOptions.where.$or = []
-        whereOptions.where.$or.push(
-          {
-            businessName: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            firstNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            lastNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            suburb: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            searchNote: {
-              $like: `%${search}%`
-            }
-          }
-        )
-      }
-    }
-  }
+  // if (search && search.length > 0) {
+  //   if (search.includes('BS') || search.includes('bs')) {
+  //     if (search.includes('BS')) search = search.replace(/BS/g, '')
+  //     if (search.includes('bs')) search = search.replace(/bs/g, '')
+  //     whereOptions.where.id = {
+  //       $eq: search
+  //     }
+  //   } else {
+  //     if (parseInt(search)) {
+  //       whereOptions.where.listedPrice = {
+  //         $lte: search * 1.1,
+  //         $gte: search * 0.9
+  //       }
+  //     } else {
+  //       whereOptions.where.$or = []
+  //       whereOptions.where.$or.push(
+  //         {
+  //           businessName: {
+  //             $like: `%${search}%`
+  //           }
+  //         },
+  //         {
+  //           firstNameV: {
+  //             $like: `%${search}%`
+  //           }
+  //         },
+  //         {
+  //           lastNameV: {
+  //             $like: `%${search}%`
+  //           }
+  //         },
+  //         {
+  //           suburb: {
+  //             $like: `%${search}%`
+  //           }
+  //         },
+  //         {
+  //           searchNote: {
+  //             $like: `%${search}%`
+  //           }
+  //         }
+  //       )
+  //     }
+  //   }
+  // }
 
   const options = {
     attributes: [
@@ -214,6 +213,10 @@ export const listBusiness = async (req, res, next) => {
   }
 
   try {
+    /* test */
+
+    /* end test */
+
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
     const buyersFromBusiness = await Promise.all(
@@ -235,11 +238,12 @@ export const listBusiness = async (req, res, next) => {
       })
     )
     // cayo
+
     const response = await Promise.all(
       buyersFromBusiness.map(async obj => {
         const arrayLogsLength = await Promise.all(
           obj.enquiries.map(async enquiry => {
-            const log = await models.BuyerLog.findAll({
+            const log = await models.BuyerLog.findAndCountAll({
               where: {
                 buyer_id: enquiry.buyer_id,
                 business_id: enquiry.business_id,
@@ -261,7 +265,8 @@ export const listBusiness = async (req, res, next) => {
         })
         return {
           business: obj.business,
-          countFollowUpTask: _.sum(arrayLogsLength),
+          // countFollowUpTask: _.sum(arrayLogsLength),
+          countFollowUpTask: arrayLogsLength.length,
           lastScore
         }
       })
@@ -413,7 +418,7 @@ export const sendCA = async (req, res, next) => {
 
     // Updated all logs Pending to Done
     await models.BuyerLog.update(
-      { followUpStatus: 'Done' },
+      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
       { where: { buyer_id: buyerId } }
     )
 
@@ -423,7 +428,9 @@ export const sendCA = async (req, res, next) => {
       text: 'CA Sent',
       followUp: moment().add(1, 'days'),
       business_id: businessId,
-      buyer_id: buyerId
+      buyer_id: buyerId,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
     })
 
     return res.status(201).json({
@@ -546,7 +553,7 @@ export const sendIM = async (req, res, next) => {
 
     // Updated all logs Pending to Done
     await models.BuyerLog.update(
-      { followUpStatus: 'Done' },
+      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
       { where: { buyer_id: buyerId } }
     )
 
@@ -561,7 +568,9 @@ export const sendIM = async (req, res, next) => {
       followUpStatus: 'Pending',
       followUp: moment().add(1, 'days'),
       business_id: businessId,
-      buyer_id: buyerId
+      buyer_id: buyerId,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
     })
 
     return res.status(201).json({
@@ -637,7 +646,7 @@ export const receivedCA = async (req, res, next) => {
 
     // Updated all logs Pending to Done
     await models.BuyerLog.update(
-      { followUpStatus: 'Done' },
+      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
       { where: { buyer_id: buyerId } }
     )
 
@@ -647,7 +656,9 @@ export const receivedCA = async (req, res, next) => {
       followUpStatus: 'Pending',
       followUp: moment().add(1, 'days'),
       business_id: businessId,
-      buyer_id: buyerId
+      buyer_id: buyerId,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
     })
 
     return res.status(201).json({
@@ -760,6 +771,7 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
     // Verify exists buyer
     const buyers = await models.EnquiryBusinessBuyer.findAll({
       where: { buyer_id: idBuyer },
+      group: ['business_id'],
       include: [
         {
           model: models.Business,
@@ -804,7 +816,7 @@ export const createLog = async (req, res, next) => {
 
     if (lastLog) {
       await models.BuyerLog.update(
-        { followUpStatus: 'Done' },
+        { followUpStatus: 'Done', modifiedBy_id: req.user.id },
         { where: { id: lastLog.id } }
       )
     }
@@ -975,7 +987,6 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       ],
       order: [[{ model: models.BuyerLog, as: 'BuyerLog' }, 'followUp', 'DESC']]
     })
-    console.log(buyersFromBusiness.length)
     return res.status(201).json({
       data: {
         array: buyersFromBusiness,

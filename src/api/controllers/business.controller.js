@@ -598,7 +598,9 @@ export const enquiryBusiness = async (req, res, next) => {
       followUpStatus: 'Done',
       followUp: moment(),
       business_id: businessId,
-      buyer_id: buyerId
+      buyer_id: buyerId,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
     })
 
     return res.status(201).json({
@@ -679,7 +681,9 @@ export const emailToBuyer = async (req, res, next) => {
       followUpStatus: 'Done',
       followUp: moment(),
       business_id: businessId,
-      buyer_id: buyerId
+      buyer_id: buyerId,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
     })
 
     return res.status(201).json({
@@ -768,7 +772,9 @@ export const sendEnquiryOwner = async (req, res, next) => {
       followUpStatus: 'Done',
       followUp: moment(),
       business_id: businessId,
-      buyer_id: buyerId
+      buyer_id: buyerId,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
     })
 
     return res.status(201).json({
