@@ -188,39 +188,35 @@ export const listBusiness = async (req, res, next) => {
 
   const options = {
     attributes: [
-      'id'
-      // 'businessName',
-      // 'firstNameV',
-      // 'lastNameV',
-      // 'address1',
-      // 'industry',
-      // 'listedPrice',
-      // 'description',
-      // 'stageId',
-      // 'productId',
-      // 'industryId',
-      // 'suburb',
-      // 'state',
-      // 'postCode',
-      // 'typeId',
-      // 'notifyOwner',
-      // 'dateTimeCreated',
-      // 'daysOnTheMarket',
-      // 'vendorPhone1',
-      // 'imUrl'
+      'id',
+      'businessName',
+      'firstNameV',
+      'lastNameV',
+      'address1',
+      'industry',
+      'listedPrice',
+      'description',
+      'stageId',
+      'productId',
+      'industryId',
+      'suburb',
+      'state',
+      'postCode',
+      'typeId',
+      'notifyOwner',
+      'dateTimeCreated',
+      'daysOnTheMarket',
+      'vendorPhone1',
+      'imUrl'
     ],
     include: [models.BusinessStage, models.BusinessProduct]
   }
 
   try {
-    /* test */
+    const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
-    const businessesTest = await models.Business.findAll(
-      Object.assign(options, whereOptions)
-    )
-
-    const buyersFromBusinessTest = await Promise.all(
-      businessesTest.map(async business => {
+    const response = await Promise.all(
+      businesses.map(async business => {
         const buyers = await models.Buyer.findAndCountAll({
           raw: true,
           attributes: ['id'],
@@ -253,76 +249,89 @@ export const listBusiness = async (req, res, next) => {
             ]
           ]
         })
-        console.log(buyers.rows)
+        const lastScore = await models.Score.findOne({
+          where: {
+            business_id: business.id
+          },
+          order: [['dateTimeCreated', 'DESC']]
+        })
         return {
-          // test: buyers.map(buyers => {}),
-          buyers_id: buyers.rows.id,
-          buyers_count: buyers.rows.length
+          business,
+          countFollowUpTask: buyers.rows.length,
+          lastScore
         }
       })
     )
-    /* end test */
-
-    // const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
-
-    // const buyersFromBusiness = await Promise.all(
-    //   businesses.map(async business => {
-    //     const enquiries = await models.EnquiryBusinessBuyer.findAll({
-    //       where: { business_id: business.id },
-    //       include: [
-    //         {
-    //           where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
-    //           model: models.Buyer,
-    //           as: 'Buyer'
-    //         }
-    //       ]
-    //     })
-    //     return {
-    //       enquiries,
-    //       business
-    //     }
-    //   })
-    // )
-    // // cayo
-
-    // const response = await Promise.all(
-    //   buyersFromBusiness.map(async obj => {
-    //     const arrayLogsLength = await Promise.all(
-    //       obj.enquiries.map(async enquiry => {
-    //         const log = await models.BuyerLog.findAndCountAll({
-    //           where: {
-    //             buyer_id: enquiry.buyer_id,
-    //             business_id: enquiry.business_id,
-    //             followUpStatus: 'Pending',
-    //             followUp: {
-    //               $lte: moment().toDate()
-    //             }
-    //           },
-    //           raw: true
-    //         })
-    //         return log.length
-    //       })
-    //     )
-    //     const lastScore = await models.Score.findOne({
-    //       where: {
-    //         business_id: obj.business.id
-    //       },
-    //       order: [['dateTimeCreated', 'DESC']]
-    //     })
-    //     return {
-    //       business: obj.business,
-    //       // countFollowUpTask: _.sum(arrayLogsLength),
-    //       countFollowUpTask: arrayLogsLength.length,
-    //       lastScore
-    //     }
-    //   })
-    // )
-
-    return res.status(200).json(buyersFromBusinessTest)
+    return res.status(200).json(response)
   } catch (err) {
-    console.log(err)
     return next(err)
   }
+  /* end test */
+
+  // const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
+
+  // const buyersFromBusiness = await Promise.all(
+  //   businesses.map(async business => {
+  //     const enquiries = await models.EnquiryBusinessBuyer.findAll({
+  //       where: { business_id: business.id },
+  //       include: [
+  //         {
+  //           where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
+  //           model: models.Buyer,
+  //           as: 'Buyer'
+  //         }
+  //       ]
+  //     })
+  //     return {
+  //       enquiries,
+  //       business
+  //     }
+  //   })
+  // )
+  // // cayo
+
+  // const response = await Promise.all(
+  //   buyersFromBusiness.map(async obj => {
+  //     const arrayLogsLength = await Promise.all(
+  //       obj.enquiries.map(async enquiry => {
+  //         const log = await models.BuyerLog.findAndCountAll({
+  //           where: {
+  //             buyer_id: enquiry.buyer_id,
+  //             business_id: enquiry.business_id,
+  //             followUpStatus: 'Pending',
+  //             followUp: {
+  //               $lte: moment().toDate()
+  //             }
+  //           },
+  //           include: [
+  //             {
+  //               where: {
+  //                 id: enquiry.buyer_id,
+  //                 $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }]
+  //               },
+  //               model: models.Buyer,
+  //               as: 'Buyer'
+  //             }
+  //           ],
+  //           raw: true
+  //         })
+  //         return log.length
+  //       })
+  //     )
+  //     const lastScore = await models.Score.findOne({
+  //       where: {
+  //         business_id: obj.business.id
+  //       },
+  //       order: [['dateTimeCreated', 'DESC']]
+  //     })
+  //     return {
+  //       business: obj.business,
+  //       // countFollowUpTask: _.sum(arrayLogsLength),
+  //       countFollowUpTask: arrayLogsLength.length,
+  //       lastScore
+  //     }
+  //   })
+  // )
 }
 
 export const create = async (req, res, next) => {
@@ -985,7 +994,14 @@ export const getBuyersFromBusiness = async (req, res, next) => {
             $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }]
           }
         }
-      ]
+      ],
+      // group: [
+      //   [
+      //     { model: models.EnquiryBusinessBuyer, as: 'EnquiryBusinessBuyer' },
+      //     'buyer_id'
+      //   ]
+      // ]
+      group: ['buyer_id']
     })
 
     const whereBuyerLog = {
@@ -1037,7 +1053,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     return res.status(201).json({
       data: {
         array: buyersFromBusiness,
-        countAll: countAllBuyersFromBusiness
+        countAll: countAllBuyersFromBusiness.length
       },
       message: 'Success'
     })
