@@ -188,26 +188,26 @@ export const listBusiness = async (req, res, next) => {
 
   const options = {
     attributes: [
-      'id',
-      'businessName',
-      'firstNameV',
-      'lastNameV',
-      'address1',
-      'industry',
-      'listedPrice',
-      'description',
-      'stageId',
-      'productId',
-      'industryId',
-      'suburb',
-      'state',
-      'postCode',
-      'typeId',
-      'notifyOwner',
-      'dateTimeCreated',
-      'daysOnTheMarket',
-      'vendorPhone1',
-      'imUrl'
+      'id'
+      // 'businessName',
+      // 'firstNameV',
+      // 'lastNameV',
+      // 'address1',
+      // 'industry',
+      // 'listedPrice',
+      // 'description',
+      // 'stageId',
+      // 'productId',
+      // 'industryId',
+      // 'suburb',
+      // 'state',
+      // 'postCode',
+      // 'typeId',
+      // 'notifyOwner',
+      // 'dateTimeCreated',
+      // 'daysOnTheMarket',
+      // 'vendorPhone1',
+      // 'imUrl'
     ],
     include: [models.BusinessStage, models.BusinessProduct]
   }
@@ -215,65 +215,112 @@ export const listBusiness = async (req, res, next) => {
   try {
     /* test */
 
-    /* end test */
+    const businessesTest = await models.Business.findAll(
+      Object.assign(options, whereOptions)
+    )
 
-    const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
-
-    const buyersFromBusiness = await Promise.all(
-      businesses.map(async business => {
-        const enquiries = await models.EnquiryBusinessBuyer.findAll({
-          where: { business_id: business.id },
+    const buyersFromBusinessTest = await Promise.all(
+      businessesTest.map(async business => {
+        const buyers = await models.Buyer.findAndCountAll({
+          raw: true,
+          attributes: ['id'],
+          where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
           include: [
             {
-              where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
-              model: models.Buyer,
-              as: 'Buyer'
-            }
-          ]
-        })
-        return {
-          enquiries,
-          business
-        }
-      })
-    )
-    // cayo
-
-    const response = await Promise.all(
-      buyersFromBusiness.map(async obj => {
-        const arrayLogsLength = await Promise.all(
-          obj.enquiries.map(async enquiry => {
-            const log = await models.BuyerLog.findAndCountAll({
+              attributes: ['buyer_id', 'business_id'],
+              model: models.EnquiryBusinessBuyer,
+              as: 'EnquiryBusinessBuyer',
+              where: { business_id: business.id }
+            },
+            {
+              attributes: ['buyer_id', 'business_id'],
+              model: models.BuyerLog,
+              as: 'BuyerLog',
               where: {
-                buyer_id: enquiry.buyer_id,
-                business_id: enquiry.business_id,
-                followUpStatus: 'Pending',
+                buyer_id: { $col: 'EnquiryBusinessBuyer.buyer_id' },
+                business_id: business.id,
                 followUp: {
                   $lte: moment().toDate()
-                }
-              },
-              raw: true
-            })
-            return log.length
-          })
-        )
-        const lastScore = await models.Score.findOne({
-          where: {
-            business_id: obj.business.id
-          },
-          order: [['dateTimeCreated', 'DESC']]
+                },
+                followUpStatus: 'Pending'
+              }
+            }
+          ],
+          group: [
+            [
+              { model: models.EnquiryBusinessBuyer, as: 'EnquiryBusinessBuyer' },
+              'buyer_id'
+            ]
+          ]
         })
+        console.log(buyers.rows)
         return {
-          business: obj.business,
-          // countFollowUpTask: _.sum(arrayLogsLength),
-          countFollowUpTask: arrayLogsLength.length,
-          lastScore
+          // test: buyers.map(buyers => {}),
+          buyers_id: buyers.rows.id,
+          buyers_count: buyers.rows.length
         }
       })
     )
+    /* end test */
 
-    return res.status(200).json(response)
+    // const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
+
+    // const buyersFromBusiness = await Promise.all(
+    //   businesses.map(async business => {
+    //     const enquiries = await models.EnquiryBusinessBuyer.findAll({
+    //       where: { business_id: business.id },
+    //       include: [
+    //         {
+    //           where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
+    //           model: models.Buyer,
+    //           as: 'Buyer'
+    //         }
+    //       ]
+    //     })
+    //     return {
+    //       enquiries,
+    //       business
+    //     }
+    //   })
+    // )
+    // // cayo
+
+    // const response = await Promise.all(
+    //   buyersFromBusiness.map(async obj => {
+    //     const arrayLogsLength = await Promise.all(
+    //       obj.enquiries.map(async enquiry => {
+    //         const log = await models.BuyerLog.findAndCountAll({
+    //           where: {
+    //             buyer_id: enquiry.buyer_id,
+    //             business_id: enquiry.business_id,
+    //             followUpStatus: 'Pending',
+    //             followUp: {
+    //               $lte: moment().toDate()
+    //             }
+    //           },
+    //           raw: true
+    //         })
+    //         return log.length
+    //       })
+    //     )
+    //     const lastScore = await models.Score.findOne({
+    //       where: {
+    //         business_id: obj.business.id
+    //       },
+    //       order: [['dateTimeCreated', 'DESC']]
+    //     })
+    //     return {
+    //       business: obj.business,
+    //       // countFollowUpTask: _.sum(arrayLogsLength),
+    //       countFollowUpTask: arrayLogsLength.length,
+    //       lastScore
+    //     }
+    //   })
+    // )
+
+    return res.status(200).json(buyersFromBusinessTest)
   } catch (err) {
+    console.log(err)
     return next(err)
   }
 }
