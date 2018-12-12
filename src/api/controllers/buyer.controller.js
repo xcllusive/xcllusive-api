@@ -1280,3 +1280,36 @@ export const sendGroupEmail = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const createWeeklyReport = async (req, res, next) => {
+  const newWeeklyReport = req.body
+  newWeeklyReport.createdBy_id = req.user.id
+
+  try {
+    const buyer = await models.BrokerWeeklyReport.create(newWeeklyReport)
+    return res.status(201).json({
+      data: buyer,
+      message: 'Weekly Report created with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getLastWeeklyReport = async (req, res, next) => {
+  const lastWK = req.query
+
+  try {
+    const lastWeeklyReport = await models.BrokerWeeklyReport.findOne({
+      where: { business_id: lastWK.businessId },
+      order: [['dateTimeCreated', 'DESC']],
+      raw: true
+    })
+    return res.status(201).json({
+      data: lastWeeklyReport,
+      message: 'Get last Weekly Report created with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

@@ -260,6 +260,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'listingAgent_id',
       as: 'listingAgent'
     })
+    models.Business.hasMany(models.BrokerWeeklyReport, {
+      foreignKey: 'business_id',
+      as: 'BrokerWeeklyReport'
+    })
   }
 
   return Business

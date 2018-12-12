@@ -19,7 +19,9 @@ import {
   getBuyersFromBusiness,
   getBusinessFromBuyer,
   getGroupEmail,
-  sendGroupEmail
+  sendGroupEmail,
+  createWeeklyReport,
+  getLastWeeklyReport
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -36,6 +38,11 @@ router.route('/business-from-buyer/:idBusiness').get(getBusinessFromBuyer)
 router.route('/business').get(validate(validation.listBusiness), listBusiness)
 
 router.route('/log/:idBuyer').get(validate(validation.listLog), listLog)
+
+router
+  .route('/broker/weekly-report')
+  .post(validate(validation.createWeeklyReport), createWeeklyReport)
+  .get(validate(validation.getLastWeeklyReport), getLastWeeklyReport)
 
 router.route('/log/:idLog').put(updateLog)
 

@@ -140,3 +140,18 @@ export const getGroupEmail = {
       .required()
   }
 }
+export const createWeeklyReport = {
+  body: {
+    business_id: Joi.number()
+      .min(1)
+      .required()
+  }
+}
+
+export const getLastWeeklyReport = {
+  query: {
+    businessId: Joi.number()
+      .min(1)
+      .required()
+  }
+}
