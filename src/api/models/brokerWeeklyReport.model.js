@@ -21,6 +21,11 @@ export default (sequelize, DataTypes) => {
       expectedSettlementDate: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      stage: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
       }
     },
     {

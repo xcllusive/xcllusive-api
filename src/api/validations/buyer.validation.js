@@ -155,3 +155,11 @@ export const getLastWeeklyReport = {
       .required()
   }
 }
+
+export const updateWeeklyReport = {
+  body: {
+    id: Joi.number()
+      .min(1)
+      .required()
+  }
+}

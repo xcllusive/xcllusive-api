@@ -21,7 +21,8 @@ import {
   getGroupEmail,
   sendGroupEmail,
   createWeeklyReport,
-  getLastWeeklyReport
+  getLastWeeklyReport,
+  updateWeeklyReport
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -43,6 +44,7 @@ router
   .route('/broker/weekly-report')
   .post(validate(validation.createWeeklyReport), createWeeklyReport)
   .get(validate(validation.getLastWeeklyReport), getLastWeeklyReport)
+  .put(validate(validation.updateWeeklyReport), updateWeeklyReport)
 
 router.route('/log/:idLog').put(updateLog)
 

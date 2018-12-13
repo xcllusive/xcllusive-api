@@ -1313,3 +1313,33 @@ export const getLastWeeklyReport = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const updateWeeklyReport = async (req, res, next) => {
+  const weeklyReport = req.body
+  weeklyReport.dateTimeCreated = moment()
+
+  try {
+    // Verify exists report
+    const report = await models.BrokerWeeklyReport.findOne({
+      where: { id: weeklyReport.id }
+    })
+
+    if (!report) {
+      throw new APIError({
+        message: 'Report not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    await models.BrokerWeeklyReport.update(weeklyReport, {
+      where: { id: weeklyReport.id }
+    })
+    return res.status(201).json({
+      data: weeklyReport,
+      message: 'Weekly Report updated with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
