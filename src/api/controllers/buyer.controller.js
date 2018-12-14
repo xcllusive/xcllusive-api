@@ -1343,3 +1343,48 @@ export const updateWeeklyReport = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getBrokersPerRegion = async (req, res, next) => {
+  const region = req.query.region
+
+  const _mapValuesToArray = array => {
+    if (array.length > 0) {
+      if (array[0].firstName) {
+        return array.map((item, index) => ({
+          key: index,
+          text: `${item.firstName} ${item.lastName}`,
+          value: item.id
+        }))
+      }
+      return array.map((item, index) => ({
+        key: index,
+        text: item.label,
+        value: item.id
+      }))
+    }
+    return []
+  }
+
+  try {
+    // Verify exists buyer
+    const brokers = await models.User.findAll({
+      where: { dataRegion: region, userType: 'Broker' },
+      order: [['firstName', 'ASC']]
+    })
+
+    if (!brokers) {
+      throw new APIError({
+        message: 'Brokers not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(201).json({
+      data: _mapValuesToArray(brokers),
+      message: 'Get brokers per region succesfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
