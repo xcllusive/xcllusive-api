@@ -18,6 +18,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      expectedCommission: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       expectedSettlementDate: {
         type: DataTypes.DATE,
         allowNull: true

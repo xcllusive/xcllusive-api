@@ -120,6 +120,7 @@ export const update = async (req, res, next) => {
     listingAgent,
     buyerMenu,
     password,
+    levelOfInfoAccess,
     businessMenu,
     preSaleMenu,
     resourcesMenu,
@@ -132,6 +133,8 @@ export const update = async (req, res, next) => {
 
   if (listingAgent === 0) req.body.listingAgent = false
   if (listingAgent === 1) req.body.listingAgent = true
+  if (levelOfInfoAccess === 0) req.body.levelOfInfoAccess = false
+  if (levelOfInfoAccess === 1) req.body.levelOfInfoAccess = true
   if (buyerMenu) roles.push(BUYER_MENU)
   if (businessMenu) roles.push(BUSINESS_MENU)
   if (preSaleMenu) roles.push(PRESALE_MENU)

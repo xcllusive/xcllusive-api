@@ -82,6 +82,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      levelOfInfoAccess: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
+      },
       roles: {
         type: DataTypes.STRING,
         allowNull: false
