@@ -6,6 +6,7 @@ import {
   PRESALE_MENU,
   RESOURCES_MENU,
   CLIENT_MANAGER_MENU,
+  MANAGEMENT_MENU,
   SYSTEM_SETTINGS_MENU
 } from '../constants/roles'
 
@@ -78,6 +79,7 @@ export const create = async (req, res, next) => {
     preSaleMenu,
     resourcesMenu,
     clientManagerMenu,
+    managementMenu,
     systemSettingsMenu
   } = req.body
 
@@ -90,6 +92,7 @@ export const create = async (req, res, next) => {
   if (preSaleMenu) roles.push(PRESALE_MENU)
   if (resourcesMenu) roles.push(RESOURCES_MENU)
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
+  if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
 
   req.body.roles = JSON.stringify(roles)
@@ -121,6 +124,7 @@ export const update = async (req, res, next) => {
     preSaleMenu,
     resourcesMenu,
     clientManagerMenu,
+    managementMenu,
     systemSettingsMenu
   } = req.body
 
@@ -133,6 +137,7 @@ export const update = async (req, res, next) => {
   if (preSaleMenu) roles.push(PRESALE_MENU)
   if (resourcesMenu) roles.push(RESOURCES_MENU)
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
+  if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
 
   req.body.roles = JSON.stringify(roles)
