@@ -23,7 +23,8 @@ import {
   createWeeklyReport,
   getLastWeeklyReport,
   updateWeeklyReport,
-  getBrokersPerRegion
+  getBrokersPerRegion,
+  getBusinessesPerBroker
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
@@ -48,6 +49,7 @@ router
   .put(validate(validation.updateWeeklyReport), updateWeeklyReport)
 
 router.route('/broker/brokers-region').get(getBrokersPerRegion)
+router.route('/broker/businesses-broker').get(getBusinessesPerBroker)
 
 router.route('/log/:idLog').put(updateLog)
 

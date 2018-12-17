@@ -865,17 +865,10 @@ export const createLog = async (req, res, next) => {
   }
 
   try {
-    const lastLog = await models.BuyerLog.findOne({
-      where: { buyer_id: req.body.buyer_id, business_id: req.body.business_id },
-      order: [['dateTimeCreated', 'DESC']]
-    })
-
-    if (lastLog) {
-      await models.BuyerLog.update(
-        { followUpStatus: 'Done', modifiedBy_id: req.user.id },
-        { where: { id: lastLog.id } }
-      )
-    }
+    await models.BuyerLog.update(
+      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
+      { where: { buyer_id: req.body.buyer_id, business_id: req.body.business_id } }
+    )
 
     const log = await models.BuyerLog.create(newLog)
 
@@ -896,6 +889,8 @@ export const updateLog = async (req, res, next) => {
     followUpStatus: 'Pending',
     modifiedBy_id: req.user.id
   }
+
+  console.log('ESTOU AQUI')
 
   try {
     // Verify exists log
@@ -1238,7 +1233,6 @@ export const sendGroupEmail = async (req, res, next) => {
   const { to, subject, body } = req.body
   const fileAttachment = req.files.attachment
   const sentTo = []
-
   try {
     const emailToOffice = await models.SystemSettings.findOne({ where: 1 })
     for (let buyer of JSON.parse(to)) {
@@ -1384,6 +1378,43 @@ export const getBrokersPerRegion = async (req, res, next) => {
       data: _mapValuesToArray(brokers),
       message: 'Get brokers per region succesfully'
     })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getBusinessesPerBroker = async (req, res, next) => {
+  const broker = req.query.brokerId
+
+  try {
+    const businesses = await models.Business.findAll({
+      where: {
+        brokerAccountName: broker,
+        stageId: [3, 4, 5] // Sales Memo, For Sale, Under Offer
+      },
+      order: [['businessName', 'ASC']]
+    })
+
+    const response = await Promise.all(
+      businesses.map(async business => {
+        const reports = await models.BrokerWeeklyReport.findOne({
+          raw: true,
+          where: { business_id: business.id },
+          order: [['dateTimeCreated', 'DESC']]
+        })
+        // const lastScore = await models.Score.findOne({
+        //   where: {
+        //     business_id: business.id
+        //   },
+        //   order: [['dateTimeCreated', 'DESC']]
+        // })
+        return {
+          business,
+          reports
+        }
+      })
+    )
+    return res.status(200).json(response)
   } catch (error) {
     return next(error)
   }
