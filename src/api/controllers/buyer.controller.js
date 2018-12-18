@@ -1386,6 +1386,10 @@ export const getBrokersPerRegion = async (req, res, next) => {
 export const getBusinessesPerBroker = async (req, res, next) => {
   const broker = req.query.brokerId
 
+  const sevenDaysAgo = moment()
+    .subtract(7, 'd')
+    .format('YYYY-MM-DD HH:MM:SS')
+
   try {
     const businesses = await models.Business.findAll({
       where: {
@@ -1398,19 +1402,33 @@ export const getBusinessesPerBroker = async (req, res, next) => {
     const response = await Promise.all(
       businesses.map(async business => {
         const reports = await models.BrokerWeeklyReport.findOne({
-          raw: true,
           where: { business_id: business.id },
           order: [['dateTimeCreated', 'DESC']]
         })
-        // const lastScore = await models.Score.findOne({
-        //   where: {
-        //     business_id: business.id
-        //   },
-        //   order: [['dateTimeCreated', 'DESC']]
-        // })
+
+        const nOfEnquiries = await models.EnquiryBusinessBuyer.findAndCountAll({
+          where: { business_id: business.id }
+        })
+
+        const nOfEnquiries7Days = await models.EnquiryBusinessBuyer.findAndCountAll({
+          where: { business_id: business.id, dateTimeCreated: { $gte: sevenDaysAgo } }
+        })
+
+        const nOfPendingTasks = await models.BusinessLog.findAndCountAll({
+          where: { business_id: business.id, followUpStatus: 'Pending' }
+        })
+
+        const nOfNewLogs7Days = await models.BusinessLog.findAndCountAll({
+          where: { business_id: business.id, dateTimeCreated: { $gte: sevenDaysAgo } }
+        })
+
         return {
           business,
-          reports
+          reports,
+          nOfEnquiries,
+          nOfEnquiries7Days,
+          nOfPendingTasks,
+          nOfNewLogs7Days
         }
       })
     )
