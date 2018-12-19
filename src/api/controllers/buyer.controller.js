@@ -1326,9 +1326,19 @@ export const updateWeeklyReport = async (req, res, next) => {
       })
     }
 
-    await models.BrokerWeeklyReport.update(weeklyReport, {
-      where: { id: weeklyReport.id }
-    })
+    if (weeklyReport.textToDo) {
+      const updateToDo = {
+        textToDo: weeklyReport.textToDo,
+        dateTimeCreatedToDo: weeklyReport.dateTimeCreatedToDo
+      }
+      await models.BrokerWeeklyReport.update(updateToDo, {
+        where: { id: weeklyReport.id }
+      })
+    } else {
+      await models.BrokerWeeklyReport.update(weeklyReport, {
+        where: { id: weeklyReport.id }
+      })
+    }
     return res.status(201).json({
       data: weeklyReport,
       message: 'Weekly Report updated with success'
@@ -1386,7 +1396,7 @@ export const getBrokersPerRegion = async (req, res, next) => {
 export const getBusinessesPerBroker = async (req, res, next) => {
   const broker = req.query.brokerId
 
-  const sevenDaysAgo = moment()
+  let sevenDaysAgo = moment()
     .subtract(7, 'd')
     .format('YYYY-MM-DD HH:MM:SS')
 
@@ -1414,15 +1424,16 @@ export const getBusinessesPerBroker = async (req, res, next) => {
           where: { business_id: business.id, dateTimeCreated: { $gte: sevenDaysAgo } }
         })
 
-        const nOfPendingTasks = await models.BusinessLog.findAndCountAll({
+        const nOfPendingTasks = await models.BuyerLog.findAndCountAll({
           where: { business_id: business.id, followUpStatus: 'Pending' }
         })
 
-        const nOfNewLogs7Days = await models.BusinessLog.findAndCountAll({
+        const nOfNewLogs7Days = await models.BuyerLog.findAndCountAll({
           where: { business_id: business.id, dateTimeCreated: { $gte: sevenDaysAgo } }
         })
 
         return {
+          businesses,
           business,
           reports,
           nOfEnquiries,

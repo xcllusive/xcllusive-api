@@ -31,6 +31,15 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: ''
+      },
+      textToDo: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        defaultValue: ''
+      },
+      dateTimeCreatedToDo: {
+        type: DataTypes.DATE,
+        allowNull: true
       }
     },
     {
