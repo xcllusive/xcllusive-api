@@ -11,10 +11,19 @@ import {
 } from '../constants/roles'
 
 export const getLogged = async (req, res, next) => {
+  const { id } = req.query
   try {
-    const userLogged = await models.User.findOne({
-      where: { id: req.user.id }
-    })
+    let userLogged = {}
+
+    if (id > 0) {
+      userLogged = await models.User.findOne({
+        where: { id: id }
+      })
+    } else {
+      userLogged = await models.User.findOne({
+        where: { id: req.user.id }
+      })
+    }
 
     return res.status(201).json({
       data: userLogged
