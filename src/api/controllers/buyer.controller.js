@@ -1279,6 +1279,10 @@ export const createWeeklyReport = async (req, res, next) => {
   const newWeeklyReport = req.body
   newWeeklyReport.createdBy_id = req.user.id
 
+  var startDate = moment()
+  startDate = startDate.subtract(7, 'd')
+  const sevenDaysAgo = startDate.format('YYYY-MM-DD HH:MM:SS')
+
   try {
     // // get last text to do
     // const lastTextToDo = await models.BrokerWeeklyReport.findOne({
@@ -1288,6 +1292,61 @@ export const createWeeklyReport = async (req, res, next) => {
     // if (lastTextToDo) {
     //   newWeeklyReport.textToDo = lastTextToDo.textToDo
     // }
+
+    const business = await models.Business.findOne({
+      where: { id: newWeeklyReport.business_id }
+    })
+    if (moment(business.daysOnTheMarket).isValid()) {
+      newWeeklyReport.daysOnTheMarket = moment().diff(business.daysOnTheMarket, 'day')
+    }
+    if (moment(business.dateChangedToSalesMemorandum).isValid()) {
+      newWeeklyReport.daysSinceEngaged = moment().diff(
+        business.dateChangedToSalesMemorandum,
+        'day'
+      )
+    }
+    newWeeklyReport.data120DayGuarantee =
+      business.data120DayGuarantee === '0' ? 'No' : 'Yes'
+
+    const nOfEnquiries = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: { business_id: newWeeklyReport.business_id }
+    })
+    newWeeklyReport.nOfEnquiries = nOfEnquiries.count
+
+    const nOfEnquiries7Days = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: newWeeklyReport.business_id,
+        dateTimeCreated: { $gte: sevenDaysAgo }
+      }
+    })
+    newWeeklyReport.nOfEnquiries7Days = nOfEnquiries7Days.count
+
+    const nOfPendingTasks = await models.BuyerLog.count({
+      where: { business_id: newWeeklyReport.business_id, followUpStatus: 'Pending' },
+      include: [
+        {
+          model: models.Buyer,
+          as: 'Buyer',
+
+          where: {
+            id: { $col: 'BuyerLog.buyer_id' },
+            caReceived: 1
+          }
+        }
+      ],
+      group: ['buyer_id']
+    })
+    newWeeklyReport.nOfPendingTasks = nOfPendingTasks.length
+
+    const nOfNewLogs7Days = await models.BuyerLog.findAndCountAll({
+      where: {
+        business_id: newWeeklyReport.business_id,
+        dateTimeCreated: { $gte: sevenDaysAgo }
+      }
+    })
+    newWeeklyReport.nOfNewLogs7Days = nOfNewLogs7Days.count
+
+    console.log(newWeeklyReport)
 
     const buyer = await models.BrokerWeeklyReport.create(newWeeklyReport)
     return res.status(201).json({
@@ -1310,7 +1369,7 @@ export const getLastWeeklyReport = async (req, res, next) => {
     })
     return res.status(201).json({
       data: lastWeeklyReport,
-      message: 'Get last Weekly Report created with success'
+      message: 'Get last Weekly Report with success'
     })
   } catch (error) {
     return next(error)
@@ -1472,6 +1531,24 @@ export const getBusinessesPerBroker = async (req, res, next) => {
       })
     )
     return res.status(200).json(response)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getBusinessHistoricalWeekly = async (req, res, next) => {
+  const businessId = req.query.businessId
+
+  try {
+    const historicalWeekly = await models.BrokerWeeklyReport.findAll({
+      where: { business_id: businessId },
+      order: [['dateTimeCreated', 'DESC']],
+      raw: true
+    })
+    return res.status(201).json({
+      data: historicalWeekly,
+      message: 'Get historical weekly report with success'
+    })
   } catch (error) {
     return next(error)
   }

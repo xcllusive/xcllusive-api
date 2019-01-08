@@ -40,6 +40,40 @@ export default (sequelize, DataTypes) => {
       dateTimeCreatedToDo: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      daysOnTheMarket: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      nOfEnquiries: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      nOfEnquiries7Days: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      daysSinceEngaged: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      data120DayGuarantee: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      nOfPendingTasks: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      nOfNewLogs7Days: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
       }
     },
     {
