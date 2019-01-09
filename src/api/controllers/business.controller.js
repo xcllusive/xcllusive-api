@@ -1271,6 +1271,8 @@ export const updateStageMemo = async (req, res, next) => {
       })
     }
 
+    updateMemo.dateChangedToSalesMemorandum = moment().toDate()
+
     await models.Business.update(updateMemo, { where: { id: idBusiness } })
 
     if (updateMemo.pendingDone) {
