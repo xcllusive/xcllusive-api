@@ -1545,8 +1545,16 @@ export const getBusinessHistoricalWeekly = async (req, res, next) => {
       order: [['dateTimeCreated', 'DESC']],
       raw: true
     })
+
+    const expectedObject = await models.BrokerWeeklyReport.findOne({
+      where: { business_id: businessId, expectedPrice: { $gt: 0 } },
+      order: [['dateTimeCreated', 'DESC']],
+      raw: true
+    })
+
     return res.status(201).json({
       data: historicalWeekly,
+      expectedObject,
       message: 'Get historical weekly report with success'
     })
   } catch (error) {
