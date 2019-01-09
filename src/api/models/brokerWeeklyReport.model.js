@@ -74,6 +74,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0
+      },
+      progressDiscussion: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {
