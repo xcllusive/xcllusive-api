@@ -11,7 +11,11 @@ import paginate from 'express-paginate'
 
 import routes from '../api/routes'
 import { logs } from './vars'
-import error from '../api/middlewares/error'
+import {
+  converter as errorConverter,
+  notFound as errorNotFound,
+  handler as errorHandler
+} from '../api/middlewares/error'
 
 const corsOptions = {
   origin: '*',
@@ -31,8 +35,8 @@ app.use(helmet())
 app.use(cors(corsOptions))
 app.use(paginate.middleware(10, 50))
 app.use('/', routes)
-app.use(error.converter)
-app.use(error.notFound)
-app.use(error.handler)
+app.use(errorConverter)
+app.use(errorNotFound)
+app.use(errorHandler)
 
 module.exports = app
