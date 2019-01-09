@@ -255,10 +255,16 @@ export const listBusiness = async (req, res, next) => {
           },
           order: [['dateTimeCreated', 'DESC']]
         })
+        const lastBrokerReport = await models.BrokerWeeklyReport.findOne({
+          where: { business_id: business.id },
+          order: [['dateTimeCreated', 'DESC']],
+          raw: true
+        })
         return {
           business,
           countFollowUpTask: buyers.rows.length,
-          lastScore
+          lastScore,
+          lastBrokerReport
         }
       })
     )
