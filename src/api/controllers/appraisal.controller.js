@@ -144,19 +144,24 @@ export const generatePdf = async (req, res, next) => {
       })
     }
 
+    const businessType = await models.BusinessType.findOne({
+      where: { id: appraisal.Business.typeId }
+    })
+
     const context = {
+      dateTimeCreated: moment().format('DD/MM/YYYY'),
       currentYear: moment().get('year'),
       businessName: appraisal.Business.businessName,
       dateTimeModified: appraisal.dateTimeModified,
       businessABN: appraisal.Business.businessABN,
-      businessAddress: appraisal.Business.address1,
+      businessAddress1: appraisal.Business.address1,
       businessSuburb: appraisal.Business.suburb,
       businessState: appraisal.Business.state,
       businessPostCode: appraisal.Business.postCode,
       businessFirstNameV: appraisal.Business.firstNameV,
       businessLastNameV: appraisal.Business.lastNameV,
-      businessIndustry: appraisal.Business.businessIndustry,
-      businessType: appraisal.Business.businessType,
+      businessIndustry: appraisal.Business.industry,
+      businessType: businessType.label,
       currentOwner: appraisal.currentOwner,
       nOfBusinessLocations: appraisal.nOfBusinessLocations,
       businessCommenced: appraisal.businessCommenced,
@@ -244,7 +249,10 @@ export const generatePdf = async (req, res, next) => {
       grossProfit7: appraisal.grossProfit7,
       expenses7: appraisal.expenses7,
       operatingProfit7: appraisal.operatingProfit7,
-      operatingProfitPerc7: appraisal.operatingProfitPerc7
+      operatingProfitPerc7: appraisal.operatingProfitPerc7,
+      riskList: appraisal.riskList,
+      valueDriversList: appraisal.valueDriversList,
+      criticalIssuesList: appraisal.criticalIssuesList
     }
 
     const PDF_OPTIONS = {
@@ -281,7 +289,7 @@ export const generatePdf = async (req, res, next) => {
     await browser.close()
 
     return res.download(destPdfGenerated, err => {
-      fs.unlink(destPdfGenerated)
+      // fs.unlink(destPdfGenerated)
       if (err) {
         throw new APIError({
           message: 'Error on download pdf',
