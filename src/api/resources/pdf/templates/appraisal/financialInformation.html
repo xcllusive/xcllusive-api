@@ -1,0 +1,508 @@
+<style type="text/css">
+  .tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  .tg td {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 0px;
+    overflow: hidden;
+    word-break: normal;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: black;
+  }
+  .tg th {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 0px;
+    overflow: hidden;
+    word-break: normal;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: black;
+  }
+  .tg .tg-nqpn {
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #b4e4f2;
+    border-color: #333333;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-0f7n {
+    font-weight: bold;
+    font-size: 12px;
+    background-color: #b4e4f2;
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-kwev {
+    font-weight: bold;
+    font-size: 12px;
+    border-color: #330001;
+    text-align: left;
+  }
+  .tg .tg-3pun {
+    font-size: 12px;
+    border-color: inherit;
+    text-align: left;
+  }
+  .tg .tg-77x5 {
+    font-weight: bold;
+    font-size: 12px;
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-nl9u {
+    font-weight: bold;
+    font-size: 12px;
+    border-color: inherit;
+    text-align: left;
+  }
+  .tg .tg-rufs {
+    font-size: 12px;
+    border-color: #330001;
+    text-align: left;
+  }
+  .tg .tg-8o9c {
+    font-weight: bold;
+    font-size: 12px;
+    border-color: #330001;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-73a0 {
+    font-size: 12px;
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-p0to {
+    font-size: 12px;
+    background-color: #b4e4f2;
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-1pbo {
+    font-size: 12px;
+    background-color: #b4e4f2;
+    border-color: #333333;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-0pky {
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+  }
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-3pun"></th>
+    <th class="tg-nl9u">[[year1]]</th>
+    <th class="tg-nl9u">[[year2]]</th>
+    <th class="tg-nl9u">[[year3]]</th>
+    <th class="tg-nl9u">[[year4]]</th>
+    <th class="tg-77x5">[[year5]]</th>
+    <th class="tg-77x5">[[year7]]</th>
+  </tr>
+  <tr>
+    <td class="tg-rufs"><span style="font-weight:bold">Total Sales</span></td>
+    <td class="tg-kwev">[[sales1]]</td>
+    <td class="tg-kwev">[[sales2]]</td>
+    <td class="tg-kwev">[[sales3]]</td>
+    <td class="tg-kwev">[[sales4]]</td>
+    <td class="tg-8o9c">[[sales5]]</td>
+    <td class="tg-8o9c">[[sales7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"><span style="font-weight:bold">COGS</span></td>
+    <td class="tg-77x5">[[cogs1]]</td>
+    <td class="tg-77x5">[[cogs2]]</td>
+    <td class="tg-77x5">[[cogs3]]</td>
+    <td class="tg-77x5">[[cogs4]]</td>
+    <td class="tg-77x5">[[cogs5]]</td>
+    <td class="tg-77x5">[[cogs7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-p0to"><span style="font-weight:bold">Gross Margin</span></td>
+    <td class="tg-0f7n">[[grossMargin1]]</td>
+    <td class="tg-0f7n">[[grossMargin2]]</td>
+    <td class="tg-0f7n">[[grossMargin3]]</td>
+    <td class="tg-0f7n">[[grossMargin4]]</td>
+    <td class="tg-0f7n">[[grossMargin5]]</td>
+    <td class="tg-0f7n">[[grossMargin7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0">Gross Margin %</td>
+    <td class="tg-77x5">[[grossMarginPerc1]]</td>
+    <td class="tg-77x5">[[grossMarginPerc2]]</td>
+    <td class="tg-77x5">[[grossMarginPerc3]]</td>
+    <td class="tg-77x5">[[grossMarginPerc4]]</td>
+    <td class="tg-77x5">[[grossMarginPerc5]]</td>
+    <td class="tg-77x5">[[grossMarginPerc7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"><span style="font-weight:bold">Other Income</span></td>
+    <td class="tg-77x5">[[otherIncome1]]</td>
+    <td class="tg-77x5">[[otherIncome2]]</td>
+    <td class="tg-77x5">[[otherIncome3]]</td>
+    <td class="tg-77x5">[[otherIncome4]]</td>
+    <td class="tg-77x5">[[otherIncome5]]</td>
+    <td class="tg-77x5">[[otherIncome7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"><span style="font-weight:bold">Gross Profit</span></td>
+    <td class="tg-77x5">[[grossProfit1]]</td>
+    <td class="tg-77x5">[[grossProfit2]]</td>
+    <td class="tg-77x5">[[grossProfit3]]</td>
+    <td class="tg-77x5">[[grossProfit4]]</td>
+    <td class="tg-77x5">[[grossProfit5]]</td>
+    <td class="tg-77x5">[[grossProfit7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"><span style="font-weight:bold">Expenses</span></td>
+    <td class="tg-77x5">[[expenses1]]</td>
+    <td class="tg-77x5">[[expenses2]]</td>
+    <td class="tg-77x5">[[expenses3]]</td>
+    <td class="tg-77x5">[[expenses4]]</td>
+    <td class="tg-77x5">[[expenses5]]</td>
+    <td class="tg-77x5">[[expenses7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"><span style="font-weight:bold">Operating Profit</span></td>
+    <td class="tg-77x5">[[operatingProfit1]]</td>
+    <td class="tg-77x5">[[operatingProfit2]]</td>
+    <td class="tg-77x5">[[operatingProfit3]]</td>
+    <td class="tg-77x5">[[operatingProfit4]]</td>
+    <td class="tg-77x5">[[operatingProfit5]]</td>
+    <td class="tg-77x5">[[operatingProfit7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-1pbo">Operating Profit %</td>
+    <td class="tg-nqpn">[[operatingProfitPerc1]]</td>
+    <td class="tg-nqpn">[[operatingProfitPerc2]]</td>
+    <td class="tg-nqpn">[[operatingProfitPerc3]]</td>
+    <td class="tg-nqpn">[[operatingProfitPerc4]]</td>
+    <td class="tg-nqpn">[[operatingProfitPerc5]]</td>
+    <td class="tg-nqpn">[[operatingProfitPerc7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0">
+      <span style="font-weight:bold">Addbacks and Adjustments</span>
+    </td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-73a0"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+    <td class="tg-77x5"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+</table>
