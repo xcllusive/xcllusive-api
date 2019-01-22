@@ -357,10 +357,10 @@ export const generatePdf = async (req, res, next) => {
         ? numeral(comparableDataSelectedList[9].latestFullYearTotalRevenue).format('$0,0')
         : '',
       avg1:
-        appraisal.priceMethod === 1 ||
-        appraisal.priceMethod === 2 ||
-        appraisal.priceMethod === 5 ||
-        appraisal.priceMethod === 6
+        appraisal.pricingMethod === 1 ||
+        appraisal.pricingMethod === 2 ||
+        appraisal.pricingMethod === 5 ||
+        appraisal.pricingMethod === 6
           ? numeral(ebitdaAvg(comparableDataSelectedList[0])).format('$0,0')
           : ''
       /* end table 10 last businesses */
