@@ -6,6 +6,8 @@ import puppeteer from 'puppeteer'
 import moment from 'moment'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
+import numeral from 'numeral'
+import { ebitdaAvg } from '../utils/sharedFunctionsObject'
 // import mailer from '../modules/mailer'
 
 export const list = async (req, res, next) => {
@@ -104,6 +106,30 @@ export const remove = async (req, res, next) => {
   }
 }
 
+// _ebitdaAvg = businessSold => {
+//   let count = 0
+//   let totalYear = 0
+
+//   if (businessSold.year4 > 0) {
+//     count = count + 1
+//     totalYear = totalYear + businessSold.year4
+//   }
+//   if (businessSold.year3 > 0) {
+//     count = count + 1
+//     totalYear = totalYear + businessSold.year3
+//   }
+//   if (businessSold.year2 > 0) {
+//     count = count + 1
+//     totalYear = totalYear + businessSold.year2
+//   }
+//   if (businessSold.year1 > 0) {
+//     totalYear = totalYear + businessSold.year1
+//     count = count + 1
+//   }
+
+//   return totalYear / count - businessSold.agreedWageForWorkingOwners
+// }
+
 export const generatePdf = async (req, res, next) => {
   const { appraisalId } = req.params
 
@@ -147,6 +173,16 @@ export const generatePdf = async (req, res, next) => {
     const businessType = await models.BusinessType.findOne({
       where: { id: appraisal.Business.typeId }
     })
+
+    const businessSoldselectedListOnlyId = JSON.parse(
+      appraisal.comparableDataSelectedList
+    )
+
+    const comparableDataSelectedList = await models.BusinessSold.findAll({
+      where: { id: Array.from(businessSoldselectedListOnlyId) }
+    })
+
+    // console.log(comparableDataSelectedList)
 
     const context = {
       dateTimeCreated: moment().format('DD/MM/YYYY'),
@@ -258,7 +294,76 @@ export const generatePdf = async (req, res, next) => {
       operatingProfitPerc7: appraisal.operatingProfitPerc7,
       riskList: appraisal.riskList,
       valueDriversList: appraisal.valueDriversList,
-      criticalIssuesList: appraisal.criticalIssuesList
+      criticalIssuesList: appraisal.criticalIssuesList,
+      /* table 10 last businesses */
+      businessType1: comparableDataSelectedList[0]
+        ? comparableDataSelectedList[0].businessType
+        : '',
+      businessType2: comparableDataSelectedList[1]
+        ? comparableDataSelectedList[1].businessType
+        : '',
+      businessType3: comparableDataSelectedList[2]
+        ? comparableDataSelectedList[2].businessType
+        : '',
+      businessType4: comparableDataSelectedList[3]
+        ? comparableDataSelectedList[3].businessType
+        : '',
+      businessType5: comparableDataSelectedList[4]
+        ? comparableDataSelectedList[4].businessType
+        : '',
+      businessType6: comparableDataSelectedList[5]
+        ? comparableDataSelectedList[5].businessType
+        : '',
+      businessType7: comparableDataSelectedList[6]
+        ? comparableDataSelectedList[6].businessType
+        : '',
+      businessType8: comparableDataSelectedList[7]
+        ? comparableDataSelectedList[7].businessType
+        : '',
+      businessType9: comparableDataSelectedList[8]
+        ? comparableDataSelectedList[8].businessType
+        : '',
+      businessType10: comparableDataSelectedList[9]
+        ? comparableDataSelectedList[9].businessType
+        : '',
+      turnOver1: comparableDataSelectedList[0]
+        ? numeral(comparableDataSelectedList[0].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver2: comparableDataSelectedList[1]
+        ? numeral(comparableDataSelectedList[1].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver3: comparableDataSelectedList[2]
+        ? numeral(comparableDataSelectedList[2].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver4: comparableDataSelectedList[3]
+        ? numeral(comparableDataSelectedList[3].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver5: comparableDataSelectedList[4]
+        ? numeral(comparableDataSelectedList[4].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver6: comparableDataSelectedList[5]
+        ? numeral(comparableDataSelectedList[5].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver7: comparableDataSelectedList[6]
+        ? numeral(comparableDataSelectedList[6].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver8: comparableDataSelectedList[7]
+        ? numeral(comparableDataSelectedList[7].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver9: comparableDataSelectedList[8]
+        ? numeral(comparableDataSelectedList[8].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      turnOver10: comparableDataSelectedList[9]
+        ? numeral(comparableDataSelectedList[9].latestFullYearTotalRevenue).format('$0,0')
+        : '',
+      avg1:
+        appraisal.priceMethod === 1 ||
+        appraisal.priceMethod === 2 ||
+        appraisal.priceMethod === 5 ||
+        appraisal.priceMethod === 6
+          ? numeral(ebitdaAvg(comparableDataSelectedList[0])).format('$0,0')
+          : ''
+      /* end table 10 last businesses */
     }
 
     const PDF_OPTIONS = {

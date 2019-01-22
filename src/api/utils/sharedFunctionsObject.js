@@ -10,3 +10,27 @@ export const transformQueryAndCleanNull = obj => {
   })
   return obj
 }
+
+export const ebitdaAvg = businessSold => {
+  let count = 0
+  let totalYear = 0
+
+  if (businessSold.year4 > 0) {
+    count = count + 1
+    totalYear = totalYear + businessSold.year4
+  }
+  if (businessSold.year3 > 0) {
+    count = count + 1
+    totalYear = totalYear + businessSold.year3
+  }
+  if (businessSold.year2 > 0) {
+    count = count + 1
+    totalYear = totalYear + businessSold.year2
+  }
+  if (businessSold.year1 > 0) {
+    totalYear = totalYear + businessSold.year1
+    count = count + 1
+  }
+
+  return totalYear / count - businessSold.agreedWageForWorkingOwners
+}
