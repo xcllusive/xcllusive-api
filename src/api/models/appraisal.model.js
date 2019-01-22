@@ -2412,6 +2412,176 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
+      },
+      calcAnnualised1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcAnnualised2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcAnnualised5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcAnnualised7: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMargin1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMargin2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMargin3: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMargin4: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMargin5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMargin6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMarginPerc1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMarginPerc2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMarginPerc3: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMarginPerc4: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMarginPerc5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossMarginPerc6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossProfit1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossProfit2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossProfit3: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossProfit4: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossProfit5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcGrossProfit6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfit1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfit2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfit3: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfit4: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfit5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfit6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc3: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc4: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc5: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
       }
     },
     {
