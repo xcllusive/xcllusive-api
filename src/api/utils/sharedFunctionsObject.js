@@ -34,3 +34,45 @@ export const ebitdaAvg = businessSold => {
 
   return totalYear / count - businessSold.agreedWageForWorkingOwners
 }
+
+export const ebitdaLastYear = businessSold => {
+  if (businessSold.year4 > 0) {
+    return businessSold.year4 - businessSold.agreedWageForWorkingOwners
+  }
+  if (businessSold.year3 > 0) {
+    return businessSold.year3 - businessSold.agreedWageForWorkingOwners
+  }
+  if (businessSold.year2 > 0) {
+    return businessSold.year2 - businessSold.agreedWageForWorkingOwners
+  }
+  if (businessSold.year1 > 0) {
+    return businessSold.year1 - businessSold.agreedWageForWorkingOwners
+  }
+}
+
+export const pebitdaLastYear = businessSold => {
+  if (businessSold.year4 > 0) {
+    return (
+      businessSold.year4 -
+      (businessSold.agreedWageForWorkingOwners - businessSold.agreedWageForMainOwner)
+    )
+  }
+  if (businessSold.year3 > 0) {
+    return (
+      businessSold.year3 -
+      (businessSold.agreedWageForWorkingOwners - businessSold.agreedWageForMainOwner)
+    )
+  }
+  if (businessSold.year2 > 0) {
+    return (
+      businessSold.year2 -
+      (businessSold.agreedWageForWorkingOwners - businessSold.agreedWageForMainOwner)
+    )
+  }
+  if (businessSold.year1 > 0) {
+    return (
+      businessSold.year1 -
+      (businessSold.agreedWageForWorkingOwners - businessSold.agreedWageForMainOwner)
+    )
+  }
+}

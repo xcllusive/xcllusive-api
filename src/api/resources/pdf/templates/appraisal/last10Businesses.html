@@ -6,7 +6,7 @@
   .tg td {
     font-family: Arial, sans-serif;
     font-size: 14px;
-    padding: 10px 5px;
+    padding: 8px 3px;
     border-style: solid;
     border-width: 1px;
     overflow: hidden;
@@ -17,195 +17,305 @@
     font-family: Arial, sans-serif;
     font-size: 14px;
     font-weight: normal;
-    padding: 10px 5px;
+    padding: 8px 3px;
     border-style: solid;
     border-width: 1px;
     overflow: hidden;
     word-break: normal;
     border-color: black;
   }
-  .tg .tg-6tbe {
-    font-size: 12px;
-    background-color: #efefef;
-    border-color: inherit;
+  .tg .tg-pre9 {
+    font-weight: bold;
+    font-size: 11px;
+    background-color: #209fa9;
+    color: #000000;
+    border-color: #000000;
+    text-align: left;
+  }
+  .tg .tg-injz {
+    font-size: 11px;
+    border-color: #000000;
     text-align: left;
     vertical-align: top;
   }
-  .tg .tg-ju71 {
-    font-size: 12px;
+  .tg .tg-bfls {
+    font-size: 11px;
+    background-color: #ffffff;
+    border-color: #000000;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-vche {
+    font-weight: bold;
+    font-size: 11px;
+    background-color: #209fa9;
+    border-color: #000000;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-pg0z {
+    font-size: 11px;
     background-color: #efefef;
-    border-color: inherit;
+    border-color: #000000;
     text-align: left;
+    vertical-align: top;
   }
-  .tg .tg-3pun {
+  .tg .tg-x9pm {
     font-size: 12px;
-    border-color: inherit;
-    text-align: left;
-  }
-  .tg .tg-2qpp {
-    font-size: 13px;
     background-color: #3a6dd0;
     color: #ffffff;
-    border-color: inherit;
+    border-color: #000000;
     text-align: center;
   }
-  .tg .tg-uw70 {
-    font-size: 13px;
-    background-color: #3a6dd0;
-    color: #ffffff;
-    border-color: inherit;
+  .tg .tg-7wn8 {
+    font-weight: bold;
+    font-size: 11px;
+    background-color: #efefef;
+    border-color: #000000;
     text-align: center;
     vertical-align: top;
   }
-  .tg .tg-73a0 {
+  .tg .tg-vmmt {
+    font-size: 11px;
+    background-color: #efefef;
+    border-color: #000000;
+    text-align: center;
+    vertical-align: top;
+  }
+  .tg .tg-bxie {
+    font-weight: bold;
     font-size: 12px;
-    border-color: inherit;
+    background-color: #ffffc7;
+    color: #000000;
+    border-color: #000000;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tg .tg-nf5p {
+    font-size: 12px;
+    background-color: #3a6dd0;
+    color: #ffffff;
+    border-color: #000000;
+    text-align: center;
+    vertical-align: top;
+  }
+  .tg .tg-rcs9 {
+    font-size: 11px;
+    background-color: #ffffff;
+    border-color: #000000;
+    text-align: left;
+  }
+  .tg .tg-6u1a {
+    font-size: 11px;
+    background-color: #ffffff;
+    border-color: #000000;
+    text-align: center;
+    vertical-align: top;
+  }
+  .tg .tg-uk0v {
+    font-weight: bold;
+    font-size: 11px;
+    background-color: #ffffff;
+    border-color: #000000;
+    text-align: center;
+    vertical-align: top;
+  }
+  .tg .tg-ee2k {
+    font-size: 11px;
+    background-color: #efefef;
+    border-color: #000000;
+    text-align: left;
+  }
+  .tg .tg-i3u2 {
+    font-weight: bold;
+    font-size: 11px;
+    background-color: #209fa9;
+    color: #000000;
+    border-color: #000000;
     text-align: left;
     vertical-align: top;
   }
 </style>
-<table class="tg">
+<table style="width: 600px" class="tg">
   <tr>
-    <th class="tg-2qpp">Business<br />Type</th>
-    <th class="tg-2qpp">T/O</th>
-    <th class="tg-2qpp">EBITDA<br />Avg</th>
-    <th class="tg-2qpp">EBITDA<br />Last Year</th>
-    <th class="tg-uw70">Trend</th>
-    <th class="tg-uw70">Stock <br />Value</th>
-    <th class="tg-uw70">Assets<br />Value</th>
-    <th class="tg-uw70">Price Inc.<br />Stock</th>
-    <th class="tg-uw70">T/O Avg<br />Year</th>
-    <th class="tg-uw70">Last Year</th>
-    <th class="tg-uw70">Notes</th>
+    <th class="tg-x9pm">Business<br />Type</th>
+    <th class="tg-x9pm">T/O</th>
+    <th class="tg-x9pm">[[avgLabel]]</th>
+    <th class="tg-x9pm">[[lastYearLabel]]</th>
+    <th class="tg-nf5p">Trend</th>
+    <th class="tg-nf5p">Stock <br />Value</th>
+    <th class="tg-nf5p">Assets<br />Value</th>
+    <th class="tg-nf5p">Price Inc.<br />Stock</th>
+    <th class="tg-nf5p">[[multiplierLabel]]</th>
   </tr>
   <tr>
-    <td class="tg-3pun">[[businessType1]]</td>
-    <td class="tg-3pun">[[turnOver1]]</td>
-    <td class="tg-3pun">[[avg1]]</td>
-    <td class="tg-3pun">[[lastYear1]]</td>
-    <td class="tg-73a0">[[trend1]]</td>
-    <td class="tg-73a0">[[stockValue1]]</td>
-    <td class="tg-73a0">[[assetsValue1]]</td>
-    <td class="tg-73a0">[[priceIncStock1]]</td>
-    <td class="tg-73a0">[[multiplierAvg1]]</td>
-    <td class="tg-73a0">[[multiplierlastYear1]]</td>
-    <td class="tg-73a0">[[notes1]]</td>
+    <td style="width: 10px" class="tg-pre9">[[businessType1]]</td>
+    <td style="width: 10px" class="tg-rcs9">[[turnOver1]]</td>
+    <td style="width: 10px" class="tg-rcs9">[[avg1]]</td>
+    <td style="width: 10px" class="tg-rcs9">[[lastYear1]]</td>
+    <td style="width: 5px" class="tg-6u1a">[[trend1]]</td>
+    <td style="width: 10px" class="tg-bfls">[[stockValue1]]</td>
+    <td style="width: 10px" class="tg-bfls">[[assetsValue1]]</td>
+    <td style="width: 10px" class="tg-bfls">[[priceIncStock1]]</td>
+    <td style="width: 8px" class="tg-uk0v">[[multiplier1]]</td>
   </tr>
   <tr>
-    <td class="tg-ju71">[[businessType2]]</td>
-    <td class="tg-ju71">[[turnOver2]]</td>
-    <td class="tg-ju71">[[avg2]]</td>
-    <td class="tg-ju71">[[lastYear2]]</td>
-    <td class="tg-6tbe">[[trend2]]</td>
-    <td class="tg-6tbe">[[stockValue2]]</td>
-    <td class="tg-6tbe">[[assetsValue2]]</td>
-    <td class="tg-6tbe">[[priceIncStock2]]</td>
-    <td class="tg-6tbe">[[multiplierAvg2]]</td>
-    <td class="tg-6tbe">[[multiplierlastYear2]]</td>
-    <td class="tg-6tbe">[[notes2]]</td>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">[[specialNotes1]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">[[termsOfDeal1]]</td>
   </tr>
   <tr>
-    <td class="tg-3pun">[[businessType3]]</td>
-    <td class="tg-3pun">[[turnOver3]]</td>
-    <td class="tg-3pun">[[avg3]]</td>
-    <td class="tg-3pun">[[lastYear3]]</td>
-    <td class="tg-73a0">[[trend3]]</td>
-    <td class="tg-73a0">[[stockValue3]]</td>
-    <td class="tg-73a0">[[assetsValue3]]</td>
-    <td class="tg-73a0">[[priceIncStock3]]</td>
-    <td class="tg-73a0">[[multiplierAvg3]]</td>
-    <td class="tg-73a0">[[multiplierlastYear3]]</td>
-    <td class="tg-73a0">[[notes3]]</td>
+    <td class="tg-pre9">[[businessType2]]</td>
+    <td class="tg-ee2k">[[turnOver2]]</td>
+    <td class="tg-ee2k">[[avg2]]</td>
+    <td class="tg-ee2k">[[lastYear2]]</td>
+    <td class="tg-vmmt">[[trend2]]</td>
+    <td class="tg-pg0z">[[stockValue2]]</td>
+    <td class="tg-pg0z">[[assetsValue2]]</td>
+    <td class="tg-pg0z">[[priceIncStock2]]</td>
+    <td class="tg-7wn8">[[multiplier2]]</td>
   </tr>
   <tr>
-    <td class="tg-6tbe">[[businessType4]]</td>
-    <td class="tg-6tbe">[[turnOver4]]</td>
-    <td class="tg-6tbe">[[avg4]]</td>
-    <td class="tg-6tbe">[[lastYear4]]</td>
-    <td class="tg-6tbe">[[trend4]]</td>
-    <td class="tg-6tbe">[[stockValue4]]</td>
-    <td class="tg-6tbe">[[assetsValue4]]</td>
-    <td class="tg-6tbe">[[priceIncStock4]]</td>
-    <td class="tg-6tbe">[[multiplierAvg4]]</td>
-    <td class="tg-6tbe">[[multiplierlastYear4]]</td>
-    <td class="tg-6tbe">[[notes4]]</td>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">[[specialNotes2]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">[[termsOfDeal2]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[businessType5]]</td>
-    <td class="tg-73a0">[[turnOver5]]</td>
-    <td class="tg-73a0">[[avg5]]</td>
-    <td class="tg-73a0">[[lastYear5]]</td>
-    <td class="tg-73a0">[[trend5]]</td>
-    <td class="tg-73a0">[[stockValue5]]</td>
-    <td class="tg-73a0">[[assetsValue5]]</td>
-    <td class="tg-73a0">[[priceIncStock5]]</td>
-    <td class="tg-73a0">[[multiplierAvg5]]</td>
-    <td class="tg-73a0">[[multiplierlastYear5]]</td>
-    <td class="tg-73a0">[[notes5]]</td>
+    <td class="tg-pre9">[[businessType3]]</td>
+    <td class="tg-rcs9">[[turnOver3]]</td>
+    <td class="tg-rcs9">[[avg3]]</td>
+    <td class="tg-rcs9">[[lastYear3]]</td>
+    <td class="tg-6u1a">[[trend3]]</td>
+    <td class="tg-bfls">[[stockValue3]]</td>
+    <td class="tg-bfls">[[assetsValue3]]</td>
+    <td class="tg-bfls">[[priceIncStock3]]</td>
+    <td class="tg-uk0v">[[multiplier3]]</td>
   </tr>
   <tr>
-    <td class="tg-6tbe">[[businessType6]]</td>
-    <td class="tg-6tbe">[[turnOver6]]</td>
-    <td class="tg-6tbe">[[avg6]]</td>
-    <td class="tg-6tbe">[[lastYear6]]</td>
-    <td class="tg-6tbe">[[trend6]]</td>
-    <td class="tg-6tbe">[[stockValue6]]</td>
-    <td class="tg-6tbe">[[assetsValue6]]</td>
-    <td class="tg-6tbe">[[priceIncStock6]]</td>
-    <td class="tg-6tbe">[[multiplierAvg6]]</td>
-    <td class="tg-6tbe">[[multiplierlastYear6]]</td>
-    <td class="tg-6tbe">[[notes6]]</td>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">[[specialNotes3]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">[[termsOfDeal3]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[businessType7]]</td>
-    <td class="tg-73a0">[[turnOver7]]</td>
-    <td class="tg-73a0">[[avg7]]</td>
-    <td class="tg-73a0">[[lastYear7]]</td>
-    <td class="tg-73a0">[[trend7]]</td>
-    <td class="tg-73a0">[[stockValue7]]</td>
-    <td class="tg-73a0">[[assetsValue7]]</td>
-    <td class="tg-73a0">[[priceIncStock7]]</td>
-    <td class="tg-73a0">[[multiplierAvg7]]</td>
-    <td class="tg-73a0">[[multiplierlastYear7]]</td>
-    <td class="tg-73a0">[[notes7]]</td>
+    <td class="tg-i3u2">[[businessType4]]</td>
+    <td class="tg-pg0z">[[turnOver4]]</td>
+    <td class="tg-pg0z">[[avg4]]</td>
+    <td class="tg-pg0z">[[lastYear4]]</td>
+    <td class="tg-vmmt">[[trend4]]</td>
+    <td class="tg-pg0z">[[stockValue4]]</td>
+    <td class="tg-pg0z">[[assetsValue4]]</td>
+    <td class="tg-pg0z">[[priceIncStock4]]</td>
+    <td class="tg-7wn8">[[multiplier4]]</td>
   </tr>
   <tr>
-    <td class="tg-6tbe">[[businessType8]]</td>
-    <td class="tg-6tbe">[[turnOver8]]</td>
-    <td class="tg-6tbe">[[avg8]]</td>
-    <td class="tg-6tbe">[[lastYear8]]</td>
-    <td class="tg-6tbe">[[trend8]]</td>
-    <td class="tg-6tbe">[[stockValue8]]</td>
-    <td class="tg-6tbe">[[assetsValue8]]</td>
-    <td class="tg-6tbe">[[priceIncStock8]]</td>
-    <td class="tg-6tbe">[[multiplierAvg8]]</td>
-    <td class="tg-6tbe">[[multiplierlastYear8]]</td>
-    <td class="tg-6tbe">[[notes8]]</td>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">[[specialNotes4]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">[[termsOfDeal4]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[businessType9]]</td>
-    <td class="tg-73a0">[[turnOver9]]</td>
-    <td class="tg-73a0">[[avg9]]</td>
-    <td class="tg-73a0">[[lastYear9]]</td>
-    <td class="tg-73a0">[[trend9]]</td>
-    <td class="tg-73a0">[[stockValue9]]</td>
-    <td class="tg-73a0">[[assetsValue9]]</td>
-    <td class="tg-73a0">[[priceIncStock9]]</td>
-    <td class="tg-73a0">[[multiplierAvg9]]</td>
-    <td class="tg-73a0">[[multiplierlastYear9]]</td>
-    <td class="tg-73a0">[[notes9]]</td>
+    <td class="tg-vche">[[businessType5]]</td>
+    <td class="tg-bfls">[[turnOver5]]</td>
+    <td class="tg-bfls">[[avg5]]</td>
+    <td class="tg-bfls">[[lastYear5]]</td>
+    <td class="tg-6u1a">[[trend5]]</td>
+    <td class="tg-bfls">[[stockValue5]]</td>
+    <td class="tg-bfls">[[assetsValue5]]</td>
+    <td class="tg-bfls">[[priceIncStock5]]</td>
+    <td class="tg-uk0v">[[multiplier5]]</td>
   </tr>
   <tr>
-    <td class="tg-6tbe">[[businessType10]]</td>
-    <td class="tg-6tbe">[[turnOver10]]</td>
-    <td class="tg-6tbe">[[avg10]]</td>
-    <td class="tg-6tbe">[[lastYear10]]</td>
-    <td class="tg-6tbe">[[trend10]]</td>
-    <td class="tg-6tbe">[[stockValue10]]</td>
-    <td class="tg-6tbe">[[assetsValue10]]</td>
-    <td class="tg-6tbe">[[priceIncStock10]]</td>
-    <td class="tg-6tbe">[[multiplierAvg10]]</td>
-    <td class="tg-6tbe">[[multiplierlastYear10]]</td>
-    <td class="tg-6tbe">[[notes10]]</td>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">[[specialNotes5]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">[[termsOfDeal5]]</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">[[businessType6]]</td>
+    <td class="tg-pg0z">[[turnOver6]]</td>
+    <td class="tg-pg0z">[[avg6]]</td>
+    <td class="tg-pg0z">[[lastYear6]]</td>
+    <td class="tg-vmmt">[[trend6]]</td>
+    <td class="tg-pg0z">[[stockValue6]]</td>
+    <td class="tg-pg0z">[[assetsValue6]]</td>
+    <td class="tg-pg0z">[[priceIncStock6]]</td>
+    <td class="tg-7wn8">[[multiplier6]]</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">[[specialNotes6]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">[[termsOfDeal6]]</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">[[businessType7]]</td>
+    <td class="tg-bfls">[[turnOver7]]</td>
+    <td class="tg-bfls">[[avg7]]</td>
+    <td class="tg-bfls">[[lastYear7]]</td>
+    <td class="tg-6u1a">[[trend7]]</td>
+    <td class="tg-bfls">[[stockValue7]]</td>
+    <td class="tg-bfls">[[assetsValue7]]</td>
+    <td class="tg-bfls">[[priceIncStock7]]</td>
+    <td class="tg-uk0v">[[multiplier7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">[[specialNotes7]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">[[termsOfDeal7]]</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">[[businessType8]]</td>
+    <td class="tg-pg0z">[[turnOver8]]</td>
+    <td class="tg-pg0z">[[avg8]]</td>
+    <td class="tg-pg0z">[[lastYear8]]</td>
+    <td class="tg-vmmt">[[trend8]]</td>
+    <td class="tg-pg0z">[[stockValue8]]</td>
+    <td class="tg-pg0z">[[assetsValue8]]</td>
+    <td class="tg-pg0z">[[priceIncStock8]]</td>
+    <td class="tg-7wn8">[[multiplier8]]</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">[[specialNotes8]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">[[termsOfDeal8]]</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">[[businessType9]]</td>
+    <td class="tg-bfls">[[turnOver9]]</td>
+    <td class="tg-bfls">[[avg9]]</td>
+    <td class="tg-bfls">[[lastYear9]]</td>
+    <td class="tg-6u1a">[[trend9]]</td>
+    <td class="tg-bfls">[[stockValue9]]</td>
+    <td class="tg-bfls">[[assetsValue9]]</td>
+    <td class="tg-bfls">[[priceIncStock9]]</td>
+    <td class="tg-uk0v">[[multiplier9]]</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">[[specialNotes9]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">[[termsOfDeal9]]</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">[[businessType10]]</td>
+    <td class="tg-pg0z">[[turnOver10]]</td>
+    <td class="tg-pg0z">[[avg10]]</td>
+    <td class="tg-pg0z">[[lastYear10]]</td>
+    <td class="tg-vmmt">[[trend10]]</td>
+    <td class="tg-pg0z">[[stockValue10]]</td>
+    <td class="tg-pg0z">[[assetsValue10]]</td>
+    <td class="tg-pg0z">[[priceIncStock10]]</td>
+    <td class="tg-7wn8">[[multiplier10]]</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">[[specialNotes10]]</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">[[termsOfDeal10]]</td>
   </tr>
 </table>
