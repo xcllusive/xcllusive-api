@@ -76,3 +76,40 @@ export const pebitdaLastYear = businessSold => {
     )
   }
 }
+
+export const avgProfit = appraisal => {
+  let count = 0
+  let totalYear = 0
+  if (appraisal.year6 > 0) {
+    count = count + 1
+    totalYear =
+      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+  }
+  if (appraisal.year5 > 0) {
+    count = count + 1
+    totalYear =
+      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+  }
+  if (appraisal.year4 > 0) {
+    count = count + 1
+    totalYear =
+      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+  }
+  if (appraisal.year3 > 0) {
+    count = count + 1
+    totalYear =
+      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+  }
+  if (appraisal.year2 > 0) {
+    count = count + 1
+    totalYear =
+      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+  }
+  if (appraisal.year1 > 0) {
+    count = count + 1
+    totalYear =
+      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+  }
+
+  return totalYear / count
+}

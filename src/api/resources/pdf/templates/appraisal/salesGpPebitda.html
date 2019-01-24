@@ -1,0 +1,72 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<style>
+#salesGpPebitda {
+  height: 230px !important;
+  width: 500px !important;
+}
+</style>
+<canvas id="salesGpPebitda"></canvas>
+<script>   
+    var ctx = document.getElementById("salesGpPebitda").getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['{{year1}}', '{{year2}}', '{{year3}}', '{{year4}}', '{{year5}}', '{{year6}}'],
+        datasets: [{
+          label: 'Sales',
+          data: ['{{sales1}}', '{{sales2}}', '{{sales3}}', '{{sales4}}', '{{sales5}}', '{{sales7}}'],
+          backgroundColor: 'red',
+          borderColor: 'red',
+          borderWidth: 1,
+          fill: false
+        },
+        {
+          label: 'GP',
+          data: ['{{calcGrossProfit1}}', '{{calcGrossProfit2}}', '{{calcGrossProfit3}}', '{{calcGrossProfit4}}', '{{calcGrossProfit5}}', '{{calcGrossProfit7}}'],
+          backgroundColor: 'blue',
+          borderColor: 'blue',
+          borderWidth: 1,
+          fill: false
+        },
+        {
+          label: 'PEBITDA',
+          data: ['10', '20', '30', '40', '50', '70'],
+          backgroundColor: 'green',
+          borderColor: 'green',
+          borderWidth: 1,
+          fill: false
+        }
+      ]
+      },
+      options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Sales, GP, PEBITDA'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: false
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: false,
+							labelString: 'Value'
+						}
+					}]
+				}
+			}
+    });
+  </script>

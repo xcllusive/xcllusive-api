@@ -10,7 +10,8 @@ import numeral from 'numeral'
 import {
   ebitdaAvg,
   ebitdaLastYear,
-  pebitdaLastYear
+  pebitdaLastYear,
+  avgProfit
 } from '../utils/sharedFunctionsObject'
 // import mailer from '../modules/mailer'
 
@@ -300,6 +301,35 @@ export const generatePdf = async (req, res, next) => {
       valueDriversList: appraisal.valueDriversList,
       criticalIssuesList: appraisal.criticalIssuesList
     }
+    /* profits table */
+
+    if (appraisal.year6 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year5 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year4 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year3 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year2 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year1 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    }
+    const afterWages = context.lastYearProfit - context.lastYearProfitAfterWages
+    context.avgProfits = avgProfit(appraisal)
+    context.avgProfitsAfterWages = context.avgProfits - afterWages
+    context.currentStockLevel = appraisal.currentStockLevel
+    context.stockNecessary = appraisal.stockNecessary
+    context.physicalAssetValue = appraisal.physicalAssetValue
+    /* end profits table */
+
     /* table 10 last businesses */
     let totalMultiplier = 0
     let totalIndex = 0
