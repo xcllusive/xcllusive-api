@@ -7,7 +7,12 @@ import moment from 'moment'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
 import numeral from 'numeral'
-import { ebitdaAvg } from '../utils/sharedFunctionsObject'
+import {
+  ebitdaAvg,
+  ebitdaLastYear,
+  pebitdaLastYear,
+  avgProfit
+} from '../utils/sharedFunctionsObject'
 // import mailer from '../modules/mailer'
 
 export const list = async (req, res, next) => {
@@ -294,77 +299,145 @@ export const generatePdf = async (req, res, next) => {
       operatingProfitPerc7: appraisal.operatingProfitPerc7,
       riskList: appraisal.riskList,
       valueDriversList: appraisal.valueDriversList,
-      criticalIssuesList: appraisal.criticalIssuesList,
-      /* table 10 last businesses */
-      businessType1: comparableDataSelectedList[0]
-        ? comparableDataSelectedList[0].businessType
-        : '',
-      businessType2: comparableDataSelectedList[1]
-        ? comparableDataSelectedList[1].businessType
-        : '',
-      businessType3: comparableDataSelectedList[2]
-        ? comparableDataSelectedList[2].businessType
-        : '',
-      businessType4: comparableDataSelectedList[3]
-        ? comparableDataSelectedList[3].businessType
-        : '',
-      businessType5: comparableDataSelectedList[4]
-        ? comparableDataSelectedList[4].businessType
-        : '',
-      businessType6: comparableDataSelectedList[5]
-        ? comparableDataSelectedList[5].businessType
-        : '',
-      businessType7: comparableDataSelectedList[6]
-        ? comparableDataSelectedList[6].businessType
-        : '',
-      businessType8: comparableDataSelectedList[7]
-        ? comparableDataSelectedList[7].businessType
-        : '',
-      businessType9: comparableDataSelectedList[8]
-        ? comparableDataSelectedList[8].businessType
-        : '',
-      businessType10: comparableDataSelectedList[9]
-        ? comparableDataSelectedList[9].businessType
-        : '',
-      turnOver1: comparableDataSelectedList[0]
-        ? numeral(comparableDataSelectedList[0].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver2: comparableDataSelectedList[1]
-        ? numeral(comparableDataSelectedList[1].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver3: comparableDataSelectedList[2]
-        ? numeral(comparableDataSelectedList[2].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver4: comparableDataSelectedList[3]
-        ? numeral(comparableDataSelectedList[3].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver5: comparableDataSelectedList[4]
-        ? numeral(comparableDataSelectedList[4].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver6: comparableDataSelectedList[5]
-        ? numeral(comparableDataSelectedList[5].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver7: comparableDataSelectedList[6]
-        ? numeral(comparableDataSelectedList[6].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver8: comparableDataSelectedList[7]
-        ? numeral(comparableDataSelectedList[7].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver9: comparableDataSelectedList[8]
-        ? numeral(comparableDataSelectedList[8].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      turnOver10: comparableDataSelectedList[9]
-        ? numeral(comparableDataSelectedList[9].latestFullYearTotalRevenue).format('$0,0')
-        : '',
-      avg1:
+      criticalIssuesList: appraisal.criticalIssuesList
+    }
+    /* profits table */
+
+    if (appraisal.year6 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year5 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year4 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year3 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year2 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    } else if (appraisal.year1 > 0) {
+      context.lastYearProfit = 3000
+      context.lastYearProfitAfterWages = 2800
+    }
+    const afterWages = context.lastYearProfit - context.lastYearProfitAfterWages
+    context.avgProfits = avgProfit(appraisal)
+    context.avgProfitsAfterWages = context.avgProfits - afterWages
+    context.currentStockLevel = appraisal.currentStockLevel
+    context.stockNecessary = appraisal.stockNecessary
+    context.physicalAssetValue = appraisal.physicalAssetValue
+    /* end profits table */
+
+    /* table 10 last businesses */
+    let totalMultiplier = 0
+    let totalIndex = 0
+    comparableDataSelectedList.forEach((item, index) => {
+      context[`businessType${index + 1}`] = item.businessType
+      context[`turnOver${index + 1}`] = numeral(item.latestFullYearTotalRevenue).format(
+        '$0,0'
+      )
+      context[`trend${index + 1}`] = item.trend
+      context[`stockValue${index + 1}`] = numeral(item.stockValue).format('$0,0')
+      context[`assetsValue${index + 1}`] = numeral(item.assetValue).format('$0,0')
+      context[`priceIncStock${index + 1}`] = numeral(
+        item.soldPrice + item.stockValue
+      ).format('$0,0')
+
+      let multiplier = null
+      if (appraisal.pricingMethod === 1) {
+        context.multiplierLabel = 'Multiplier EBITDA Last Year'
+        multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
+      }
+      if (appraisal.pricingMethod === 2) {
+        context.multiplierLabel = 'Multiplier EBITDA Avg'
+        multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
+      }
+      if (appraisal.pricingMethod === 3) {
+        context.multiplierLabel = 'Multiplier PEBITDA Last Year'
+        // multiplier = numeral(item.soldPrice / pebitdaLastYear(item)).format('0,0.[99]')
+        multiplier = item.soldPrice / pebitdaLastYear(item)
+      }
+      if (appraisal.pricingMethod === 4) {
+        context.multiplierLabel = 'Multiplier PEBITDA Avg'
+        multiplier = numeral(
+          item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
+        ).format('0,0.[99]')
+      }
+      if (appraisal.pricingMethod === 5) {
+        context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
+        multiplier = numeral(
+          (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
+        ).format('0,0.[99]')
+      }
+      if (appraisal.pricingMethod === 6) {
+        context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
+        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
+          '0,0.[99]'
+        )
+      }
+      if (appraisal.pricingMethod === 7) {
+        context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
+        multiplier = numeral(
+          item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
+        ).format('0,0.[99]')
+      }
+      if (appraisal.pricingMethod === 8) {
+        context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
+        multiplier = numeral(
+          item.soldPrice /
+            (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
+        ).format('0,0.[99]')
+      }
+      if (appraisal.pricingMethod === 9) {
+        context.multiplierLabel = 'T/O Multiplier'
+        multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format(
+          '0,0.[99]'
+        )
+      }
+      if (appraisal.pricingMethod === 10) {
+        context.multiplierLabel = ''
+        multiplier = ''
+      }
+      context[`multiplier${index + 1}`] = numeral(multiplier).format('0,0.[99]')
+
+      totalMultiplier = totalMultiplier + multiplier
+      totalIndex = totalIndex + index
+
+      /* EBITDA */
+      if (
         appraisal.pricingMethod === 1 ||
         appraisal.pricingMethod === 2 ||
         appraisal.pricingMethod === 5 ||
         appraisal.pricingMethod === 6
-          ? numeral(ebitdaAvg(comparableDataSelectedList[0])).format('$0,0')
-          : ''
-      /* end table 10 last businesses */
-    }
+      ) {
+        context.avgLabel = 'EBITDA Avg'
+        context.lastYearLabel = 'EBITDA Last Year'
+        context[`avg${index + 1}`] = numeral(ebitdaAvg(item)).format('$0,0')
+        context[`lastYear${index + 1}`] = numeral(ebitdaLastYear(item)).format('$0,0')
+      }
+      /* PEBITDA */
+      if (
+        appraisal.pricingMethod === 3 ||
+        appraisal.pricingMethod === 4 ||
+        appraisal.pricingMethod === 7 ||
+        appraisal.pricingMethod === 8 ||
+        appraisal.pricingMethod === 9 ||
+        appraisal.pricingMethod === 10
+      ) {
+        context.avgLabel = 'PEBITDA Avg'
+        context.lastYearLabel = 'PEBITDA Last Year'
+        context[`avg${index + 1}`] = numeral(
+          ebitdaAvg(item) + item.agreedWageForMainOwner
+        ).format('$0,0')
+        context[`lastYear${index + 1}`] = numeral(pebitdaLastYear(item)).format('$0,0')
+      }
+      context[`specialNotes${index + 1}`] = item.specialNotes
+      context[`termsOfDeal${index + 1}`] = item.termsOfDeal
+    })
+    /* end table 10 last businesses */
+    context.avgMultiplier = numeral(totalMultiplier / totalIndex).format('0,0.[99]')
 
     const PDF_OPTIONS = {
       path: destPdfGenerated,
