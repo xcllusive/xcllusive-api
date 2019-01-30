@@ -187,13 +187,10 @@ export const generatePdf = async (req, res, next) => {
       where: { id: Array.from(businessSoldselectedListOnlyId) }
     })
 
-    // console.log(comparableDataSelectedList)
-
-    const context = {
+    const variables = {
       dateTimeCreated: moment().format('DD/MM/YYYY'),
       currentYear: moment().get('year'),
       businessName: appraisal.Business.businessName,
-      dateTimeModified: appraisal.dateTimeModified,
       businessABN: appraisal.Business.businessABN,
       businessAddress1: appraisal.Business.address1,
       businessSuburb: appraisal.Business.suburb,
@@ -203,104 +200,13 @@ export const generatePdf = async (req, res, next) => {
       businessLastNameV: appraisal.Business.lastNameV,
       businessIndustry: appraisal.Business.industry,
       businessType: businessType.label,
-      currentOwner: appraisal.currentOwner,
-      nOfBusinessLocations: appraisal.nOfBusinessLocations,
-      businessCommenced: appraisal.businessCommenced,
-      tradingHours: appraisal.tradingHours,
-      productsServices: appraisal.productsServices,
-      descriptionCustomers: appraisal.descriptionCustomers,
       clientDatabaseAvailable: appraisal.clientDatabaseAvailable ? 'Yes' : 'No',
       client10TO: appraisal.client10TO ? 'Yes' : 'No',
-      client5TO: appraisal.client5TO,
-      descriptionSuppliers: appraisal.descriptionSuppliers,
-      premisesOwnedRented: appraisal.premisesOwnedRented,
-      rentCost: appraisal.rentCost,
-      timeRemLease: appraisal.timeRemLease,
-      premisesNotes: appraisal.premisesNotes,
-      fullTime: appraisal.fullTime,
-      partTime: appraisal.partTime,
-      subContractors: appraisal.subContractors,
-      casuals: appraisal.casuals,
-      numberOwners: appraisal.numberOwners,
-      owners1sHours: appraisal.owners1sHours,
-      owners1sRole: appraisal.owners1sRole,
-      otherOwnersHours: appraisal.otherOwnersHours,
-      otherOwnersRole: appraisal.otherOwnersRole,
-      otherRelevantNotes: appraisal.otherRelevantNotes,
-      year1: appraisal.year1,
-      year2: appraisal.year2,
-      year3: appraisal.year3,
-      year4: appraisal.year4,
-      year5: appraisal.year5,
-      year6: appraisal.year6,
-      year7: appraisal.year7,
-      sales1: appraisal.sales1,
-      sales2: appraisal.sales2,
-      sales3: appraisal.sales3,
-      sales4: appraisal.sales4,
-      sales5: appraisal.sales5,
-      sales6: appraisal.sales6,
-      sales7: appraisal.sales7,
-      cogs1: appraisal.cogs1,
-      cogs2: appraisal.cogs2,
-      cogs3: appraisal.cogs3,
-      cogs4: appraisal.cogs4,
-      cogs5: appraisal.cogs5,
-      cogs6: appraisal.cogs6,
-      cogs7: appraisal.cogs7,
-      grossMargin1: appraisal.grossMargin1,
-      grossMargin2: appraisal.grossMargin2,
-      grossMargin3: appraisal.grossMargin3,
-      grossMargin4: appraisal.grossMargin4,
-      grossMargin5: appraisal.grossMargin5,
-      grossMargin6: appraisal.grossMargin6,
-      grossMargin7: appraisal.grossMargin7,
-      grossMarginPerc1: appraisal.grossMarginPerc1,
-      grossMarginPerc2: appraisal.grossMarginPerc2,
-      grossMarginPerc3: appraisal.grossMarginPerc3,
-      grossMarginPerc4: appraisal.grossMarginPerc4,
-      grossMarginPerc5: appraisal.grossMarginPerc5,
-      grossMarginPerc6: appraisal.grossMarginPerc6,
-      grossMarginPerc7: appraisal.grossMarginPerc7,
-      otherIncome1: appraisal.otherIncome1,
-      otherIncome2: appraisal.otherIncome2,
-      otherIncome3: appraisal.otherIncome3,
-      otherIncome4: appraisal.otherIncome4,
-      otherIncome5: appraisal.otherIncome5,
-      otherIncome6: appraisal.otherIncome6,
-      otherIncome7: appraisal.otherIncome7,
-      grossProfit1: appraisal.grossProfit1,
-      grossProfit2: appraisal.grossProfit2,
-      grossProfit3: appraisal.grossProfit3,
-      grossProfit4: appraisal.grossProfit4,
-      grossProfit5: appraisal.grossProfit5,
-      grossProfit6: appraisal.grossProfit6,
-      grossProfit7: appraisal.grossProfit7,
-      expenses1: appraisal.expenses1,
-      expenses2: appraisal.expenses2,
-      expenses3: appraisal.expenses3,
-      expenses4: appraisal.expenses4,
-      expenses5: appraisal.expenses5,
-      expenses6: appraisal.expenses6,
-      expenses7: appraisal.expenses7,
-      operatingProfit1: appraisal.operatingProfit1,
-      operatingProfit2: appraisal.operatingProfit2,
-      operatingProfit3: appraisal.operatingProfit3,
-      operatingProfit4: appraisal.operatingProfit4,
-      operatingProfit5: appraisal.operatingProfit5,
-      operatingProfit6: appraisal.operatingProfit6,
-      operatingProfit7: appraisal.operatingProfit7,
-      operatingProfitPerc1: appraisal.operatingProfitPerc1,
-      operatingProfitPerc2: appraisal.operatingProfitPerc2,
-      operatingProfitPerc3: appraisal.operatingProfitPerc3,
-      operatingProfitPerc4: appraisal.operatingProfitPerc4,
-      operatingProfitPerc5: appraisal.operatingProfitPerc5,
-      operatingProfitPerc6: appraisal.operatingProfitPerc6,
-      operatingProfitPerc7: appraisal.operatingProfitPerc7,
-      riskList: appraisal.riskList,
-      valueDriversList: appraisal.valueDriversList,
-      criticalIssuesList: appraisal.criticalIssuesList
+      financialInformationArray: []
     }
+
+    const context = Object.assign(appraisal.get({ plain: true }), variables)
+
     /* profits table */
 
     if (appraisal.year6 > 0) {
@@ -439,6 +345,30 @@ export const generatePdf = async (req, res, next) => {
     /* end table 10 last businesses */
     context.avgMultiplier = numeral(totalMultiplier / totalIndex).format('0,0.[99]')
 
+    // start table financial information
+    for (let i = 1; i < 31; i++) {
+      if (appraisal[`aaRow${i}`] || appraisal[`aaRow${i}`] !== '') {
+        context.financialInformationArray.push({
+          aaRow: appraisal[`aaRow${i}`],
+          aaRowYear1: appraisal[`aaRow${i}Year1`],
+          aaRowYear2: appraisal[`aaRow${i}Year2`],
+          aaRowYear3: appraisal[`aaRow${i}Year3`],
+          aaRowYear4: appraisal[`aaRow${i}Year4`],
+          aaRowYear5: appraisal[`aaRow${i}Year5`],
+          aaRowYear7: appraisal[`aaRow${i}Year7`]
+        })
+      }
+    }
+    // end table financial information
+
+    handlebars.registerHelper('each', (context, options) => {
+      var ret = ''
+      for (var i = 0, j = context.length; i < j; i++) {
+        ret = ret + options.fn(context[i])
+      }
+      return ret
+    })
+
     const PDF_OPTIONS = {
       path: destPdfGenerated,
       format: 'A4',
@@ -452,11 +382,12 @@ export const generatePdf = async (req, res, next) => {
       displayHeaderFooter: true,
       headerTemplate: ' ',
       footerTemplate: `
-      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-      <span style="float: left;">Sales Inspection Report and Business Appraisal for NAME OF BUSINEES HERE</span>
-      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
-      </div>`
-      // scale: 0.8
+        <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+        <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
+  appraisal.Business.businessName
+}</span>
+        <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+        </div>`
     }
 
     const content = await readFile(templatePath, 'utf8')
@@ -465,7 +396,7 @@ export const generatePdf = async (req, res, next) => {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
-    // const browser = await puppeteer.launch({headless: false})
+    // const browser = await puppeteer.launch({ headless: false })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.goto(`data:text/html,${template}`)
@@ -473,7 +404,15 @@ export const generatePdf = async (req, res, next) => {
     await browser.close()
 
     return res.download(destPdfGenerated, err => {
-      // fs.unlink(destPdfGenerated)
+      fs.unlink(destPdfGenerated, err => {
+        if (err) {
+          throw new APIError({
+            message: 'Error on download pdf',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
       if (err) {
         throw new APIError({
           message: 'Error on download pdf',
