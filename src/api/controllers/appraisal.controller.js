@@ -263,33 +263,59 @@ export const generatePdf = async (req, res, next) => {
     }), variables)
 
     /* profits table */
-
     if (appraisal.year6 > 0) {
-      context.lastYearProfit = 3000
-      context.lastYearProfitAfterWages = 2800
+      context.lastYearProfit = numeral(appraisal.calcOperatingProfit6).format('$0,0')
+      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit6 - appraisal.totalAnnualWages).format('$0,0')
     } else if (appraisal.year5 > 0) {
-      context.lastYearProfit = 3000
-      context.lastYearProfitAfterWages = 2800
+      context.lastYearProfit = numeral(appraisal.calcOperatingProfit5).format('$0,0')
+      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit5 - appraisal.totalAnnualWages).format('$0,0')
     } else if (appraisal.year4 > 0) {
-      context.lastYearProfit = 3000
-      context.lastYearProfitAfterWages = 2800
+      context.lastYearProfit = numeral(appraisal.calcOperatingProfit4).format('$0,0')
+      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit4 - appraisal.totalAnnualWages).format('$0,0')
     } else if (appraisal.year3 > 0) {
-      context.lastYearProfit = 3000
-      context.lastYearProfitAfterWages = 2800
+      context.lastYearProfit = numeral(appraisal.calcOperatingProfit3).format('$0,0')
+      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit3 - appraisal.totalAnnualWages).format('$0,0')
     } else if (appraisal.year2 > 0) {
-      context.lastYearProfit = 3000
-      context.lastYearProfitAfterWages = 2800
+      context.lastYearProfit = numeral(appraisal.calcOperatingProfit2).format('$0,0')
+      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit2 - appraisal.totalAnnualWages).format('$0,0')
     } else if (appraisal.year1 > 0) {
-      context.lastYearProfit = 3000
-      context.lastYearProfitAfterWages = 2800
+      context.lastYearProfit = numeral(appraisal.calcOperatingProfit1).format('$0,0')
+      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit1 - appraisal.totalAnnualWages).format('$0,0')
     }
-    const afterWages = context.lastYearProfit - context.lastYearProfitAfterWages
-    context.avgProfits = avgProfit(appraisal)
-    context.avgProfitsAfterWages = context.avgProfits - afterWages
-    context.currentStockLevel = appraisal.currentStockLevel
-    context.stockNecessary = appraisal.stockNecessary
-    context.physicalAssetValue = appraisal.physicalAssetValue
+    context.avgProfits = numeral(avgProfit(appraisal)).format('$0,0')
+    context.avgProfitsAfterWages = numeral(avgProfit(appraisal) - appraisal.totalAnnualWages).format('$0,0')
+    context.currentStockLevel = numeral(appraisal.currentStockLevel).format('$0,0')
+    context.stockNecessary = numeral(appraisal.stockNecessary).format('$0,0')
+    context.physicalAssetValue = numeral(appraisal.physicalAssetValue).format('$0,0')
     /* end profits table */
+
+    // start owners position table
+    context.owner1Position = appraisal.owner1Position
+    context.owner2Position = appraisal.owner2Position
+    context.owner3Position = appraisal.owner3Position
+    context.owner4Position = appraisal.owner4Position
+    context.owner5Position = appraisal.owner5Position
+    context.owner6Position = appraisal.owner6Position
+    context.owner7Position = appraisal.owner7Position
+
+    context.owner1HoursPWeek = appraisal.owner1HoursPWeek
+    context.owner2HoursPWeek = appraisal.owner2HoursPWeek
+    context.owner3HoursPWeek = appraisal.owner3HoursPWeek
+    context.owner4HoursPWeek = appraisal.owner4HoursPWeek
+    context.owner5HoursPWeek = appraisal.owner5HoursPWeek
+    context.owner6HoursPWeek = appraisal.owner6HoursPWeek
+    context.owner7HoursPWeek = appraisal.owner7HoursPWeek
+
+    context.owner1AnnualWage = numeral(appraisal.owner1AnnualWage).format('$0,0')
+    context.owner2AnnualWage = numeral(appraisal.owner2AnnualWage).format('$0,0')
+    context.owner3AnnualWage = numeral(appraisal.owner3AnnualWage).format('$0,0')
+    context.owner4AnnualWage = numeral(appraisal.owner4AnnualWage).format('$0,0')
+    context.owner5AnnualWage = numeral(appraisal.owner5AnnualWage).format('$0,0')
+    context.owner6AnnualWage = numeral(appraisal.owner6AnnualWage).format('$0,0')
+    context.owner7AnnualWage = numeral(appraisal.owner7AnnualWage).format('$0,0')
+
+    context.totalAnnualWages = numeral(appraisal.totalAnnualWages).format('$0,0')
+    // end owners position table
 
     /* table 10 last businesses */
     let totalMultiplier = 0
@@ -435,6 +461,15 @@ export const generatePdf = async (req, res, next) => {
       }
     }
     // end table financial information
+
+    // starts pricing chart
+    context.smallestMultiplier = appraisal.smallestMultiplier
+    context.avgMultiplier = appraisal.avgMultiplier
+    context.riskPremium = appraisal.riskPremium
+    context.marketPremium = appraisal.marketPremium
+    context.askingPrice = appraisal.askingPrice
+    context.lessThan5PercChanceOfSelling = appraisal.lessThan5PercChanceOfSelling
+    // end pricig chart
 
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''

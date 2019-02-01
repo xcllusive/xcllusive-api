@@ -1,7 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Appraisal = sequelize.define(
-    'Appraisal',
-    {
+    'Appraisal', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -2582,17 +2581,44 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: 0
+      },
+      smallestMultiplier: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      avgMultiplier: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      riskPremium: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      marketPremium: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      askingPrice: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      lessThan5PercChanceOfSelling: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
       }
-    },
-    {
+    }, {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [
-        {
-          unique: true,
-          fields: ['id']
-        }
-      ]
+      indexes: [{
+        unique: true,
+        fields: ['id']
+      }]
     }
   )
 

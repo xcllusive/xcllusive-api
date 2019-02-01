@@ -1,14 +1,51 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <style>
-  #salesGpPebitda {
+  #LineWithLine {
     height: 230px !important;
     width: 500px !important;
   }
 
 </style>
-<canvas id="salesGpPebitda"></canvas>
+<canvas id="LineWithLine"></canvas>
 <script>
-  var ctx = document.getElementById("salesGpPebitda").getContext('2d');
+  var data = {
+    labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+    datasets: [{
+      data: [12, 3, 2, 1, 8, 8, 2, 2, 3, 5, 7, 1]
+    }]
+  };
+
+  var ctx = document.getElementById("LineWithLine").getContext("2d");
+
+  Chart.types.Line.extend({
+    name: "LineWithLine",
+    draw: function () {
+      Chart.types.Line.prototype.draw.apply(this, arguments);
+
+      var point = this.datasets[0].points[this.options.lineAtIndex]
+      var scale = this.scale
+
+      // draw line
+      this.chart.ctx.beginPath();
+      this.chart.ctx.moveTo(point.x, scale.startPoint + 24);
+      this.chart.ctx.strokeStyle = '#ff0000';
+      this.chart.ctx.lineTo(point.x, scale.endPoint);
+      this.chart.ctx.stroke();
+
+      // write TODAY
+      this.chart.ctx.textAlign = 'center';
+      this.chart.ctx.fillText("TODAY", point.x, scale.startPoint + 12);
+    }
+  });
+
+  new Chart(ctx).LineWithLine(data, {
+    datasetFill: false,
+    lineAtIndex: 2
+  });
+
+</script>
+<!-- <script>
+  var ctx = document.getElementById("pricingChart").getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -75,4 +112,4 @@
     }
   });
 
-</script>
+</script> -->
