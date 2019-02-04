@@ -2611,6 +2611,36 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
+      },
+      formulaValuePricingMethod: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      formulaPriceBasedOnComparable: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      formulaRiskPremium: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      formulaMarketPremium: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      formulaNegotiationPremium: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      formulaAskingPrice: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
       }
     }, {
       createdAt: 'dateTimeCreated',

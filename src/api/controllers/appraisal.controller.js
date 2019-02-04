@@ -53,16 +53,16 @@ export const get = async (req, res, next) => {
         id: appraisalId
       },
       include: [{
-          model: models.Business
-        },
-        {
-          model: models.User,
-          as: 'CreatedBy'
-        },
-        {
-          model: models.User,
-          as: 'ModifiedBy'
-        }
+        model: models.Business
+      },
+      {
+        model: models.User,
+        as: 'CreatedBy'
+      },
+      {
+        model: models.User,
+        as: 'ModifiedBy'
+      }
       ]
     })
     return res.status(201).json({
@@ -336,39 +336,46 @@ export const generatePdf = async (req, res, next) => {
       if (appraisal.pricingMethod === 1) {
         context.multiplierLabel = 'Multiplier EBITDA Last Year'
         multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
       }
       if (appraisal.pricingMethod === 2) {
         context.multiplierLabel = 'Multiplier EBITDA Avg'
         multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaAvg
       }
       if (appraisal.pricingMethod === 3) {
         context.multiplierLabel = 'Multiplier PEBITDA Last Year'
         // multiplier = numeral(item.soldPrice / pebitdaLastYear(item)).format('0,0.[99]')
         multiplier = item.soldPrice / pebitdaLastYear(item)
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
       }
       if (appraisal.pricingMethod === 4) {
         context.multiplierLabel = 'Multiplier PEBITDA Avg'
         multiplier = numeral(
           item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
         ).format('0,0.[99]')
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaAvg
       }
       if (appraisal.pricingMethod === 5) {
         context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
         multiplier = numeral(
           (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
         ).format('0,0.[99]')
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 6) {
         context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
         multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
           '0,0.[99]'
         )
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 7) {
         context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
         multiplier = numeral(
           item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
         ).format('0,0.[99]')
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 8) {
         context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
@@ -376,12 +383,14 @@ export const generatePdf = async (req, res, next) => {
           item.soldPrice /
           (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
         ).format('0,0.[99]')
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 9) {
         context.multiplierLabel = 'T/O Multiplier'
         multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format(
           '0,0.[99]'
         )
+        context.formulaComparableMultiplier = appraisal.sumMTO
       }
       if (appraisal.pricingMethod === 10) {
         context.multiplierLabel = ''
@@ -470,6 +479,67 @@ export const generatePdf = async (req, res, next) => {
     context.askingPrice = appraisal.askingPrice
     context.lessThan5PercChanceOfSelling = appraisal.lessThan5PercChanceOfSelling
     // end pricig chart
+
+    // start formula pricing
+    // end formula pricing
+
+    // start notes and assumptions
+    const arrayNotesAssumptions = []
+    if (appraisal.notesAndAssumptions1YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions1)
+    }
+    if (appraisal.notesAndAssumptions2YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions2)
+    }
+    if (appraisal.notesAndAssumptions3YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions3)
+    }
+    if (appraisal.notesAndAssumptions4YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions4)
+    }
+    if (appraisal.notesAndAssumptions5YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions5)
+    }
+    if (appraisal.notesAndAssumptions6YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions6)
+    }
+    if (appraisal.notesAndAssumptions7YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions7)
+    }
+    if (appraisal.notesAndAssumptions8YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions8)
+    }
+    if (appraisal.notesAndAssumptions9YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions9)
+    }
+    if (appraisal.notesAndAssumptions10YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions10)
+    }
+    if (appraisal.notesAndAssumptions11YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions11)
+    }
+    if (appraisal.notesAndAssumptions12YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions12)
+    }
+    if (appraisal.notesAndAssumptions13YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions13)
+    }
+    if (appraisal.notesAndAssumptions14YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions14)
+    }
+    if (appraisal.notesAndAssumptions15YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions16)
+    }
+    if (appraisal.notesAndAssumptions17YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions17)
+    }
+    if (appraisal.notesAndAssumptions18YesNo) {
+      arrayNotesAssumptions.push(appraisal.notesAndAssumptions18)
+    }
+
+    var newArr = arrayNotesAssumptions.join(',').replace(/,/g, '</br></br></br>').split()
+    context.arrayNotesAssumptions = newArr
+    // finish notes and assumptions
 
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
