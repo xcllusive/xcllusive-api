@@ -2641,6 +2641,36 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: 0
+      },
+      renderPdfYear1: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
+      },
+      renderPdfYear2: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
+      },
+      renderPdfYear3: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
+      },
+      renderPdfYear4: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
+      },
+      renderPdfYear5: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
+      },
+      renderPdfYear7: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
       }
     }, {
       createdAt: 'dateTimeCreated',

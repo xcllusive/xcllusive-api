@@ -2,17 +2,22 @@
   .tg {
     border-collapse: collapse;
     border-spacing: 0;
+    table-layout: fixed;
+    width: 605px;
   }
+
   .tg td {
     font-family: Arial, sans-serif;
-    font-size: 14px;
-    padding: 10px 5px;
+    font-size: 12px;
+    padding: 2px 4px;
     border-style: solid;
     border-width: 1px;
     overflow: hidden;
     word-break: normal;
     border-color: black;
+
   }
+
   .tg th {
     font-family: Arial, sans-serif;
     font-size: 14px;
@@ -24,510 +29,435 @@
     word-break: normal;
     border-color: black;
   }
-  .tg .tg-5w3z {
-    font-weight: bold;
-    font-size: 12px;
-    border-color: #a7a7a7;
-    text-align: left;
-    vertical-align: top;
+
+  .tg .cell-empty {
+    border: none;
   }
-  .tg .tg-thfk {
-    font-size: 12px;
-    border-color: #ffffff;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tg .tg-v7cp {
-    font-weight: bold;
-    font-size: 12px;
-    background-color: #e2f3f7;
-    border-color: #333333;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tg .tg-kwev {
-    font-weight: bold;
-    font-size: 12px;
-    border-color: #330001;
-    text-align: left;
-  }
-  .tg .tg-7vup {
-    font-weight: bold;
-    font-size: 12px;
-    background-color: #e2f3f7;
-    border-color: inherit;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tg .tg-bbyw {
-    font-weight: bold;
-    font-size: 12px;
-    border-color: #a7a7a7;
-    text-align: left;
-  }
-  .tg .tg-77x5 {
+
+  .tg .cell-value {
     font-weight: bold;
     font-size: 12px;
     border-color: inherit;
-    text-align: left;
-    vertical-align: top;
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
-  .tg .tg-1evr {
-    font-size: 12px;
-    border-color: #a7a7a7;
-    text-align: left;
-  }
-  .tg .tg-rufs {
-    font-size: 12px;
-    border-color: #330001;
-    text-align: left;
-  }
-  .tg .tg-8o9c {
-    font-weight: bold;
-    font-size: 12px;
-    border-color: #330001;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tg .tg-73a0 {
+
+  .tg .cell-title {
     font-size: 12px;
     border-color: inherit;
     text-align: left;
-    vertical-align: top;
   }
-  .tg .tg-hk6m {
-    font-size: 12px;
-    background-color: #e2f3f7;
-    border-color: inherit;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tg .tg-u8om {
-    font-size: 12px;
-    background-color: #e2f3f7;
-    border-color: #333333;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tg .tg-w9cf {
-    font-weight: bold;
-    font-size: 12px;
-    border-color: #ffffff;
-    text-align: left;
-    vertical-align: top;
-  }
+
 </style>
-<table class="tg">
+<table class="tg" cellpadding="0" cellspacing="0">
   <tr>
-    <th class="tg-1evr"></th>
-    <th class="tg-bbyw">[[year1]]</th>
-    <th class="tg-bbyw">[[year2]]</th>
-    <th class="tg-bbyw">[[year3]]</th>
-    <th class="tg-bbyw">[[year4]]</th>
-    <th class="tg-5w3z">[[year5]]</th>
-    <th class="tg-5w3z">[[year7]]</th>
+    <th class="cell-empty"></th>
+    <th class="cell-value ">[[year1]]</th>
+    <th class="cell-value ">[[year2]]</th>
+    <th class="cell-value ">[[year3]]</th>
+    <th class="cell-value ">[[year4]]</th>
+    <th class="cell-value ">[[year5]]</th>
+    <th class="cell-value ">[[year7]]</th>
   </tr>
   <tr>
-    <td class="tg-rufs"><span style="font-weight:bold">Total Sales</span></td>
-    <td class="tg-kwev">[[sales1]]</td>
-    <td class="tg-kwev">[[sales2]]</td>
-    <td class="tg-kwev">[[sales3]]</td>
-    <td class="tg-kwev">[[sales4]]</td>
-    <td class="tg-8o9c">[[sales5]]</td>
-    <td class="tg-8o9c">[[sales7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
+    <td class="cell-value ">[[sales1]]</td>
+    <td class="cell-value ">[[sales2]]</td>
+    <td class="cell-value ">[[sales3]]</td>
+    <td class="cell-value ">[[sales4]]</td>
+    <td class="cell-value ">[[sales5]]</td>
+    <td class="cell-value ">[[sales7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">COGS</span></td>
-    <td class="tg-77x5">[[cogs1]]</td>
-    <td class="tg-77x5">[[cogs2]]</td>
-    <td class="tg-77x5">[[cogs3]]</td>
-    <td class="tg-77x5">[[cogs4]]</td>
-    <td class="tg-77x5">[[cogs5]]</td>
-    <td class="tg-77x5">[[cogs7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">COGS</span></td>
+    <td class="cell-value">[[cogs1]]</td>
+    <td class="cell-value">[[cogs2]]</td>
+    <td class="cell-value">[[cogs3]]</td>
+    <td class="cell-value">[[cogs4]]</td>
+    <td class="cell-value">[[cogs5]]</td>
+    <td class="cell-value">[[cogs7]]</td>
+  </tr>
+  <tr style="background-color: #e2f3f7">
+    <td class="cell-title"><span style="font-weight:bold">Gross Margin</span></td>
+    <td class="cell-value">[[grossMargin1]]</td>
+    <td class="cell-value">[[grossMargin2]]</td>
+    <td class="cell-value">[[grossMargin3]]</td>
+    <td class="cell-value">[[grossMargin4]]</td>
+    <td class="cell-value">[[grossMargin5]]</td>
+    <td class="cell-value">[[grossMargin7]]</td>
   </tr>
   <tr>
-    <td class="tg-hk6m"><span style="font-weight:bold">Gross Margin</span></td>
-    <td class="tg-7vup">[[grossMargin1]]</td>
-    <td class="tg-7vup">[[grossMargin2]]</td>
-    <td class="tg-7vup">[[grossMargin3]]</td>
-    <td class="tg-7vup">[[grossMargin4]]</td>
-    <td class="tg-7vup">[[grossMargin5]]</td>
-    <td class="tg-7vup">[[grossMargin7]]</td>
+    <td class="cell-title">Gross Margin %</td>
+    <td class="cell-value">[[grossMarginPerc1]]</td>
+    <td class="cell-value">[[grossMarginPerc2]]</td>
+    <td class="cell-value">[[grossMarginPerc3]]</td>
+    <td class="cell-value">[[grossMarginPerc4]]</td>
+    <td class="cell-value">[[grossMarginPerc5]]</td>
+    <td class="cell-value">[[grossMarginPerc7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">Gross Margin %</td>
-    <td class="tg-77x5">[[grossMarginPerc1]]</td>
-    <td class="tg-77x5">[[grossMarginPerc2]]</td>
-    <td class="tg-77x5">[[grossMarginPerc3]]</td>
-    <td class="tg-77x5">[[grossMarginPerc4]]</td>
-    <td class="tg-77x5">[[grossMarginPerc5]]</td>
-    <td class="tg-77x5">[[grossMarginPerc7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Other Income</span></td>
+    <td class="cell-value">[[otherIncome1]]</td>
+    <td class="cell-value">[[otherIncome2]]</td>
+    <td class="cell-value">[[otherIncome3]]</td>
+    <td class="cell-value">[[otherIncome4]]</td>
+    <td class="cell-value">[[otherIncome5]]</td>
+    <td class="cell-value">[[otherIncome7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">Other Income</span></td>
-    <td class="tg-77x5">[[otherIncome1]]</td>
-    <td class="tg-77x5">[[otherIncome2]]</td>
-    <td class="tg-77x5">[[otherIncome3]]</td>
-    <td class="tg-77x5">[[otherIncome4]]</td>
-    <td class="tg-77x5">[[otherIncome5]]</td>
-    <td class="tg-77x5">[[otherIncome7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Gross Profit</span></td>
+    <td class="cell-value">[[grossProfit1]]</td>
+    <td class="cell-value">[[grossProfit2]]</td>
+    <td class="cell-value">[[grossProfit3]]</td>
+    <td class="cell-value">[[grossProfit4]]</td>
+    <td class="cell-value">[[grossProfit5]]</td>
+    <td class="cell-value">[[grossProfit7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">Gross Profit</span></td>
-    <td class="tg-77x5">[[grossProfit1]]</td>
-    <td class="tg-77x5">[[grossProfit2]]</td>
-    <td class="tg-77x5">[[grossProfit3]]</td>
-    <td class="tg-77x5">[[grossProfit4]]</td>
-    <td class="tg-77x5">[[grossProfit5]]</td>
-    <td class="tg-77x5">[[grossProfit7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Expenses</span></td>
+    <td class="cell-value">[[expenses1]]</td>
+    <td class="cell-value">[[expenses2]]</td>
+    <td class="cell-value">[[expenses3]]</td>
+    <td class="cell-value">[[expenses4]]</td>
+    <td class="cell-value">[[expenses5]]</td>
+    <td class="cell-value">[[expenses7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">Expenses</span></td>
-    <td class="tg-77x5">[[expenses1]]</td>
-    <td class="tg-77x5">[[expenses2]]</td>
-    <td class="tg-77x5">[[expenses3]]</td>
-    <td class="tg-77x5">[[expenses4]]</td>
-    <td class="tg-77x5">[[expenses5]]</td>
-    <td class="tg-77x5">[[expenses7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Operating Profit</span></td>
+    <td class="cell-value">[[operatingProfit1]]</td>
+    <td class="cell-value">[[operatingProfit2]]</td>
+    <td class="cell-value">[[operatingProfit3]]</td>
+    <td class="cell-value">[[operatingProfit4]]</td>
+    <td class="cell-value">[[operatingProfit5]]</td>
+    <td class="cell-value">[[operatingProfit7]]</td>
   </tr>
-  <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">Operating Profit</span></td>
-    <td class="tg-77x5">[[operatingProfit1]]</td>
-    <td class="tg-77x5">[[operatingProfit2]]</td>
-    <td class="tg-77x5">[[operatingProfit3]]</td>
-    <td class="tg-77x5">[[operatingProfit4]]</td>
-    <td class="tg-77x5">[[operatingProfit5]]</td>
-    <td class="tg-77x5">[[operatingProfit7]]</td>
+  <tr style="background-color: #e2f3f7">
+    <td class="cell-title">Operating Profit %</td>
+    <td class="cell-value">[[operatingProfitPerc1]]</td>
+    <td class="cell-value">[[operatingProfitPerc2]]</td>
+    <td class="cell-value">[[operatingProfitPerc3]]</td>
+    <td class="cell-value">[[operatingProfitPerc4]]</td>
+    <td class="cell-value">[[operatingProfitPerc5]]</td>
+    <td class="cell-value">[[operatingProfitPerc7]]</td>
   </tr>
+</table>
+<table class="tg" cellpadding="0" cellspacing="0">
   <tr>
-    <td class="tg-u8om">Operating Profit %</td>
-    <td class="tg-v7cp">[[operatingProfitPerc1]]</td>
-    <td class="tg-v7cp">[[operatingProfitPerc2]]</td>
-    <td class="tg-v7cp">[[operatingProfitPerc3]]</td>
-    <td class="tg-v7cp">[[operatingProfitPerc4]]</td>
-    <td class="tg-v7cp">[[operatingProfitPerc5]]</td>
-    <td class="tg-v7cp">[[operatingProfitPerc7]]</td>
-  </tr>
-  <tr>
-    <td class="tg-thfk"></td>
-    <td class="tg-w9cf"></td>
-    <td class="tg-w9cf"></td>
-    <td class="tg-w9cf"></td>
-    <td class="tg-w9cf"></td>
-    <td class="tg-w9cf"></td>
-    <td class="tg-w9cf"></td>
-  </tr>
-  <tr>
-    <td class="tg-73a0">
+    <td colspan="7" style="text-align: center;">
       <span style="font-weight:bold">Addbacks and Adjustments</span>
     </td>
-    <td class="tg-77x5"></td>
-    <td class="tg-77x5"></td>
-    <td class="tg-77x5"></td>
-    <td class="tg-77x5"></td>
-    <td class="tg-77x5"></td>
-    <td class="tg-77x5"></td>
+  </tr>
+  {{#each financialInformationArray}}
+  <tr>
+    <td class="cell-title">{{aaRow}}</td>
+    <td class="cell-value">{{aaRowYear1}}</td>
+    <td class="cell-value">{{aaRowYear2}}</td>
+    <td class="cell-value">{{aaRowYear3}}</td>
+    <td class="cell-value">{{aaRowYear4}}</td>
+    <td class="cell-value">{{aaRowYear5}}</td>
+    <td class="cell-value">{{aaRowYear7}}</td>
+  </tr>
+  {{/each}}
+  <tr>
+    <td class="cell-title">[[aaRow1]]</td>
+    <td class="cell-value">[[aaRow1Year1]]</td>
+    <td class="cell-value">[[aaRow1Year2]]</td>
+    <td class="cell-value">[[aaRow1Year3]]</td>
+    <td class="cell-value">[[aaRow1Year4]]</td>
+    <td class="cell-value">[[aaRow1Year5]]</td>
+    <td class="cell-value">[[aaRow1Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow1]]</td>
-    <td class="tg-77x5">[[aaRow1Year1]]</td>
-    <td class="tg-77x5">[[aaRow1Year2]]</td>
-    <td class="tg-77x5">[[aaRow1Year3]]</td>
-    <td class="tg-77x5">[[aaRow1Year4]]</td>
-    <td class="tg-77x5">[[aaRow1Year5]]</td>
-    <td class="tg-77x5">[[aaRow1Year7]]</td>
+    <td class="cell-title">[[aaRow2]]</td>
+    <td class="cell-value">[[aaRow2Year1]]</td>
+    <td class="cell-value">[[aaRow2Year2]]</td>
+    <td class="cell-value">[[aaRow2Year3]]</td>
+    <td class="cell-value">[[aaRow2Year4]]</td>
+    <td class="cell-value">[[aaRow2Year5]]</td>
+    <td class="cell-value">[[aaRow2Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow2]]</td>
-    <td class="tg-77x5">[[aaRow2Year1]]</td>
-    <td class="tg-77x5">[[aaRow2Year2]]</td>
-    <td class="tg-77x5">[[aaRow2Year3]]</td>
-    <td class="tg-77x5">[[aaRow2Year4]]</td>
-    <td class="tg-77x5">[[aaRow2Year5]]</td>
-    <td class="tg-77x5">[[aaRow2Year7]]</td>
+    <td class="cell-title">[[aaRow3]]</td>
+    <td class="cell-value">[[aaRow3Year1]]</td>
+    <td class="cell-value">[[aaRow3Year2]]</td>
+    <td class="cell-value">[[aaRow3Year3]]</td>
+    <td class="cell-value">[[aaRow3Year4]]</td>
+    <td class="cell-value">[[aaRow3Year5]]</td>
+    <td class="cell-value">[[aaRow3Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow3]]</td>
-    <td class="tg-77x5">[[aaRow3Year1]]</td>
-    <td class="tg-77x5">[[aaRow3Year2]]</td>
-    <td class="tg-77x5">[[aaRow3Year3]]</td>
-    <td class="tg-77x5">[[aaRow3Year4]]</td>
-    <td class="tg-77x5">[[aaRow3Year5]]</td>
-    <td class="tg-77x5">[[aaRow3Year7]]</td>
+    <td class="cell-title">[[aaRow4]]</td>
+    <td class="cell-value">[[aaRow4Year1]]</td>
+    <td class="cell-value">[[aaRow4Year2]]</td>
+    <td class="cell-value">[[aaRow4Year3]]</td>
+    <td class="cell-value">[[aaRow4Year4]]</td>
+    <td class="cell-value">[[aaRow4Year5]]</td>
+    <td class="cell-value">[[aaRow4Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow4]]</td>
-    <td class="tg-77x5">[[aaRow4Year1]]</td>
-    <td class="tg-77x5">[[aaRow4Year2]]</td>
-    <td class="tg-77x5">[[aaRow4Year3]]</td>
-    <td class="tg-77x5">[[aaRow4Year4]]</td>
-    <td class="tg-77x5">[[aaRow4Year5]]</td>
-    <td class="tg-77x5">[[aaRow4Year7]]</td>
+    <td class="cell-title">[[aaRow5]]</td>
+    <td class="cell-value">[[aaRow5Year1]]</td>
+    <td class="cell-value">[[aaRow5Year2]]</td>
+    <td class="cell-value">[[aaRow5Year3]]</td>
+    <td class="cell-value">[[aaRow5Year4]]</td>
+    <td class="cell-value">[[aaRow5Year5]]</td>
+    <td class="cell-value">[[aaRow5Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow5]]</td>
-    <td class="tg-77x5">[[aaRow5Year1]]</td>
-    <td class="tg-77x5">[[aaRow5Year2]]</td>
-    <td class="tg-77x5">[[aaRow5Year3]]</td>
-    <td class="tg-77x5">[[aaRow5Year4]]</td>
-    <td class="tg-77x5">[[aaRow5Year5]]</td>
-    <td class="tg-77x5">[[aaRow5Year7]]</td>
+    <td class="cell-title">[[aaRow6]]</td>
+    <td class="cell-value">[[aaRow6Year1]]</td>
+    <td class="cell-value">[[aaRow6Year2]]</td>
+    <td class="cell-value">[[aaRow6Year3]]</td>
+    <td class="cell-value">[[aaRow6Year4]]</td>
+    <td class="cell-value">[[aaRow6Year5]]</td>
+    <td class="cell-value">[[aaRow6Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow6]]</td>
-    <td class="tg-77x5">[[aaRow6Year1]]</td>
-    <td class="tg-77x5">[[aaRow6Year2]]</td>
-    <td class="tg-77x5">[[aaRow6Year3]]</td>
-    <td class="tg-77x5">[[aaRow6Year4]]</td>
-    <td class="tg-77x5">[[aaRow6Year5]]</td>
-    <td class="tg-77x5">[[aaRow6Year7]]</td>
+    <td class="cell-title">[[aaRow7]]</td>
+    <td class="cell-value">[[aaRow7Year1]]</td>
+    <td class="cell-value">[[aaRow7Year2]]</td>
+    <td class="cell-value">[[aaRow7Year3]]</td>
+    <td class="cell-value">[[aaRow7Year4]]</td>
+    <td class="cell-value">[[aaRow7Year5]]</td>
+    <td class="cell-value">[[aaRow7Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow7]]</td>
-    <td class="tg-77x5">[[aaRow7Year1]]</td>
-    <td class="tg-77x5">[[aaRow7Year2]]</td>
-    <td class="tg-77x5">[[aaRow7Year3]]</td>
-    <td class="tg-77x5">[[aaRow7Year4]]</td>
-    <td class="tg-77x5">[[aaRow7Year5]]</td>
-    <td class="tg-77x5">[[aaRow7Year7]]</td>
+    <td class="cell-title">[[aaRow8]]</td>
+    <td class="cell-value">[[aaRow8Year1]]</td>
+    <td class="cell-value">[[aaRow8Year2]]</td>
+    <td class="cell-value">[[aaRow8Year3]]</td>
+    <td class="cell-value">[[aaRow8Year4]]</td>
+    <td class="cell-value">[[aaRow8Year5]]</td>
+    <td class="cell-value">[[aaRow8Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow8]]</td>
-    <td class="tg-77x5">[[aaRow8Year1]]</td>
-    <td class="tg-77x5">[[aaRow8Year2]]</td>
-    <td class="tg-77x5">[[aaRow8Year3]]</td>
-    <td class="tg-77x5">[[aaRow8Year4]]</td>
-    <td class="tg-77x5">[[aaRow8Year5]]</td>
-    <td class="tg-77x5">[[aaRow8Year7]]</td>
+    <td class="cell-title">[[aaRow9]]</td>
+    <td class="cell-value">[[aaRow9Year1]]</td>
+    <td class="cell-value">[[aaRow9Year2]]</td>
+    <td class="cell-value">[[aaRow9Year3]]</td>
+    <td class="cell-value">[[aaRow9Year4]]</td>
+    <td class="cell-value">[[aaRow9Year5]]</td>
+    <td class="cell-value">[[aaRow9Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow9]]</td>
-    <td class="tg-77x5">[[aaRow9Year1]]</td>
-    <td class="tg-77x5">[[aaRow9Year2]]</td>
-    <td class="tg-77x5">[[aaRow9Year3]]</td>
-    <td class="tg-77x5">[[aaRow9Year4]]</td>
-    <td class="tg-77x5">[[aaRow9Year5]]</td>
-    <td class="tg-77x5">[[aaRow9Year7]]</td>
+    <td class="cell-title">[[aaRow10]]</td>
+    <td class="cell-value">[[aaRow10Year1]]</td>
+    <td class="cell-value">[[aaRow10Year2]]</td>
+    <td class="cell-value">[[aaRow10Year3]]</td>
+    <td class="cell-value">[[aaRow10Year4]]</td>
+    <td class="cell-value">[[aaRow10Year5]]</td>
+    <td class="cell-value">[[aaRow10Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow10]]</td>
-    <td class="tg-77x5">[[aaRow10Year1]]</td>
-    <td class="tg-77x5">[[aaRow10Year2]]</td>
-    <td class="tg-77x5">[[aaRow10Year3]]</td>
-    <td class="tg-77x5">[[aaRow10Year4]]</td>
-    <td class="tg-77x5">[[aaRow10Year5]]</td>
-    <td class="tg-77x5">[[aaRow10Year7]]</td>
+    <td class="cell-title">[[aaRow11]]</td>
+    <td class="cell-value">[[aaRow11Year1]]</td>
+    <td class="cell-value">[[aaRow11Year2]]</td>
+    <td class="cell-value">[[aaRow11Year3]]</td>
+    <td class="cell-value">[[aaRow11Year4]]</td>
+    <td class="cell-value">[[aaRow11Year5]]</td>
+    <td class="cell-value">[[aaRow11Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow11]]</td>
-    <td class="tg-77x5">[[aaRow11Year1]]</td>
-    <td class="tg-77x5">[[aaRow11Year2]]</td>
-    <td class="tg-77x5">[[aaRow11Year3]]</td>
-    <td class="tg-77x5">[[aaRow11Year4]]</td>
-    <td class="tg-77x5">[[aaRow11Year5]]</td>
-    <td class="tg-77x5">[[aaRow11Year7]]</td>
+    <td class="cell-title">[[aaRow12]</td>
+    <td class="cell-value">[[aaRow12Year1]]</td>
+    <td class="cell-value">[[aaRow12Year2]]</td>
+    <td class="cell-value">[[aaRow12Year3]]</td>
+    <td class="cell-value">[[aaRow12Year4]]</td>
+    <td class="cell-value">[[aaRow12Year5]]</td>
+    <td class="cell-value">[[aaRow12Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow12]</td>
-    <td class="tg-77x5">[[aaRow12Year1]]</td>
-    <td class="tg-77x5">[[aaRow12Year2]]</td>
-    <td class="tg-77x5">[[aaRow12Year3]]</td>
-    <td class="tg-77x5">[[aaRow12Year4]]</td>
-    <td class="tg-77x5">[[aaRow12Year5]]</td>
-    <td class="tg-77x5">[[aaRow12Year7]]</td>
+    <td class="cell-title">[[aaRow13]]</td>
+    <td class="cell-value">[[aaRow13Year1]]</td>
+    <td class="cell-value">[[aaRow13Year2]]</td>
+    <td class="cell-value">[[aaRow13Year3]]</td>
+    <td class="cell-value">[[aaRow13Year4]]</td>
+    <td class="cell-value">[[aaRow13Year5]]</td>
+    <td class="cell-value">[[aaRow13Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow13]]</td>
-    <td class="tg-77x5">[[aaRow13Year1]]</td>
-    <td class="tg-77x5">[[aaRow13Year2]]</td>
-    <td class="tg-77x5">[[aaRow13Year3]]</td>
-    <td class="tg-77x5">[[aaRow13Year4]]</td>
-    <td class="tg-77x5">[[aaRow13Year5]]</td>
-    <td class="tg-77x5">[[aaRow13Year7]]</td>
+    <td class="cell-title">[[aaRow14]]</td>
+    <td class="cell-value">[[aaRow14Year1]]</td>
+    <td class="cell-value">[[aaRow14Year2]]</td>
+    <td class="cell-value">[[aaRow14Year3]]</td>
+    <td class="cell-value">[[aaRow14Year4]]</td>
+    <td class="cell-value">[[aaRow14Year5]]</td>
+    <td class="cell-value">[[aaRow14Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow14]]</td>
-    <td class="tg-77x5">[[aaRow14Year1]]</td>
-    <td class="tg-77x5">[[aaRow14Year2]]</td>
-    <td class="tg-77x5">[[aaRow14Year3]]</td>
-    <td class="tg-77x5">[[aaRow14Year4]]</td>
-    <td class="tg-77x5">[[aaRow14Year5]]</td>
-    <td class="tg-77x5">[[aaRow14Year7]]</td>
+    <td class="cell-title">[[aaRow15]]</td>
+    <td class="cell-value">[[aaRow15Year1]]</td>
+    <td class="cell-value">[[aaRow15Year2]]</td>
+    <td class="cell-value">[[aaRow15Year3]]</td>
+    <td class="cell-value">[[aaRow15Year4]]</td>
+    <td class="cell-value">[[aaRow15Year5]]</td>
+    <td class="cell-value">[[aaRow15Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow15]]</td>
-    <td class="tg-77x5">[[aaRow15Year1]]</td>
-    <td class="tg-77x5">[[aaRow15Year2]]</td>
-    <td class="tg-77x5">[[aaRow15Year3]]</td>
-    <td class="tg-77x5">[[aaRow15Year4]]</td>
-    <td class="tg-77x5">[[aaRow15Year5]]</td>
-    <td class="tg-77x5">[[aaRow15Year7]]</td>
+    <td class="cell-title">[[aaRow16]]</td>
+    <td class="cell-value">[[aaRow16Year1]]</td>
+    <td class="cell-value">[[aaRow16Year2]]</td>
+    <td class="cell-value">[[aaRow16Year3]]</td>
+    <td class="cell-value">[[aaRow16Year4]]</td>
+    <td class="cell-value">[[aaRow16Year5]]</td>
+    <td class="cell-value">[[aaRow16Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow16]]</td>
-    <td class="tg-77x5">[[aaRow16Year1]]</td>
-    <td class="tg-77x5">[[aaRow16Year2]]</td>
-    <td class="tg-77x5">[[aaRow16Year3]]</td>
-    <td class="tg-77x5">[[aaRow16Year4]]</td>
-    <td class="tg-77x5">[[aaRow16Year5]]</td>
-    <td class="tg-77x5">[[aaRow16Year7]]</td>
+    <td class="cell-title">[[aaRow17]]</td>
+    <td class="cell-value">[[aaRow17Year1]]</td>
+    <td class="cell-value">[[aaRow17Year2]]</td>
+    <td class="cell-value">[[aaRow17Year3]]</td>
+    <td class="cell-value">[[aaRow17Year4]]</td>
+    <td class="cell-value">[[aaRow17Year5]]</td>
+    <td class="cell-value">[[aaRow17Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow17]]</td>
-    <td class="tg-77x5">[[aaRow17Year1]]</td>
-    <td class="tg-77x5">[[aaRow17Year2]]</td>
-    <td class="tg-77x5">[[aaRow17Year3]]</td>
-    <td class="tg-77x5">[[aaRow17Year4]]</td>
-    <td class="tg-77x5">[[aaRow17Year5]]</td>
-    <td class="tg-77x5">[[aaRow17Year7]]</td>
+    <td class="cell-title">[[aaRow18]]</td>
+    <td class="cell-value">[[aaRow18Year1]]</td>
+    <td class="cell-value">[[aaRow18Year2]]</td>
+    <td class="cell-value">[[aaRow18Year3]]</td>
+    <td class="cell-value">[[aaRow18Year4]]</td>
+    <td class="cell-value">[[aaRow18Year5]]</td>
+    <td class="cell-value">[[aaRow18Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow18]]</td>
-    <td class="tg-77x5">[[aaRow18Year1]]</td>
-    <td class="tg-77x5">[[aaRow18Year2]]</td>
-    <td class="tg-77x5">[[aaRow18Year3]]</td>
-    <td class="tg-77x5">[[aaRow18Year4]]</td>
-    <td class="tg-77x5">[[aaRow18Year5]]</td>
-    <td class="tg-77x5">[[aaRow18Year7]]</td>
+    <td class="cell-title">[[aaRow19]]</td>
+    <td class="cell-value">[[aaRow19Year1]]</td>
+    <td class="cell-value">[[aaRow19Year2]]</td>
+    <td class="cell-value">[[aaRow19Year3]]</td>
+    <td class="cell-value">[[aaRow19Year4]]</td>
+    <td class="cell-value">[[aaRow19Year5]]</td>
+    <td class="cell-value">[[aaRow19Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow19]]</td>
-    <td class="tg-77x5">[[aaRow19Year1]]</td>
-    <td class="tg-77x5">[[aaRow19Year2]]</td>
-    <td class="tg-77x5">[[aaRow19Year3]]</td>
-    <td class="tg-77x5">[[aaRow19Year4]]</td>
-    <td class="tg-77x5">[[aaRow19Year5]]</td>
-    <td class="tg-77x5">[[aaRow19Year7]]</td>
+    <td class="cell-title">[[aaRow20]]</td>
+    <td class="cell-value">[[aaRow20Year1]]</td>
+    <td class="cell-value">[[aaRow20Year2]]</td>
+    <td class="cell-value">[[aaRow20Year3]]</td>
+    <td class="cell-value">[[aaRow20Year4]]</td>
+    <td class="cell-value">[[aaRow20Year5]]</td>
+    <td class="cell-value">[[aaRow20Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow20]]</td>
-    <td class="tg-77x5">[[aaRow20Year1]]</td>
-    <td class="tg-77x5">[[aaRow20Year2]]</td>
-    <td class="tg-77x5">[[aaRow20Year3]]</td>
-    <td class="tg-77x5">[[aaRow20Year4]]</td>
-    <td class="tg-77x5">[[aaRow20Year5]]</td>
-    <td class="tg-77x5">[[aaRow20Year7]]</td>
+    <td class="cell-title">[[aaRow21]]</td>
+    <td class="cell-value">[[aaRow21Year1]]</td>
+    <td class="cell-value">[[aaRow21Year2]]</td>
+    <td class="cell-value">[[aaRow21Year3]]</td>
+    <td class="cell-value">[[aaRow21Year4]]</td>
+    <td class="cell-value">[[aaRow21Year5]]</td>
+    <td class="cell-value">[[aaRow21Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow21]]</td>
-    <td class="tg-77x5">[[aaRow21Year1]]</td>
-    <td class="tg-77x5">[[aaRow21Year2]]</td>
-    <td class="tg-77x5">[[aaRow21Year3]]</td>
-    <td class="tg-77x5">[[aaRow21Year4]]</td>
-    <td class="tg-77x5">[[aaRow21Year5]]</td>
-    <td class="tg-77x5">[[aaRow21Year7]]</td>
+    <td class="cell-title">[[aaRow22]]</td>
+    <td class="cell-value">[[aaRow22Year1]]</td>
+    <td class="cell-value">[[aaRow22Year2]]</td>
+    <td class="cell-value">[[aaRow22Year3]]</td>
+    <td class="cell-value">[[aaRow22Year4]]</td>
+    <td class="cell-value">[[aaRow22Year5]]</td>
+    <td class="cell-value">[[aaRow22Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow22]]</td>
-    <td class="tg-77x5">[[aaRow22Year1]]</td>
-    <td class="tg-77x5">[[aaRow22Year2]]</td>
-    <td class="tg-77x5">[[aaRow22Year3]]</td>
-    <td class="tg-77x5">[[aaRow22Year4]]</td>
-    <td class="tg-77x5">[[aaRow22Year5]]</td>
-    <td class="tg-77x5">[[aaRow22Year7]]</td>
+    <td class="cell-title">[[aaRow23]]</td>
+    <td class="cell-value">[[aaRow23Year1]]</td>
+    <td class="cell-value">[[aaRow23Year2]]</td>
+    <td class="cell-value">[[aaRow23Year3]]</td>
+    <td class="cell-value">[[aaRow23Year4]]</td>
+    <td class="cell-value">[[aaRow23Year5]]</td>
+    <td class="cell-value">[[aaRow23Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow23]]</td>
-    <td class="tg-77x5">[[aaRow23Year1]]</td>
-    <td class="tg-77x5">[[aaRow23Year2]]</td>
-    <td class="tg-77x5">[[aaRow23Year3]]</td>
-    <td class="tg-77x5">[[aaRow23Year4]]</td>
-    <td class="tg-77x5">[[aaRow23Year5]]</td>
-    <td class="tg-77x5">[[aaRow23Year7]]</td>
+    <td class="cell-title">[[aaRow24]]</td>
+    <td class="cell-value">[[aaRow24Year1]]</td>
+    <td class="cell-value">[[aaRow24Year2]]</td>
+    <td class="cell-value">[[aaRow24Year3]]</td>
+    <td class="cell-value">[[aaRow24Year4]]</td>
+    <td class="cell-value">[[aaRow24Year5]]</td>
+    <td class="cell-value">[[aaRow24Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow24]]</td>
-    <td class="tg-77x5">[[aaRow24Year1]]</td>
-    <td class="tg-77x5">[[aaRow24Year2]]</td>
-    <td class="tg-77x5">[[aaRow24Year3]]</td>
-    <td class="tg-77x5">[[aaRow24Year4]]</td>
-    <td class="tg-77x5">[[aaRow24Year5]]</td>
-    <td class="tg-77x5">[[aaRow24Year7]]</td>
+    <td class="cell-title">[[aaRow25]]</td>
+    <td class="cell-value">[[aaRow25Year1]]</td>
+    <td class="cell-value">[[aaRow25Year2]]</td>
+    <td class="cell-value">[[aaRow25Year3]]</td>
+    <td class="cell-value">[[aaRow25Year4]]</td>
+    <td class="cell-value">[[aaRow25Year5]]</td>
+    <td class="cell-value">[[aaRow25Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow25]]</td>
-    <td class="tg-77x5">[[aaRow25Year1]]</td>
-    <td class="tg-77x5">[[aaRow25Year2]]</td>
-    <td class="tg-77x5">[[aaRow25Year3]]</td>
-    <td class="tg-77x5">[[aaRow25Year4]]</td>
-    <td class="tg-77x5">[[aaRow25Year5]]</td>
-    <td class="tg-77x5">[[aaRow25Year7]]</td>
+    <td class="cell-title">[[aaRow26]]</td>
+    <td class="cell-value">[[aaRow26Year1]]</td>
+    <td class="cell-value">[[aaRow26Year2]]</td>
+    <td class="cell-value">[[aaRow26Year3]]</td>
+    <td class="cell-value">[[aaRow26Year4]]</td>
+    <td class="cell-value">[[aaRow26Year5]]</td>
+    <td class="cell-value">[[aaRow26Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow26]]</td>
-    <td class="tg-77x5">[[aaRow26Year1]]</td>
-    <td class="tg-77x5">[[aaRow26Year2]]</td>
-    <td class="tg-77x5">[[aaRow26Year3]]</td>
-    <td class="tg-77x5">[[aaRow26Year4]]</td>
-    <td class="tg-77x5">[[aaRow26Year5]]</td>
-    <td class="tg-77x5">[[aaRow26Year7]]</td>
+    <td class="cell-title">[[aaRow27]]</td>
+    <td class="cell-value">[[aaRow27Year1]]</td>
+    <td class="cell-value">[[aaRow27Year2]]</td>
+    <td class="cell-value">[[aaRow27Year3]]</td>
+    <td class="cell-value">[[aaRow27Year4]]</td>
+    <td class="cell-value">[[aaRow27Year5]]</td>
+    <td class="cell-value">[[aaRow27Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow27]]</td>
-    <td class="tg-77x5">[[aaRow27Year1]]</td>
-    <td class="tg-77x5">[[aaRow27Year2]]</td>
-    <td class="tg-77x5">[[aaRow27Year3]]</td>
-    <td class="tg-77x5">[[aaRow27Year4]]</td>
-    <td class="tg-77x5">[[aaRow27Year5]]</td>
-    <td class="tg-77x5">[[aaRow27Year7]]</td>
+    <td class="cell-title">[[aaRow28]]</td>
+    <td class="cell-value">[[aaRow28Year1]]</td>
+    <td class="cell-value">[[aaRow28Year2]]</td>
+    <td class="cell-value">[[aaRow28Year3]]</td>
+    <td class="cell-value">[[aaRow28Year4]]</td>
+    <td class="cell-value">[[aaRow28Year5]]</td>
+    <td class="cell-value">[[aaRow28Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow28]]</td>
-    <td class="tg-77x5">[[aaRow28Year1]]</td>
-    <td class="tg-77x5">[[aaRow28Year2]]</td>
-    <td class="tg-77x5">[[aaRow28Year3]]</td>
-    <td class="tg-77x5">[[aaRow28Year4]]</td>
-    <td class="tg-77x5">[[aaRow28Year5]]</td>
-    <td class="tg-77x5">[[aaRow28Year7]]</td>
+    <td class="cell-title">[[aaRow29]]</td>
+    <td class="cell-value">[[aaRow29Year1]]</td>
+    <td class="cell-value">[[aaRow29Year2]]</td>
+    <td class="cell-value">[[aaRow29Year3]]</td>
+    <td class="cell-value">[[aaRow29Year4]]</td>
+    <td class="cell-value">[[aaRow29Year5]]</td>
+    <td class="cell-value">[[aaRow29Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow29]]</td>
-    <td class="tg-77x5">[[aaRow29Year1]]</td>
-    <td class="tg-77x5">[[aaRow29Year2]]</td>
-    <td class="tg-77x5">[[aaRow29Year3]]</td>
-    <td class="tg-77x5">[[aaRow29Year4]]</td>
-    <td class="tg-77x5">[[aaRow29Year5]]</td>
-    <td class="tg-77x5">[[aaRow29Year7]]</td>
+    <td class="cell-title">[[aaRow30]]</td>
+    <td class="cell-value">[[aaRow30Year1]]</td>
+    <td class="cell-value">[[aaRow30Year2]]</td>
+    <td class="cell-value">[[aaRow30Year3]]</td>
+    <td class="cell-value">[[aaRow30Year4]]</td>
+    <td class="cell-value">[[aaRow30Year5]]</td>
+    <td class="cell-value">[[aaRow30Year7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0">[[aaRow30]]</td>
-    <td class="tg-77x5">[[aaRow30Year1]]</td>
-    <td class="tg-77x5">[[aaRow30Year2]]</td>
-    <td class="tg-77x5">[[aaRow30Year3]]</td>
-    <td class="tg-77x5">[[aaRow30Year4]]</td>
-    <td class="tg-77x5">[[aaRow30Year5]]</td>
-    <td class="tg-77x5">[[aaRow30Year7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Total Adjusments</span></td>
+    <td class="cell-value">[[totalAdjusments1]]</td>
+    <td class="cell-value">[[totalAdjusments2]]</td>
+    <td class="cell-value">[[totalAdjusments3]]</td>
+    <td class="cell-value">[[totalAdjusments4]]</td>
+    <td class="cell-value">[[totalAdjusments5]]</td>
+    <td class="cell-value">[[totalAdjusments7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">Total Adjusments</span></td>
-    <td class="tg-77x5">[[totalAdjusments1]]</td>
-    <td class="tg-77x5">[[totalAdjusments2]]</td>
-    <td class="tg-77x5">[[totalAdjusments3]]</td>
-    <td class="tg-77x5">[[totalAdjusments4]]</td>
-    <td class="tg-77x5">[[totalAdjusments5]]</td>
-    <td class="tg-77x5">[[totalAdjusments7]]</td>
-  </tr>
-  <tr>
-    <td class="tg-73a0">
-      <span style="font-weight:bold">Total Adjusted Profit</span><br /><span
-        style="font-weight:bold"
-        >INCL. Owner's Wage</span
-      >
+    <td class="cell-title">
+      <span style="font-weight:bold">Total Adjusted Profit INCL. Owner's
+        Wage</span>
     </td>
-    <td class="tg-77x5">[[totalAdjustedProfit1]]</td>
-    <td class="tg-77x5">[[totalAdjustedProfit2]]</td>
-    <td class="tg-77x5">[[totalAdjustedProfit3]]</td>
-    <td class="tg-77x5">[[totalAdjustedProfit4]]</td>
-    <td class="tg-77x5">[[totalAdjustedProfit5]]</td>
-    <td class="tg-77x5">[[totalAdjustedProfit7]]</td>
+    <td class="cell-value">[[totalAdjustedProfit1]]</td>
+    <td class="cell-value">[[totalAdjustedProfit2]]</td>
+    <td class="cell-value">[[totalAdjustedProfit3]]</td>
+    <td class="cell-value">[[totalAdjustedProfit4]]</td>
+    <td class="cell-value">[[totalAdjustedProfit5]]</td>
+    <td class="cell-value">[[totalAdjustedProfit7]]</td>
   </tr>
   <tr>
-    <td class="tg-73a0"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
-    <td class="tg-77x5">[[adjustedProfitPerc1]]</td>
-    <td class="tg-77x5">[[adjustedProfitPerc2]]</td>
-    <td class="tg-77x5">[[adjustedProfitPerc3]]</td>
-    <td class="tg-77x5">[[adjustedProfitPerc4]]</td>
-    <td class="tg-77x5">[[adjustedProfitPerc5]]</td>
-    <td class="tg-77x5">[[adjustedProfitPerc7]]</td>
+    <td class="cell-title"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
+    <td class="cell-value">[[adjustedProfitPerc1]]</td>
+    <td class="cell-value">[[adjustedProfitPerc2]]</td>
+    <td class="cell-value">[[adjustedProfitPerc3]]</td>
+    <td class="cell-value">[[adjustedProfitPerc4]]</td>
+    <td class="cell-value">[[adjustedProfitPerc5]]</td>
+    <td class="cell-value">[[adjustedProfitPerc7]]</td>
   </tr>
 </table>
