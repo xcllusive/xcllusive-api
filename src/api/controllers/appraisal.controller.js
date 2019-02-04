@@ -317,6 +317,19 @@ export const generatePdf = async (req, res, next) => {
     context.totalAnnualWages = numeral(appraisal.totalAnnualWages).format('$0,0')
     // end owners position table
 
+    // start Financial Information Table
+    context.sales1 = numeral(appraisal.sales1).format('$0,0')
+    context.sales2 = numeral(appraisal.sales2).format('$0,0')
+    // end Financial Information Table
+
+    // start Labels for formula pricing
+    context.formulaValuePricingMethod = appraisal.formulaValuePricingMethod
+    context.labelComparableMultiplier = 'Comparable Multiplier'
+    context.fCalc1 = '+'
+    context.fCalc2 = '='
+    context.labelAskingPriceMultipler = 'Asking Price Multiplier'
+    // end Labels for formula pricing
+
     /* table 10 last businesses */
     let totalMultiplier = 0
     let totalIndex = 0
@@ -395,6 +408,12 @@ export const generatePdf = async (req, res, next) => {
       if (appraisal.pricingMethod === 10) {
         context.multiplierLabel = ''
         multiplier = ''
+        context.formulaValuePricingMethod = ''
+        context.labelComparableMultiplier = ''
+        context.fCalc1 = ''
+        context.fCalc2 = ''
+        context.labelAskingPriceMultipler = ''
+        context.askingPrice = ''
       }
       context[`multiplier${index + 1}`] = numeral(multiplier).format('0,0.[99]')
 
