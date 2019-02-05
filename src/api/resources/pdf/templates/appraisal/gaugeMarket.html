@@ -75,25 +75,25 @@
       ring: {
         size: 50,
         rules: [{
-          rule: '%v <= 20',
+          rule: '%v < 20',
           backgroundColor: '#e74c3c'
         }, {
-          rule: '%v > 20 && %v <= 40',
+          rule: '%v >= 20 && %v < 40',
           backgroundColor: '#f1c40f'
         }, {
-          rule: '%v > 40 && %v <= 60',
+          rule: '%v >= 40 && %v < 60',
           backgroundColor: '#e67e22'
         }, {
-          rule: '%v > 60 && %v <= 80',
+          rule: '%v >= 60 && %v < 80',
           backgroundColor: '#16a085'
         }, {
-          rule: '%v > 80',
+          rule: '%v >= 80',
           backgroundColor: '#2ecc71'
         }]
       }
     },
     series: [{
-      values: [valueGaugeMarket], // starting value
+      values: [parseInt(valueGaugeMarket, 10)], // starting value
       backgroundColor: 'black',
       indicator: [3, 3, 3, 3, 0.75]
     }]
