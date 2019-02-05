@@ -582,12 +582,16 @@ export const generatePdf = async (req, res, next) => {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
-    // const browser = await puppeteer.launch({ headless: false })
+    // const browser = await puppeteer.launch({
+    //   headless: false
+    // })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
-    await page.goto(`data:text/html,${template}`, {
-      waitUntil: 'networkidle0'
-    })
+    await page.setContent(template)
+    // await page.goto(`data:text/html,${template}`, {
+    //   waitUntil: 'networkidle0'
+    // })
+    await page.waitForSelector('#chartGaugeBusinessRisk')
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 

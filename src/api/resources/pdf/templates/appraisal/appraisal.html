@@ -302,6 +302,7 @@
     }
 
   </style>
+  <script type="text/javascript" src="https://cdn.zingchart.com/zingchart.min.js"></script>
   <script>
     window.doPrint = function () {
       setTimeout(function () {
@@ -927,9 +928,11 @@
         <div class="" style="position: relative; width: 606px; height: 132.29716535433px; background-color: ; z-index: 1187; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{criticalIssuesList}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:686.26771653543px;left:96.45874015748px; z-index: 1229;">
+    <div style="position: absolute; top:686.26771653543px;left:-100px; z-index: 1229;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 196px; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">gaugeBusinessRisk.html</div>
+        <div class="" style="position: relative; width: 100%; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
+          <div id="chartGaugeBusinessRisk"></div>
+        </div>
       </div>
     </div>
     <div style="position: absolute; top:665.29842519685px;left:96.45874015748px; z-index: 1243;">
@@ -938,9 +941,11 @@
           risk assessment</div>
       </div>
     </div>
-    <div style="position: absolute; top:862.02850393701px;left:96.45874015748px; z-index: 1229;">
+    <div style="position: absolute; top:862.02850393701px;left:-100px; z-index: 1229;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 377px; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">gaugeMarket.html</div>
+        <div class="" style="position: relative; width: 100%; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
+          <div id="chartGaugeMarket"></div>
+        </div>
       </div>
     </div>
     <div style="position: absolute; top:840.67795275591px;left:96.45874015748px; z-index: 1245;">
@@ -1538,5 +1543,201 @@
     </div>
   </div>
 </body>
+
+<script>
+  var valueGaugeBusinessRisk = '{{valueSliderBR}}'
+  var valueGaugeMarket = '{{valueSliderMarket}}'
+
+  var myConfigGaugeBusinessRisk = {
+    type: 'gauge',
+    globals: {
+      fontSize: 18
+    },
+    plotarea: {
+      marginTop: 45
+    },
+    plot: {
+      size: '100%',
+      valueBox: {
+        placement: 'center',
+        text: '%v', //default
+        fontSize: 15,
+        rules: [{
+          rule: '%v < 20',
+          text: '%v<br>Unsustainable Risk'
+        }, {
+          rule: '%v >= 20 && %v < 40',
+          text: '%v<br>Challenge Risk'
+        }, {
+          rule: '%v >= 40 && %v < 60',
+          text: '%v<br>Acceptable Risk'
+        }, {
+          rule: '%v >= 60 && %v < 80',
+          text: '%v<br>Attractive'
+        }, {
+          rule: '%v >= 80',
+          text: '%v<br>Highly Attractive'
+        }]
+      }
+    },
+    tooltip: {
+      borderRadius: 50
+    },
+    scaleR: {
+      aperture: 180,
+      minValue: 0,
+      maxValue: 100,
+      step: 20,
+      center: {
+        visible: false
+      },
+      tick: {
+        visible: false
+      },
+      item: {
+        fontSize: 12,
+        angle: 0,
+        offsetR: -5,
+        rules: [{
+          rule: '%i == 9',
+          offsetX: 15
+        }]
+      },
+      labels: ['Unsustainable Risk', 'Challenge Risk', '', 'Accept Risk', 'Attractive', 'Highly Attractive'],
+      ring: {
+        size: 50,
+        rules: [{
+          rule: '%v < 20',
+          backgroundColor: '#e74c3c'
+        }, {
+          rule: '%v >= 20 && %v < 40',
+          backgroundColor: '#f1c40f'
+        }, {
+          rule: '%v >= 40 && %v < 60',
+          backgroundColor: '#e67e22'
+        }, {
+          rule: '%v >= 60 && %v < 80',
+          backgroundColor: '#16a085'
+        }, {
+          rule: '%v >= 80',
+          backgroundColor: '#2ecc71'
+        }]
+      }
+    },
+    series: [{
+      values: [parseInt(valueGaugeBusinessRisk, 10)], // starting value
+      backgroundColor: 'black',
+      indicator: [3, 3, 3, 3, 0.75]
+    }]
+
+  }
+  var myConfigGaugeMarket = {
+    type: 'gauge',
+    globals: {
+      fontSize: 18
+    },
+    plotarea: {
+      marginTop: 45
+    },
+    plot: {
+      size: '100%',
+      valueBox: {
+        placement: 'center',
+        text: '%v', //default
+        fontSize: 15,
+        rules: [{
+            rule: '%v <= 20',
+            text: '%v<br>Weak'
+          },
+          {
+            rule: '%v > 20 && %v <= 40',
+            text: '%v<br>Challenging'
+          },
+          {
+            rule: '%v > 40 && %v <= 60',
+            text: '%v<br>Fair'
+          },
+          {
+            rule: '%v >= 60 && %v <= 80',
+            text: '%v<br>Good'
+          },
+          {
+            rule: '%v > 80',
+            text: '%v<br>Bullish'
+          }
+        ]
+      }
+    },
+    tooltip: {
+      borderRadius: 50
+    },
+    scaleR: {
+      aperture: 180,
+      minValue: 0,
+      maxValue: 100,
+      step: 20,
+      center: {
+        visible: false
+      },
+      tick: {
+        visible: false
+      },
+      item: {
+        fontSize: 13,
+        angle: 0,
+        offsetR: -5,
+        rules: [{
+          rule: '%i == 9',
+          offsetX: 15
+        }]
+      },
+      labels: ['Weak', 'Challenging', '', 'Fair', 'Good', 'Bullish'],
+      ring: {
+        size: 50,
+        rules: [{
+          rule: '%v <= 20',
+          backgroundColor: '#e74c3c'
+        }, {
+          rule: '%v > 20 && %v <= 40',
+          backgroundColor: '#f1c40f'
+        }, {
+          rule: '%v > 40 && %v <= 60',
+          backgroundColor: '#e67e22'
+        }, {
+          rule: '%v > 60 && %v <= 80',
+          backgroundColor: '#16a085'
+        }, {
+          rule: '%v > 80',
+          backgroundColor: '#2ecc71'
+        }]
+      }
+    },
+    series: [{
+      values: [parseInt(valueGaugeMarket, 10)], // starting value
+      backgroundColor: 'black',
+      indicator: [3, 3, 3, 3, 0.75]
+    }]
+  }
+
+  zingchart.render({
+    id: 'chartGaugeBusinessRisk',
+    data: myConfigGaugeBusinessRisk,
+    height: 200,
+    width: '100%'
+  })
+
+  zingchart.render({
+    id: 'chartGaugeMarket',
+    data: myConfigGaugeMarket,
+    height: 200,
+    width: '100%'
+  })
+
+  setTimeout(function () {
+    document.getElementById('chartGaugeBusinessRisk-license-text').style.display = 'none'
+    document.getElementById('chartGaugeMarket-license-text').style.display = 'none'
+  }, 2000)
+
+</script>
 
 </html>

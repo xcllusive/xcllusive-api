@@ -10,6 +10,7 @@
 </div>
 
 <script>
+  var valueGaugeMarket = '{{valueSliderMarket}}'
   var myConfigGaugeMarket = {
     type: 'gauge',
     globals: {
@@ -92,7 +93,7 @@
       }
     },
     series: [{
-      values: ['{{valueSliderMarket}}'], // starting value
+      values: [valueGaugeMarket], // starting value
       backgroundColor: 'black',
       indicator: [3, 3, 3, 3, 0.75]
     }]
@@ -101,7 +102,7 @@
   zingchart.render({
     id: 'chartGaugeMarket',
     data: myConfigGaugeMarket,
-    height: 500,
+    height: 200,
     width: '100%'
   })
 
