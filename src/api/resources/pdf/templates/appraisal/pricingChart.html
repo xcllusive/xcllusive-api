@@ -1,115 +1,137 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.5/chartjs-plugin-annotation.js"></script>
+<script src="https://cdn.rawgit.com/chartjs/Chart.js/master/samples/utils.js"></script>
 <style>
-  #LineWithLine {
-    height: 230px !important;
-    width: 500px !important;
+  #canvas {
+    height: 350px !important;
+    width: 600px !important;
   }
 
 </style>
-<canvas id="LineWithLine"></canvas>
+<canvas id="canvas"></canvas>
 <script>
-  var data = {
-    labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-    datasets: [{
-      data: [12, 3, 2, 1, 8, 8, 2, 2, 3, 5, 7, 1]
-    }]
-  };
+var chartData = {
+      labels: ["", "", "$500,000", "$750,000", "$850,000", "$900,000", ""],
+      datasets: [{
+        type: "line",
+        label: "value",
+        borderColor: "red",
+        borderWidth: 2,
+        fill: false,
+        data: [0, ,
+          1.01,
+          1.01,
+          1.88,
+          2.06,
+        ]
+      }],
 
-  var ctx = document.getElementById("LineWithLine").getContext("2d");
+    };
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.myMixedChart = new Chart(ctx, {
+      type: "line",
+      data: chartData,
 
-  Chart.types.Line.extend({
-    name: "LineWithLine",
-    draw: function () {
-      Chart.types.Line.prototype.draw.apply(this, arguments);
-
-      var point = this.datasets[0].points[this.options.lineAtIndex]
-      var scale = this.scale
-
-      // draw line
-      this.chart.ctx.beginPath();
-      this.chart.ctx.moveTo(point.x, scale.startPoint + 24);
-      this.chart.ctx.strokeStyle = '#ff0000';
-      this.chart.ctx.lineTo(point.x, scale.endPoint);
-      this.chart.ctx.stroke();
-
-      // write TODAY
-      this.chart.ctx.textAlign = 'center';
-      this.chart.ctx.fillText("TODAY", point.x, scale.startPoint + 12);
-    }
-  });
-
-  new Chart(ctx).LineWithLine(data, {
-    datasetFill: false,
-    lineAtIndex: 2
-  });
+      options: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: false,
+              labelString: 'probability'
+            },
+            ticks: {
+              mirror: true
+            }
+          }]
+        },
+        title: {
+          display: false,
+          text: "Title"
+        },
+        tooltips: {
+          mode: "index",
+          intersect: false
+        },
+        annotation: {
+          annotations: [
+            {
+              drawTime: "afterDatasetsDraw",
+              id: "hline2",
+              type: "line",
+              mode: "vertical",
+              scaleID: "x-axis-0",
+              value: "$500,000",
+              borderColor: "black",
+              borderWidth: 2,
+              label: {
+                backgroundColor: "black",
+                content: "Avg Mkt [1.49]",
+                position: "bottom",
+                fontFamily: "sans-serif",
+                fontSize: 11,
+                cornerRadius: 10,
+                enabled: true,
+                yAdjust: 0.38 + 50
+              }
+            },
+            {
+              drawTime: "afterDatasetsDraw",
+              id: "hline3",
+              type: "line",
+              mode: "vertical",
+              scaleID: "x-axis-0",
+              value: "$750,000",
+              borderColor: "purple",
+              borderWidth: 2,
+              label: {
+                backgroundColor: "purple",
+                content: "Risk + 20% [1.01]",
+                fontFamily: "sans-serif",
+                fontSize: 11,
+                cornerRadius: 10,
+                enabled: true
+              }
+            },
+            {
+              drawTime: "afterDatasetsDraw",
+              id: "hline4",
+              type: "line",
+              mode: "vertical",
+              scaleID: "x-axis-0",
+              value: "$850,000",
+              borderColor: "orange",
+              borderWidth: 2,
+              label: {
+                backgroundColor: "orange",
+                content: "Market + 20% [1.88]",
+                position: "bottom",
+                fontFamily: "sans-serif",
+                fontSize: 11,
+                cornerRadius: 10,
+                enabled: true
+              }
+            },
+            {
+              drawTime: "afterDatasetsDraw",
+              id: "hline5",
+              type: "line",
+              mode: "vertical",
+              scaleID: "x-axis-0",
+              value: "$900,000",
+              borderColor: "green",
+              borderWidth: 2,
+              label: {
+                backgroundColor: "green",
+                content: "Negotiation + 20% [2.06]",
+                fontFamily: "sans-serif",
+                fontSize: 11,
+                cornerRadius: 10,
+                enabled: true
+              }
+            }
+          ]
+        }
+      }
+    });
 
 </script>
-<!-- <script>
-  var ctx = document.getElementById("pricingChart").getContext('2d');
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['{{year1}}', '{{year2}}', '{{year3}}', '{{year4}}', '{{year5}}', '{{year6}}'],
-      datasets: [{
-          label: 'Sales',
-          data: ['{{sales1}}', '{{sales2}}', '{{sales3}}', '{{sales4}}', '{{sales5}}', '{{sales7}}'],
-          backgroundColor: 'red',
-          borderColor: 'red',
-          borderWidth: 1,
-          fill: false
-        },
-        {
-          label: 'GP',
-          data: ['{{calcGrossProfit1}}', '{{calcGrossProfit2}}', '{{calcGrossProfit3}}', '{{calcGrossProfit4}}',
-            '{{calcGrossProfit5}}', '{{calcGrossProfit7}}'
-          ],
-          backgroundColor: 'blue',
-          borderColor: 'blue',
-          borderWidth: 1,
-          fill: false
-        },
-        {
-          label: 'PEBITDA',
-          data: ['{{calcOperatingProfit1}}', '{{calcOperatingProfit2}}', '{{calcOperatingProfit3}}',
-            '{{calcOperatingProfit4}}', '{{calcOperatingProfit5}}', '{{calcOperatingProfit6}}'
-          ],
-          backgroundColor: 'green',
-          borderColor: 'green',
-          borderWidth: 1,
-          fill: false
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Sales, GP, PEBITDA'
-      },
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-      },
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-      scales: {
-        xAxes: [{
-          display: true,
-          scaleLabel: {
-            display: false
-          }
-        }],
-        yAxes: [{
-          display: true,
-          scaleLabel: {
-            display: false,
-            labelString: 'Value'
-          }
-        }]
-      }
-    }
-  });
-
-</script> -->
