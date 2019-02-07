@@ -53,16 +53,16 @@ export const get = async (req, res, next) => {
         id: appraisalId
       },
       include: [{
-          model: models.Business
-        },
-        {
-          model: models.User,
-          as: 'CreatedBy'
-        },
-        {
-          model: models.User,
-          as: 'ModifiedBy'
-        }
+        model: models.Business
+      },
+      {
+        model: models.User,
+        as: 'CreatedBy'
+      },
+      {
+        model: models.User,
+        as: 'ModifiedBy'
+      }
       ]
     })
     return res.status(201).json({
@@ -262,6 +262,24 @@ export const generatePdf = async (req, res, next) => {
       plain: true
     }), variables)
 
+    // start prepared by
+    const loggedUser = await models.User.findOne({
+      where: {
+        id: req.user.id
+      }
+    })
+    var regionOfficeUser = ''
+    if (loggedUser.dataRegion === 'Sydney Office') regionOfficeUser = 'G14, 1-15 Barr Street, Balmain NSW 2041'
+    if (loggedUser.dataRegion === 'Melbourne Office') regionOfficeUser = 'Suite 2, 276 High Street, Kew, VIC 3101'
+    if (loggedUser.dataRegion === 'Queensland Office') regionOfficeUser = 'Spring Hill, Qld 4004'
+    if (loggedUser.dataRegion === 'Gosford Office') regionOfficeUser = 'Pegasus Business Centre, Suite 2a/3 Racecourse Rd, Gosford NSW 2250'
+    if (loggedUser.dataRegion === 'Cowra Office') regionOfficeUser = 'PO Box 182, Cowra, NSW 2794'
+    if (loggedUser.dataRegion === 'Camberra Office') regionOfficeUser = 'Cooma, NSW 2630'
+    if (loggedUser.dataRegion === 'Adelaide Office') regionOfficeUser = 'Westpac House Level 30, 91 King William Street, Adelaide SA 5000'
+
+    context.preparedBy = `Xcllusive Business Sales Pty Ltd </br>${regionOfficeUser} </br>(02) 9817 3331 </br>www.xcllusive.com.au </br>Lic: 172 3536 </br>ABN: 99 144 870 762`
+    // ends prepared by
+
     /* profits table */
     if (appraisal.year6 > 0) {
       context.lastYearProfit = numeral(appraisal.calcOperatingProfit6).format('$0,0')
@@ -325,6 +343,8 @@ export const generatePdf = async (req, res, next) => {
     context.sales5 = numeral(appraisal.sales5).format('$0,0')
     context.sales7 = numeral(appraisal.sales7).format('$0,0')
 
+    console.log(context.sales1)
+
     context.cogs1 = numeral(appraisal.cogs1).format('$0,0')
     context.cogs2 = numeral(appraisal.cogs2).format('$0,0')
     context.cogs3 = numeral(appraisal.cogs3).format('$0,0')
@@ -382,10 +402,18 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfitPerc6 = `${appraisal.calcOperatingProfitPerc6}%`
     // end Financial Information Table
 
+    // start pricing chart
+    let calcPricingMethod = numeral(appraisal.formulaValuePricingMethod)
+    context.avgMultiplierLabel = numeral(calcPricingMethod.value() * appraisal.avgMultiplier).format('$0,0')
+    context.riskPremiumLabel = numeral(calcPricingMethod.value() * appraisal.riskPremium).format('$0,0')
+    context.marketPremiumLabel = numeral(calcPricingMethod.value() * appraisal.marketPremium).format('$0,0')
+    context.askingPriceLabel = numeral(calcPricingMethod.value() * appraisal.askingPrice).format('$0,0')
+    // end pricing chat
+
     // start Labels for formula pricing
     context.formulaValuePricingMethod = appraisal.formulaValuePricingMethod
     context.labelComparableMultiplier = 'Comparable Multiplier'
-    context.fCalc1 = '+'
+    context.fCalc1 = '*'
     context.fCalc2 = '='
     context.labelAskingPriceMultipler = 'Asking Price Multiplier'
     // end Labels for formula pricing

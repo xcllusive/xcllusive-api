@@ -2,136 +2,153 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.5/chartjs-plugin-annotation.js"></script>
 <script src="https://cdn.rawgit.com/chartjs/Chart.js/master/samples/utils.js"></script>
 <style>
-  #canvas {
-    height: 350px !important;
-    width: 600px !important;
+  #pricingChart {
+    height: 270px;
+    width: 580px;
   }
 
 </style>
-<canvas id="canvas"></canvas>
+<canvas id="pricingChart"></canvas>
 <script>
-var chartData = {
-      labels: ["", "", "$500,000", "$750,000", "$850,000", "$900,000", ""],
-      datasets: [{
-        type: "line",
-        label: "value",
-        borderColor: "red",
-        borderWidth: 2,
-        fill: false,
-        data: [0, ,
-          1.01,
-          1.01,
-          1.88,
-          2.06,
-        ]
-      }],
-
-    };
-    var ctx = document.getElementById("canvas").getContext("2d");
-    window.myMixedChart = new Chart(ctx, {
+  var avgMultiplier = '{{avgMultiplier}}'
+  var riskPremium = '{{riskPremium}}'
+  var marketPremium = '{{marketPremium}}'
+  var askingPrice = '{{askingPrice}}'
+  var sliderRiskPremium = "{{sliderRiskPremium}}"
+  var sliderMarketPremium = "{{sliderMarketPremium}}"
+  var sliderNegotiationPremium = "{{sliderNegotiationPremium}}"
+  var avgMultiplierLabel = "{{avgMultiplierLabel}}"
+  var riskPremiumLabel = "{{riskPremiumLabel}}"
+  var marketPremiumLabel = "{{marketPremiumLabel}}"
+  var askingPriceLabel = "{{askingPriceLabel}}"
+  var chartData = {
+    labels: ["", "", avgMultiplierLabel, riskPremiumLabel, marketPremiumLabel, askingPriceLabel, ""],
+    datasets: [{
       type: "line",
-      data: chartData,
+      label: "value",
+      borderColor: "red",
+      borderWidth: 2,
+      fill: false,
+      data: [0, ,
+        avgMultiplier,
+        riskPremium,
+        marketPremium,
+        askingPrice,
+      ]
+    }],
 
-      options: {
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: false,
-              labelString: 'probability'
-            },
-            ticks: {
-              mirror: true
+  };
+  var ctx = document.getElementById("pricingChart").getContext("2d");
+  window.myMixedChart = new Chart(ctx, {
+    type: "line",
+    data: chartData,
+    options: {
+      animation: {
+        duration: 0
+      },
+      scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: false,
+            labelString: 'text'
+          },
+          ticks: {
+            mirror: true
+          }
+        }]
+      },
+      title: {
+        display: false,
+        text: "Title"
+      },
+      tooltips: {
+        mode: "index",
+        intersect: false
+      },
+      annotation: {
+        annotations: [{
+            drawTime: "afterDatasetsDraw",
+            id: "hline2",
+            type: "line",
+            mode: "vertical",
+            scaleID: "x-axis-0",
+            value: avgMultiplierLabel,
+            borderColor: "black",
+            borderWidth: 2,
+            label: {
+              backgroundColor: "black",
+              content: `Avg Mkt [${avgMultiplier}]`,
+              position: "bottom",
+              fontFamily: "sans-serif",
+              fontSize: 11,
+              cornerRadius: 10,
+              enabled: true,
+              yAdjust: 10
             }
-          }]
-        },
-        title: {
-          display: false,
-          text: "Title"
-        },
-        tooltips: {
-          mode: "index",
-          intersect: false
-        },
-        annotation: {
-          annotations: [
-            {
-              drawTime: "afterDatasetsDraw",
-              id: "hline2",
-              type: "line",
-              mode: "vertical",
-              scaleID: "x-axis-0",
-              value: "$500,000",
-              borderColor: "black",
-              borderWidth: 2,
-              label: {
-                backgroundColor: "black",
-                content: "Avg Mkt [1.49]",
-                position: "bottom",
-                fontFamily: "sans-serif",
-                fontSize: 11,
-                cornerRadius: 10,
-                enabled: true,
-                yAdjust: 0.38 + 50
-              }
-            },
-            {
-              drawTime: "afterDatasetsDraw",
-              id: "hline3",
-              type: "line",
-              mode: "vertical",
-              scaleID: "x-axis-0",
-              value: "$750,000",
-              borderColor: "purple",
-              borderWidth: 2,
-              label: {
-                backgroundColor: "purple",
-                content: "Risk + 20% [1.01]",
-                fontFamily: "sans-serif",
-                fontSize: 11,
-                cornerRadius: 10,
-                enabled: true
-              }
-            },
-            {
-              drawTime: "afterDatasetsDraw",
-              id: "hline4",
-              type: "line",
-              mode: "vertical",
-              scaleID: "x-axis-0",
-              value: "$850,000",
-              borderColor: "orange",
-              borderWidth: 2,
-              label: {
-                backgroundColor: "orange",
-                content: "Market + 20% [1.88]",
-                position: "bottom",
-                fontFamily: "sans-serif",
-                fontSize: 11,
-                cornerRadius: 10,
-                enabled: true
-              }
-            },
-            {
-              drawTime: "afterDatasetsDraw",
-              id: "hline5",
-              type: "line",
-              mode: "vertical",
-              scaleID: "x-axis-0",
-              value: "$900,000",
-              borderColor: "green",
-              borderWidth: 2,
-              label: {
-                backgroundColor: "green",
-                content: "Negotiation + 20% [2.06]",
-                fontFamily: "sans-serif",
-                fontSize: 11,
-                cornerRadius: 10,
-                enabled: true
-              }
+          },
+          {
+            drawTime: "afterDatasetsDraw",
+            id: "hline3",
+            type: "line",
+            mode: "vertical",
+            scaleID: "x-axis-0",
+            value: riskPremiumLabel,
+            borderColor: "purple",
+            borderWidth: 2,
+            label: {
+              backgroundColor: "purple",
+              content: `Risk + ${sliderRiskPremium}% [${riskPremium}]`,
+              position: "bottom",
+              fontFamily: "sans-serif",
+              fontSize: 11,
+              cornerRadius: 10,
+              enabled: true,
+              yAdjust: 20
             }
-          ]
-        }
+          },
+          {
+            drawTime: "afterDatasetsDraw",
+            id: "hline4",
+            type: "line",
+            mode: "vertical",
+            scaleID: "x-axis-0",
+            value: marketPremiumLabel,
+            borderColor: "orange",
+            borderWidth: 2,
+            label: {
+              backgroundColor: "orange",
+              content: `Market + ${sliderMarketPremium}% [${marketPremium}]`,
+              position: "bottom",
+              fontFamily: "sans-serif",
+              fontSize: 11,
+              cornerRadius: 10,
+              enabled: true,
+              yAdjust: 35
+            }
+          },
+          {
+            drawTime: "afterDatasetsDraw",
+            id: "hline5",
+            type: "line",
+            mode: "vertical",
+            scaleID: "x-axis-0",
+            value: askingPriceLabel,
+            borderColor: "green",
+            borderWidth: 2,
+            label: {
+              backgroundColor: "green",
+              content: `Negotiation + ${sliderNegotiationPremium}% [${askingPrice}]`,
+              position: "bottom",
+              fontFamily: "sans-serif",
+              fontSize: 11,
+              cornerRadius: 10,
+              enabled: true,
+              yAdjust: 55
+            }
+          }
+        ]
       }
-    });
+    }
+  });
 
 </script>
