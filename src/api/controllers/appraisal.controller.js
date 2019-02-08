@@ -343,8 +343,6 @@ export const generatePdf = async (req, res, next) => {
     context.sales5 = numeral(appraisal.sales5).format('$0,0')
     context.sales7 = numeral(appraisal.sales7).format('$0,0')
 
-    console.log(context.sales1)
-
     context.cogs1 = numeral(appraisal.cogs1).format('$0,0')
     context.cogs2 = numeral(appraisal.cogs2).format('$0,0')
     context.cogs3 = numeral(appraisal.cogs3).format('$0,0')
@@ -401,6 +399,45 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfitPerc5 = `${appraisal.calcOperatingProfitPerc5}%`
     context.calcOperatingProfitPerc6 = `${appraisal.calcOperatingProfitPerc6}%`
     // end Financial Information Table
+
+    // start salesGpPebitda chart
+    context.sales1GpPebitda = appraisal.sales1
+    context.sales2GpPebitda = appraisal.sales2
+    context.sales3GpPebitda = appraisal.sales3
+    context.sales4GpPebitda = appraisal.sales4
+    context.sales5GpPebitda = appraisal.sales5
+    context.sales7GpPebitda = appraisal.sales7
+
+    context.calcGrossProfit1SalesPebitda = appraisal.calcGrossProfit1
+    context.calcGrossProfit2SalesPebitda = appraisal.calcGrossProfit2
+    context.calcGrossProfit3SalesPebitda = appraisal.calcGrossProfit3
+    context.calcGrossProfit4SalesPebitda = appraisal.calcGrossProfit4
+    context.calcGrossProfit5SalesPebitda = appraisal.calcGrossProfit5
+    context.calcGrossProfit7SalesPebitda = appraisal.calcGrossProfit7
+
+    context.calcOperatingProfit1SalesPebitda = appraisal.calcOperatingProfit1
+    context.calcOperatingProfit2SalesPebitda = appraisal.calcOperatingProfit2
+    context.calcOperatingProfit3SalesPebitda = appraisal.calcOperatingProfit3
+    context.calcOperatingProfit4SalesPebitda = appraisal.calcOperatingProfit4
+    context.calcOperatingProfit5SalesPebitda = appraisal.calcOperatingProfit5
+    context.calcOperatingProfit6SalesPebitda = appraisal.calcOperatingProfit6
+    // end salesGpPebitda chart
+
+    // start gmProfit chart
+    context.calcGrossMarginPerc1GmProfit = appraisal.calcGrossMarginPerc1
+    context.calcGrossMarginPerc2GmProfit = appraisal.calcGrossMarginPerc2
+    context.calcGrossMarginPerc3GmProfit = appraisal.calcGrossMarginPerc3
+    context.calcGrossMarginPerc4GmProfit = appraisal.calcGrossMarginPerc4
+    context.calcGrossMarginPerc5GmProfit = appraisal.calcGrossMarginPerc5
+    context.calcGrossMarginPerc6GmProfit = appraisal.calcGrossMarginPerc6
+
+    context.calcOperatingProfitPerc1GmProfit = appraisal.calcOperatingProfitPerc1
+    context.calcOperatingProfitPerc2GmProfit = appraisal.calcOperatingProfitPerc2
+    context.calcOperatingProfitPerc3GmProfit = appraisal.calcOperatingProfitPerc3
+    context.calcOperatingProfitPerc4GmProfit = appraisal.calcOperatingProfitPerc4
+    context.calcOperatingProfitPerc5GmProfit = appraisal.calcOperatingProfitPerc5
+    context.calcOperatingProfitPerc6GmProfit = appraisal.calcOperatingProfitPerc6
+    // ends gmProfit chart
 
     // start pricing chart
     let calcPricingMethod = numeral(appraisal.formulaValuePricingMethod)

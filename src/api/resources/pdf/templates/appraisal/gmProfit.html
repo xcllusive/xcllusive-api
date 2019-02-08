@@ -4,6 +4,7 @@
     height: 230px !important;
     width: 500px !important;
   }
+
 </style>
 <canvas id="gmProfit"></canvas>
 <script>
@@ -19,16 +20,16 @@
         '{{year5}}',
         '{{year6}}'
       ],
-      datasets: [
-        {
+      datasets: [{
           label: 'Gross Profit (%)',
           data: [
-            '{{sales1}}',
-            '{{sales2}}',
-            '{{sales3}}',
-            '{{sales4}}',
-            '{{sales5}}',
-            '{{sales7}}'
+            '{{calcOperatingProfitPerc1GmProfit}}',
+            '{{calcOperatingProfitPerc2GmProfit}}',
+            '{{calcOperatingProfitPerc3GmProfit}}',
+            '{{calcOperatingProfitPerc4GmProfit}}',
+            '{{calcOperatingProfitPerc5GmProfit}}',
+            '{{calcOperatingProfitPerc6GmProfit}}'
+
           ],
           backgroundColor: 'orange',
           borderColor: 'orange',
@@ -38,12 +39,12 @@
         {
           label: 'Adjusted Profit (%)',
           data: [
-            '{{calcGrossProfit1}}',
-            '{{calcGrossProfit2}}',
-            '{{calcGrossProfit3}}',
-            '{{calcGrossProfit4}}',
-            '{{calcGrossProfit5}}',
-            '{{calcGrossProfit7}}'
+            '{{calcGrossMarginPerc1GmProfit}}',
+            '{{calcGrossMarginPerc2GmProfit}}',
+            '{{calcGrossMarginPerc3GmProfit}}',
+            '{{calcGrossMarginPerc4GmProfit}}',
+            '{{calcGrossMarginPerc5GmProfit}}',
+            '{{calcGrossMarginPerc6GmProfit}}'
           ],
           backgroundColor: 'purple',
           borderColor: 'purple',
@@ -53,6 +54,9 @@
       ]
     },
     options: {
+      animation: {
+        duration: 0
+      },
       responsive: true,
       title: {
         display: true,
@@ -60,31 +64,33 @@
       },
       tooltips: {
         mode: 'index',
-        intersect: false
+        intersect: false,
       },
       hover: {
         mode: 'nearest',
         intersect: true
       },
       scales: {
-        xAxes: [
-          {
-            display: true,
-            scaleLabel: {
-              display: false
-            }
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: false
           }
-        ],
-        yAxes: [
-          {
-            display: true,
-            scaleLabel: {
-              display: false,
-              labelString: 'Value'
+        }],
+        yAxes: [{
+          ticks: {
+            callback: function (value, index, values) {
+              return value + '%';
             }
+          },
+          display: true,
+          scaleLabel: {
+            display: false,
+            labelString: 'Value'
           }
-        ]
+        }]
       }
     }
   })
+
 </script>
