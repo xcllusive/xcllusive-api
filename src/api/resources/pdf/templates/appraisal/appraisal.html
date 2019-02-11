@@ -5,6 +5,224 @@
   <meta charset="UTF-8">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.5/chartjs-plugin-annotation.js"></script>
+<script src="https://cdn.rawgit.com/chartjs/Chart.js/master/samples/utils.js"></script>
+  <style>
+    #pricingChart {
+      height: 270px;
+      width: 580px;
+    }
+  
+  </style>
+  <style type="text/css">
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+  
+    .tg td {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 8px 3px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+  
+    .tg th {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 8px 3px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+  
+    .tg .tg-pre9 {
+      font-weight: bold;
+      font-size: 11px;
+      background-color: #209fa9;
+      color: #000000;
+      border-color: #000000;
+      text-align: left;
+    }
+  
+    .tg .tg-injz {
+      font-size: 11px;
+      border-color: #000000;
+      text-align: left;
+      vertical-align: top;
+    }
+  
+    .tg .tg-bfls {
+      font-size: 11px;
+      background-color: #ffffff;
+      border-color: #000000;
+      text-align: left;
+      vertical-align: top;
+    }
+  
+    .tg .tg-vche {
+      font-weight: bold;
+      font-size: 11px;
+      background-color: #209fa9;
+      border-color: #000000;
+      text-align: left;
+      vertical-align: top;
+    }
+  
+    .tg .tg-pg0z {
+      font-size: 11px;
+      background-color: #efefef;
+      border-color: #000000;
+      text-align: left;
+      vertical-align: top;
+    }
+  
+    .tg .tg-x9pm {
+      font-size: 12px;
+      background-color: #3a6dd0;
+      color: #ffffff;
+      border-color: #000000;
+      text-align: center;
+    }
+  
+    .tg .tg-7wn8 {
+      font-weight: bold;
+      font-size: 11px;
+      background-color: #efefef;
+      border-color: #000000;
+      text-align: center;
+      vertical-align: top;
+    }
+  
+    .tg .tg-vmmt {
+      font-size: 11px;
+      background-color: #efefef;
+      border-color: #000000;
+      text-align: center;
+      vertical-align: top;
+    }
+  
+    .tg .tg-bxie {
+      font-weight: bold;
+      font-size: 12px;
+      background-color: #ffffc7;
+      color: #000000;
+      border-color: #000000;
+      text-align: left;
+      vertical-align: top;
+    }
+  
+    .tg .tg-nf5p {
+      font-size: 12px;
+      background-color: #3a6dd0;
+      color: #ffffff;
+      border-color: #000000;
+      text-align: center;
+      vertical-align: top;
+    }
+  
+    .tg .tg-rcs9 {
+      font-size: 11px;
+      background-color: #ffffff;
+      border-color: #000000;
+      text-align: left;
+    }
+  
+    .tg .tg-6u1a {
+      font-size: 11px;
+      background-color: #ffffff;
+      border-color: #000000;
+      text-align: center;
+      vertical-align: top;
+    }
+  
+    .tg .tg-uk0v {
+      font-weight: bold;
+      font-size: 11px;
+      background-color: #ffffff;
+      border-color: #000000;
+      text-align: center;
+      vertical-align: top;
+    }
+  
+    .tg .tg-ee2k {
+      font-size: 11px;
+      background-color: #efefef;
+      border-color: #000000;
+      text-align: left;
+    }
+  
+    .tg .tg-i3u2 {
+      font-weight: bold;
+      font-size: 11px;
+      background-color: #209fa9;
+      color: #000000;
+      border-color: #000000;
+      text-align: left;
+      vertical-align: top;
+    }
+  
+  </style>
+  <style type="text/css">
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+      table-layout: fixed;
+      width: 605px;
+    }
+  
+    .tg td {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      padding: 2px 4px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+  
+    }
+  
+    .tg th {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 10px 5px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+  
+    .tg .cell-empty {
+      border: none;
+    }
+  
+    .tg .cell-value {
+      font-weight: bold;
+      font-size: 12px;
+      border-color: inherit;
+      text-align: center;
+      vertical-align: middle;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  
+    .tg .cell-title {
+      font-size: 12px;
+      border-color: inherit;
+      text-align: left;
+    }
+  
+  </style>
   <style type="text/css">
     .tg {
       border-collapse: collapse;
@@ -167,7 +385,7 @@
       }, 1000);
     }
   </script>
-</head><body  ><div data-page="1" class="page first-page" style="top: 0px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1039;"><img src="data:image/png;base64,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" width="108.27779527559" height="101.97246181577" alt="image"/></div><div style="position: absolute; top:76.251968503937px;left:630.22251968504px; z-index: 1040;"><div class="" style="position: absolute; width: 3px; height: 941px; background-color: ; z-index: 1040; border-left: solid 3px #0076ad;"></div></div><div style="position: absolute; top:191.7737007874px;left:95.314960629921px; z-index: 1042;"><div class="" style="position: absolute; width: 611px; height: 3px; background-color: ; z-index: 1042; border-top: solid 3px #0076ad;"></div></div><div style="position: absolute; top:199.78015748031px;left:96.45874015748px; z-index: 1044;"><div class="display: table;"><div class="" style="position: relative; width: 340px; height: 14.106614173228px; background-color: ; z-index: 1044; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Copyright © {{currentYear}} Xcllusive all rights reserved</div></div></div><div style="position: absolute; top:95.314960629921px;left:366.39070866142px; z-index: 1045;"><div class="display: table;"><div class="" style="position: relative; width: 257px; height: 28.213228346457px; background-color: ; z-index: 1045; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Sales Inspection Report and </div></div></div><div style="position: absolute; top:120.47811023622px;left:420.52960629921px; z-index: 1046;"><div class="display: table;"><div class="" style="position: relative; width: 203px; height: 25.163149606299px; background-color: ; z-index: 1046; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business Appraisal for</div></div></div><div style="position: absolute; top:959.24976377953px;left:420.52960629921px; z-index: 1050;"><div class="display: table;"><div class="" style="position: relative; width: 205px; height: 25.163149606299px; background-color: ; z-index: 1050; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Private and Confidential</div></div></div><div style="position: absolute; top:983.26913385827px;left:419.38582677165px; z-index: 1051;"><div class="display: table;"><div class="" style="position: relative; width: 207px; height: 25.163149606299px; background-color: ; z-index: 1051; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{dateTimeCreated}}</div></div></div><div style="position: absolute; top:145.64125984252px;left:366.39070866142px; z-index: 1052;"><div class="display: table;"><div class="" style="position: relative; width: 257px; height: 42.319842519685px; background-color: ; z-index: 1052; font-size: 18px; line-height: 21px; text-align: right; color: #0d6cc5; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div></div></div></div><div data-page="2" class="page middle-page" style="top: 1132.3417322835px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:145.64125984252px;left:309.20173228346px; z-index: 1065;"><div class="display: table;"><div class="" style="position: relative; width: 203px; height: 40.032283464567px; background-color: ; z-index: 1065; font-size: 14px; line-height: 16px; text-align: center; color: #0d6cc5; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Sales Inspection Report and Business Appraisal For:</div></div></div><div style="position: absolute; top:314.15811023622px;left:207.78661417323px; z-index: 1066;"><div class="display: table;"><div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1066; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">The Business:</div></div></div><div style="position: absolute; top:387.36px;left:207.78661417323px; z-index: 1067;"><div class="display: table;"><div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1067; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">ABN:</div></div></div><div style="position: absolute; top:460.56188976378px;left:150.59763779528px; z-index: 1068;"><div class="display: table;"><div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1068; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business Address:</div></div></div><div style="position: absolute; top:545.96409448819px;left:150.59763779528px; z-index: 1069;"><div class="display: table;"><div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1069; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Principal:</div></div></div><div style="position: absolute; top:619.16598425197px;left:150.59763779528px; z-index: 1070;"><div class="display: table;"><div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1070; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Prepared By:</div></div></div><div style="position: absolute; top:314.15811023622px;left:330.17102362205px; z-index: 1071;"><div class="display: table;"><div class="" style="position: relative; width: 298px; height: 24.01937007874px; background-color: ; z-index: 1071; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div></div></div><div style="position: absolute; top:387.36px;left:330.17102362205px; z-index: 1072;"><div class="display: table;"><div class="" style="position: relative; width: 301px; height: 20.969291338583px; background-color: ; z-index: 1072; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessABN}}</div></div></div><div style="position: absolute; top:460.56188976378px;left:330.17102362205px; z-index: 1073;"><div class="display: table;"><div class="" style="position: relative; width: 301px; height: 23.256850393701px; background-color: ; z-index: 1073; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessAddress1}}</div></div></div><div style="position: absolute; top:545.96409448819px;left:330.17102362205px; z-index: 1074;"><div class="display: table;"><div class="" style="position: relative; width: 301px; height: 32.481737291339px; background-color: ; z-index: 1074; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessFirstNameV}} {{businessLastNameV}}</div></div></div><div style="position: absolute; top:619.16598425197px;left:330.17102362205px; z-index: 1075;"><div class="display: table;"><div class="" style="position: relative; width: 304px; height: 99.508818897638px; background-color: ; z-index: 1075; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{preparedBy}}</div></div></div><div style="position: absolute; top:482.67496062992px;left:330.17102362205px; z-index: 1096;"><div class="display: table;"><div class="" style="position: relative; width: 300px; height: 32.481737291339px; background-color: ; z-index: 1096; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessSuburb}}, {{businessState}}, {{businessPostCode}}</div></div></div></div><div data-page="3" class="page middle-page" style="top: 2264.6834645669px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:96.45874015748px;left:104.46519685039px; z-index: 1097;"><div class="display: table;"><div class="" style="position: relative; width: 252px; height: 40.032283464567px; background-color: ; z-index: 1097; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Purpose of this document</div></div></div><div style="position: absolute; top:139.5411023622px;left:104.46519685039px; z-index: 1098;"><div class="display: table;"><div class="" style="position: relative; width: 601px; height: 186.43606299213px; background-color: ; z-index: 1098; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">The purpose of this document is to communicate our opinion of fair market price for this business in order to establish most appropriate asking price for business for sale marketing purposes.<br />
+</head><body  ><div data-page="1" class="page first-page" style="top: 0px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1039;"><img src="data:image/png;base64,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" width="108.27779527559" height="101.97246181577" alt="image"/></div><div style="position: absolute; top:76.251968503937px;left:630.22251968504px; z-index: 1040;"><div class="" style="position: absolute; width: 3px; height: 941px; background-color: ; z-index: 1040; border-left: solid 3px #0076ad;"></div></div><div style="position: absolute; top:191.7737007874px;left:95.314960629921px; z-index: 1042;"><div class="" style="position: absolute; width: 611px; height: 3px; background-color: ; z-index: 1042; border-top: solid 3px #0076ad;"></div></div><div style="position: absolute; top:199.78015748031px;left:96.45874015748px; z-index: 1044;"><div class="display: table;"><div class="" style="position: relative; width: 340px; height: 14.106614173228px; background-color: ; z-index: 1044; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Copyright © {{currentYear}} Xcllusive all rights reserved</div></div></div><div style="position: absolute; top:95.314960629921px;left:366.39070866142px; z-index: 1045;"><div class="display: table;"><div class="" style="position: relative; width: 257px; height: 28.213228346457px; background-color: ; z-index: 1045; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Sales Inspection Report and </div></div></div><div style="position: absolute; top:120.47811023622px;left:420.52960629921px; z-index: 1046;"><div class="display: table;"><div class="" style="position: relative; width: 203px; height: 25.163149606299px; background-color: ; z-index: 1046; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business Appraisal for</div></div></div><div style="position: absolute; top:959.24976377953px;left:420.52960629921px; z-index: 1050;"><div class="display: table;"><div class="" style="position: relative; width: 205px; height: 25.163149606299px; background-color: ; z-index: 1050; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Private and Confidential</div></div></div><div style="position: absolute; top:983.26913385827px;left:419.38582677165px; z-index: 1051;"><div class="display: table;"><div class="" style="position: relative; width: 207px; height: 25.163149606299px; background-color: ; z-index: 1051; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{dateTimeCreated}}</div></div></div><div style="position: absolute; top:145.64125984252px;left:366.39070866142px; z-index: 1052;"><div class="display: table;"><div class="" style="position: relative; width: 257px; height: 42.319842519685px; background-color: ; z-index: 1052; font-size: 18px; line-height: 21px; text-align: right; color: #0d6cc5; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div></div></div></div><div data-page="2" class="page middle-page" style="top: 1132.3417322835px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:145.64125984252px;left:309.20173228346px; z-index: 1065;"><div class="display: table;"><div class="" style="position: relative; width: 203px; height: 40.032283464567px; background-color: ; z-index: 1065; font-size: 14px; line-height: 16px; text-align: center; color: #0d6cc5; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Sales Inspection Report and Business Appraisal For:</div></div></div><div style="position: absolute; top:314.15811023622px;left:207.78661417323px; z-index: 1066;"><div class="display: table;"><div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1066; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">The Business:</div></div></div><div style="position: absolute; top:387.36px;left:207.78661417323px; z-index: 1067;"><div class="display: table;"><div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1067; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">ABN:</div></div></div><div style="position: absolute; top:460.56188976378px;left:150.59763779528px; z-index: 1068;"><div class="display: table;"><div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1068; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business Address:</div></div></div><div style="position: absolute; top:545.96409448819px;left:150.59763779528px; z-index: 1069;"><div class="display: table;"><div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1069; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Principal:</div></div></div><div style="position: absolute; top:619.16598425197px;left:150.59763779528px; z-index: 1070;"><div class="display: table;"><div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1070; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Prepared By:</div></div></div><div style="position: absolute; top:314.15811023622px;left:330.17102362205px; z-index: 1071;"><div class="display: table;"><div class="" style="position: relative; width: 298px; height: 24.01937007874px; background-color: ; z-index: 1071; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div></div></div><div style="position: absolute; top:387.36px;left:330.17102362205px; z-index: 1072;"><div class="display: table;"><div class="" style="position: relative; width: 301px; height: 20.969291338583px; background-color: ; z-index: 1072; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessABN}}</div></div></div><div style="position: absolute; top:460.56188976378px;left:330.17102362205px; z-index: 1073;"><div class="display: table;"><div class="" style="position: relative; width: 301px; height: 23.256850393701px; background-color: ; z-index: 1073; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessAddress1}}</div></div></div><div style="position: absolute; top:545.96409448819px;left:330.17102362205px; z-index: 1074;"><div class="display: table;"><div class="" style="position: relative; width: 301px; height: 32.481737291339px; background-color: ; z-index: 1074; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessFirstNameV}} {{businessLastNameV}}</div></div></div><div style="position: absolute; top:619.16598425197px;left:330.17102362205px; z-index: 1075;"><div class="display: table;"><div class="" style="position: relative; width: 304px; height: 99.508818897638px; background-color: ; z-index: 1075; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{preparedBy}}}</div></div></div><div style="position: absolute; top:482.67496062992px;left:330.17102362205px; z-index: 1096;"><div class="display: table;"><div class="" style="position: relative; width: 300px; height: 32.481737291339px; background-color: ; z-index: 1096; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessSuburb}}, {{businessState}}, {{businessPostCode}}</div></div></div></div><div data-page="3" class="page middle-page" style="top: 2264.6834645669px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:96.45874015748px;left:104.46519685039px; z-index: 1097;"><div class="display: table;"><div class="" style="position: relative; width: 252px; height: 40.032283464567px; background-color: ; z-index: 1097; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Purpose of this document</div></div></div><div style="position: absolute; top:139.5411023622px;left:104.46519685039px; z-index: 1098;"><div class="display: table;"><div class="" style="position: relative; width: 601px; height: 186.43606299213px; background-color: ; z-index: 1098; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">The purpose of this document is to communicate our opinion of fair market price for this business in order to establish most appropriate asking price for business for sale marketing purposes.<br />
 <br />
 This document is not a valuation. Before relying on the appraisal, you should seek independent<br />
 advice from you accountant, solicitor and business advisor.<br />
@@ -183,13 +401,428 @@ This appraisal is based on the financial and business information provided to us
 </div></div></div><div style="position: absolute; top:602.00929133858px;left:104.46519685039px; z-index: 1157;"><div class="display: table;"><div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1157; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Rent:</div></div></div><div style="position: absolute; top:602.00929133858px;left:300.05149606299px; z-index: 1158;"><div class="display: table;"><div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1158; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{rentCost}}</div></div></div><div style="position: absolute; top:687.41149606299px;left:104.46519685039px; z-index: 1159;"><div class="display: table;"><div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1159; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Employees</div></div></div><div style="position: absolute; top:711.43086614173px;left:104.46519685039px; z-index: 1160;"><div class="display: table;"><div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1160; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No. of Full Time Employees:</div></div></div><div style="position: absolute; top:754.51322834646px;left:104.46519685039px; z-index: 1161;"><div class="display: table;"><div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1161; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No. of Sub-Contractors:</div></div></div><div style="position: absolute; top:711.43086614173px;left:300.05149606299px; z-index: 1162;"><div class="display: table;"><div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1162; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fullTime}}</div></div></div><div style="position: absolute; top:754.51322834646px;left:300.05149606299px; z-index: 1163;"><div class="display: table;"><div class="" style="position: relative; width: 400px; height: 14.869133858268px; background-color: ; z-index: 1163; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{subContractors}}</div></div></div><div style="position: absolute; top:795.68929133858px;left:104.46519685039px; z-index: 1164;"><div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1164; border-top: solid 2px #000000;"></div></div><div style="position: absolute; top:773.57622047244px;left:104.46519685039px; z-index: 1165;"><div class="display: table;"><div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1165; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No. of Casuals:</div></div></div><div style="position: absolute; top:773.57622047244px;left:300.05149606299px; z-index: 1166;"><div class="display: table;"><div class="" style="position: relative; width: 400px; height: 14.869133858268px; background-color: ; z-index: 1166; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{casuals}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:104.46519685039px; z-index: 1167;"><div class="display: table;"><div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1167; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No. of Part Time Employees:</div></div></div><div style="position: absolute; top:730.49385826772px;left:300.05149606299px; z-index: 1168;"><div class="display: table;"><div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1168; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{partTime}}</div></div></div><div style="position: absolute; top:798.73937007874px;left:104.46519685039px; z-index: 1169;"><div class="display: table;"><div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1169; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Ownership</div></div></div><div style="position: absolute; top:822.75874015748px;left:104.46519685039px; z-index: 1170;"><div class="display: table;"><div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1170; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No. of Owners:</div></div></div><div style="position: absolute; top:866.98488188976px;left:104.46519685039px; z-index: 1171;"><div class="display: table;"><div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1171; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Owners 1's Role:</div></div></div><div style="position: absolute; top:822.75874015748px;left:298.14519685039px; z-index: 1172;"><div class="display: table;"><div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1172; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{numberOwners}}</div></div></div><div style="position: absolute; top:860.88472440945px;left:298.14519685039px; z-index: 1173;"><div class="display: table;"><div class="" style="position: relative; width: 400px; height: 39.269763779528px; background-color: ; z-index: 1173; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{owners1sRole}}</div></div></div><div style="position: absolute; top:1011.4823622047px;left:104.46519685039px; z-index: 1174;"><div class="" style="position: absolute; width: 600px; height: 2px; background-color: ; z-index: 1174; border-top: solid 2px #000000;"></div></div><div style="position: absolute; top:905.11086614173px;left:104.46519685039px; z-index: 1175;"><div class="display: table;"><div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1175; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other Owners' Hours:</div></div></div><div style="position: absolute; top:905.11086614173px;left:298.14519685039px; z-index: 1176;"><div class="display: table;"><div class="" style="position: relative; width: 398px; height: 14.869133858268px; background-color: ; z-index: 1176; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersHours}}</div></div></div><div style="position: absolute; top:841.82173228347px;left:104.46519685039px; z-index: 1177;"><div class="display: table;"><div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1177; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Owners 1's Hours:</div></div></div><div style="position: absolute; top:841.82173228347px;left:298.14519685039px; z-index: 1178;"><div class="display: table;"><div class="" style="position: relative; width: 401px; height: 16.012913385827px; background-color: ; z-index: 1178; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{owners1sHours}}</div></div></div><div style="position: absolute; top:924.17385826772px;left:104.46519685039px; z-index: 1179;"><div class="display: table;"><div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1179; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other Owners' Role:</div></div></div><div style="position: absolute; top:924.17385826772px;left:298.14519685039px; z-index: 1180;"><div class="display: table;"><div class="" style="position: relative; width: 400px; height: 44.988661417323px; background-color: ; z-index: 1180; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersRole}}</div></div></div><div style="position: absolute; top:970.3062992126px;left:104.46519685039px; z-index: 1181;"><div class="display: table;"><div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1181; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other Owners' Role:</div></div></div><div style="position: absolute; top:970.3062992126px;left:298.14519685039px; z-index: 1182;"><div class="display: table;"><div class="" style="position: relative; width: 401px; height: 40.032283464567px; background-color: ; z-index: 1182; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersRole}}</div></div></div></div><div data-page="5" class="page middle-page" style="top: 4529.3669291339px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:96.45874015748px; z-index: 1183;"><div class="display: table;"><div class="" style="position: relative; width: 607px; height: 25.163149606299px; background-color: ; z-index: 1183; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business Risk and Value Drivers Assessment</div></div></div><div style="position: absolute; top:101.41511811024px;left:96.45874015748px; z-index: 1184;"><div class="display: table;"><div class="" style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1184; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">There are three main influences on business value. One is profitability, the other is the risk associated with sustainability of those profits after transferee of ownership and the last one is the current business trand.<br />
 <br />
 Following is the analyses risk and value drivers analysis of {{businessName}}.<br />
-</div></div></div><div style="position: absolute; top:174.61700787402px;left:96.45874015748px; z-index: 1185;"><div class="display: table;"><div class="" style="position: relative; width: 151px; height: 18.560987291339px; background-color: ; z-index: 1185; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risks</div></div></div><div style="position: absolute; top:194.82377952756px;left:95.314960629921px; z-index: 1186;"><div class="display: table;"><div class="" style="position: relative; width: 609px; height: 134.58472440945px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{riskList}}</div></div></div><div style="position: absolute; top:335.1274015748px;left:96.45874015748px; z-index: 1187;"><div class="display: table;"><div class="" style="position: relative; width: 205px; height: 22.113070866142px; background-color: ; z-index: 1187; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Values Driving Points</div></div></div><div style="position: absolute; top:358.00299212598px;left:95.314960629921px; z-index: 1188;"><div class="display: table;"><div class="" style="position: relative; width: 607px; height: 132.29716535433px; background-color: ; z-index: 1188; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{valueDriversList}}</div></div></div><div style="position: absolute; top:499.83165354331px;left:96.45874015748px; z-index: 1189;"><div class="display: table;"><div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1189; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Critical issues or potential issues</div></div></div><div style="position: absolute; top:526.9011023622px;left:95.314960629921px; z-index: 1190;"><div class="display: table;"><div class="" style="position: relative; width: 606px; height: 132.29716535433px; background-color: ; z-index: 1190; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{criticalIssuesList}}</div></div></div><div style="position: absolute; top:686.26771653543px;left:-100px; z-index: 1229;">
+</div></div></div><div style="position: absolute; top:174.61700787402px;left:96.45874015748px; z-index: 1185;"><div class="display: table;"><div class="" style="position: relative; width: 151px; height: 18.560987291339px; background-color: ; z-index: 1185; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risks</div></div></div><div style="position: absolute; top:194.82377952756px;left:95.314960629921px; z-index: 1186;"><div class="display: table;"><div class="" style="position: relative; width: 609px; height: 134.58472440945px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{riskList}}}</div></div></div><div style="position: absolute; top:335.1274015748px;left:96.45874015748px; z-index: 1187;"><div class="display: table;"><div class="" style="position: relative; width: 205px; height: 22.113070866142px; background-color: ; z-index: 1187; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Values Driving Points</div></div></div><div style="position: absolute; top:358.00299212598px;left:95.314960629921px; z-index: 1188;"><div class="display: table;"><div class="" style="position: relative; width: 607px; height: 132.29716535433px; background-color: ; z-index: 1188; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{valueDriversList}}}</div></div></div><div style="position: absolute; top:499.83165354331px;left:96.45874015748px; z-index: 1189;"><div class="display: table;"><div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1189; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Critical issues or potential issues</div></div></div><div style="position: absolute; top:526.9011023622px;left:95.314960629921px; z-index: 1190;"><div class="display: table;"><div class="" style="position: relative; width: 606px; height: 132.29716535433px; background-color: ; z-index: 1190; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{criticalIssuesList}}}</div></div></div><div style="position: absolute; top:686.26771653543px;left:-100px; z-index: 1229;">
   <div class="display: table;">
     <div class="" style="position: relative; width: 100%; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
       <div id="chartGaugeBusinessRisk"></div>
     </div>
   </div>
-</div><div style="position: absolute; top:665.29842519685px;left:96.45874015748px; z-index: 1246;"><div class="display: table;"><div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1246; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business risk assessment</div></div></div><div style="position: absolute; top:862.02850393701px;left:96.45874015748px; z-index: 1229;"><div class="display: table;"><div class="" style="position: relative; width: 377px; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">gaugeMarket.html</div></div></div><div style="position: absolute; top:840.67795275591px;left:96.45874015748px; z-index: 1248;"><div class="display: table;"><div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1248; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Current market assessment</div></div></div><div style="position: absolute; top:736.97527559055px;left:478.4811023622px; z-index: 1302;"><div class="display: table;"><div class="" style="position: relative; width: 227px; height: 71.295590551181px; background-color: ; z-index: 1302; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeBusinessRisk}}</div></div></div><div style="position: absolute; top:912.73606299213px;left:478.4811023622px; z-index: 1303;"><div class="display: table;"><div class="" style="position: relative; width: 227px; height: 73.20188976378px; background-color: ; z-index: 1303; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeMarket}}</div></div></div></div><div data-page="6" class="page middle-page" style="top: 5661.7086614173px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1304;"><div class="display: table;"><div class="" style="position: relative; width: 396px; height: 22.113070866142px; background-color: ; z-index: 1304; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial Information</div></div></div><div style="position: absolute; top:104.46519685039px;left:96.45874015748px; z-index: 1305;"><div class="display: table;"><div class="" style="position: relative; width: 606px; height: 31.263307086614px; background-color: ; z-index: 1305; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Financial Information Source: Information provided by principals accountant.</div></div></div><div style="position: absolute; top:152.50393700787px;left:95.314960629921px; z-index: 1306;"><div class="" style="position: absolute; width: 605px; height: 862px; background-color: ; z-index: 1306; border-top: solid 1px #000000; border-right: solid 1px #000000; border-bottom: solid 1px #000000; border-left: solid 1px #000000;"></div></div><div style="position: absolute; top:152.50393700787px;left:96.45874015748px; z-index: 1307;"><div class="display: table;"><div class="" style="position: relative; width: 151px; height: 40.032283464567px; background-color: ; z-index: 1307; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">financialInformation.html</div></div></div></div><div data-page="7" class="page middle-page" style="top: 6794.0503937008px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1308;"><div class="display: table;"><div class="" style="position: relative; width: 157px; height: 20.206771653543px; background-color: ; z-index: 1308; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial Snapshot</div></div></div><div style="position: absolute; top:101.41511811024px;left:95.314960629921px; z-index: 1209;"><div class="display: table;"><canvas id="salesGpPebitda"></canvas></div></div><div style="position: absolute; top:588.66519685039px;left:99.508818897638px; z-index: 1224;"><div class="display: table;">
+</div><div style="position: absolute; top:665.29842519685px;left:96.45874015748px; z-index: 1246;"><div class="display: table;"><div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1246; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business risk assessment</div></div></div><div style="position: absolute; top:862.02850393701px;left:-100px; z-index: 1229;">
+  <div class="display: table;">
+    <div class="" style="position: relative; width: 100%; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
+      <div id="chartGaugeMarket"></div>
+    </div>
+  </div>
+</div><div style="position: absolute; top:840.67795275591px;left:96.45874015748px; z-index: 1248;"><div class="display: table;"><div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1248; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Current market assessment</div></div></div><div style="position: absolute; top:736.97527559055px;left:478.4811023622px; z-index: 1302;"><div class="display: table;"><div class="" style="position: relative; width: 227px; height: 71.295590551181px; background-color: ; z-index: 1302; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeBusinessRisk}}</div></div></div><div style="position: absolute; top:912.73606299213px;left:478.4811023622px; z-index: 1303;"><div class="display: table;"><div class="" style="position: relative; width: 227px; height: 73.20188976378px; background-color: ; z-index: 1303; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeMarket}}</div></div></div></div><div data-page="6" class="page middle-page" style="top: 5661.7086614173px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1304;"><div class="display: table;"><div class="" style="position: relative; width: 396px; height: 22.113070866142px; background-color: ; z-index: 1304; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial Information</div></div></div><div style="position: absolute; top:104.46519685039px;left:96.45874015748px; z-index: 1305;"><div class="display: table;"><div class="" style="position: relative; width: 606px; height: 31.263307086614px; background-color: ; z-index: 1305; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Financial Information Source: Information provided by principals accountant.</div></div></div><div style="position: absolute; top:152.50393700787px;left:95.314960629921px; z-index: 1306;"><div class="" style="position: absolute; width: 605px; height: 862px; background-color: ; z-index: 1306; border-top: solid 1px #000000; border-right: solid 1px #000000; border-bottom: solid 1px #000000; border-left: solid 1px #000000;"></div></div><div style="position: absolute; top:152.50393700787px;left:96.45874015748px; z-index: 1307;"><div class="display: table;"><table class="tg" cellpadding="0" cellspacing="0">
+  <tr>
+    <th class="cell-empty"></th>
+    <th class="cell-value ">{{year1}}</th>
+    <th class="cell-value ">{{year2}}</th>
+    <th class="cell-value ">{{year3}}</th>
+    <th class="cell-value ">{{year4}}</th>
+    <th class="cell-value ">{{year5}}</th>
+    <th class="cell-value ">{{year7}}</th>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
+    <td class="cell-value ">{{sales1}}</td>
+    <td class="cell-value ">{{sales2}}</td>
+    <td class="cell-value ">{{sales3}}</td>
+    <td class="cell-value ">{{sales4}}</td>
+    <td class="cell-value ">{{sales5}}</td>
+    <td class="cell-value ">{{sales7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">COGS</span></td>
+    <td class="cell-value">{{cogs1}}</td>
+    <td class="cell-value">{{cogs2}}</td>
+    <td class="cell-value">{{cogs3}}</td>
+    <td class="cell-value">{{cogs4}}</td>
+    <td class="cell-value">{{cogs5}}</td>
+    <td class="cell-value">{{cogs7}}</td>
+  </tr>
+  <tr style="background-color: #e2f3f7">
+    <td class="cell-title"><span style="font-weight:bold">Gross Margin</span></td>
+    <td class="cell-value">{{calcGrossMargin1}}</td>
+    <td class="cell-value">{{calcGrossMargin2}}</td>
+    <td class="cell-value">{{calcGrossMargin3}}</td>
+    <td class="cell-value">{{calcGrossMargin4}}</td>
+    <td class="cell-value">{{calcGrossMargin5}}</td>
+    <td class="cell-value">{{calcGrossMargin6}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">Gross Margin %</td>
+    <td class="cell-value">{{calcGrossMarginPerc1}}</td>
+    <td class="cell-value">{{calcGrossMarginPerc2}}</td>
+    <td class="cell-value">{{calcGrossMarginPerc3}}</td>
+    <td class="cell-value">{{calcGrossMarginPerc4}}</td>
+    <td class="cell-value">{{calcGrossMarginPerc5}}</td>
+    <td class="cell-value">{{calcGrossMarginPerc6}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Other Income</span></td>
+    <td class="cell-value">{{otherIncome1}}</td>
+    <td class="cell-value">{{otherIncome2}}</td>
+    <td class="cell-value">{{otherIncome3}}</td>
+    <td class="cell-value">{{otherIncome4}}</td>
+    <td class="cell-value">{{otherIncome5}}</td>
+    <td class="cell-value">{{otherIncome7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Gross Profit</span></td>
+    <td class="cell-value">{{calcGrossProfit1}}</td>
+    <td class="cell-value">{{calcGrossProfit2}}</td>
+    <td class="cell-value">{{calcGrossProfit3}}</td>
+    <td class="cell-value">{{calcGrossProfit4}}</td>
+    <td class="cell-value">{{calcGrossProfit5}}</td>
+    <td class="cell-value">{{calcGrossProfit7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Expenses</span></td>
+    <td class="cell-value">{{expenses1}}</td>
+    <td class="cell-value">{{expenses2}}</td>
+    <td class="cell-value">{{expenses3}}</td>
+    <td class="cell-value">{{expenses4}}</td>
+    <td class="cell-value">{{expenses5}}</td>
+    <td class="cell-value">{{expenses7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Operating Profit</span></td>
+    <td class="cell-value">{{calcOperatingProfit1}}</td>
+    <td class="cell-value">{{calcOperatingProfit2}}</td>
+    <td class="cell-value">{{calcOperatingProfit3}}</td>
+    <td class="cell-value">{{calcOperatingProfit4}}</td>
+    <td class="cell-value">{{calcOperatingProfit5}}</td>
+    <td class="cell-value">{{calcOperatingProfit6}}</td>
+  </tr>
+  <tr style="background-color: #e2f3f7">
+    <td class="cell-title">Operating Profit %</td>
+    <td class="cell-value">{{calcOperatingProfitPerc1}}</td>
+    <td class="cell-value">{{calcOperatingProfitPerc2}}</td>
+    <td class="cell-value">{{calcOperatingProfitPerc3}}</td>
+    <td class="cell-value">{{calcOperatingProfitPerc4}}</td>
+    <td class="cell-value">{{calcOperatingProfitPerc5}}</td>
+    <td class="cell-value">{{calcOperatingProfitPerc6}}</td>
+  </tr>
+</table>
+<table class="tg" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="7" style="text-align: center;">
+      <span style="font-weight:bold">Addbacks and Adjustments</span>
+    </td>
+  </tr>
+  {{#each financialInformationArray}}
+  <tr>
+    <td class="cell-title">{{aaRow}}</td>
+    <td class="cell-value">{{aaRowYear1}}</td>
+    <td class="cell-value">{{aaRowYear2}}</td>
+    <td class="cell-value">{{aaRowYear3}}</td>
+    <td class="cell-value">{{aaRowYear4}}</td>
+    <td class="cell-value">{{aaRowYear5}}</td>
+    <td class="cell-value">{{aaRowYear7}}</td>
+  </tr>
+  {{/each}}
+  <tr>
+    <td class="cell-title">{{aaRow1}}</td>
+    <td class="cell-value">{{aaRow1Year1}}</td>
+    <td class="cell-value">{{aaRow1Year2}}</td>
+    <td class="cell-value">{{aaRow1Year3}}</td>
+    <td class="cell-value">{{aaRow1Year4}}</td>
+    <td class="cell-value">{{aaRow1Year5}}</td>
+    <td class="cell-value">{{aaRow1Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow2}}</td>
+    <td class="cell-value">{{aaRow2Year1}}</td>
+    <td class="cell-value">{{aaRow2Year2}}</td>
+    <td class="cell-value">{{aaRow2Year3}}</td>
+    <td class="cell-value">{{aaRow2Year4}}</td>
+    <td class="cell-value">{{aaRow2Year5}}</td>
+    <td class="cell-value">{{aaRow2Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow3}}</td>
+    <td class="cell-value">{{aaRow3Year1}}</td>
+    <td class="cell-value">{{aaRow3Year2}}</td>
+    <td class="cell-value">{{aaRow3Year3}}</td>
+    <td class="cell-value">{{aaRow3Year4}}</td>
+    <td class="cell-value">{{aaRow3Year5}}</td>
+    <td class="cell-value">{{aaRow3Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow4}}</td>
+    <td class="cell-value">{{aaRow4Year1}}</td>
+    <td class="cell-value">{{aaRow4Year2}}</td>
+    <td class="cell-value">{{aaRow4Year3}}</td>
+    <td class="cell-value">{{aaRow4Year4}}</td>
+    <td class="cell-value">{{aaRow4Year5}}</td>
+    <td class="cell-value">{{aaRow4Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow5}}</td>
+    <td class="cell-value">{{aaRow5Year1}}</td>
+    <td class="cell-value">{{aaRow5Year2}}</td>
+    <td class="cell-value">{{aaRow5Year3}}</td>
+    <td class="cell-value">{{aaRow5Year4}}</td>
+    <td class="cell-value">{{aaRow5Year5}}</td>
+    <td class="cell-value">{{aaRow5Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow6}}</td>
+    <td class="cell-value">{{aaRow6Year1}}</td>
+    <td class="cell-value">{{aaRow6Year2}}</td>
+    <td class="cell-value">{{aaRow6Year3}}</td>
+    <td class="cell-value">{{aaRow6Year4}}</td>
+    <td class="cell-value">{{aaRow6Year5}}</td>
+    <td class="cell-value">{{aaRow6Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow7}}</td>
+    <td class="cell-value">{{aaRow7Year1}}</td>
+    <td class="cell-value">{{aaRow7Year2}}</td>
+    <td class="cell-value">{{aaRow7Year3}}</td>
+    <td class="cell-value">{{aaRow7Year4}}</td>
+    <td class="cell-value">{{aaRow7Year5}}</td>
+    <td class="cell-value">{{aaRow7Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow8}}</td>
+    <td class="cell-value">{{aaRow8Year1}}</td>
+    <td class="cell-value">{{aaRow8Year2}}</td>
+    <td class="cell-value">{{aaRow8Year3}}</td>
+    <td class="cell-value">{{aaRow8Year4}}</td>
+    <td class="cell-value">{{aaRow8Year5}}</td>
+    <td class="cell-value">{{aaRow8Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow9}}</td>
+    <td class="cell-value">{{aaRow9Year1}}</td>
+    <td class="cell-value">{{aaRow9Year2}}</td>
+    <td class="cell-value">{{aaRow9Year3}}</td>
+    <td class="cell-value">{{aaRow9Year4}}</td>
+    <td class="cell-value">{{aaRow9Year5}}</td>
+    <td class="cell-value">{{aaRow9Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow10}}</td>
+    <td class="cell-value">{{aaRow10Year1}}</td>
+    <td class="cell-value">{{aaRow10Year2}}</td>
+    <td class="cell-value">{{aaRow10Year3}}</td>
+    <td class="cell-value">{{aaRow10Year4}}</td>
+    <td class="cell-value">{{aaRow10Year5}}</td>
+    <td class="cell-value">{{aaRow10Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow11}}</td>
+    <td class="cell-value">{{aaRow11Year1}}</td>
+    <td class="cell-value">{{aaRow11Year2}}</td>
+    <td class="cell-value">{{aaRow11Year3}}</td>
+    <td class="cell-value">{{aaRow11Year4}}</td>
+    <td class="cell-value">{{aaRow11Year5}}</td>
+    <td class="cell-value">{{aaRow11Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow12}}</td>
+    <td class="cell-value">{{aaRow12Year1}}</td>
+    <td class="cell-value">{{aaRow12Year2}}</td>
+    <td class="cell-value">{{aaRow12Year3}}</td>
+    <td class="cell-value">{{aaRow12Year4}}</td>
+    <td class="cell-value">{{aaRow12Year5}}</td>
+    <td class="cell-value">{{aaRow12Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow13}}</td>
+    <td class="cell-value">{{aaRow13Year1}}</td>
+    <td class="cell-value">{{aaRow13Year2}}</td>
+    <td class="cell-value">{{aaRow13Year3}}</td>
+    <td class="cell-value">{{aaRow13Year4}}</td>
+    <td class="cell-value">{{aaRow13Year5}}</td>
+    <td class="cell-value">{{aaRow13Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow14}}</td>
+    <td class="cell-value">{{aaRow14Year1}}</td>
+    <td class="cell-value">{{aaRow14Year2}}</td>
+    <td class="cell-value">{{aaRow14Year3}}</td>
+    <td class="cell-value">{{aaRow14Year4}}</td>
+    <td class="cell-value">{{aaRow14Year5}}</td>
+    <td class="cell-value">{{aaRow14Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow15}}</td>
+    <td class="cell-value">{{aaRow15Year1}}</td>
+    <td class="cell-value">{{aaRow15Year2}}</td>
+    <td class="cell-value">{{aaRow15Year3}}</td>
+    <td class="cell-value">{{aaRow15Year4}}</td>
+    <td class="cell-value">{{aaRow15Year5}}</td>
+    <td class="cell-value">{{aaRow15Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow16}}</td>
+    <td class="cell-value">{{aaRow16Year1}}</td>
+    <td class="cell-value">{{aaRow16Year2}}</td>
+    <td class="cell-value">{{aaRow16Year3}}</td>
+    <td class="cell-value">{{aaRow16Year4}}</td>
+    <td class="cell-value">{{aaRow16Year5}}</td>
+    <td class="cell-value">{{aaRow16Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow17}}</td>
+    <td class="cell-value">{{aaRow17Year1}}</td>
+    <td class="cell-value">{{aaRow17Year2}}</td>
+    <td class="cell-value">{{aaRow17Year3}}</td>
+    <td class="cell-value">{{aaRow17Year4}}</td>
+    <td class="cell-value">{{aaRow17Year5}}</td>
+    <td class="cell-value">{{aaRow17Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow18}}</td>
+    <td class="cell-value">{{aaRow18Year1}}</td>
+    <td class="cell-value">{{aaRow18Year2}}</td>
+    <td class="cell-value">{{aaRow18Year3}}</td>
+    <td class="cell-value">{{aaRow18Year4}}</td>
+    <td class="cell-value">{{aaRow18Year5}}</td>
+    <td class="cell-value">{{aaRow18Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow19}}</td>
+    <td class="cell-value">{{aaRow19Year1}}</td>
+    <td class="cell-value">{{aaRow19Year2}}</td>
+    <td class="cell-value">{{aaRow19Year3}}</td>
+    <td class="cell-value">{{aaRow19Year4}}</td>
+    <td class="cell-value">{{aaRow19Year5}}</td>
+    <td class="cell-value">{{aaRow19Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow20}}</td>
+    <td class="cell-value">{{aaRow20Year1}}</td>
+    <td class="cell-value">{{aaRow20Year2}}</td>
+    <td class="cell-value">{{aaRow20Year3}}</td>
+    <td class="cell-value">{{aaRow20Year4}}</td>
+    <td class="cell-value">{{aaRow20Year5}}</td>
+    <td class="cell-value">{{aaRow20Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow21}}</td>
+    <td class="cell-value">{{aaRow21Year1}}</td>
+    <td class="cell-value">{{aaRow21Year2}}</td>
+    <td class="cell-value">{{aaRow21Year3}}</td>
+    <td class="cell-value">{{aaRow21Year4}}</td>
+    <td class="cell-value">{{aaRow21Year5}}</td>
+    <td class="cell-value">{{aaRow21Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow22}}</td>
+    <td class="cell-value">{{aaRow22Year1}}</td>
+    <td class="cell-value">{{aaRow22Year2}}</td>
+    <td class="cell-value">{{aaRow22Year3}}</td>
+    <td class="cell-value">{{aaRow22Year4}}</td>
+    <td class="cell-value">{{aaRow22Year5}}</td>
+    <td class="cell-value">{{aaRow22Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow23}}</td>
+    <td class="cell-value">{{aaRow23Year1}}</td>
+    <td class="cell-value">{{aaRow23Year2}}</td>
+    <td class="cell-value">{{aaRow23Year3}}</td>
+    <td class="cell-value">{{aaRow23Year4}}</td>
+    <td class="cell-value">{{aaRow23Year5}}</td>
+    <td class="cell-value">{{aaRow23Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow24}}</td>
+    <td class="cell-value">{{aaRow24Year1}}</td>
+    <td class="cell-value">{{aaRow24Year2}}</td>
+    <td class="cell-value">{{aaRow24Year3}}</td>
+    <td class="cell-value">{{aaRow24Year4}}</td>
+    <td class="cell-value">{{aaRow24Year5}}</td>
+    <td class="cell-value">{{aaRow24Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow25}}</td>
+    <td class="cell-value">{{aaRow25Year1}}</td>
+    <td class="cell-value">{{aaRow25Year2}}</td>
+    <td class="cell-value">{{aaRow25Year3}}</td>
+    <td class="cell-value">{{aaRow25Year4}}</td>
+    <td class="cell-value">{{aaRow25Year5}}</td>
+    <td class="cell-value">{{aaRow25Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow26}}</td>
+    <td class="cell-value">{{aaRow26Year1}}</td>
+    <td class="cell-value">{{aaRow26Year2}}</td>
+    <td class="cell-value">{{aaRow26Year3}}</td>
+    <td class="cell-value">{{aaRow26Year4}}</td>
+    <td class="cell-value">{{aaRow26Year5}}</td>
+    <td class="cell-value">{{aaRow26Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow27}}</td>
+    <td class="cell-value">{{aaRow27Year1}}</td>
+    <td class="cell-value">{{aaRow27Year2}}</td>
+    <td class="cell-value">{{aaRow27Year3}}</td>
+    <td class="cell-value">{{aaRow27Year4}}</td>
+    <td class="cell-value">{{aaRow27Year5}}</td>
+    <td class="cell-value">{{aaRow27Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow28}}</td>
+    <td class="cell-value">{{aaRow28Year1}}</td>
+    <td class="cell-value">{{aaRow28Year2}}</td>
+    <td class="cell-value">{{aaRow28Year3}}</td>
+    <td class="cell-value">{{aaRow28Year4}}</td>
+    <td class="cell-value">{{aaRow28Year5}}</td>
+    <td class="cell-value">{{aaRow28Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow29}}</td>
+    <td class="cell-value">{{aaRow29Year1}}</td>
+    <td class="cell-value">{{aaRow29Year2}}</td>
+    <td class="cell-value">{{aaRow29Year3}}</td>
+    <td class="cell-value">{{aaRow29Year4}}</td>
+    <td class="cell-value">{{aaRow29Year5}}</td>
+    <td class="cell-value">{{aaRow29Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">{{aaRow30}}</td>
+    <td class="cell-value">{{aaRow30Year1}}</td>
+    <td class="cell-value">{{aaRow30Year2}}</td>
+    <td class="cell-value">{{aaRow30Year3}}</td>
+    <td class="cell-value">{{aaRow30Year4}}</td>
+    <td class="cell-value">{{aaRow30Year5}}</td>
+    <td class="cell-value">{{aaRow30Year7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Total Adjusments</span></td>
+    <td class="cell-value">{{totalAdjusments1}}</td>
+    <td class="cell-value">{{totalAdjusments2}}</td>
+    <td class="cell-value">{{totalAdjusments3}}</td>
+    <td class="cell-value">{{totalAdjusments4}}</td>
+    <td class="cell-value">{{totalAdjusments5}}</td>
+    <td class="cell-value">{{totalAdjusments7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title">
+      <span style="font-weight:bold">Total Adjusted Profit INCL. Owner's
+        Wage</span>
+    </td>
+    <td class="cell-value">{{totalAdjustedProfit1}}</td>
+    <td class="cell-value">{{totalAdjustedProfit2}}</td>
+    <td class="cell-value">{{totalAdjustedProfit3}}</td>
+    <td class="cell-value">{{totalAdjustedProfit4}}</td>
+    <td class="cell-value">{{totalAdjustedProfit5}}</td>
+    <td class="cell-value">{{totalAdjustedProfit7}}</td>
+  </tr>
+  <tr>
+    <td class="cell-title"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
+    <td class="cell-value">{{adjustedProfitPerc1}}</td>
+    <td class="cell-value">{{adjustedProfitPerc2}}</td>
+    <td class="cell-value">{{adjustedProfitPerc3}}</td>
+    <td class="cell-value">{{adjustedProfitPerc4}}</td>
+    <td class="cell-value">{{adjustedProfitPerc5}}</td>
+    <td class="cell-value">{{adjustedProfitPerc7}}</td>
+  </tr>
+</table></div></div></div><div data-page="7" class="page middle-page" style="top: 6794.0503937008px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1308;"><div class="display: table;"><div class="" style="position: relative; width: 157px; height: 20.206771653543px; background-color: ; z-index: 1308; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial Snapshot</div></div></div><div style="position: absolute; top:101.41511811024px;left:95.314960629921px; z-index: 1209;"><div class="display: table;"><canvas id="salesGpPebitda"></canvas></div></div><div style="position: absolute; top:588.66519685039px;left:99.508818897638px; z-index: 1224;"><div class="display: table;">
   <table class="tg">
   <tr>
     <th class="tg-ojn2">Last Year Profit</th>
@@ -268,9 +901,191 @@ Following is the analyses risk and value drivers analysis of {{businessName}}.<b
       <td class="tg-387r">{{totalAnnualWages}}</td>
     </tr>
   </table>
-</div></div></div><div data-page="8" class="page middle-page" style="top: 7926.3921259843px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:77.395748031496px;left:96.077480314961px; z-index: 1314;"><div class="display: table;"><div class="" style="position: relative; width: 605px; height: 56.045196850394px; background-color: ; z-index: 1314; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Following is the list of 10 last business sold. With finial and transaction details and as well as achieved prices with calculated multiplayer based on total investment (including stock).</div></div></div><div style="position: absolute; top:140.68488188976px;left:100.27133858268px; z-index: 1258;"><div class="display: table;"><div class="" style="position: relative; width: 151px; height: 24.01937007874px; background-color: ; z-index: 1258; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">last10Businesses.html</div></div></div><div style="position: absolute; top:931.79905511811px;left:309.9642519685px; z-index: 1316;"><div class="display: table;"><div class="" style="position: relative; width: 188px; height: 23.256850393701px; background-color: ; z-index: 1316; font-size: 16px; line-height: 18px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Average Multiplier</div></div></div><div style="position: absolute; top:955.81842519685px;left:303.86409448819px; z-index: 1317;"><div class="" style="position: absolute; width: 197px; height: 1px; background-color: ; z-index: 1317; border-top: solid 1px #000000;"></div></div><div style="position: absolute; top:958.86850393701px;left:308.05795275591px; z-index: 1318;"><div class="display: table;"><div class="" style="position: relative; width: 188px; height: 27.069448818898px; background-color: ; z-index: 1318; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{avgMultiplier}}</div></div></div></div><div data-page="9" class="page middle-page" style="top: 9058.7338582677px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1319;"><div class="display: table;"><div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1319; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Setting the Asking Price</div></div></div><div style="position: absolute; top:104.46519685039px;left:95.314960629921px; z-index: 1320;"><div class="display: table;"><div class="" style="position: relative; width: 609px; height: 153.64771653543px; background-color: ; z-index: 1320; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">It is important to sett the asking price right. Underpricing the business will come the business to sell below market value. However, overpricing the business could also cause the business to sell below fair value due to staying too long on the market and becoming 'Sail'.<br />
+</div></div></div><div data-page="8" class="page middle-page" style="top: 7926.3921259843px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:77.395748031496px;left:96.077480314961px; z-index: 1314;"><div class="display: table;"><div class="" style="position: relative; width: 605px; height: 56.045196850394px; background-color: ; z-index: 1314; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Following is the list of 10 last business sold. With finial and transaction details and as well as achieved prices with calculated multiplayer based on total investment (including stock).</div></div></div><div style="position: absolute; top:140.68488188976px;left:100.27133858268px; z-index: 1258;"><div class="display: table;"><table style="width: 650px" class="tg">
+  <tr>
+    <th class="tg-x9pm">Business<br />Type</th>
+    <th class="tg-x9pm">T/O</th>
+    <th class="tg-x9pm">{{avgLabel}}</th>
+    <th class="tg-x9pm">{{lastYearLabel}}</th>
+    <th class="tg-nf5p">Trend</th>
+    <th class="tg-nf5p">Stock <br />Value</th>
+    <th class="tg-nf5p">Assets<br />Value</th>
+    <th class="tg-nf5p">Price Inc.<br />Stock</th>
+    <th class="tg-nf5p">{{multiplierLabel}}</th>
+  </tr>
+  <tr>
+    <td style="width: 10px" class="tg-pre9">{{businessType1}}</td>
+    <td style="width: 10px" class="tg-rcs9">{{turnOver1}}</td>
+    <td style="width: 10px" class="tg-rcs9">{{avg1}}</td>
+    <td style="width: 10px" class="tg-rcs9">{{lastYear1}}</td>
+    <td style="width: 5px" class="tg-6u1a">{{trend1}}</td>
+    <td style="width: 10px" class="tg-bfls">{{stockValue1}}</td>
+    <td style="width: 10px" class="tg-bfls">{{assetsValue1}}</td>
+    <td style="width: 10px" class="tg-bfls">{{priceIncStock1}}</td>
+    <td style="width: 8px" class="tg-uk0v">{{multiplier1}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">{{specialNotes1}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">{{termsOfDeal1}}</td>
+  </tr>
+  <tr>
+    <td class="tg-pre9">{{businessType2}}</td>
+    <td class="tg-ee2k">{{turnOver2}}</td>
+    <td class="tg-ee2k">{{avg2}}</td>
+    <td class="tg-ee2k">{{lastYear2}}</td>
+    <td class="tg-vmmt">{{trend2}}</td>
+    <td class="tg-pg0z">{{stockValue2}}</td>
+    <td class="tg-pg0z">{{assetsValue2}}</td>
+    <td class="tg-pg0z">{{priceIncStock2}}</td>
+    <td class="tg-7wn8">{{multiplier2}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">{{specialNotes2}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">{{termsOfDeal2}}</td>
+  </tr>
+  <tr>
+    <td class="tg-pre9">{{businessType3}}</td>
+    <td class="tg-rcs9">{{turnOver3}}</td>
+    <td class="tg-rcs9">{{avg3}}</td>
+    <td class="tg-rcs9">{{lastYear3}}</td>
+    <td class="tg-6u1a">{{trend3}}</td>
+    <td class="tg-bfls">{{stockValue3}}</td>
+    <td class="tg-bfls">{{assetsValue3}}</td>
+    <td class="tg-bfls">{{priceIncStock3}}</td>
+    <td class="tg-uk0v">{{multiplier3}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">{{specialNotes3}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">{{termsOfDeal3}}</td>
+  </tr>
+  <tr>
+    <td class="tg-i3u2">{{businessType4}}</td>
+    <td class="tg-pg0z">{{turnOver4}}</td>
+    <td class="tg-pg0z">{{avg4}}</td>
+    <td class="tg-pg0z">{{lastYear4}}</td>
+    <td class="tg-vmmt">{{trend4}}</td>
+    <td class="tg-pg0z">{{stockValue4}}</td>
+    <td class="tg-pg0z">{{assetsValue4}}</td>
+    <td class="tg-pg0z">{{priceIncStock4}}</td>
+    <td class="tg-7wn8">{{multiplier4}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">{{specialNotes4}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">{{termsOfDeal4}}</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">{{businessType5}}</td>
+    <td class="tg-bfls">{{turnOver5}}</td>
+    <td class="tg-bfls">{{avg5}}</td>
+    <td class="tg-bfls">{{lastYear5}}</td>
+    <td class="tg-6u1a">{{trend5}}</td>
+    <td class="tg-bfls">{{stockValue5}}</td>
+    <td class="tg-bfls">{{assetsValue5}}</td>
+    <td class="tg-bfls">{{priceIncStock5}}</td>
+    <td class="tg-uk0v">{{multiplier5}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">{{specialNotes5}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">{{termsOfDeal5}}</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">{{businessType6}}</td>
+    <td class="tg-pg0z">{{turnOver6}}</td>
+    <td class="tg-pg0z">{{avg6}}</td>
+    <td class="tg-pg0z">{{lastYear6}}</td>
+    <td class="tg-vmmt">{{trend6}}</td>
+    <td class="tg-pg0z">{{stockValue6}}</td>
+    <td class="tg-pg0z">{{assetsValue6}}</td>
+    <td class="tg-pg0z">{{priceIncStock6}}</td>
+    <td class="tg-7wn8">{{multiplier6}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">{{specialNotes6}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">{{termsOfDeal6}}</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">{{businessType7}}</td>
+    <td class="tg-bfls">{{turnOver7}}</td>
+    <td class="tg-bfls">{{avg7}}</td>
+    <td class="tg-bfls">{{lastYear7}}</td>
+    <td class="tg-6u1a">{{trend7}}</td>
+    <td class="tg-bfls">{{stockValue7}}</td>
+    <td class="tg-bfls">{{assetsValue7}}</td>
+    <td class="tg-bfls">{{priceIncStock7}}</td>
+    <td class="tg-uk0v">{{multiplier7}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">{{specialNotes7}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">{{termsOfDeal7}}</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">{{businessType8}}</td>
+    <td class="tg-pg0z">{{turnOver8}}</td>
+    <td class="tg-pg0z">{{avg8}}</td>
+    <td class="tg-pg0z">{{lastYear8}}</td>
+    <td class="tg-vmmt">{{trend8}}</td>
+    <td class="tg-pg0z">{{stockValue8}}</td>
+    <td class="tg-pg0z">{{assetsValue8}}</td>
+    <td class="tg-pg0z">{{priceIncStock8}}</td>
+    <td class="tg-7wn8">{{multiplier8}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">{{specialNotes8}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">{{termsOfDeal8}}</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">{{businessType9}}</td>
+    <td class="tg-bfls">{{turnOver9}}</td>
+    <td class="tg-bfls">{{avg9}}</td>
+    <td class="tg-bfls">{{lastYear9}}</td>
+    <td class="tg-6u1a">{{trend9}}</td>
+    <td class="tg-bfls">{{stockValue9}}</td>
+    <td class="tg-bfls">{{assetsValue9}}</td>
+    <td class="tg-bfls">{{priceIncStock9}}</td>
+    <td class="tg-uk0v">{{multiplier9}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-bfls" colspan="4">{{specialNotes9}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-bfls" colspan="3">{{termsOfDeal9}}</td>
+  </tr>
+  <tr>
+    <td class="tg-vche">{{businessType10}}</td>
+    <td class="tg-pg0z">{{turnOver10}}</td>
+    <td class="tg-pg0z">{{avg10}}</td>
+    <td class="tg-pg0z">{{lastYear10}}</td>
+    <td class="tg-vmmt">{{trend10}}</td>
+    <td class="tg-pg0z">{{stockValue10}}</td>
+    <td class="tg-pg0z">{{assetsValue10}}</td>
+    <td class="tg-pg0z">{{priceIncStock10}}</td>
+    <td class="tg-7wn8">{{multiplier10}}</td>
+  </tr>
+  <tr>
+    <td class="tg-bxie">Special Notes</td>
+    <td class="tg-injz" colspan="4">{{specialNotes10}}</td>
+    <td class="tg-bxie">Terms of the Deal</td>
+    <td class="tg-injz" colspan="3">{{termsOfDeal10}}</td>
+  </tr>
+</table></div></div><div style="position: absolute; top:931.79905511811px;left:309.9642519685px; z-index: 1316;"><div class="display: table;"><div class="" style="position: relative; width: 188px; height: 23.256850393701px; background-color: ; z-index: 1316; font-size: 16px; line-height: 18px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Average Multiplier</div></div></div><div style="position: absolute; top:955.81842519685px;left:303.86409448819px; z-index: 1317;"><div class="" style="position: absolute; width: 197px; height: 1px; background-color: ; z-index: 1317; border-top: solid 1px #000000;"></div></div><div style="position: absolute; top:958.86850393701px;left:308.05795275591px; z-index: 1318;"><div class="display: table;"><div class="" style="position: relative; width: 188px; height: 27.069448818898px; background-color: ; z-index: 1318; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{avgMultiplier}}</div></div></div></div><div data-page="9" class="page middle-page" style="top: 9058.7338582677px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1319;"><div class="display: table;"><div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1319; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Setting the Asking Price</div></div></div><div style="position: absolute; top:104.46519685039px;left:95.314960629921px; z-index: 1320;"><div class="display: table;"><div class="" style="position: relative; width: 609px; height: 153.64771653543px; background-color: ; z-index: 1320; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">It is important to sett the asking price right. Underpricing the business will come the business to sell below market value. However, overpricing the business could also cause the business to sell below fair value due to staying too long on the market and becoming 'Sail'.<br />
 <br />
-Then assessing risk and value drivers of this business it is our conclusion that price for the multiplier for this business should be set 10% above value set over median multiplier with 20% extra of market/negotiation premium.</div></div></div><div style="position: absolute; top:797.21433070866px;left:95.314960629921px; z-index: 1323;"><div class="display: table;"><div class="" style="position: relative; width: 608px; height: 28.213228346457px; background-color: ; z-index: 1323; font-size: 20px; line-height: 23px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Propos same Price</div></div></div><div style="position: absolute; top:676.35496062992px;left:568.83968503937px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 47px; height: 36.21968503937px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Asking Price</div></div></div><div style="position: absolute; top:671.39858267717px;left:638.99149606299px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 51px; height: 51.042762708661px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Asking Price Multipler</div></div></div><div style="position: absolute; top:681.31133858268px;left:488.39385826772px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 33.932125984252px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Negotiation Premium</div></div></div><div style="position: absolute; top:671.39858267717px;left:97.22125984252px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 50.326299212598px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{multiplierLabel}}</div></div></div><div style="position: absolute; top:681.31133858268px;left:408.32929133858px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 33.932125984252px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Market Premium</div></div></div><div style="position: absolute; top:731.63763779528px;left:97.22125984252px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 38.282072031496px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaValuePricingMethod}}</div></div></div><div style="position: absolute; top:671.39858267717px;left:247.8188976378px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 48.03874015748px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Price Based on Comparable</div></div></div><div style="position: absolute; top:681.31133858268px;left:327.88346456693px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 31.263307086614px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risk Premium</div></div></div><div style="position: absolute; top:728.58755905512px;left:97.22125984252px; z-index: 1326;"><div class="" style="position: absolute; width: 607px; height: 1px; background-color: ; z-index: 1326; border-top: solid 1px #000000;"></div></div><div style="position: absolute; top:731.63763779528px;left:252.77527559055px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaPriceBasedOnComparable}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:177.66708661417px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaComparableMultiplier}}</div></div></div><div style="position: absolute; top:676.35496062992px;left:176.52330708661px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 60px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{labelComparableMultiplier}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:638.99149606299px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 32.025826771654px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPrice}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:164.7042519685px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fCalc1}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:493.73149606299px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaNegotiationPremium}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:475.81228346457px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div></div></div><div style="position: absolute; top:730.49385826772px;left:395.36645669291px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div></div></div><div style="position: absolute; top:730.49385826772px;left:315.30188976378px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div></div></div><div style="position: absolute; top:731.63763779528px;left:333.2211023622px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaRiskPremium}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:413.28566929134px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaMarketPremium}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:234.85606299213px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 10px; height: 89.324796614173px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fCalc2}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:573.79606299213px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaAskingPrice}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:555.8768503937px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">=</div></div></div><div style="position: absolute; top:731.63763779528px;left:634.03511811024px; z-index: 1332;"><div class="" style="position: absolute; width: 1px; height: 25px; background-color: ; z-index: 1332; border-left: solid 1px #000000;"></div></div><div style="position: absolute; top:261.92551181102px;left:96.45874015748px; z-index: 1322;"><div class="display: table;"><div class="" style="position: relative; width: 227px; height: 40.032283464567px; background-color: ; z-index: 1322; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">pricingChart.html</div></div></div><div style="position: absolute; top:828.8588976378px;left:309.20173228346px; z-index: 1344;"><div class="display: table;"><div class="" style="position: relative; width: 180px; height: 46.402487291339px; background-color: ; z-index: 1344; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPriceLabel}}</div></div></div></div><div data-page="10" class="page last-page" style="top: 10191.075590551px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:79.302047244094px;left:96.45874015748px; z-index: 1345;"><div class="display: table;"><div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1345; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Notes and Assumptions</div></div></div><div style="position: absolute; top:110.94661417323px;left:98.365039370079px; z-index: 1328;"><div class="display: table;"><div class="" style="position: relative; width: 602px; height: 900.91700787402px; background-color: ; z-index: 1328; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{arrayNotesAssumptions}}</div></div></div></div>
+Then assessing risk and value drivers of this business it is our conclusion that price for the multiplier for this business should be set 10% above value set over median multiplier with 20% extra of market/negotiation premium.</div></div></div><div style="position: absolute; top:797.21433070866px;left:95.314960629921px; z-index: 1323;"><div class="display: table;"><div class="" style="position: relative; width: 608px; height: 28.213228346457px; background-color: ; z-index: 1323; font-size: 20px; line-height: 23px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Propos same Price</div></div></div><div style="position: absolute; top:676.35496062992px;left:568.83968503937px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 47px; height: 36.21968503937px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Asking Price</div></div></div><div style="position: absolute; top:671.39858267717px;left:638.99149606299px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 51px; height: 51.042762708661px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Asking Price Multipler</div></div></div><div style="position: absolute; top:681.31133858268px;left:488.39385826772px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 33.932125984252px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Negotiation Premium</div></div></div><div style="position: absolute; top:671.39858267717px;left:97.22125984252px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 50.326299212598px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{multiplierLabel}}</div></div></div><div style="position: absolute; top:681.31133858268px;left:408.32929133858px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 33.932125984252px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Market Premium</div></div></div><div style="position: absolute; top:731.63763779528px;left:97.22125984252px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 38.282072031496px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaValuePricingMethod}}</div></div></div><div style="position: absolute; top:671.39858267717px;left:247.8188976378px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 48.03874015748px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Price Based on Comparable</div></div></div><div style="position: absolute; top:681.31133858268px;left:327.88346456693px; z-index: 1324;"><div class="display: table;"><div class="" style="position: relative; width: 68px; height: 31.263307086614px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risk Premium</div></div></div><div style="position: absolute; top:728.58755905512px;left:97.22125984252px; z-index: 1326;"><div class="" style="position: absolute; width: 607px; height: 1px; background-color: ; z-index: 1326; border-top: solid 1px #000000;"></div></div><div style="position: absolute; top:731.63763779528px;left:252.77527559055px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaPriceBasedOnComparable}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:177.66708661417px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaComparableMultiplier}}</div></div></div><div style="position: absolute; top:676.35496062992px;left:176.52330708661px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 60px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{labelComparableMultiplier}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:638.99149606299px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 32.025826771654px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPrice}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:164.7042519685px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fCalc1}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:493.73149606299px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaNegotiationPremium}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:475.81228346457px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div></div></div><div style="position: absolute; top:730.49385826772px;left:395.36645669291px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div></div></div><div style="position: absolute; top:730.49385826772px;left:315.30188976378px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div></div></div><div style="position: absolute; top:731.63763779528px;left:333.2211023622px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaRiskPremium}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:413.28566929134px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaMarketPremium}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:234.85606299213px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 10px; height: 89.324796614173px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fCalc2}}</div></div></div><div style="position: absolute; top:731.63763779528px;left:573.79606299213px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaAskingPrice}}</div></div></div><div style="position: absolute; top:730.49385826772px;left:555.8768503937px; z-index: 1329;"><div class="display: table;"><div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">=</div></div></div><div style="position: absolute; top:731.63763779528px;left:634.03511811024px; z-index: 1332;"><div class="" style="position: absolute; width: 1px; height: 25px; background-color: ; z-index: 1332; border-left: solid 1px #000000;"></div></div><div style="position: absolute; top:261.92551181102px;left:96.45874015748px; z-index: 1322;"><div class="display: table;"><canvas id="pricingChart"></canvas></div></div><div style="position: absolute; top:828.8588976378px;left:309.20173228346px; z-index: 1344;"><div class="display: table;"><div class="" style="position: relative; width: 180px; height: 46.402487291339px; background-color: ; z-index: 1344; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPriceLabel}}</div></div></div></div><div data-page="10" class="page last-page" style="top: 10191.075590551px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;"><div style="position: absolute; top:79.302047244094px;left:96.45874015748px; z-index: 1345;"><div class="display: table;"><div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1345; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Notes and Assumptions</div></div></div><div style="position: absolute; top:110.94661417323px;left:98.365039370079px; z-index: 1328;"><div class="display: table;"><div class="" style="position: relative; width: 602px; height: 900.91700787402px; background-color: ; z-index: 1328; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{arrayNotesAssumptions}}}</div></div></div></div>
 <script> 
     var ctx = document.getElementById("salesGpPebitda").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -542,6 +1357,251 @@ Then assessing risk and value drivers of this business it is our conclusion that
             }
           }
         })
+      </script>
+      <script>
+        var valueGaugeMarket = '{{valueSliderMarket}}'
+        var myConfigGaugeMarket = {
+          type: 'gauge',
+          globals: {
+            fontSize: 18
+          },
+          plotarea: {
+            marginTop: 45
+          },
+          plot: {
+            size: '100%',
+            valueBox: {
+              placement: 'center',
+              text: '%v', //default
+              fontSize: 15,
+              rules: [{
+                  rule: '%v <= 20',
+                  text: '%v<br>Weak'
+                },
+                {
+                  rule: '%v > 20 && %v <= 40',
+                  text: '%v<br>Challenging'
+                },
+                {
+                  rule: '%v > 40 && %v <= 60',
+                  text: '%v<br>Fair'
+                },
+                {
+                  rule: '%v >= 60 && %v <= 80',
+                  text: '%v<br>Good'
+                },
+                {
+                  rule: '%v > 80',
+                  text: '%v<br>Bullish'
+                }
+              ]
+            }
+          },
+          tooltip: {
+            borderRadius: 50
+          },
+          scaleR: {
+            aperture: 180,
+            minValue: 0,
+            maxValue: 100,
+            step: 20,
+            center: {
+              visible: false
+            },
+            tick: {
+              visible: false
+            },
+            item: {
+              fontSize: 13,
+              angle: 0,
+              offsetR: -10,
+              rules: [{
+                rule: '%i == 9',
+                offsetX: 15
+              }]
+            },
+            labels: ['Weak', 'Challenging', '', 'Fair', 'Good', 'Bullish'],
+            ring: {
+              size: 50,
+              rules: [{
+                rule: '%v < 20',
+                backgroundColor: '#e74c3c'
+              }, {
+                rule: '%v >= 20 && %v < 40',
+                backgroundColor: '#f1c40f'
+              }, {
+                rule: '%v >= 40 && %v < 60',
+                backgroundColor: '#e67e22'
+              }, {
+                rule: '%v >= 60 && %v < 80',
+                backgroundColor: '#16a085'
+              }, {
+                rule: '%v >= 80',
+                backgroundColor: '#2ecc71'
+              }]
+            }
+          },
+          series: [{
+            values: [parseInt(valueGaugeMarket, 10)], // starting value
+            backgroundColor: 'black',
+            indicator: [3, 3, 3, 3, 0.75]
+          }]
+        }
+      
+        zingchart.render({
+          id: 'chartGaugeMarket',
+          data: myConfigGaugeMarket,
+          height: 200,
+          width: '100%'
+        })
+      
+        setTimeout(function () {
+          document.getElementById('chartGaugeMarket-license-text').style.display = 'none'
+        }, 2000)
+      
+      </script>
+      <script>
+        var avgMultiplier = '{{avgMultiplier}}'
+        var riskPremium = '{{riskPremium}}'
+        var marketPremium = '{{marketPremium}}'
+        var askingPrice = '{{askingPrice}}'
+        var sliderRiskPremium = "{{sliderRiskPremium}}"
+        var sliderMarketPremium = "{{sliderMarketPremium}}"
+        var sliderNegotiationPremium = "{{sliderNegotiationPremium}}"
+        var avgMultiplierLabel = "{{avgMultiplierLabel}}"
+        var riskPremiumLabel = "{{riskPremiumLabel}}"
+        var marketPremiumLabel = "{{marketPremiumLabel}}"
+        var askingPriceLabel = "{{askingPriceLabel}}"
+        var chartData = {
+          labels: ["", "", avgMultiplierLabel, riskPremiumLabel, marketPremiumLabel, askingPriceLabel, ""],
+          datasets: [{
+            type: "line",
+            label: "value",
+            borderColor: "red",
+            borderWidth: 2,
+            fill: false,
+            data: [0, ,
+              avgMultiplier,
+              riskPremium,
+              marketPremium,
+              askingPrice,
+            ]
+          }],
+      
+        };
+        var ctx = document.getElementById("pricingChart").getContext("2d");
+        window.myMixedChart = new Chart(ctx, {
+          type: "line",
+          data: chartData,
+          options: {
+            animation: {
+              duration: 0
+            },
+            scales: {
+              yAxes: [{
+                scaleLabel: {
+                  display: false,
+                  labelString: 'text'
+                },
+                ticks: {
+                  mirror: true
+                }
+              }]
+            },
+            title: {
+              display: false,
+              text: "Title"
+            },
+            tooltips: {
+              mode: "index",
+              intersect: false
+            },
+            annotation: {
+              annotations: [{
+                  drawTime: "afterDatasetsDraw",
+                  id: "hline2",
+                  type: "line",
+                  mode: "vertical",
+                  scaleID: "x-axis-0",
+                  value: avgMultiplierLabel,
+                  borderColor: "black",
+                  borderWidth: 2,
+                  label: {
+                    backgroundColor: "black",
+                    content: `Avg Mkt [${avgMultiplier}]`,
+                    position: "bottom",
+                    fontFamily: "sans-serif",
+                    fontSize: 11,
+                    cornerRadius: 10,
+                    enabled: true,
+                    yAdjust: 10
+                  }
+                },
+                {
+                  drawTime: "afterDatasetsDraw",
+                  id: "hline3",
+                  type: "line",
+                  mode: "vertical",
+                  scaleID: "x-axis-0",
+                  value: riskPremiumLabel,
+                  borderColor: "purple",
+                  borderWidth: 2,
+                  label: {
+                    backgroundColor: "purple",
+                    content: `Risk + ${sliderRiskPremium}% [${riskPremium}]`,
+                    position: "bottom",
+                    fontFamily: "sans-serif",
+                    fontSize: 11,
+                    cornerRadius: 10,
+                    enabled: true,
+                    yAdjust: 20
+                  }
+                },
+                {
+                  drawTime: "afterDatasetsDraw",
+                  id: "hline4",
+                  type: "line",
+                  mode: "vertical",
+                  scaleID: "x-axis-0",
+                  value: marketPremiumLabel,
+                  borderColor: "orange",
+                  borderWidth: 2,
+                  label: {
+                    backgroundColor: "orange",
+                    content: `Market + ${sliderMarketPremium}% [${marketPremium}]`,
+                    position: "bottom",
+                    fontFamily: "sans-serif",
+                    fontSize: 11,
+                    cornerRadius: 10,
+                    enabled: true,
+                    yAdjust: 35
+                  }
+                },
+                {
+                  drawTime: "afterDatasetsDraw",
+                  id: "hline5",
+                  type: "line",
+                  mode: "vertical",
+                  scaleID: "x-axis-0",
+                  value: askingPriceLabel,
+                  borderColor: "green",
+                  borderWidth: 2,
+                  label: {
+                    backgroundColor: "green",
+                    content: `Negotiation + ${sliderNegotiationPremium}% [${askingPrice}]`,
+                    position: "bottom",
+                    fontFamily: "sans-serif",
+                    fontSize: 11,
+                    cornerRadius: 10,
+                    enabled: true,
+                    yAdjust: 55
+                  }
+                }
+              ]
+            }
+          }
+        });
+      
       </script>
 </body>
 </html>

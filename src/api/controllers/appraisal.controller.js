@@ -77,6 +77,7 @@ export const create = async (req, res, next) => {
   const newAppraisal = req.body
 
   newAppraisal.createdBy_id = req.user.id
+  newAppraisal.dateTimeCreated = moment().toDate()
 
   try {
     // Verify exists appraisal to change the stage to appraisal if you do not have any
@@ -116,6 +117,26 @@ export const update = async (req, res, next) => {
   const updatedValues = req.body
 
   updatedValues.updatedBy_id = req.user.id
+
+  const appraisal = await models.Appraisal.findOne({
+    where: {
+      id: appraisalId
+    }
+  })
+
+  let totalCompleted = 0
+  if (appraisal.confirmAbout) totalCompleted = 10
+  if (appraisal.confirmBusinessAnalysis) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmBusinessDetail) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmComparableData) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmCustomersSuppliers) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmFinancialAnalysis) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmNotesAndAssumptions) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmOwnershipFinalNotes) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmPremisesEnployees) totalCompleted = totalCompleted + 10
+  if (appraisal.confirmPricing) totalCompleted = totalCompleted + 10
+
+  updatedValues.completed = totalCompleted
 
   try {
     await models.Appraisal.update(updatedValues, {

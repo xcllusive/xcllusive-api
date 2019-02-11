@@ -536,7 +536,7 @@ export default (sequelize, DataTypes) => {
       aaRow1: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Amortisation'
       },
       aaRow1Year1: {
         type: DataTypes.DOUBLE,
@@ -581,7 +581,7 @@ export default (sequelize, DataTypes) => {
       aaRow2: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Depreciation'
       },
       aaRow2Year1: {
         type: DataTypes.DOUBLE,
@@ -626,7 +626,7 @@ export default (sequelize, DataTypes) => {
       aaRow3: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Interest'
       },
       aaRow3Year1: {
         type: DataTypes.DOUBLE,
@@ -671,7 +671,7 @@ export default (sequelize, DataTypes) => {
       aaRow4: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Interest Australia'
       },
       aaRow4Year1: {
         type: DataTypes.DOUBLE,
@@ -716,7 +716,7 @@ export default (sequelize, DataTypes) => {
       aaRow5: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Salaries- Owners'
       },
       aaRow5Year1: {
         type: DataTypes.DOUBLE,
@@ -761,7 +761,7 @@ export default (sequelize, DataTypes) => {
       aaRow6: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Supernnuation- Owners'
       },
       aaRow6Year1: {
         type: DataTypes.DOUBLE,
@@ -806,7 +806,7 @@ export default (sequelize, DataTypes) => {
       aaRow7: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Life Insurance'
       },
       aaRow7Year1: {
         type: DataTypes.DOUBLE,
@@ -851,7 +851,7 @@ export default (sequelize, DataTypes) => {
       aaRow8: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Personal Vehicle'
       },
       aaRow8Year1: {
         type: DataTypes.DOUBLE,
@@ -896,7 +896,7 @@ export default (sequelize, DataTypes) => {
       aaRow9: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Bad Debts'
       },
       aaRow9Year1: {
         type: DataTypes.DOUBLE,
@@ -941,7 +941,7 @@ export default (sequelize, DataTypes) => {
       aaRow10: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'Other Income Deduction'
       },
       aaRow10Year1: {
         type: DataTypes.DOUBLE,
@@ -2053,30 +2053,20 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
-      noStock: {
-        type: DataTypes.BOOLEAN,
+      stockValuationOption: {
+        type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: false
+        defaultValue: 0
       },
       currentStockLevel: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0
       },
-      currentStockLevelYesNo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false
-      },
       stockNecessary: {
         type: DataTypes.DOUBLE,
         allowNull: true,
         defaultValue: 0
-      },
-      stockNecessaryYesNo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false
       },
       physicalAssetValue: {
         type: DataTypes.DOUBLE,
