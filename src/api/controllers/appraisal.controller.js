@@ -53,16 +53,16 @@ export const get = async (req, res, next) => {
         id: appraisalId
       },
       include: [{
-        model: models.Business
-      },
-      {
-        model: models.User,
-        as: 'CreatedBy'
-      },
-      {
-        model: models.User,
-        as: 'ModifiedBy'
-      }
+          model: models.Business
+        },
+        {
+          model: models.User,
+          as: 'CreatedBy'
+        },
+        {
+          model: models.User,
+          as: 'ModifiedBy'
+        }
       ]
     })
     return res.status(201).json({
@@ -478,93 +478,90 @@ export const generatePdf = async (req, res, next) => {
 
     /* table 10 last businesses */
     let totalMultiplier = 0
-    let totalIndex = 0
-    comparableDataSelectedList.forEach((item, index) => {
-      context[`businessType${index + 1}`] = item.businessType
-      context[`turnOver${index + 1}`] = numeral(item.latestFullYearTotalRevenue).format(
-        '$0,0'
-      )
-      context[`trend${index + 1}`] = item.trend
-      context[`stockValue${index + 1}`] = numeral(item.stockValue).format('$0,0')
-      context[`assetsValue${index + 1}`] = numeral(item.assetValue).format('$0,0')
-      context[`priceIncStock${index + 1}`] = numeral(
-        item.soldPrice + item.stockValue
-      ).format('$0,0')
 
-      let multiplier = null
+    context.last10BusinessArray = comparableDataSelectedList.map((item) => {
+      let multiplierLabel = ''
+      let multiplier = 0
+      let formulaComparableMultiplier = 0
+      let formulaValuePricingMethod = ''
+      let labelComparableMultiplier = ''
+      let fCalc1 = ''
+      let fCalc2 = ''
+      let labelAskingPriceMultipler = ''
+      let askingPrice = ''
+      let avgLabel = ''
+      let lastYearLabel = ''
+      let avg = 0
+      let lastYear = 0
+
       if (appraisal.pricingMethod === 1) {
-        context.multiplierLabel = 'Multiplier EBITDA Last Year'
+        multiplierLabel = 'Multiplier EBITDA Last Year'
         multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
-        context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
+        formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
       }
       if (appraisal.pricingMethod === 2) {
-        context.multiplierLabel = 'Multiplier EBITDA Avg'
+        multiplierLabel = 'Multiplier EBITDA Avg'
         multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
-        context.formulaComparableMultiplier = appraisal.sumMEbitdaAvg
+        formulaComparableMultiplier = appraisal.sumMEbitdaAvg
       }
       if (appraisal.pricingMethod === 3) {
-        context.multiplierLabel = 'Multiplier PEBITDA Last Year'
-        // multiplier = numeral(item.soldPrice / pebitdaLastYear(item)).format('0,0.[99]')
+        multiplierLabel = 'Multiplier PEBITDA Last Year'
         multiplier = item.soldPrice / pebitdaLastYear(item)
-        context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
+        formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
       }
       if (appraisal.pricingMethod === 4) {
-        context.multiplierLabel = 'Multiplier PEBITDA Avg'
+        multiplierLabel = 'Multiplier PEBITDA Avg'
         multiplier = numeral(
           item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
         ).format('0,0.[99]')
-        context.formulaComparableMultiplier = appraisal.sumMPebitdaAvg
+        formulaComparableMultiplier = appraisal.sumMPebitdaAvg
       }
       if (appraisal.pricingMethod === 5) {
-        context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
+        multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
         multiplier = numeral(
           (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
         ).format('0,0.[99]')
-        context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
+        formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 6) {
-        context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
+        multiplierLabel = 'Multiplier EBITDA Avg With Stock'
         multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
           '0,0.[99]'
         )
-        context.formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
+        formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 7) {
-        context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
+        multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
         multiplier = numeral(
           item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
         ).format('0,0.[99]')
-        context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
+        formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 8) {
-        context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
+        multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
         multiplier = numeral(
           item.soldPrice /
           (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
         ).format('0,0.[99]')
-        context.formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
+        formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 9) {
-        context.multiplierLabel = 'T/O Multiplier'
+        multiplierLabel = 'T/O Multiplier'
         multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format(
           '0,0.[99]'
         )
-        context.formulaComparableMultiplier = appraisal.sumMTO
+        formulaComparableMultiplier = appraisal.sumMTO
       }
       if (appraisal.pricingMethod === 10) {
-        context.multiplierLabel = ''
+        multiplierLabel = ''
         multiplier = ''
-        context.formulaValuePricingMethod = ''
-        context.labelComparableMultiplier = ''
-        context.fCalc1 = ''
-        context.fCalc2 = ''
-        context.labelAskingPriceMultipler = ''
-        context.askingPrice = ''
+        formulaValuePricingMethod = ''
+        labelComparableMultiplier = ''
+        fCalc1 = ''
+        fCalc2 = ''
+        labelAskingPriceMultipler = ''
+        askingPrice = ''
       }
-      context[`multiplier${index + 1}`] = numeral(multiplier).format('0,0.[99]')
-
-      totalMultiplier = totalMultiplier + multiplier
-      totalIndex = totalIndex + index
 
       /* EBITDA */
       if (
@@ -573,10 +570,10 @@ export const generatePdf = async (req, res, next) => {
         appraisal.pricingMethod === 5 ||
         appraisal.pricingMethod === 6
       ) {
-        context.avgLabel = 'EBITDA Avg'
-        context.lastYearLabel = 'EBITDA Last Year'
-        context[`avg${index + 1}`] = numeral(ebitdaAvg(item)).format('$0,0')
-        context[`lastYear${index + 1}`] = numeral(ebitdaLastYear(item)).format('$0,0')
+        avgLabel = 'EBITDA Avg'
+        lastYearLabel = 'EBITDA Last Year'
+        avg = numeral(ebitdaAvg(item)).format('$0,0')
+        lastYear = numeral(ebitdaLastYear(item)).format('$0,0')
       }
       /* PEBITDA */
       if (
@@ -587,18 +584,45 @@ export const generatePdf = async (req, res, next) => {
         appraisal.pricingMethod === 9 ||
         appraisal.pricingMethod === 10
       ) {
-        context.avgLabel = 'PEBITDA Avg'
-        context.lastYearLabel = 'PEBITDA Last Year'
-        context[`avg${index + 1}`] = numeral(
+        avgLabel = 'PEBITDA Avg'
+        lastYearLabel = 'PEBITDA Last Year'
+        avg = numeral(
           ebitdaAvg(item) + item.agreedWageForMainOwner
         ).format('$0,0')
-        context[`lastYear${index + 1}`] = numeral(pebitdaLastYear(item)).format('$0,0')
+        lastYear = numeral(pebitdaLastYear(item)).format('$0,0')
       }
-      context[`specialNotes${index + 1}`] = item.specialNotes
-      context[`termsOfDeal${index + 1}`] = item.termsOfDeal
+
+      totalMultiplier = totalMultiplier + multiplier
+
+      return {
+        businessType: item.businessType,
+        turnOver: numeral(item.latestFullYearTotalRevenue).format('$0,0'),
+        trend: item.trend,
+        stockValue: numeral(item.stockValue).format('$0,0'),
+        assetsValue: numeral(item.assetValue).format('$0,0'),
+        priceIncStock: numeral(
+          item.soldPrice + item.stockValue
+        ).format('$0,0'),
+        multiplier: numeral(multiplier).format('0,0.[99]'),
+        specialNotes: item.specialNotes,
+        termsOfDeal: item.termsOfDeal,
+        formulaComparableMultiplier,
+        formulaValuePricingMethod,
+        labelComparableMultiplier,
+        fCalc1,
+        fCalc2,
+        labelAskingPriceMultipler,
+        askingPrice,
+        avgLabel,
+        lastYearLabel,
+        avg,
+        lastYear,
+        multiplierLabel
+      }
     })
+
     /* end table 10 last businesses */
-    context.avgMultiplier = numeral(totalMultiplier / totalIndex).format('0,0.[99]')
+    context.avgMultiplier = numeral(totalMultiplier / comparableDataSelectedList.length).format('0,0.[99]')
 
     // start gauges
     context.valueSliderBR = appraisal.valueSliderBR
@@ -744,12 +768,12 @@ export const generatePdf = async (req, res, next) => {
     const content = await readFile(templatePath, 'utf8')
     const handlebarsCompiled = handlebars.compile(content)
     const template = handlebarsCompiled(context)
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
     // const browser = await puppeteer.launch({
-    //   headless: false
+    //   args: ['--no-sandbox', '--disable-setuid-sandbox']
     // })
+    const browser = await puppeteer.launch({
+      headless: false
+    })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
