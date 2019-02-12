@@ -232,133 +232,239 @@
       size: 800.64566929134px1132.3417322835;
     }
 
+    .profitsTable {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    .profitsTable td {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 4px 13px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+
+    .profitsTable th {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 4px 13px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+
+    .profitsTable .profitsTable-valueWhite {
+      font-size: 13px;
+      background-color: #ffffff;
+      border-color: inherit;
+      text-align: left;
+    }
+
+    .profitsTable .profitsTable-labelBlue {
+      font-weight: bold;
+      font-size: 13px;
+      background-color: #e2f3f7;
+      border-color: inherit;
+      text-align: left;
+    }
+
+    .profitsTable .profitsTable-valueBlue {
+      font-size: 13px;
+      background-color: #e2f3f7;
+      border-color: inherit;
+      text-align: left;
+    }
+
+    .profitsTable .profitsTable-labelWhite {
+      font-weight: bold;
+      font-size: 13px;
+      background-color: #ffffff;
+      border-color: inherit;
+      text-align: left;
+    }
+
+    .ownersPositionTable {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    .ownersPositionTable td {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 4px 16px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+
+    .ownersPositionTable th {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 4px 16px;
+      border-style: solid;
+      border-width: 1px;
+      overflow: hidden;
+      word-break: normal;
+      border-color: black;
+    }
+
+    .ownersPositionTable .ownersPositionTable-header {
+      font-size: 14px;
+      background-color: #34696d;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .ownersPositionTable .ownersPositionTable-rowWhite {
+      font-size: 13px;
+      border-color: inherit;
+      text-align: left;
+    }
+
+    .ownersPositionTable .ownersPositionTable-rowGrey {
+      font-size: 13px;
+      background-color: #d9d7d7;
+      border-color: inherit;
+      text-align: left;
+    }
+
   </style>
 
 </head>
 
 <body>
   <div data-page="1" class="page first-page" style="top: 0px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1039;"><img src="data:image/png;base64,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"
+    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1041;"><img src="data:image/png;base64,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"
         width="108.27779527559" height="101.97246181577" alt="image" /></div>
-    <div style="position: absolute; top:76.251968503937px;left:630.22251968504px; z-index: 1040;">
-      <div class="" style="position: absolute; width: 3px; height: 941px; background-color: ; z-index: 1040; border-left: solid 3px #0076ad;"></div>
+    <div style="position: absolute; top:76.251968503937px;left:630.22251968504px; z-index: 1042;">
+      <div class="" style="position: absolute; width: 3px; height: 941px; background-color: ; z-index: 1042; border-left: solid 3px #0076ad;"></div>
     </div>
-    <div style="position: absolute; top:191.7737007874px;left:95.314960629921px; z-index: 1042;">
-      <div class="" style="position: absolute; width: 611px; height: 3px; background-color: ; z-index: 1042; border-top: solid 3px #0076ad;"></div>
+    <div style="position: absolute; top:191.7737007874px;left:95.314960629921px; z-index: 1044;">
+      <div class="" style="position: absolute; width: 611px; height: 3px; background-color: ; z-index: 1044; border-top: solid 3px #0076ad;"></div>
     </div>
-    <div style="position: absolute; top:199.78015748031px;left:96.45874015748px; z-index: 1044;">
+    <div style="position: absolute; top:199.78015748031px;left:96.45874015748px; z-index: 1046;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 340px; height: 14.106614173228px; background-color: ; z-index: 1044; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Copyright
+        <div class="" style="position: relative; width: 340px; height: 14.106614173228px; background-color: ; z-index: 1046; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Copyright
           © {{currentYear}} Xcllusive all rights reserved</div>
       </div>
     </div>
-    <div style="position: absolute; top:95.314960629921px;left:366.39070866142px; z-index: 1045;">
+    <div style="position: absolute; top:95.314960629921px;left:232.94976377953px; z-index: 1047;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 257px; height: 28.213228346457px; background-color: ; z-index: 1045; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Sales
-          Inspection Report and </div>
+        <div class="" style="position: relative; width: 390px; height: 28.213228346457px; background-color: ; z-index: 1047; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Opinion
+          of the market value and proposal</div>
       </div>
     </div>
-    <div style="position: absolute; top:120.47811023622px;left:420.52960629921px; z-index: 1046;">
+    <div style="position: absolute; top:120.47811023622px;left:213.88677165354px; z-index: 1048;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 203px; height: 25.163149606299px; background-color: ; z-index: 1046; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
-          Appraisal for</div>
+        <div class="" style="position: relative; width: 409px; height: 25.163149606299px; background-color: ; z-index: 1048; font-size: 18px; line-height: 21px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">of
+          the optimal asking price for</div>
       </div>
     </div>
-    <div style="position: absolute; top:959.24976377953px;left:420.52960629921px; z-index: 1050;">
+    <div style="position: absolute; top:959.24976377953px;left:420.52960629921px; z-index: 1052;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 205px; height: 25.163149606299px; background-color: ; z-index: 1050; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Private
+        <div class="" style="position: relative; width: 205px; height: 25.163149606299px; background-color: ; z-index: 1052; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Private
           and Confidential</div>
       </div>
     </div>
-    <div style="position: absolute; top:983.26913385827px;left:419.38582677165px; z-index: 1051;">
+    <div style="position: absolute; top:983.26913385827px;left:419.38582677165px; z-index: 1053;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 207px; height: 25.163149606299px; background-color: ; z-index: 1051; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{dateTimeCreated}}</div>
+        <div class="" style="position: relative; width: 207px; height: 25.163149606299px; background-color: ; z-index: 1053; font-size: 16px; line-height: 18px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{dateTimeCreated}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:145.64125984252px;left:366.39070866142px; z-index: 1052;">
+    <div style="position: absolute; top:145.64125984252px;left:366.39070866142px; z-index: 1054;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 257px; height: 42.319842519685px; background-color: ; z-index: 1052; font-size: 18px; line-height: 21px; text-align: right; color: #0d6cc5; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div>
+        <div class="" style="position: relative; width: 257px; height: 42.319842519685px; background-color: ; z-index: 1054; font-size: 18px; line-height: 21px; text-align: right; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div>
       </div>
     </div>
   </div>
   <div data-page="2" class="page middle-page" style="top: 1132.3417322835px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:145.64125984252px;left:309.20173228346px; z-index: 1065;">
+    <div style="position: absolute; top:145.64125984252px;left:309.20173228346px; z-index: 1067;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 203px; height: 40.032283464567px; background-color: ; z-index: 1065; font-size: 14px; line-height: 16px; text-align: center; color: #0d6cc5; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Sales
-          Inspection Report and Business Appraisal For:</div>
+        <div class="" style="position: relative; width: 203px; height: 55.282677165354px; background-color: ; z-index: 1067; font-size: 14px; line-height: 16px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Opinion
+          of the market value and proposal of the optimal asking price for:</div>
       </div>
     </div>
-    <div style="position: absolute; top:314.15811023622px;left:207.78661417323px; z-index: 1066;">
+    <div style="position: absolute; top:314.15811023622px;left:207.78661417323px; z-index: 1068;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1066; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">The
+        <div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1068; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">The
           Business:</div>
       </div>
     </div>
-    <div style="position: absolute; top:387.36px;left:207.78661417323px; z-index: 1067;">
+    <div style="position: absolute; top:387.36px;left:207.78661417323px; z-index: 1069;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1067; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">ABN:</div>
+        <div class="" style="position: relative; width: 104px; height: 24.01937007874px; background-color: ; z-index: 1069; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">ABN:</div>
       </div>
     </div>
-    <div style="position: absolute; top:460.56188976378px;left:150.59763779528px; z-index: 1068;">
+    <div style="position: absolute; top:460.56188976378px;left:150.59763779528px; z-index: 1070;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1068; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1070; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           Address:</div>
       </div>
     </div>
-    <div style="position: absolute; top:545.96409448819px;left:150.59763779528px; z-index: 1069;">
+    <div style="position: absolute; top:545.96409448819px;left:150.59763779528px; z-index: 1071;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1069; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Principal:</div>
+        <div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1071; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Principal:</div>
       </div>
     </div>
-    <div style="position: absolute; top:619.16598425197px;left:150.59763779528px; z-index: 1070;">
+    <div style="position: absolute; top:619.16598425197px;left:150.59763779528px; z-index: 1072;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1070; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Prepared
+        <div class="" style="position: relative; width: 162px; height: 24.01937007874px; background-color: ; z-index: 1072; font-size: 14px; line-height: 16px; text-align: right; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Prepared
           By:</div>
       </div>
     </div>
-    <div style="position: absolute; top:314.15811023622px;left:330.17102362205px; z-index: 1071;">
+    <div style="position: absolute; top:314.15811023622px;left:330.17102362205px; z-index: 1073;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 298px; height: 24.01937007874px; background-color: ; z-index: 1071; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div>
+        <div class="" style="position: relative; width: 298px; height: 24.01937007874px; background-color: ; z-index: 1073; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:387.36px;left:330.17102362205px; z-index: 1072;">
+    <div style="position: absolute; top:387.36px;left:330.17102362205px; z-index: 1074;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 301px; height: 20.969291338583px; background-color: ; z-index: 1072; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessABN}}</div>
+        <div class="" style="position: relative; width: 301px; height: 20.969291338583px; background-color: ; z-index: 1074; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessABN}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:460.56188976378px;left:330.17102362205px; z-index: 1073;">
+    <div style="position: absolute; top:460.56188976378px;left:330.17102362205px; z-index: 1075;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 301px; height: 23.256850393701px; background-color: ; z-index: 1073; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessAddress1}}</div>
+        <div class="" style="position: relative; width: 301px; height: 23.256850393701px; background-color: ; z-index: 1075; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessAddress1}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:545.96409448819px;left:330.17102362205px; z-index: 1074;">
+    <div style="position: absolute; top:545.96409448819px;left:330.17102362205px; z-index: 1076;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 301px; height: 32.481737291339px; background-color: ; z-index: 1074; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessFirstNameV}}
+        <div class="" style="position: relative; width: 301px; height: 42.319842519685px; background-color: ; z-index: 1076; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessFirstNameV}}
           {{businessLastNameV}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:619.16598425197px;left:330.17102362205px; z-index: 1075;">
+    <div style="position: absolute; top:619.16598425197px;left:330.17102362205px; z-index: 1077;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 304px; height: 99.508818897638px; background-color: ; z-index: 1075; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{preparedBy}}}</div>
+        <div class="" style="position: relative; width: 304px; height: 99.508818897638px; background-color: ; z-index: 1077; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{preparedBy}}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:482.67496062992px;left:330.17102362205px; z-index: 1096;">
+    <div style="position: absolute; top:482.67496062992px;left:330.17102362205px; z-index: 1098;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 300px; height: 32.481737291339px; background-color: ; z-index: 1096; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessSuburb}},
+        <div class="" style="position: relative; width: 300px; height: 44.226141732283px; background-color: ; z-index: 1098; font-size: 14px; line-height: 16px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessSuburb}},
           {{businessState}}, {{businessPostCode}}</div>
       </div>
     </div>
   </div>
   <div data-page="3" class="page middle-page" style="top: 2264.6834645669px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:96.45874015748px;left:104.46519685039px; z-index: 1097;">
+    <div style="position: absolute; top:96.45874015748px;left:104.46519685039px; z-index: 1099;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 252px; height: 40.032283464567px; background-color: ; z-index: 1097; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Purpose
+        <div class="" style="position: relative; width: 252px; height: 40.032283464567px; background-color: ; z-index: 1099; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Purpose
           of this document</div>
       </div>
     </div>
-    <div style="position: absolute; top:139.5411023622px;left:104.46519685039px; z-index: 1098;">
+    <div style="position: absolute; top:139.5411023622px;left:104.46519685039px; z-index: 1100;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 601px; height: 186.43606299213px; background-color: ; z-index: 1098; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">The
+        <div class="" style="position: relative; width: 601px; height: 186.43606299213px; background-color: ; z-index: 1100; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">The
           purpose of this document is to communicate our opinion of fair market price for this business in order to
           establish most appropriate asking price for business for sale marketing purposes.<br />
           <br />
@@ -369,15 +475,15 @@
           business sales process.</div>
       </div>
     </div>
-    <div style="position: absolute; top:357.24047244094px;left:101.41511811024px; z-index: 1099;">
+    <div style="position: absolute; top:357.24047244094px;left:101.41511811024px; z-index: 1101;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 462px; height: 40.032283464567px; background-color: ; z-index: 1099; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">The
+        <div class="" style="position: relative; width: 462px; height: 40.032283464567px; background-color: ; z-index: 1101; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">The
           information this appraisal is based upon</div>
       </div>
     </div>
-    <div style="position: absolute; top:398.41653543307px;left:101.41511811024px; z-index: 1100;">
+    <div style="position: absolute; top:398.41653543307px;left:101.41511811024px; z-index: 1102;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 604px; height: 206.64283464567px; background-color: ; z-index: 1100; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">This
+        <div class="" style="position: relative; width: 604px; height: 206.64283464567px; background-color: ; z-index: 1102; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">This
           appraisal is based upon the operating assets and goodwill of the business. Therefore this appraisal excludes
           any real estate, cash, investments, accounts receivable, and any other non-operating assets, as well as,
           accounts payable, short and long-term debt, and other non-operating liabilities.<br />
@@ -388,15 +494,15 @@
           audited these statements in any way.</div>
       </div>
     </div>
-    <div style="position: absolute; top:648.14173228346px;left:101.41511811024px; z-index: 1101;">
+    <div style="position: absolute; top:648.14173228346px;left:101.41511811024px; z-index: 1103;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 462px; height: 40.032283464567px; background-color: ; z-index: 1101; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 462px; height: 40.032283464567px; background-color: ; z-index: 1103; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           appraisal method</div>
       </div>
     </div>
-    <div style="position: absolute; top:689.31779527559px;left:101.41511811024px; z-index: 1102;">
+    <div style="position: absolute; top:689.31779527559px;left:101.41511811024px; z-index: 1104;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 603px; height: 207.78661417323px; background-color: ; z-index: 1102; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">The
+        <div class="" style="position: relative; width: 603px; height: 207.78661417323px; background-color: ; z-index: 1104; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">The
           method used for appraising the business is done from the purchaser’s point of view, viewing the business
           objectively and as an investment. When determining the sale price of the above business, the following
           factors are being taken into consideration.<br />
@@ -410,400 +516,400 @@
     </div>
   </div>
   <div data-page="4" class="page middle-page" style="top: 3397.0251968504px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:76.251968503937px;left:104.46519685039px; z-index: 1105;">
+    <div style="position: absolute; top:76.251968503937px;left:104.46519685039px; z-index: 1107;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 23.256850393701px; background-color: ; z-index: 1105; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">About
+        <div class="" style="position: relative; width: 151px; height: 23.256850393701px; background-color: ; z-index: 1107; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">About
           this Business</div>
       </div>
     </div>
-    <div style="position: absolute; top:101.41511811024px;left:104.46519685039px; z-index: 1106;">
+    <div style="position: absolute; top:101.41511811024px;left:104.46519685039px; z-index: 1108;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1106; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1108; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           Name:</div>
       </div>
     </div>
-    <div style="position: absolute; top:120.47811023622px;left:104.46519685039px; z-index: 1107;">
+    <div style="position: absolute; top:120.47811023622px;left:104.46519685039px; z-index: 1109;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1107; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">ABN:</div>
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1109; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">ABN:</div>
       </div>
     </div>
-    <div style="position: absolute; top:142.59118110236px;left:104.46519685039px; z-index: 1108;">
+    <div style="position: absolute; top:142.59118110236px;left:104.46519685039px; z-index: 1110;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1108; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Address:</div>
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1110; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Address:</div>
       </div>
     </div>
-    <div style="position: absolute; top:196.73007874016px;left:104.46519685039px; z-index: 1109;">
+    <div style="position: absolute; top:196.73007874016px;left:104.46519685039px; z-index: 1111;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1109; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Principal:</div>
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1111; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Principal:</div>
       </div>
     </div>
-    <div style="position: absolute; top:101.41511811024px;left:300.05149606299px; z-index: 1110;">
+    <div style="position: absolute; top:101.41511811024px;left:300.05149606299px; z-index: 1112;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1110; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div>
+        <div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1112; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessName}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:120.47811023622px;left:300.05149606299px; z-index: 1111;">
+    <div style="position: absolute; top:120.47811023622px;left:300.05149606299px; z-index: 1113;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 17.156692913386px; background-color: ; z-index: 1111; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessABN}}</div>
+        <div class="" style="position: relative; width: 400px; height: 17.156692913386px; background-color: ; z-index: 1113; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessABN}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:142.59118110236px;left:300.05149606299px; z-index: 1112;">
+    <div style="position: absolute; top:142.59118110236px;left:300.05149606299px; z-index: 1114;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 20.969291338583px; background-color: ; z-index: 1112; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessAddress1}}</div>
+        <div class="" style="position: relative; width: 400px; height: 20.969291338583px; background-color: ; z-index: 1114; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessAddress1}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:196.73007874016px;left:300.05149606299px; z-index: 1113;">
+    <div style="position: absolute; top:196.73007874016px;left:300.05149606299px; z-index: 1115;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 398px; height: 17.156692913386px; background-color: ; z-index: 1113; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessFirstNameV}}
+        <div class="" style="position: relative; width: 398px; height: 17.156692913386px; background-color: ; z-index: 1115; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessFirstNameV}}
           {{businessLastNameV}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:164.7042519685px;left:300.05149606299px; z-index: 1114;">
+    <div style="position: absolute; top:164.7042519685px;left:300.05149606299px; z-index: 1116;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 403px; height: 30.119527559055px; background-color: ; z-index: 1114; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessSuburb}},
+        <div class="" style="position: relative; width: 403px; height: 30.119527559055px; background-color: ; z-index: 1116; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessSuburb}},
           {{businessState}}, {{businessPostCode}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:221.89322834646px;left:104.46519685039px; z-index: 1115;">
-      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1115; border-top: solid 2px #000000;"></div>
+    <div style="position: absolute; top:221.89322834646px;left:104.46519685039px; z-index: 1117;">
+      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1117; border-top: solid 2px #000000;"></div>
     </div>
-    <div style="position: absolute; top:226.84960629921px;left:104.46519685039px; z-index: 1116;">
+    <div style="position: absolute; top:226.84960629921px;left:104.46519685039px; z-index: 1118;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 23.256850393701px; background-color: ; z-index: 1116; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Description</div>
+        <div class="" style="position: relative; width: 151px; height: 23.256850393701px; background-color: ; z-index: 1118; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Description</div>
       </div>
     </div>
-    <div style="position: absolute; top:252.01275590551px;left:104.46519685039px; z-index: 1117;">
+    <div style="position: absolute; top:252.01275590551px;left:104.46519685039px; z-index: 1119;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1117; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1119; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           Type:</div>
       </div>
     </div>
-    <div style="position: absolute; top:272.98204724409px;left:104.46519685039px; z-index: 1118;">
+    <div style="position: absolute; top:272.98204724409px;left:104.46519685039px; z-index: 1120;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1118; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1120; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           Industry:</div>
       </div>
     </div>
-    <div style="position: absolute; top:292.04503937008px;left:104.46519685039px; z-index: 1119;">
+    <div style="position: absolute; top:292.04503937008px;left:104.46519685039px; z-index: 1121;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1119; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Established
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1121; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Established
           (approx):</div>
       </div>
     </div>
-    <div style="position: absolute; top:330.17102362205px;left:104.46519685039px; z-index: 1120;">
+    <div style="position: absolute; top:330.17102362205px;left:104.46519685039px; z-index: 1122;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1120; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Trading
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1122; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Trading
           Hours:</div>
       </div>
     </div>
-    <div style="position: absolute; top:252.01275590551px;left:300.05149606299px; z-index: 1121;">
+    <div style="position: absolute; top:252.01275590551px;left:300.05149606299px; z-index: 1123;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1121; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessType}}</div>
+        <div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1123; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessType}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:272.98204724409px;left:300.05149606299px; z-index: 1122;">
+    <div style="position: absolute; top:272.98204724409px;left:300.05149606299px; z-index: 1124;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 17.156692913386px; background-color: ; z-index: 1122; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessIndustry}}</div>
+        <div class="" style="position: relative; width: 400px; height: 17.156692913386px; background-color: ; z-index: 1124; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessIndustry}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:292.04503937008px;left:300.05149606299px; z-index: 1123;">
+    <div style="position: absolute; top:292.04503937008px;left:300.05149606299px; z-index: 1125;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 20.969291338583px; background-color: ; z-index: 1123; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessCommenced}}</div>
+        <div class="" style="position: relative; width: 401px; height: 20.969291338583px; background-color: ; z-index: 1125; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{businessCommenced}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:330.17102362205px;left:300.05149606299px; z-index: 1124;">
+    <div style="position: absolute; top:330.17102362205px;left:300.05149606299px; z-index: 1126;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 398px; height: 17.156692913386px; background-color: ; z-index: 1124; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{tradingHours}}</div>
+        <div class="" style="position: relative; width: 398px; height: 17.156692913386px; background-color: ; z-index: 1126; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{tradingHours}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:393.46015748032px;left:104.46519685039px; z-index: 1126;">
-      <div class="" style="position: absolute; width: 600px; height: 2px; background-color: ; z-index: 1126; border-top: solid 2px #000000;"></div>
+    <div style="position: absolute; top:393.46015748032px;left:104.46519685039px; z-index: 1128;">
+      <div class="" style="position: absolute; width: 600px; height: 2px; background-color: ; z-index: 1128; border-top: solid 2px #000000;"></div>
     </div>
-    <div style="position: absolute; top:311.10803149606px;left:104.46519685039px; z-index: 1127;">
+    <div style="position: absolute; top:311.10803149606px;left:104.46519685039px; z-index: 1129;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1127; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">With
+        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1129; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">With
           Current Owner (approx):</div>
       </div>
     </div>
-    <div style="position: absolute; top:311.10803149606px;left:300.05149606299px; z-index: 1128;">
+    <div style="position: absolute; top:311.10803149606px;left:300.05149606299px; z-index: 1130;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 20.969291338583px; background-color: ; z-index: 1128; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{currentOwner}}</div>
+        <div class="" style="position: relative; width: 400px; height: 20.969291338583px; background-color: ; z-index: 1130; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{currentOwner}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:352.28409448819px;left:104.46519685039px; z-index: 1129;">
+    <div style="position: absolute; top:352.28409448819px;left:104.46519685039px; z-index: 1131;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1129; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">How
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1131; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">How
           many location:</div>
       </div>
     </div>
-    <div style="position: absolute; top:352.28409448819px;left:300.05149606299px; z-index: 1130;">
+    <div style="position: absolute; top:352.28409448819px;left:300.05149606299px; z-index: 1132;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 399px; height: 17.156692913386px; background-color: ; z-index: 1130; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{nOfBusinessLocations}}</div>
+        <div class="" style="position: relative; width: 399px; height: 17.156692913386px; background-color: ; z-index: 1132; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{nOfBusinessLocations}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:371.34708661417px;left:104.46519685039px; z-index: 1131;">
+    <div style="position: absolute; top:371.34708661417px;left:104.46519685039px; z-index: 1133;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.919212598425px; background-color: ; z-index: 1131; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Products/Services:</div>
+        <div class="" style="position: relative; width: 151px; height: 17.919212598425px; background-color: ; z-index: 1133; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Products/Services:</div>
       </div>
     </div>
-    <div style="position: absolute; top:371.34708661417px;left:300.05149606299px; z-index: 1132;">
+    <div style="position: absolute; top:371.34708661417px;left:300.05149606299px; z-index: 1134;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 17.156692913386px; background-color: ; z-index: 1132; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{productsServices}}</div>
+        <div class="" style="position: relative; width: 401px; height: 17.156692913386px; background-color: ; z-index: 1134; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{productsServices}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:395.36645669291px;left:104.46519685039px; z-index: 1133;">
+    <div style="position: absolute; top:395.36645669291px;left:104.46519685039px; z-index: 1135;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1133; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Customers
+        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1135; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Customers
           &amp; Suppliers</div>
       </div>
     </div>
-    <div style="position: absolute; top:420.52960629921px;left:104.46519685039px; z-index: 1134;">
+    <div style="position: absolute; top:420.52960629921px;left:104.46519685039px; z-index: 1136;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1134; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Description
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1136; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Description
           of Customers:</div>
       </div>
     </div>
-    <div style="position: absolute; top:466.66204724409px;left:104.46519685039px; z-index: 1136;">
+    <div style="position: absolute; top:466.66204724409px;left:104.46519685039px; z-index: 1138;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1136; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Client
+        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1138; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Client
           Database Available:</div>
       </div>
     </div>
-    <div style="position: absolute; top:509.74440944882px;left:104.46519685039px; z-index: 1137;">
+    <div style="position: absolute; top:509.74440944882px;left:104.46519685039px; z-index: 1139;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 185px; height: 17.156692913386px; background-color: ; z-index: 1137; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Largest
+        <div class="" style="position: relative; width: 185px; height: 17.156692913386px; background-color: ; z-index: 1139; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Largest
           5 Clients % of T/O:</div>
       </div>
     </div>
-    <div style="position: absolute; top:420.52960629921px;left:300.05149606299px; z-index: 1138;">
+    <div style="position: absolute; top:420.52960629921px;left:300.05149606299px; z-index: 1140;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 405px; height: 43.082362204724px; background-color: ; z-index: 1138; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionCustomers}}</div>
+        <div class="" style="position: relative; width: 405px; height: 43.082362204724px; background-color: ; z-index: 1140; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionCustomers}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:466.66204724409px;left:300.05149606299px; z-index: 1140;">
+    <div style="position: absolute; top:466.66204724409px;left:300.05149606299px; z-index: 1142;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 403px; height: 20.969291338583px; background-color: ; z-index: 1140; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{clientDatabaseAvailable}}</div>
+        <div class="" style="position: relative; width: 403px; height: 20.969291338583px; background-color: ; z-index: 1142; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{clientDatabaseAvailable}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:509.74440944882px;left:300.05149606299px; z-index: 1141;">
+    <div style="position: absolute; top:509.74440944882px;left:300.05149606299px; z-index: 1143;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 17.156692913386px; background-color: ; z-index: 1141; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{client5TO}}</div>
+        <div class="" style="position: relative; width: 401px; height: 17.156692913386px; background-color: ; z-index: 1143; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{client5TO}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:553.9705511811px;left:104.46519685039px; z-index: 1142;">
-      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1142; border-top: solid 2px #000000;"></div>
+    <div style="position: absolute; top:553.9705511811px;left:104.46519685039px; z-index: 1144;">
+      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1144; border-top: solid 2px #000000;"></div>
     </div>
-    <div style="position: absolute; top:490.68141732283px;left:104.46519685039px; z-index: 1143;">
+    <div style="position: absolute; top:490.68141732283px;left:104.46519685039px; z-index: 1145;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1143; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Clients
+        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1145; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Clients
           taking up &gt; 10% T/O:</div>
       </div>
     </div>
-    <div style="position: absolute; top:490.68141732283px;left:300.05149606299px; z-index: 1144;">
+    <div style="position: absolute; top:490.68141732283px;left:300.05149606299px; z-index: 1146;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 14.869133858268px; background-color: ; z-index: 1144; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{client10TO}}</div>
+        <div class="" style="position: relative; width: 401px; height: 14.869133858268px; background-color: ; z-index: 1146; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{client10TO}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:531.85748031496px;left:104.46519685039px; z-index: 1145;">
+    <div style="position: absolute; top:531.85748031496px;left:104.46519685039px; z-index: 1147;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1145; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Description
+        <div class="" style="position: relative; width: 151px; height: 17.156692913386px; background-color: ; z-index: 1147; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Description
           of Suppliers:</div>
       </div>
     </div>
-    <div style="position: absolute; top:531.85748031496px;left:300.05149606299px; z-index: 1146;">
+    <div style="position: absolute; top:531.85748031496px;left:300.05149606299px; z-index: 1148;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 17.156692913386px; background-color: ; z-index: 1146; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionCustomers}}</div>
+        <div class="" style="position: relative; width: 401px; height: 17.156692913386px; background-color: ; z-index: 1148; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionCustomers}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:557.02062992126px;left:104.46519685039px; z-index: 1147;">
+    <div style="position: absolute; top:557.02062992126px;left:104.46519685039px; z-index: 1149;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1147; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Premises</div>
+        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1149; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Premises</div>
       </div>
     </div>
-    <div style="position: absolute; top:582.9462992126px;left:104.46519685039px; z-index: 1148;">
+    <div style="position: absolute; top:582.9462992126px;left:104.46519685039px; z-index: 1150;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1148; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Premises
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1150; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Premises
           owned or Rented:</div>
       </div>
     </div>
-    <div style="position: absolute; top:624.12236220472px;left:104.46519685039px; z-index: 1149;">
+    <div style="position: absolute; top:624.12236220472px;left:104.46519685039px; z-index: 1151;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1149; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Time
+        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1151; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Time
           remaining on lease:</div>
       </div>
     </div>
-    <div style="position: absolute; top:577.98992125984px;left:300.05149606299px; z-index: 1151;">
+    <div style="position: absolute; top:577.98992125984px;left:300.05149606299px; z-index: 1153;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 405px; height: 16.012913385827px; background-color: ; z-index: 1151; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{premisesOwnedRented}}</div>
+        <div class="" style="position: relative; width: 405px; height: 16.012913385827px; background-color: ; z-index: 1153; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{premisesOwnedRented}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:624.12236220472px;left:300.05149606299px; z-index: 1152;">
+    <div style="position: absolute; top:624.12236220472px;left:300.05149606299px; z-index: 1154;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 405px; height: 14.869133858268px; background-color: ; z-index: 1152; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{timeRemLease}}</div>
+        <div class="" style="position: relative; width: 405px; height: 14.869133858268px; background-color: ; z-index: 1154; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{timeRemLease}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:684.36141732283px;left:104.46519685039px; z-index: 1154;">
-      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1154; border-top: solid 2px #000000;"></div>
+    <div style="position: absolute; top:684.36141732283px;left:104.46519685039px; z-index: 1156;">
+      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1156; border-top: solid 2px #000000;"></div>
     </div>
-    <div style="position: absolute; top:643.18535433071px;left:104.46519685039px; z-index: 1155;">
+    <div style="position: absolute; top:643.18535433071px;left:104.46519685039px; z-index: 1157;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1155; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Premises
+        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1157; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Premises
           Notes:</div>
       </div>
     </div>
-    <div style="position: absolute; top:643.18535433071px;left:300.05149606299px; z-index: 1156;">
+    <div style="position: absolute; top:643.18535433071px;left:300.05149606299px; z-index: 1158;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 402px; height: 40.032283464567px; background-color: ; z-index: 1156; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{premisesNotes}}<br />
+        <div class="" style="position: relative; width: 402px; height: 40.032283464567px; background-color: ; z-index: 1158; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{premisesNotes}}<br />
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:602.00929133858px;left:104.46519685039px; z-index: 1157;">
+    <div style="position: absolute; top:602.00929133858px;left:104.46519685039px; z-index: 1159;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1157; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Rent:</div>
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1159; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Rent:</div>
       </div>
     </div>
-    <div style="position: absolute; top:602.00929133858px;left:300.05149606299px; z-index: 1158;">
+    <div style="position: absolute; top:602.00929133858px;left:300.05149606299px; z-index: 1160;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1158; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{rentCost}}</div>
+        <div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1160; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{rentCost}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:687.41149606299px;left:104.46519685039px; z-index: 1159;">
+    <div style="position: absolute; top:687.41149606299px;left:104.46519685039px; z-index: 1161;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1159; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Employees</div>
+        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1161; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Employees</div>
       </div>
     </div>
-    <div style="position: absolute; top:711.43086614173px;left:104.46519685039px; z-index: 1160;">
+    <div style="position: absolute; top:711.43086614173px;left:104.46519685039px; z-index: 1162;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1160; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1162; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
           of Full Time Employees:</div>
       </div>
     </div>
-    <div style="position: absolute; top:754.51322834646px;left:104.46519685039px; z-index: 1161;">
+    <div style="position: absolute; top:754.51322834646px;left:104.46519685039px; z-index: 1163;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1161; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
+        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1163; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
           of Sub-Contractors:</div>
       </div>
     </div>
-    <div style="position: absolute; top:711.43086614173px;left:300.05149606299px; z-index: 1162;">
+    <div style="position: absolute; top:711.43086614173px;left:300.05149606299px; z-index: 1164;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1162; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fullTime}}</div>
+        <div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1164; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fullTime}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:754.51322834646px;left:300.05149606299px; z-index: 1163;">
+    <div style="position: absolute; top:754.51322834646px;left:300.05149606299px; z-index: 1165;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 14.869133858268px; background-color: ; z-index: 1163; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{subContractors}}</div>
+        <div class="" style="position: relative; width: 400px; height: 14.869133858268px; background-color: ; z-index: 1165; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{subContractors}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:795.68929133858px;left:104.46519685039px; z-index: 1164;">
-      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1164; border-top: solid 2px #000000;"></div>
+    <div style="position: absolute; top:795.68929133858px;left:104.46519685039px; z-index: 1166;">
+      <div class="" style="position: absolute; width: 601px; height: 2px; background-color: ; z-index: 1166; border-top: solid 2px #000000;"></div>
     </div>
-    <div style="position: absolute; top:773.57622047244px;left:104.46519685039px; z-index: 1165;">
+    <div style="position: absolute; top:773.57622047244px;left:104.46519685039px; z-index: 1167;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1165; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
+        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1167; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
           of Casuals:</div>
       </div>
     </div>
-    <div style="position: absolute; top:773.57622047244px;left:300.05149606299px; z-index: 1166;">
+    <div style="position: absolute; top:773.57622047244px;left:300.05149606299px; z-index: 1168;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 14.869133858268px; background-color: ; z-index: 1166; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{casuals}}</div>
+        <div class="" style="position: relative; width: 400px; height: 14.869133858268px; background-color: ; z-index: 1168; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{casuals}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:104.46519685039px; z-index: 1167;">
+    <div style="position: absolute; top:730.49385826772px;left:104.46519685039px; z-index: 1169;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1167; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1169; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
           of Part Time Employees:</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:300.05149606299px; z-index: 1168;">
+    <div style="position: absolute; top:730.49385826772px;left:300.05149606299px; z-index: 1170;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1168; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{partTime}}</div>
+        <div class="" style="position: relative; width: 403px; height: 16.012913385827px; background-color: ; z-index: 1170; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{partTime}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:798.73937007874px;left:104.46519685039px; z-index: 1169;">
+    <div style="position: absolute; top:798.73937007874px;left:104.46519685039px; z-index: 1171;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1169; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Ownership</div>
+        <div class="" style="position: relative; width: 209px; height: 23.256850393701px; background-color: ; z-index: 1171; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Ownership</div>
       </div>
     </div>
-    <div style="position: absolute; top:822.75874015748px;left:104.46519685039px; z-index: 1170;">
+    <div style="position: absolute; top:822.75874015748px;left:104.46519685039px; z-index: 1172;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1170; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1172; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">No.
           of Owners:</div>
       </div>
     </div>
-    <div style="position: absolute; top:866.98488188976px;left:104.46519685039px; z-index: 1171;">
+    <div style="position: absolute; top:866.98488188976px;left:104.46519685039px; z-index: 1173;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1171; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Owners
+        <div class="" style="position: relative; width: 180px; height: 17.156692913386px; background-color: ; z-index: 1173; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Owners
           1's Role:</div>
       </div>
     </div>
-    <div style="position: absolute; top:822.75874015748px;left:298.14519685039px; z-index: 1172;">
+    <div style="position: absolute; top:822.75874015748px;left:298.14519685039px; z-index: 1174;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1172; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{numberOwners}}</div>
+        <div class="" style="position: relative; width: 402px; height: 17.156692913386px; background-color: ; z-index: 1174; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{numberOwners}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:860.88472440945px;left:298.14519685039px; z-index: 1173;">
+    <div style="position: absolute; top:860.88472440945px;left:298.14519685039px; z-index: 1175;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 39.269763779528px; background-color: ; z-index: 1173; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{owners1sRole}}</div>
+        <div class="" style="position: relative; width: 400px; height: 39.269763779528px; background-color: ; z-index: 1175; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{owners1sRole}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:1011.4823622047px;left:104.46519685039px; z-index: 1174;">
-      <div class="" style="position: absolute; width: 600px; height: 2px; background-color: ; z-index: 1174; border-top: solid 2px #000000;"></div>
+    <div style="position: absolute; top:1011.4823622047px;left:104.46519685039px; z-index: 1176;">
+      <div class="" style="position: absolute; width: 600px; height: 2px; background-color: ; z-index: 1176; border-top: solid 2px #000000;"></div>
     </div>
-    <div style="position: absolute; top:905.11086614173px;left:104.46519685039px; z-index: 1175;">
+    <div style="position: absolute; top:905.11086614173px;left:104.46519685039px; z-index: 1177;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1175; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other
+        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1177; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other
           Owners' Hours:</div>
       </div>
     </div>
-    <div style="position: absolute; top:905.11086614173px;left:298.14519685039px; z-index: 1176;">
+    <div style="position: absolute; top:905.11086614173px;left:298.14519685039px; z-index: 1178;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 398px; height: 14.869133858268px; background-color: ; z-index: 1176; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersHours}}</div>
+        <div class="" style="position: relative; width: 398px; height: 14.869133858268px; background-color: ; z-index: 1178; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersHours}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:841.82173228347px;left:104.46519685039px; z-index: 1177;">
+    <div style="position: absolute; top:841.82173228347px;left:104.46519685039px; z-index: 1179;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1177; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Owners
+        <div class="" style="position: relative; width: 175px; height: 17.156692913386px; background-color: ; z-index: 1179; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Owners
           1's Hours:</div>
       </div>
     </div>
-    <div style="position: absolute; top:841.82173228347px;left:298.14519685039px; z-index: 1178;">
+    <div style="position: absolute; top:841.82173228347px;left:298.14519685039px; z-index: 1180;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 16.012913385827px; background-color: ; z-index: 1178; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{owners1sHours}}</div>
+        <div class="" style="position: relative; width: 401px; height: 16.012913385827px; background-color: ; z-index: 1180; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{owners1sHours}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:924.17385826772px;left:104.46519685039px; z-index: 1179;">
-      <div class="display: table;">
-        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1179; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other
-          Owners' Role:</div>
-      </div>
-    </div>
-    <div style="position: absolute; top:924.17385826772px;left:298.14519685039px; z-index: 1180;">
-      <div class="display: table;">
-        <div class="" style="position: relative; width: 400px; height: 44.988661417323px; background-color: ; z-index: 1180; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersRole}}</div>
-      </div>
-    </div>
-    <div style="position: absolute; top:970.3062992126px;left:104.46519685039px; z-index: 1181;">
+    <div style="position: absolute; top:924.17385826772px;left:104.46519685039px; z-index: 1181;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1181; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other
           Owners' Role:</div>
       </div>
     </div>
-    <div style="position: absolute; top:970.3062992126px;left:298.14519685039px; z-index: 1182;">
+    <div style="position: absolute; top:924.17385826772px;left:298.14519685039px; z-index: 1182;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 401px; height: 40.032283464567px; background-color: ; z-index: 1182; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersRole}}</div>
+        <div class="" style="position: relative; width: 400px; height: 44.988661417323px; background-color: ; z-index: 1182; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersRole}}</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:970.3062992126px;left:104.46519685039px; z-index: 1183;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 186px; height: 17.156692913386px; background-color: ; z-index: 1183; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Other
+          Owners' Role:</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:970.3062992126px;left:298.14519685039px; z-index: 1184;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 401px; height: 40.032283464567px; background-color: ; z-index: 1184; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{otherOwnersRole}}</div>
       </div>
     </div>
   </div>
   <div data-page="5" class="page middle-page" style="top: 4529.3669291339px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:76.251968503937px;left:96.45874015748px; z-index: 1183;">
+    <div style="position: absolute; top:76.251968503937px;left:96.45874015748px; z-index: 1185;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 607px; height: 25.163149606299px; background-color: ; z-index: 1183; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 607px; height: 25.163149606299px; background-color: ; z-index: 1185; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           Risk and Value Drivers Assessment</div>
       </div>
     </div>
-    <div style="position: absolute; top:101.41511811024px;left:96.45874015748px; z-index: 1184;">
+    <div style="position: absolute; top:101.41511811024px;left:96.45874015748px; z-index: 1186;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1184; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">There
+        <div class="" style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">There
           are three main influences on business value. One is profitability, the other is the risk associated with
           sustainability of those profits after transferee of ownership and the last one is the current business trand.<br />
           <br />
@@ -811,36 +917,36 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:174.61700787402px;left:96.45874015748px; z-index: 1185;">
+    <div style="position: absolute; top:174.61700787402px;left:96.45874015748px; z-index: 1187;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 151px; height: 18.560987291339px; background-color: ; z-index: 1185; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risks</div>
+        <div class="" style="position: relative; width: 151px; height: 18.560987291339px; background-color: ; z-index: 1187; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risks</div>
       </div>
     </div>
-    <div style="position: absolute; top:194.82377952756px;left:95.314960629921px; z-index: 1186;">
+    <div style="position: absolute; top:194.82377952756px;left:95.314960629921px; z-index: 1188;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 609px; height: 134.58472440945px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{riskList}}}</div>
+        <div class="" style="position: relative; width: 609px; height: 134.58472440945px; background-color: ; z-index: 1188; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{riskList}}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:335.1274015748px;left:96.45874015748px; z-index: 1187;">
+    <div style="position: absolute; top:335.1274015748px;left:96.45874015748px; z-index: 1189;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 205px; height: 22.113070866142px; background-color: ; z-index: 1187; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Values
+        <div class="" style="position: relative; width: 205px; height: 22.113070866142px; background-color: ; z-index: 1189; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Values
           Driving Points</div>
       </div>
     </div>
-    <div style="position: absolute; top:358.00299212598px;left:95.314960629921px; z-index: 1188;">
+    <div style="position: absolute; top:358.00299212598px;left:95.314960629921px; z-index: 1190;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 607px; height: 132.29716535433px; background-color: ; z-index: 1188; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{valueDriversList}}}</div>
+        <div class="" style="position: relative; width: 607px; height: 132.29716535433px; background-color: ; z-index: 1190; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{valueDriversList}}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:499.83165354331px;left:96.45874015748px; z-index: 1189;">
+    <div style="position: absolute; top:499.83165354331px;left:96.45874015748px; z-index: 1191;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1189; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Critical
+        <div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1191; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Critical
           issues or potential issues</div>
       </div>
     </div>
-    <div style="position: absolute; top:526.9011023622px;left:95.314960629921px; z-index: 1190;">
+    <div style="position: absolute; top:526.9011023622px;left:95.314960629921px; z-index: 1192;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 606px; height: 132.29716535433px; background-color: ; z-index: 1190; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{criticalIssuesList}}}</div>
+        <div class="" style="position: relative; width: 606px; height: 132.29716535433px; background-color: ; z-index: 1192; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{{criticalIssuesList}}}</div>
       </div>
     </div>
     <div style="position: absolute; top:686.26771653543px;left:-100px; z-index: 1229;">
@@ -850,9 +956,9 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:665.29842519685px;left:96.45874015748px; z-index: 1246;">
+    <div style="position: absolute; top:665.29842519685px;left:96.45874015748px; z-index: 1248;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1246; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
+        <div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1248; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
           risk assessment</div>
       </div>
     </div>
@@ -863,59 +969,59 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:840.67795275591px;left:96.45874015748px; z-index: 1248;">
+    <div style="position: absolute; top:840.67795275591px;left:96.45874015748px; z-index: 1250;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1248; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Current
+        <div class="" style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1250; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Current
           market assessment</div>
       </div>
     </div>
-    <div style="position: absolute; top:736.97527559055px;left:478.4811023622px; z-index: 1302;">
+    <div style="position: absolute; top:736.97527559055px;left:478.4811023622px; z-index: 1304;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 227px; height: 71.295590551181px; background-color: ; z-index: 1302; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeBusinessRisk}}</div>
+        <div class="" style="position: relative; width: 227px; height: 71.295590551181px; background-color: ; z-index: 1304; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeBusinessRisk}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:912.73606299213px;left:478.4811023622px; z-index: 1303;">
+    <div style="position: absolute; top:912.73606299213px;left:478.4811023622px; z-index: 1305;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 227px; height: 73.20188976378px; background-color: ; z-index: 1303; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeMarket}}</div>
+        <div class="" style="position: relative; width: 227px; height: 73.20188976378px; background-color: ; z-index: 1305; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{descriptionGaugeMarket}}</div>
       </div>
     </div>
   </div>
   <div data-page="6" class="page middle-page" style="top: 5661.7086614173px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1304;">
+    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1306;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 396px; height: 22.113070866142px; background-color: ; z-index: 1304; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial
+        <div class="" style="position: relative; width: 396px; height: 22.113070866142px; background-color: ; z-index: 1306; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial
           Information</div>
       </div>
     </div>
-    <div style="position: absolute; top:104.46519685039px;left:96.45874015748px; z-index: 1305;">
+    <div style="position: absolute; top:104.46519685039px;left:96.45874015748px; z-index: 1307;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 606px; height: 31.263307086614px; background-color: ; z-index: 1305; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Financial
+        <div class="" style="position: relative; width: 606px; height: 31.263307086614px; background-color: ; z-index: 1307; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Financial
           Information Source: Information provided by principals accountant.</div>
       </div>
     </div>
-    <div style="position: absolute; top:152.50393700787px;left:95.314960629921px; z-index: 1306;">
-      <div class="" style="position: absolute; width: 605px; height: 862px; background-color: ; z-index: 1306; "></div>
+    <div style="position: absolute; top:152.50393700787px;left:95.314960629921px; z-index: 1308;">
+      <div class="" style="position: absolute; width: 605px; height: 862px; background-color: ; z-index: 1308; border-top: solid 1px #000000; border-right: solid 1px #000000; border-bottom: solid 1px #000000; border-left: solid 1px #000000;"></div>
     </div>
-    <div style="position: absolute; top:152.50393700787px;left:96.45874015748px; z-index: 1307;">
+    <div style="position: absolute; top:152.50393700787px;left:96.45874015748px; z-index: 1309;">
       <div class="display: table;">
         <table class="table-financial-information" cellpadding="0" cellspacing="0">
           <tr>
             <th class="cell-empty"></th>
-            <th class="cell-value ">{{year1}}</th>
-            <th class="cell-value ">{{year2}}</th>
-            <th class="cell-value ">{{year3}}</th>
-            <th class="cell-value ">{{year4}}</th>
-            <th class="cell-value ">{{year5}}</th>
-            <th class="cell-value ">{{year7}}</th>
+            <th class="cell-value">{{year1}}</th>
+            <th class="cell-value">{{year2}}</th>
+            <th class="cell-value">{{year3}}</th>
+            <th class="cell-value">{{year4}}</th>
+            <th class="cell-value">{{year5}}</th>
+            <th class="cell-value">{{year7}}</th>
           </tr>
           <tr>
             <td class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
-            <td class="cell-value ">{{sales1}}</td>
-            <td class="cell-value ">{{sales2}}</td>
-            <td class="cell-value ">{{sales3}}</td>
-            <td class="cell-value ">{{sales4}}</td>
-            <td class="cell-value ">{{sales5}}</td>
-            <td class="cell-value ">{{sales7}}</td>
+            <td class="cell-value">{{sales1}}</td>
+            <td class="cell-value">{{sales2}}</td>
+            <td class="cell-value">{{sales3}}</td>
+            <td class="cell-value">{{sales4}}</td>
+            <td class="cell-value">{{sales5}}</td>
+            <td class="cell-value">{{sales7}}</td>
           </tr>
           <tr>
             <td class="cell-title"><span style="font-weight:bold">COGS</span></td>
@@ -1040,114 +1146,118 @@
     </div>
   </div>
   <div data-page="7" class="page middle-page" style="top: 6794.0503937008px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1308;">
+    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1310;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 157px; height: 20.206771653543px; background-color: ; z-index: 1308; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial
+        <div class="" style="position: relative; width: 157px; height: 20.206771653543px; background-color: ; z-index: 1310; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial
           Snapshot</div>
       </div>
     </div>
     <div style="position: absolute; top:101.41511811024px;left:95.314960629921px; z-index: 1209;">
-      <div class="display: table;"><canvas id="salesGpPebitda"></canvas></div>
+      <div class="display: table;">
+        <canvas id="salesGpPebitda"></canvas>
+      </div>
     </div>
     <div style="position: absolute; top:588.66519685039px;left:99.508818897638px; z-index: 1224;">
       <div class="display: table;">
-        <table class="tg">
+        <table style="width: 600px" class="profitsTable">
           <tr>
-            <th class="tg-ojn2">Last Year Profit</th>
-            <th class="tg-pgkh">{{lastYearProfit}}</th>
-            <th class="tg-rzwy" rowspan="2">Profit After Wages:</th>
-            <th class="tg-pgkh">{{lastYearProfitAfterWages}}</th>
+            <th class="profitsTable-labelWhite">Last Year Profit</th>
+            <th class="profitsTable-valueWhite">{{lastYearProfit}}</th>
+            <th class="profitsTable-labelBlue" rowspan="2">Profit After Wages:</th>
+            <th class="profitsTable-valueWhite">{{lastYearProfitAfterWages}}</th>
           </tr>
           <tr>
-            <td class="tg-1m55">Average Profits</td>
-            <td class="tg-ce2e">{{avgProfits}}</td>
-            <td class="tg-ce2e">{{avgProfitsAfterWages}}</td>
+            <td class="profitsTable-labelBlue">Average Profits</td>
+            <td class="profitsTable-valueBlue">{{avgProfits}}</td>
+            <td class="profitsTable-valueBlue">{{avgProfitsAfterWages}}</td>
           </tr>
           <tr>
-            <td class="tg-ojn2">Stock Value</td>
-            <td class="tg-pgkh">{{currentStockLevel}}</td>
-            <td class="tg-dt6v">Stock Necessary <br />For Operation:</td>
-            <td class="tg-pgkh">{{stockNecessary}}</td>
+            <td class="profitsTable-labelWhite">Stock Value</td>
+            <td class="profitsTable-valueWhite">{{currentStockLevel}}</td>
+            <td class="profitsTable-labelWhite">Stock Necessary <br />For Operation:</td>
+            <td class="profitsTable-valueWhite">{{stockNecessary}}</td>
           </tr>
           <tr>
-            <td class="tg-1m55">Physical Assets Excl. Stock</td>
-            <td class="tg-ce2e" colspan="3">{{physicalAssetValue}}</td>
+            <td class="profitsTable-labelBlue">Physical Assets Excl. Stock</td>
+            <td class="profitsTable-valueBlue" colspan="3">{{physicalAssetValue}}</td>
           </tr>
         </table>
       </div>
     </div>
     <div style="position: absolute; top:341.99007874016px;left:95.314960629921px; z-index: 1209;">
-      <div class="display: table;"><canvas id="gmProfit"></canvas></div>
-    </div>
-    <div style="position: absolute; top:744.60047244094px;left:95.314960629921px; z-index: 1312;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 570px; height: 30.119527559055px; background-color: ; z-index: 1312; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Market
+        <canvas id="gmProfit"></canvas>
+      </div>
+    </div>
+    <div style="position: absolute; top:744.60047244094px;left:95.314960629921px; z-index: 1314;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 570px; height: 30.119527559055px; background-color: ; z-index: 1314; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Market
           Wages for the Owners/Partners working in the business</div>
       </div>
     </div>
     <div style="position: absolute; top:779.67637795276px;left:95.314960629921px; z-index: 1227;">
       <div class="display: table;">
-        <table class="tg">
+        <table style="width: 600px" class="ownersPositionTable">
           <tr>
-            <th class="tg-5npn">Description</th>
-            <th class="tg-wj7e">Position</th>
-            <th class="tg-wj7e">Hours per Week</th>
-            <th class="tg-wj7e">Annual Wage inc Super</th>
+            <th style="width: 150px" class="ownersPositionTable-header">Description</th>
+            <th style="width: 200px" class="ownersPositionTable-header">Position</th>
+            <th style="width: 70px" class="ownersPositionTable-header">Hours per Week</th>
+            <th style="width: 100px" class="ownersPositionTable-header">Annual Wage inc Super</th>
           </tr>
           <tr>
-            <td class="tg-audi">Owner 1/New Owner</td>
-            <td class="tg-audi">{{owner1Position}}</td>
-            <td class="tg-audi">{{owner1HoursPWeek}}</td>
-            <td class="tg-audi">{{owner1AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">Owner 1/New Owner</td>
+            <td class="ownersPositionTable-rowGrey">{{owner1Position}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner1HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner1AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-w3we">Owner 2</td>
-            <td class="tg-w3we">{{owner2Position}}</td>
-            <td class="tg-w3we">{{owner2HoursPWeek}}</td>
-            <td class="tg-w3we">{{owner2AnnualWage}}</td>
+            <td class="ownersPositionTable-rowWhite">Owner 2</td>
+            <td class="ownersPositionTable-rowWhite">{{owner2Position}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner2HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner2AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-audi">Owner 3</td>
-            <td class="tg-audi">{{owner3Position}}</td>
-            <td class="tg-audi">{{owner3HoursPWeek}}</td>
-            <td class="tg-audi">{{owner3AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">Owner 3</td>
+            <td class="ownersPositionTable-rowGrey">{{owner3Position}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner3HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner3AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-w3we">Owner 4</td>
-            <td class="tg-w3we">{{owner4Position}}</td>
-            <td class="tg-w3we">{{owner4HoursPWeek}}</td>
-            <td class="tg-w3we">{{owner4AnnualWage}}</td>
+            <td class="ownersPositionTable-rowWhite">Owner 4</td>
+            <td class="ownersPositionTable-rowWhite">{{owner4Position}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner4HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner4AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-du5b">Owner 5</td>
-            <td class="tg-du5b">{{owner5Position}}</td>
-            <td class="tg-du5b">{{owner5HoursPWeek}}</td>
-            <td class="tg-du5b">{{owner5AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">Owner 5</td>
+            <td class="ownersPositionTable-rowGrey">{{owner5Position}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner5HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner5AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-387r">Owner 6</td>
-            <td class="tg-387r">{{owner6Position}}</td>
-            <td class="tg-387r">{{owner6HoursPWeek}}</td>
-            <td class="tg-387r">{{owner6AnnualWage}}</td>
+            <td class="ownersPositionTable-rowWhite">Owner 6</td>
+            <td class="ownersPositionTable-rowWhite">{{owner6Position}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner6HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner6AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-du5b">Owner 7</td>
-            <td class="tg-du5b">{{owner7Position}}</td>
-            <td class="tg-du5b">{{owner7HoursPWeek}}</td>
-            <td class="tg-du5b">{{owner7AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">Owner 7</td>
+            <td class="ownersPositionTable-rowGrey">{{owner7Position}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner7HoursPWeek}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner7AnnualWage}}</td>
           </tr>
           <tr>
-            <td class="tg-387r" colspan="3">Total Wages</td>
-            <td class="tg-387r">{{totalAnnualWages}}</td>
+            <td class="ownersPositionTable-rowWhite" colspan="3">Total Wages</td>
+            <td class="ownersPositionTable-rowWhite">{{totalAnnualWages}}</td>
           </tr>
         </table>
       </div>
     </div>
   </div>
   <div data-page="8" class="page middle-page" style="top: 7926.3921259843px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:77.395748031496px;left:96.077480314961px; z-index: 1314;">
+    <div style="position: absolute; top:77.395748031496px;left:96.077480314961px; z-index: 1316;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 605px; height: 56.045196850394px; background-color: ; z-index: 1314; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Following
+        <div class="" style="position: relative; width: 605px; height: 56.045196850394px; background-color: ; z-index: 1316; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Following
           is the list of 10 last business sold. With finial and transaction details and as well as achieved prices with
           calculated multiplayer based on total investment (including stock).</div>
       </div>
@@ -1188,31 +1298,31 @@
         </table>
       </div>
     </div>
-    <div style="position: absolute; top:931.79905511811px;left:309.9642519685px; z-index: 1316;">
+    <div style="position: absolute; top:931.79905511811px;left:309.9642519685px; z-index: 1318;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 188px; height: 23.256850393701px; background-color: ; z-index: 1316; font-size: 16px; line-height: 18px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Average
+        <div class="" style="position: relative; width: 188px; height: 23.256850393701px; background-color: ; z-index: 1318; font-size: 16px; line-height: 18px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Average
           Multiplier</div>
       </div>
     </div>
-    <div style="position: absolute; top:955.81842519685px;left:303.86409448819px; z-index: 1317;">
-      <div class="" style="position: absolute; width: 197px; height: 1px; background-color: ; z-index: 1317; border-top: solid 1px #000000;"></div>
+    <div style="position: absolute; top:955.81842519685px;left:303.86409448819px; z-index: 1319;">
+      <div class="" style="position: absolute; width: 197px; height: 1px; background-color: ; z-index: 1319; border-top: solid 1px #000000;"></div>
     </div>
-    <div style="position: absolute; top:958.86850393701px;left:308.05795275591px; z-index: 1318;">
+    <div style="position: absolute; top:958.86850393701px;left:308.05795275591px; z-index: 1320;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 188px; height: 27.069448818898px; background-color: ; z-index: 1318; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{avgMultiplier}}</div>
+        <div class="" style="position: relative; width: 188px; height: 27.069448818898px; background-color: ; z-index: 1320; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{avgMultiplier}}</div>
       </div>
     </div>
   </div>
   <div data-page="9" class="page middle-page" style="top: 9058.7338582677px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1319;">
+    <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1321;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1319; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Setting
+        <div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1321; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Setting
           the Asking Price</div>
       </div>
     </div>
-    <div style="position: absolute; top:104.46519685039px;left:95.314960629921px; z-index: 1320;">
+    <div style="position: absolute; top:104.46519685039px;left:95.314960629921px; z-index: 1322;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 609px; height: 153.64771653543px; background-color: ; z-index: 1320; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">It
+        <div class="" style="position: relative; width: 609px; height: 153.64771653543px; background-color: ; z-index: 1322; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">It
           is important to sett the asking price right. Underpricing the business will come the business to sell below
           market value. However, overpricing the business could also cause the business to sell below fair value due to
           staying too long on the market and becoming 'Sail'.<br />
@@ -1222,147 +1332,219 @@
           premium.</div>
       </div>
     </div>
-    <div style="position: absolute; top:797.21433070866px;left:95.314960629921px; z-index: 1323;">
+    <div style="position: absolute; top:942.85559055118px;left:95.314960629921px; z-index: 1325;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 608px; height: 28.213228346457px; background-color: ; z-index: 1323; font-size: 20px; line-height: 23px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Propos
-          same Price</div>
+        <div class="" style="position: relative; width: 608px; height: 28.213228346457px; background-color: ; z-index: 1325; font-size: 20px; line-height: 23px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Propos
+          Sales Asking Price</div>
       </div>
     </div>
-    <div style="position: absolute; top:676.35496062992px;left:568.83968503937px; z-index: 1324;">
+    <div style="position: absolute; top:776.6262992126px;left:568.83968503937px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 47px; height: 36.21968503937px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Asking
           Price</div>
       </div>
     </div>
-    <div style="position: absolute; top:671.39858267717px;left:638.99149606299px; z-index: 1324;">
+    <div style="position: absolute; top:771.66992125984px;left:638.99149606299px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 51px; height: 51.042762708661px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Asking
           Price Multipler</div>
       </div>
     </div>
-    <div style="position: absolute; top:681.31133858268px;left:488.39385826772px; z-index: 1324;">
+    <div style="position: absolute; top:781.58267716535px;left:488.39385826772px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 68px; height: 33.932125984252px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Negotiation
           Premium</div>
       </div>
     </div>
-    <div style="position: absolute; top:671.39858267717px;left:97.22125984252px; z-index: 1324;">
+    <div style="position: absolute; top:771.66992125984px;left:97.22125984252px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 68px; height: 50.326299212598px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{multiplierLabel}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:681.31133858268px;left:408.32929133858px; z-index: 1324;">
+    <div style="position: absolute; top:781.58267716535px;left:408.32929133858px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 68px; height: 33.932125984252px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Market
           Premium</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:97.22125984252px; z-index: 1324;">
+    <div style="position: absolute; top:831.90897637795px;left:97.22125984252px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 68px; height: 38.282072031496px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaValuePricingMethod}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:671.39858267717px;left:247.8188976378px; z-index: 1324;">
+    <div style="position: absolute; top:771.66992125984px;left:247.8188976378px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 68px; height: 48.03874015748px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Price
           Based on Comparable</div>
       </div>
     </div>
-    <div style="position: absolute; top:681.31133858268px;left:327.88346456693px; z-index: 1324;">
+    <div style="position: absolute; top:781.58267716535px;left:327.88346456693px; z-index: 1324;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 68px; height: 31.263307086614px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Risk
           Premium</div>
       </div>
     </div>
-    <div style="position: absolute; top:728.58755905512px;left:97.22125984252px; z-index: 1326;">
+    <div style="position: absolute; top:828.8588976378px;left:97.22125984252px; z-index: 1326;">
       <div class="" style="position: absolute; width: 607px; height: 1px; background-color: ; z-index: 1326; border-top: solid 1px #000000;"></div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:252.77527559055px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:252.77527559055px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaPriceBasedOnComparable}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:177.66708661417px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:177.66708661417px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaComparableMultiplier}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:676.35496062992px;left:176.52330708661px; z-index: 1329;">
+    <div style="position: absolute; top:776.6262992126px;left:176.52330708661px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 60px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{labelComparableMultiplier}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:638.99149606299px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:638.99149606299px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 32.025826771654px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPrice}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:164.7042519685px; z-index: 1329;">
+    <div style="position: absolute; top:830.76519685039px;left:164.7042519685px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 14px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fCalc1}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:493.73149606299px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:493.73149606299px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaNegotiationPremium}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:475.81228346457px; z-index: 1329;">
+    <div style="position: absolute; top:830.76519685039px;left:475.81228346457px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:395.36645669291px; z-index: 1329;">
+    <div style="position: absolute; top:830.76519685039px;left:395.36645669291px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:315.30188976378px; z-index: 1329;">
+    <div style="position: absolute; top:830.76519685039px;left:315.30188976378px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">+</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:333.2211023622px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:333.2211023622px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaRiskPremium}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:413.28566929134px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:413.28566929134px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaMarketPremium}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:234.85606299213px; z-index: 1329;">
+    <div style="position: absolute; top:830.76519685039px;left:234.85606299213px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 10px; height: 89.324796614173px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{fCalc2}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:573.79606299213px; z-index: 1329;">
+    <div style="position: absolute; top:831.90897637795px;left:573.79606299213px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{formulaAskingPrice}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:730.49385826772px;left:555.8768503937px; z-index: 1329;">
+    <div style="position: absolute; top:830.76519685039px;left:555.8768503937px; z-index: 1329;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 14px; height: 33.932125984252px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">=</div>
       </div>
     </div>
-    <div style="position: absolute; top:731.63763779528px;left:634.03511811024px; z-index: 1332;">
+    <div style="position: absolute; top:831.90897637795px;left:634.03511811024px; z-index: 1332;">
       <div class="" style="position: absolute; width: 1px; height: 25px; background-color: ; z-index: 1332; border-left: solid 1px #000000;"></div>
     </div>
     <div style="position: absolute; top:261.92551181102px;left:96.45874015748px; z-index: 1322;">
-      <div class="display: table;"><canvas id="pricingChart"></canvas></div>
-    </div>
-    <div style="position: absolute; top:828.8588976378px;left:309.20173228346px; z-index: 1344;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 180px; height: 46.402487291339px; background-color: ; z-index: 1344; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPriceLabel}}</div>
+        <canvas id="pricingChart"></canvas>
+      </div>
+    </div>
+    <div style="position: absolute; top:974.50015748032px;left:239.04992125984px; z-index: 1346;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 124px; height: 43.463622047244px; background-color: ; z-index: 1346; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;"></div>
+      </div>
+    </div>
+    <div style="position: absolute; top:883.37905511811px;left:163.56047244094px; z-index: 1349;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 470px; height: 25.925669291339px; background-color: ; z-index: 1349; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Is
+          it our opinion that fair market price for this business is:</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:911.21102362205px;left:220.7494488189px; z-index: 1350;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 75px; height: 23.256850393701px; background-color: ; z-index: 1350; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">between</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:910.44850393701px;left:303.86409448819px; z-index: 1351;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 97px; height: 41.76225px; background-color: ; z-index: 1351; font-size: 18px; line-height: 21px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPriceValue1}}</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:910.44850393701px;left:449.50535433071px; z-index: 1352;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 97px; height: 41.76225px; background-color: ; z-index: 1352; font-size: 18px; line-height: 21px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPriceValue2}}</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:911.21102362205px;left:406.04173228346px; z-index: 1353;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 36px; height: 23.256850393701px; background-color: ; z-index: 1353; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">and</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:716.76850393701px;left:99.127559055118px; z-index: 1354;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 606px; height: 48.03874015748px; background-color: ; z-index: 1354; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">ZORAN
+          WILL INCLUDE SOME TEXT HERE</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:974.50015748032px;left:364.1031496063px; z-index: 1355;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 42px; height: 43.463622047244px; background-color: ; z-index: 1355; font-size: 20px; line-height: 23px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;"></div>
+      </div>
+    </div>
+    <div style="position: absolute; top:973.35637795276px;left:413.28566929134px; z-index: 1356;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 23px; height: 40.032283464567px; background-color: ; z-index: 1356; font-size: 20px; line-height: 23px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">of</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:974.50015748032px;left:439.5925984252px; z-index: 1357;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 124px; height: 43.463622047244px; background-color: ; z-index: 1357; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;"></div>
+      </div>
+    </div>
+    <div style="position: absolute; top:637.46645669291px;left:98.365039370079px; z-index: 1358;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 604px; height: 74.345669291339px; background-color: ; z-index: 1358; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">IMAGE
+          IS COMING HERE</div>
       </div>
     </div>
   </div>
-  <div data-page="10" class="page last-page" style="top: 10191.075590551px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
-    <div style="position: absolute; top:79.302047244094px;left:96.45874015748px; z-index: 1345;">
+  <div data-page="10" class="page middle-page" style="top: 10191.075590551px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+    <div style="position: absolute; top:76.251968503937px;left:239.04992125984px; z-index: 1346;">
       <div class="display: table;">
-        <div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1345; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Notes
+        <div class="" style="position: relative; width: 124px; height: 46.402487291339px; background-color: ; z-index: 1346; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{askingPriceLabel}}</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:76.251968503937px;left:364.1031496063px; z-index: 1355;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 42px; height: 69.60375px; background-color: ; z-index: 1355; font-size: 20px; line-height: 23px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">{{plusIncl}}</div>
+      </div>
+    </div>
+    <div style="position: absolute; top:76.251968503937px;left:439.5925984252px; z-index: 1357;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 124px; height: 46.402487291339px; background-color: ; z-index: 1357; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">{{StockValue}}</div>
+      </div>
+    </div>
+  </div>
+  <div data-page="11" class="page last-page" style="top: 11323.417322835px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+    <div style="position: absolute; top:79.302047244094px;left:96.45874015748px; z-index: 1359;">
+      <div class="display: table;">
+        <div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1359; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Notes
           and Assumptions</div>
       </div>
     </div>
@@ -1481,13 +1663,13 @@
           fontSize: 15,
           rules: [{
             rule: '%v < 20',
-            text: '%v <br>Unsustainable Risk'
+            text: '%v <br>Unsustainable R.'
           }, {
             rule: '%v >= 20 && %v < 40',
-            text: '%v <br>Challenge Risk'
+            text: '%v <br>Challenge R.'
           }, {
             rule: '%v >= 40 && %v < 60',
-            text: '%v <br>Acceptable Risk'
+            text: '%v <br>Acceptable R.'
           }, {
             rule: '%v >= 60 && %v < 80',
             text: '%v <br>Attractive'
@@ -1520,7 +1702,7 @@
             offsetX: 15
           }]
         },
-        labels: ['Unsustainable Risk', 'Challenge Risk', '', 'Acceptable Risk', 'Attractive', 'Highly Attractive'],
+        labels: ['Unsustainable R.', 'Challenge R.', '', 'Acceptable R.', 'Attractive', 'Highly Attractive'],
         ring: {
           size: 50,
           rules: [{

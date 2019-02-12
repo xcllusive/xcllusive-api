@@ -1,9 +1,10 @@
 <style type="text/css">
-  .tg {
+  .profitsTable {
     border-collapse: collapse;
     border-spacing: 0;
   }
-  .tg td {
+
+  .profitsTable td {
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding: 4px 13px;
@@ -13,7 +14,8 @@
     word-break: normal;
     border-color: black;
   }
-  .tg th {
+
+  .profitsTable th {
     font-family: Arial, sans-serif;
     font-size: 14px;
     font-weight: normal;
@@ -24,67 +26,58 @@
     word-break: normal;
     border-color: black;
   }
-  .tg .tg-pgkh {
+
+  .profitsTable .profitsTable-valueWhite {
     font-size: 13px;
     background-color: #ffffff;
     border-color: inherit;
     text-align: left;
   }
-  .tg .tg-rzwy {
-    font-weight: bold;
-    font-size: 13px;
-    background-color: #e2f3f7;
-    border-color: inherit;
-    text-align: right;
-  }
-  .tg .tg-dt6v {
-    font-weight: bold;
-    font-size: 13px;
-    background-color: #ffffff;
-    border-color: inherit;
-    text-align: right;
-  }
-  .tg .tg-ce2e {
-    font-size: 13px;
-    background-color: #e2f3f7;
-    border-color: inherit;
-    text-align: left;
-  }
-  .tg .tg-ojn2 {
-    font-weight: bold;
-    font-size: 13px;
-    background-color: #ffffff;
-    border-color: inherit;
-    text-align: left;
-  }
-  .tg .tg-1m55 {
+
+  .profitsTable .profitsTable-labelBlue {
     font-weight: bold;
     font-size: 13px;
     background-color: #e2f3f7;
     border-color: inherit;
     text-align: left;
   }
+
+  .profitsTable .profitsTable-valueBlue {
+    font-size: 13px;
+    background-color: #e2f3f7;
+    border-color: inherit;
+    text-align: left;
+  }
+
+  .profitsTable .profitsTable-labelWhite {
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #ffffff;
+    border-color: inherit;
+    text-align: left;
+  }
+
 </style>
-<table class="tg">
+<table class="profitsTable">
   <tr>
-    <th class="tg-ojn2">Last Year Profit</th>
-    <th class="tg-pgkh">[[lastYearProfit]]</th>
-    <th class="tg-rzwy" rowspan="2">Profit After Wages:</th>
-    <th class="tg-pgkh">[[lastYearProfitAfterWages]]</th>
+    <th class="profitsTable-labelWhite">Last Year Profit</th>
+    <th class="profitsTable-valueWhite">[[lastYearProfit]]</th>
+    <th class="profitsTable-labelBlue" rowspan="2">Profit After Wages:</th>
+    <th class="profitsTable-valueWhite">[[lastYearProfitAfterWages]]</th>
   </tr>
   <tr>
-    <td class="tg-1m55">Average Profits</td>
-    <td class="tg-ce2e">[[avgProfits]]</td>
-    <td class="tg-ce2e">[[avgProfitsAfterWages]]</td>
+    <td class="profitsTable-labelBlue">Average Profits</td>
+    <td class="profitsTable-valueBlue">[[avgProfits]]</td>
+    <td class="profitsTable-valueBlue">[[avgProfitsAfterWages]]</td>
   </tr>
   <tr>
-    <td class="tg-ojn2">Stock Value</td>
-    <td class="tg-pgkh">[[currentStockLevel]]</td>
-    <td class="tg-dt6v">Stock Necessary <br />For Operation:</td>
-    <td class="tg-pgkh">[[stockNecessary]]</td>
+    <td class="profitsTable-labelWhite">Stock Value</td>
+    <td class="profitsTable-valueWhite">[[currentStockLevel]]</td>
+    <td class="profitsTable-labelWhite">Stock Necessary <br />For Operation:</td>
+    <td class="profitsTable-valueWhite">[[stockNecessary]]</td>
   </tr>
   <tr>
-    <td class="tg-1m55">Physical Assets Excl. Stock</td>
-    <td class="tg-ce2e" colspan="3">[[physicalAssetValue]]</td>
+    <td class="profitsTable-labelBlue">Physical Assets Excl. Stock</td>
+    <td class="profitsTable-valueBlue" colspan="3">[[physicalAssetValue]]</td>
   </tr>
 </table>
