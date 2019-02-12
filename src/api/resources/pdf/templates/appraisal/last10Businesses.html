@@ -1,21 +1,32 @@
 <style type="text/css">
-  .tg {
+  .last10Businesses {
     border-collapse: collapse;
     border-spacing: 0;
   }
 
-  .tg td {
+  .last10Businesses-header {
+    font-size: 12px;
+    background-color: #2185d0;
+    color: #ffffff;
+    border-color: #000000;
+    text-align: center
+  }
+
+  .last10Businesses td {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 11px;
     padding: 8px 3px;
     border-style: solid;
     border-width: 1px;
     overflow: hidden;
     word-break: normal;
-    border-color: black;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border-color: #000000;
   }
 
-  .tg th {
+  .last10Businesses th {
     font-family: Arial, sans-serif;
     font-size: 14px;
     font-weight: normal;
@@ -27,162 +38,69 @@
     border-color: black;
   }
 
-  .tg .tg-pre9 {
+  .last10Businesses .last10Businesses-businessType {
     font-weight: bold;
-    font-size: 11px;
-    background-color: #209fa9;
+    background-color: #98cef6;
     color: #000000;
-    border-color: #000000;
+    text-align: left
+  }
+
+  .last10Businesses .last10Businesses-specialNotesTermsOfDealValues {
     text-align: left;
   }
 
-  .tg .tg-injz {
-    font-size: 11px;
-    border-color: #000000;
-    text-align: left;
-    vertical-align: top;
+  .last10Businesses .last10Businesses-rowGrey {
+    background-color: #c0c0c0;
+    text-align: left
   }
 
-  .tg .tg-bfls {
-    font-size: 11px;
-    background-color: #ffffff;
-    border-color: #000000;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .tg .tg-vche {
-    font-weight: bold;
-    font-size: 11px;
-    background-color: #209fa9;
-    border-color: #000000;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .tg .tg-pg0z {
-    font-size: 11px;
-    background-color: #efefef;
-    border-color: #000000;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .tg .tg-x9pm {
-    font-size: 12px;
-    background-color: #3a6dd0;
-    color: #ffffff;
-    border-color: #000000;
-    text-align: center;
-  }
-
-  .tg .tg-7wn8 {
-    font-weight: bold;
-    font-size: 11px;
-    background-color: #efefef;
-    border-color: #000000;
-    text-align: center;
-    vertical-align: top;
-  }
-
-  .tg .tg-vmmt {
-    font-size: 11px;
-    background-color: #efefef;
-    border-color: #000000;
-    text-align: center;
-    vertical-align: top;
-  }
-
-  .tg .tg-bxie {
+  .last10Businesses .last10Businesses-specialNotesTermsOfDeal {
     font-weight: bold;
     font-size: 12px;
     background-color: #ffffc7;
     color: #000000;
-    border-color: #000000;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .tg .tg-nf5p {
-    font-size: 12px;
-    background-color: #3a6dd0;
-    color: #ffffff;
-    border-color: #000000;
-    text-align: center;
-    vertical-align: top;
-  }
-
-  .tg .tg-rcs9 {
-    font-size: 11px;
-    background-color: #ffffff;
-    border-color: #000000;
     text-align: left;
   }
 
-  .tg .tg-6u1a {
-    font-size: 11px;
-    background-color: #ffffff;
-    border-color: #000000;
-    text-align: center;
-    vertical-align: top;
-  }
-
-  .tg .tg-uk0v {
+  .last10Businesses .last10Businesses-multipliers {
     font-weight: bold;
-    font-size: 11px;
-    background-color: #ffffff;
-    border-color: #000000;
-    text-align: center;
-    vertical-align: top;
   }
 
-  .tg .tg-ee2k {
-    font-size: 11px;
-    background-color: #efefef;
-    border-color: #000000;
-    text-align: left;
-  }
-
-  .tg .tg-i3u2 {
+  .last10Businesses .last10Businesses-multipliersGrey {
     font-weight: bold;
-    font-size: 11px;
-    background-color: #209fa9;
-    color: #000000;
-    border-color: #000000;
-    text-align: left;
-    vertical-align: top;
+    background-color: #c0c0c0;
   }
 
 </style>
-<table style="width: 650px" class="tg">
+<table style="width: 600px" class="last10Businesses">
   <tr>
-    <th class="tg-x9pm">Business<br />Type</th>
-    <th class="tg-x9pm">T/O</th>
-    <th class="tg-x9pm">{{avgLabel}}</th>
-    <th class="tg-x9pm">{{lastYearLabel}}</th>
-    <th class="tg-nf5p">Trend</th>
-    <th class="tg-nf5p">Stock <br />Value</th>
-    <th class="tg-nf5p">Assets<br />Value</th>
-    <th class="tg-nf5p">Price Inc.<br />Stock</th>
-    <th class="tg-nf5p">{{multiplierLabel}}</th>
+    <th class="last10Businesses-header">Business<br>Type</th>
+    <th class="last10Businesses-header">T/O</th>
+    <th class="last10Businesses-header">{{avgLabel}}</th>
+    <th class="last10Businesses-header">{{lastYearLabel}}</th>
+    <th class="last10Businesses-header">Trend</th>
+    <th class="last10Businesses-header">Stock <br>Value</th>
+    <th class="last10Businesses-header">Assets<br>Value</th>
+    <th class="last10Businesses-header">Price Inc.<br>Stock</th>
+    <th class="last10Businesses-header">{{multiplierLabel}}</th>
   </tr>
   {{#each last10BusinessArray}}
   <tr>
-    <td class="tg-pre9">{{businessType}}</td>
-    <td class="tg-rcs9">{{turnOver}}</td>
-    <td class="tg-rcs9">{{avg}}</td>
-    <td class="tg-rcs9">{{lastYear}}</td>
-    <td class="tg-6u1a">{{trend}}</td>
-    <td class="tg-bfls">{{stockValue}}</td>
-    <td class="tg-bfls">{{assetsValue}}</td>
-    <td class="tg-bfls">{{priceIncStock}}</td>
-    <td class="tg-uk0v">{{multiplier]</td>
+    <td class="last10Businesses-businessType">{{businessType}}</td>
+    <td class="last10Businesses-rowWhite">{{turnOver}}</td>
+    <td class="last10Businesses-rowWhite">{{avg}}</td>
+    <td class="last10Businesses-rowWhite">{{lastYear}}</td>
+    <td class="last10Businesses-rowWhite">{{trend}}</td>
+    <td class="last10Businesses-rowWhite">{{stockValue}}</td>
+    <td class="last10Businesses-rowWhite">{{assetsValue}}</td>
+    <td class="last10Businesses-rowWhite">{{priceIncStock}}</td>
+    <td class="last10Businesses-multipliers">{{multiplier}}</td>
   </tr>
   <tr>
-    <td class="tg-bxie">Special Notes</td>
-    <td class="tg-bfls" colspan="4">{{specialNotes}}</td>
-    <td class="tg-bxie">Terms of the Deal</td>
-    <td class="tg-bfls" colspan="3">{{termsOfDeal}}</td>
+    <td class="last10Businesses-specialNotesTermsOfDeal">Special Notes</td>
+    <td class="last10Businesses-specialNotesTermsOfDealValues" colspan="4">{{specialNotes}}</td>
+    <td class="last10Businesses-specialNotesTermsOfDeal">Terms of the Deal</td>
+    <td class="last10Businesses-specialNotesTermsOfDealValues" colspan="3">{{termsOfDeal}}</td>
   </tr>
   {{/each}}
 </table>

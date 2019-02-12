@@ -53,16 +53,16 @@ export const get = async (req, res, next) => {
         id: appraisalId
       },
       include: [{
-          model: models.Business
-        },
-        {
-          model: models.User,
-          as: 'CreatedBy'
-        },
-        {
-          model: models.User,
-          as: 'ModifiedBy'
-        }
+        model: models.Business
+      },
+      {
+        model: models.User,
+        as: 'CreatedBy'
+      },
+      {
+        model: models.User,
+        as: 'ModifiedBy'
+      }
       ]
     })
     return res.status(201).json({
@@ -298,7 +298,7 @@ export const generatePdf = async (req, res, next) => {
     if (loggedUser.dataRegion === 'Camberra Office') regionOfficeUser = 'Cooma, NSW 2630'
     if (loggedUser.dataRegion === 'Adelaide Office') regionOfficeUser = 'Westpac House Level 30, 91 King William Street, Adelaide SA 5000'
 
-    context.preparedBy = `Xcllusive Business Sales Pty Ltd </br>${regionOfficeUser} </br>(02) 9817 3331 </br>www.xcllusive.com.au </br>Lic: 172 3536 </br>ABN: 99 144 870 762`
+    context.preparedBy = `Xcllusive Business Sales </br>${regionOfficeUser} </br>(02) 9817 3331 </br>www.xcllusive.com.au </br>Lic: 172 3536 </br>ABN: 99 144 870 762`
     // ends prepared by
 
     /* profits table */
@@ -480,7 +480,6 @@ export const generatePdf = async (req, res, next) => {
     let totalMultiplier = 0
 
     context.last10BusinessArray = comparableDataSelectedList.map((item) => {
-      let multiplierLabel = ''
       let multiplier = 0
       let formulaComparableMultiplier = 0
       let formulaValuePricingMethod = ''
@@ -489,56 +488,54 @@ export const generatePdf = async (req, res, next) => {
       let fCalc2 = ''
       let labelAskingPriceMultipler = ''
       let askingPrice = ''
-      let avgLabel = ''
-      let lastYearLabel = ''
       let avg = 0
       let lastYear = 0
 
       if (appraisal.pricingMethod === 1) {
-        multiplierLabel = 'Multiplier EBITDA Last Year'
+        context.multiplierLabel = 'Multiplier EBITDA Last Year'
         multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
         formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
       }
       if (appraisal.pricingMethod === 2) {
-        multiplierLabel = 'Multiplier EBITDA Avg'
+        context.multiplierLabel = 'Multiplier EBITDA Avg'
         multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
         formulaComparableMultiplier = appraisal.sumMEbitdaAvg
       }
       if (appraisal.pricingMethod === 3) {
-        multiplierLabel = 'Multiplier PEBITDA Last Year'
+        context.multiplierLabel = 'Multiplier PEBITDA Last Year'
         multiplier = item.soldPrice / pebitdaLastYear(item)
         formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
       }
       if (appraisal.pricingMethod === 4) {
-        multiplierLabel = 'Multiplier PEBITDA Avg'
+        context.multiplierLabel = 'Multiplier PEBITDA Avg'
         multiplier = numeral(
           item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
         ).format('0,0.[99]')
         formulaComparableMultiplier = appraisal.sumMPebitdaAvg
       }
       if (appraisal.pricingMethod === 5) {
-        multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
+        context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
         multiplier = numeral(
           (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
         ).format('0,0.[99]')
         formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 6) {
-        multiplierLabel = 'Multiplier EBITDA Avg With Stock'
+        context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
         multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
           '0,0.[99]'
         )
         formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 7) {
-        multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
+        context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
         multiplier = numeral(
           item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
         ).format('0,0.[99]')
         formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 8) {
-        multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
+        context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
         multiplier = numeral(
           item.soldPrice /
           (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
@@ -546,14 +543,14 @@ export const generatePdf = async (req, res, next) => {
         formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 9) {
-        multiplierLabel = 'T/O Multiplier'
+        context.multiplierLabel = 'T/O Multiplier'
         multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format(
           '0,0.[99]'
         )
         formulaComparableMultiplier = appraisal.sumMTO
       }
       if (appraisal.pricingMethod === 10) {
-        multiplierLabel = ''
+        context.multiplierLabel = ''
         multiplier = ''
         formulaValuePricingMethod = ''
         labelComparableMultiplier = ''
@@ -570,8 +567,8 @@ export const generatePdf = async (req, res, next) => {
         appraisal.pricingMethod === 5 ||
         appraisal.pricingMethod === 6
       ) {
-        avgLabel = 'EBITDA Avg'
-        lastYearLabel = 'EBITDA Last Year'
+        context.avgLabel = 'EBITDA Avg'
+        context.lastYearLabel = 'EBITDA Last Year'
         avg = numeral(ebitdaAvg(item)).format('$0,0')
         lastYear = numeral(ebitdaLastYear(item)).format('$0,0')
       }
@@ -584,8 +581,8 @@ export const generatePdf = async (req, res, next) => {
         appraisal.pricingMethod === 9 ||
         appraisal.pricingMethod === 10
       ) {
-        avgLabel = 'PEBITDA Avg'
-        lastYearLabel = 'PEBITDA Last Year'
+        context.avgLabel = 'PEBITDA Avg'
+        context.lastYearLabel = 'PEBITDA Last Year'
         avg = numeral(
           ebitdaAvg(item) + item.agreedWageForMainOwner
         ).format('$0,0')
@@ -613,11 +610,8 @@ export const generatePdf = async (req, res, next) => {
         fCalc2,
         labelAskingPriceMultipler,
         askingPrice,
-        avgLabel,
-        lastYearLabel,
         avg,
-        lastYear,
-        multiplierLabel
+        lastYear
       }
     })
 
