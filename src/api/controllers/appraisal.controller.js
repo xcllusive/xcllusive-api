@@ -298,7 +298,7 @@ export const generatePdf = async (req, res, next) => {
     if (loggedUser.dataRegion === 'Camberra Office') regionOfficeUser = 'Cooma, NSW 2630'
     if (loggedUser.dataRegion === 'Adelaide Office') regionOfficeUser = 'Westpac House Level 30, 91 King William Street, Adelaide SA 5000'
 
-    context.preparedBy = `Xcllusive Business Sales Pty Ltd </br>${regionOfficeUser} </br>(02) 9817 3331 </br>www.xcllusive.com.au </br>Lic: 172 3536 </br>ABN: 99 144 870 762`
+    context.preparedBy = `Xcllusive Business Sales </br>${regionOfficeUser} </br>(02) 9817 3331 </br>www.xcllusive.com.au </br>Lic: 172 3536 </br>ABN: 99 144 870 762`
     // ends prepared by
 
     /* profits table */
