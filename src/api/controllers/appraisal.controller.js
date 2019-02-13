@@ -203,6 +203,10 @@ export const generatePdf = async (req, res, next) => {
     appraisalId
   } = req.params
 
+  const {
+    draft
+  } = req.body
+
   const templatePath = path.resolve(
     'src',
     'api',
@@ -210,7 +214,7 @@ export const generatePdf = async (req, res, next) => {
     'pdf',
     'templates',
     'appraisal',
-    'appraisal.html'
+    draft ? 'appraisalDraft.html' : 'appraisal.html'
   )
 
   const destPdfGenerated = path.resolve(
@@ -422,6 +426,14 @@ export const generatePdf = async (req, res, next) => {
     // end Financial Information Table
 
     // start salesGpPebitda chart
+
+    context.year1SalesGpPebitda = appraisal.year1
+    context.year2SalesGpPebitda = appraisal.year2
+    context.year3SalesGpPebitda = appraisal.year3
+    context.year4SalesGpPebitda = appraisal.year4
+    context.year5SalesGpPebitda = appraisal.year5
+    context.year6SalesGpPebitda = appraisal.year6
+
     context.sales1GpPebitda = appraisal.sales1
     context.sales2GpPebitda = appraisal.sales2
     context.sales3GpPebitda = appraisal.sales3
@@ -442,6 +454,43 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfit4SalesPebitda = appraisal.calcOperatingProfit4
     context.calcOperatingProfit5SalesPebitda = appraisal.calcOperatingProfit5
     context.calcOperatingProfit6SalesPebitda = appraisal.calcOperatingProfit6
+
+    if (!appraisal.renderPdfYear1) {
+      context.year1SalesGpPebitda = ''
+      context.sales1GpPebitda = '-'
+      context.calcGrossProfit1SalesPebitda = '-'
+      context.calcOperatingProfit1SalesPebitda = '-'
+    }
+    if (!appraisal.renderPdfYear2) {
+      context.year2SalesGpPebitda = ''
+      context.sales2GpPebitda = '-'
+      context.calcGrossProfit2SalesPebitda = '-'
+      context.calcOperatingProfit2SalesPebitda = '-'
+    }
+    if (!appraisal.renderPdfYear3) {
+      context.year3SalesGpPebitda = ''
+      context.sales3GpPebitda = '-'
+      context.calcGrossProfit3SalesPebitda = '-'
+      context.calcOperatingProfit3SalesPebitda = '-'
+    }
+    if (!appraisal.renderPdfYear4) {
+      context.year4SalesGpPebitda = ''
+      context.sales4GpPebitda = '-'
+      context.calcGrossProfit4SalesPebitda = '-'
+      context.calcOperatingProfit4SalesPebitda = '-'
+    }
+    if (!appraisal.renderPdfYear5) {
+      context.year5SalesGpPebitda = ''
+      context.sales5GpPebitda = '-'
+      context.calcGrossProfit5SalesPebitda = '-'
+      context.calcOperatingProfit5SalesPebitda = '-'
+    }
+    if (!appraisal.renderPdfYear6) {
+      context.year6SalesGpPebitda = ''
+      context.sales7GpPebitda = '-'
+      context.calcGrossProfit7SalesPebitda = '-'
+      context.calcOperatingProfit6SalesPebitda = '-'
+    }
     // end salesGpPebitda chart
 
     // start gmProfit chart
@@ -494,45 +543,45 @@ export const generatePdf = async (req, res, next) => {
       if (appraisal.pricingMethod === 1) {
         context.multiplierLabel = 'Multiplier EBITDA Last Year'
         multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
-        formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
       }
       if (appraisal.pricingMethod === 2) {
         context.multiplierLabel = 'Multiplier EBITDA Avg'
         multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
-        formulaComparableMultiplier = appraisal.sumMEbitdaAvg
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaAvg
       }
       if (appraisal.pricingMethod === 3) {
         context.multiplierLabel = 'Multiplier PEBITDA Last Year'
         multiplier = item.soldPrice / pebitdaLastYear(item)
-        formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
       }
       if (appraisal.pricingMethod === 4) {
         context.multiplierLabel = 'Multiplier PEBITDA Avg'
         multiplier = numeral(
           item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
         ).format('0,0.[99]')
-        formulaComparableMultiplier = appraisal.sumMPebitdaAvg
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaAvg
       }
       if (appraisal.pricingMethod === 5) {
         context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
         multiplier = numeral(
           (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
         ).format('0,0.[99]')
-        formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 6) {
         context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
         multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
           '0,0.[99]'
         )
-        formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
+        context.formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 7) {
         context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
         multiplier = numeral(
           item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
         ).format('0,0.[99]')
-        formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 8) {
         context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
@@ -540,14 +589,14 @@ export const generatePdf = async (req, res, next) => {
           item.soldPrice /
           (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
         ).format('0,0.[99]')
-        formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
+        context.formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 9) {
         context.multiplierLabel = 'T/O Multiplier'
         multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format(
           '0,0.[99]'
         )
-        formulaComparableMultiplier = appraisal.sumMTO
+        context.formulaComparableMultiplier = appraisal.sumMTO
       }
       if (appraisal.pricingMethod === 10) {
         context.multiplierLabel = ''
@@ -670,8 +719,11 @@ export const generatePdf = async (req, res, next) => {
     context.lessThan5PercChanceOfSelling = appraisal.lessThan5PercChanceOfSelling
     // end pricig chart
 
-    // start formula pricing
-    // end formula pricing
+    if (appraisal.inclStock) {
+      context.plusIncl = 'Incl. Stock of'
+    } else {
+      context.plusIncl = 'Plus Stock of'
+    }
 
     // start notes and assumptions
     const arrayNotesAssumptions = []
@@ -764,19 +816,20 @@ export const generatePdf = async (req, res, next) => {
     const template = handlebarsCompiled(context)
 
     /* test pdf on chromium  */
+    // const browser = await puppeteer.launch({
+    //   headless: false
+    // })
+
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
 
-    // const browser = await puppeteer.launch({
-    //   headless: false
-    // })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
-    // await page.goto(`data:text/html,${template}`, {
-    //   waitUntil: 'networkidle0'
-    // })
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle0'
+    })
     await page.waitForSelector('#chartGaugeBusinessRisk')
     await page.pdf(PDF_OPTIONS)
     await browser.close()

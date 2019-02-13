@@ -2661,6 +2661,21 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: 1
+      },
+      askingPriceValue1: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      askingPriceValue2: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      inclStock: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 1
       }
     }, {
       createdAt: 'dateTimeCreated',
