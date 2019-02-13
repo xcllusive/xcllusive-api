@@ -53,16 +53,16 @@ export const get = async (req, res, next) => {
         id: appraisalId
       },
       include: [{
-        model: models.Business
-      },
-      {
-        model: models.User,
-        as: 'CreatedBy'
-      },
-      {
-        model: models.User,
-        as: 'ModifiedBy'
-      }
+          model: models.Business
+        },
+        {
+          model: models.User,
+          as: 'CreatedBy'
+        },
+        {
+          model: models.User,
+          as: 'ModifiedBy'
+        }
       ]
     })
     return res.status(201).json({
@@ -796,12 +796,12 @@ export const generatePdf = async (req, res, next) => {
       displayHeaderFooter: true,
       headerTemplate: ' ',
       footerTemplate: `
-        <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-        <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
+              <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
   appraisal.Business.businessName
 }</span>
-        <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
-        </div>`
+              <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+              </div>`
     }
 
     const content = await readFile(templatePath, 'utf8')
@@ -823,7 +823,6 @@ export const generatePdf = async (req, res, next) => {
     await page.goto(`data:text/html,${template}`, {
       waitUntil: 'networkidle0'
     })
-    await page.waitForSelector('#chartGaugeBusinessRisk')
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
