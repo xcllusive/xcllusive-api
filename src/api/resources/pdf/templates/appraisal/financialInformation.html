@@ -51,141 +51,310 @@
   }
 
 </style>
-<table class="table-financial-information" cellpadding="0" cellspacing="0">
-  <tr>
-    <th class="cell-empty"></th>
-    <th class="cell-value">[[year1]]</th>
-    <th class="cell-value">[[year2]]</th>
-    <th class="cell-value">[[year3]]</th>
-    <th class="cell-value">[[year4]]</th>
-    <th class="cell-value">[[year5]]</th>
-    <th class="cell-value">[[year7]]</th>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
-    <td class="cell-value">[[sales1]]</td>
-    <td class="cell-value">[[sales2]]</td>
-    <td class="cell-value">[[sales3]]</td>
-    <td class="cell-value">[[sales4]]</td>
-    <td class="cell-value">[[sales5]]</td>
-    <td class="cell-value">[[sales7]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">COGS</span></td>
-    <td class="cell-value">[[cogs1]]</td>
-    <td class="cell-value">[[cogs2]]</td>
-    <td class="cell-value">[[cogs3]]</td>
-    <td class="cell-value">[[cogs4]]</td>
-    <td class="cell-value">[[cogs5]]</td>
-    <td class="cell-value">[[cogs7]]</td>
-  </tr>
-  <tr style="background-color: #e2f3f7">
-    <td class="cell-title"><span style="font-weight:bold">Gross Margin</span></td>
-    <td class="cell-value">[[calcGrossMargin1]]</td>
-    <td class="cell-value">[[calcGrossMargin2]]</td>
-    <td class="cell-value">[[calcGrossMargin3]]</td>
-    <td class="cell-value">[[calcGrossMargin4]]</td>
-    <td class="cell-value">[[calcGrossMargin5]]</td>
-    <td class="cell-value">[[calcGrossMargin6]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title">Gross Margin %</td>
-    <td class="cell-value">[[calcGrossMarginPerc1]]</td>
-    <td class="cell-value">[[calcGrossMarginPerc2]]</td>
-    <td class="cell-value">[[calcGrossMarginPerc3]]</td>
-    <td class="cell-value">[[calcGrossMarginPerc4]]</td>
-    <td class="cell-value">[[calcGrossMarginPerc5]]</td>
-    <td class="cell-value">[[calcGrossMarginPerc6]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Other Income</span></td>
-    <td class="cell-value">[[otherIncome1]]</td>
-    <td class="cell-value">[[otherIncome2]]</td>
-    <td class="cell-value">[[otherIncome3]]</td>
-    <td class="cell-value">[[otherIncome4]]</td>
-    <td class="cell-value">[[otherIncome5]]</td>
-    <td class="cell-value">[[otherIncome7]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Gross Profit</span></td>
-    <td class="cell-value">[[calcGrossProfit1]]</td>
-    <td class="cell-value">[[calcGrossProfit2]]</td>
-    <td class="cell-value">[[calcGrossProfit3]]</td>
-    <td class="cell-value">[[calcGrossProfit4]]</td>
-    <td class="cell-value">[[calcGrossProfit5]]</td>
-    <td class="cell-value">[[calcGrossProfit7]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Expenses</span></td>
-    <td class="cell-value">[[expenses1]]</td>
-    <td class="cell-value">[[expenses2]]</td>
-    <td class="cell-value">[[expenses3]]</td>
-    <td class="cell-value">[[expenses4]]</td>
-    <td class="cell-value">[[expenses5]]</td>
-    <td class="cell-value">[[expenses7]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Operating Profit</span></td>
-    <td class="cell-value">[[calcOperatingProfit1]]</td>
-    <td class="cell-value">[[calcOperatingProfit2]]</td>
-    <td class="cell-value">[[calcOperatingProfit3]]</td>
-    <td class="cell-value">[[calcOperatingProfit4]]</td>
-    <td class="cell-value">[[calcOperatingProfit5]]</td>
-    <td class="cell-value">[[calcOperatingProfit6]]</td>
-  </tr>
-  <tr style="background-color: #e2f3f7">
-    <td class="cell-title">Operating Profit %</td>
-    <td class="cell-value">[[calcOperatingProfitPerc1]]</td>
-    <td class="cell-value">[[calcOperatingProfitPerc2]]</td>
-    <td class="cell-value">[[calcOperatingProfitPerc3]]</td>
-    <td class="cell-value">[[calcOperatingProfitPerc4]]</td>
-    <td class="cell-value">[[calcOperatingProfitPerc5]]</td>
-    <td class="cell-value">[[calcOperatingProfitPerc6]]</td>
-  </tr>
-  <tr>
-    <td colspan="7" style="text-align: center;">
-      <span style="font-weight:bold">Addbacks and Adjustments</span>
-    </td>
-  </tr>
-  {{#each financialInformationArray}}
-  <tr>
-    <td class="cell-title">{{aaRow}}</td>
-    <td class="cell-value">{{aaRowYear1}}</td>
-    <td class="cell-value">{{aaRowYear2}}</td>
-    <td class="cell-value">{{aaRowYear3}}</td>
-    <td class="cell-value">{{aaRowYear4}}</td>
-    <td class="cell-value">{{aaRowYear5}}</td>
-    <td class="cell-value">{{aaRowYear7}}</td>
-  </tr>
-  {{/each}}
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Total Adjusments</span></td>
-    <td class="cell-value">[[totalAdjusments1]]</td>
-    <td class="cell-value">[[totalAdjusments2]]</td>
-    <td class="cell-value">[[totalAdjusments3]]</td>
-    <td class="cell-value">[[totalAdjusments4]]</td>
-    <td class="cell-value">[[totalAdjusments5]]</td>
-    <td class="cell-value">[[totalAdjusments7]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title">
-      <span style="font-weight:bold">Total Adjusted Profit INCL. Owner's
-        Wage</span>
-    </td>
-    <td class="cell-value">[[totalAdjustedProfit1]]</td>
-    <td class="cell-value">[[totalAdjustedProfit2]]</td>
-    <td class="cell-value">[[totalAdjustedProfit3]]</td>
-    <td class="cell-value">[[totalAdjustedProfit4]]</td>
-    <td class="cell-value">[[totalAdjustedProfit5]]</td>
-    <td class="cell-value">[[totalAdjustedProfit7]]</td>
-  </tr>
-  <tr>
-    <td class="cell-title"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
-    <td class="cell-value">[[adjustedProfitPerc1]]</td>
-    <td class="cell-value">[[adjustedProfitPerc2]]</td>
-    <td class="cell-value">[[adjustedProfitPerc3]]</td>
-    <td class="cell-value">[[adjustedProfitPerc4]]</td>
-    <td class="cell-value">[[adjustedProfitPerc5]]</td>
-    <td class="cell-value">[[adjustedProfitPerc7]]</td>
-  </tr>
-</table>
+<div class="display: table;">
+  <table class="table-financial-information" cellpadding="0" cellspacing="0">
+    <tr>
+      <th class="cell-empty"></th>
+      {{#if renderPdfYear1}}
+      <th class="cell-value">{{year1}}</th>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <th class="cell-value">{{year2}}</th>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <th class="cell-value">{{year3}}</th>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <th class="cell-value">{{year4}}</th>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <th class="cell-value">{{year5}}</th>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <th class="cell-value">{{year7}}</th>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{sales1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{sales2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{sales3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{sales4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{sales5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{sales7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">COGS</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{cogs1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{cogs2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{cogs3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{cogs4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{cogs5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{cogs7}}</td>
+      {{/if}}
+    </tr>
+    <tr style="background-color: #e2f3f7">
+      <td class="cell-title"><span style="font-weight:bold">Gross Margin</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{calcGrossMargin1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{calcGrossMargin2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{calcGrossMargin3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{calcGrossMargin4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{calcGrossMargin5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{calcGrossMargin7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title">Gross Margin %</td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{calcGrossMarginPerc1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{calcGrossMarginPerc2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{calcGrossMarginPerc3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{calcGrossMarginPerc4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{calcGrossMarginPerc5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{calcGrossMarginPerc7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Other Income</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{otherIncome1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{otherIncome2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{otherIncome3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{otherIncome4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{otherIncome5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{otherIncome7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Gross Profit</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{calcGrossProfit1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{calcGrossProfit2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{calcGrossProfit3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{calcGrossProfit4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{calcGrossProfit5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{calcGrossProfit7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Expenses</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{expenses1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{expenses2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{expenses3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{expenses4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{expenses5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{expenses7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Operating Profit</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{calcOperatingProfit1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{calcOperatingProfit2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{calcOperatingProfit3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{calcOperatingProfit4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{calcOperatingProfit5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{calcOperatingProfit7}}</td>
+      {{/if}}
+    </tr>
+    <tr style="background-color: #e2f3f7">
+      <td class="cell-title">Operating Profit %</td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{calcOperatingProfitPerc1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{calcOperatingProfitPerc2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{calcOperatingProfitPerc3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{calcOperatingProfitPerc4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{calcOperatingProfitPerc5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{calcOperatingProfitPerc7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td colspan="7" style="text-align: center;">
+        <span style="font-weight:bold">Addbacks and Adjustments</span>
+      </td>
+    </tr>
+    {{#each financialInformationArray}}
+    <tr>
+      <td class="cell-title">{{aaRow}}</td>
+      {{#if ../renderPdfYear1}}
+      <td class="cell-value">{{aaRowYear1}}</td>
+      {{/if}}
+      {{#if ../renderPdfYear2}}
+      <td class="cell-value">{{aaRowYear2}}</td>
+      {{/if}}
+      {{#if ../renderPdfYear3}}
+      <td class="cell-value">{{aaRowYear3}}</td>
+      {{/if}}
+      {{#if ../renderPdfYear4}}
+      <td class="cell-value">{{aaRowYear4}}</td>
+      {{/if}}
+      {{#if ../renderPdfYear5}}
+      <td class="cell-value">{{aaRowYear5}}</td>
+      {{/if}}
+      {{#if ../renderPdfYear7}}
+      <td class="cell-value">{{aaRowYear7}}</td>
+      {{/if}}
+    </tr>
+    {{/each}}
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Total Adjusments</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{totalAdjusments1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{totalAdjusments2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{totalAdjusments3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{totalAdjusments4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{totalAdjusments5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{totalAdjusments7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title">
+        <span style="font-weight:bold">Total Adjusted Profit INCL. Owner's
+          Wage</span>
+      </td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{totalAdjustedProfit1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{totalAdjustedProfit2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{totalAdjustedProfit3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{totalAdjustedProfit4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{totalAdjustedProfit5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{totalAdjustedProfit7}}</td>
+      {{/if}}
+    </tr>
+    <tr>
+      <td class="cell-title"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
+      {{#if renderPdfYear1}}
+      <td class="cell-value">{{adjustedProfitPerc1}}</td>
+      {{/if}}
+      {{#if renderPdfYear2}}
+      <td class="cell-value">{{adjustedProfitPerc2}}</td>
+      {{/if}}
+      {{#if renderPdfYear3}}
+      <td class="cell-value">{{adjustedProfitPerc3}}</td>
+      {{/if}}
+      {{#if renderPdfYear4}}
+      <td class="cell-value">{{adjustedProfitPerc4}}</td>
+      {{/if}}
+      {{#if renderPdfYear5}}
+      <td class="cell-value">{{adjustedProfitPerc5}}</td>
+      {{/if}}
+      {{#if renderPdfYear7}}
+      <td class="cell-value">{{adjustedProfitPerc7}}</td>
+      {{/if}}
+    </tr>
+  </table>
