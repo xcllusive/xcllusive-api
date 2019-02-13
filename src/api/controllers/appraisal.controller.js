@@ -426,13 +426,12 @@ export const generatePdf = async (req, res, next) => {
     // end Financial Information Table
 
     // start salesGpPebitda chart
-
-    context.year1SalesGpPebitda = appraisal.year1
-    context.year2SalesGpPebitda = appraisal.year2
-    context.year3SalesGpPebitda = appraisal.year3
-    context.year4SalesGpPebitda = appraisal.year4
-    context.year5SalesGpPebitda = appraisal.year5
-    context.year6SalesGpPebitda = appraisal.year6
+    context.year1ShowHide = appraisal.year1
+    context.year2ShowHide = appraisal.year2
+    context.year3ShowHide = appraisal.year3
+    context.year4ShowHide = appraisal.year4
+    context.year5ShowHide = appraisal.year5
+    context.year6ShowHide = appraisal.year6
 
     context.sales1GpPebitda = appraisal.sales1
     context.sales2GpPebitda = appraisal.sales2
@@ -455,45 +454,6 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfit5SalesPebitda = appraisal.calcOperatingProfit5
     context.calcOperatingProfit6SalesPebitda = appraisal.calcOperatingProfit6
 
-    if (!appraisal.renderPdfYear1) {
-      context.year1SalesGpPebitda = ''
-      context.sales1GpPebitda = '-'
-      context.calcGrossProfit1SalesPebitda = '-'
-      context.calcOperatingProfit1SalesPebitda = '-'
-    }
-    if (!appraisal.renderPdfYear2) {
-      context.year2SalesGpPebitda = ''
-      context.sales2GpPebitda = '-'
-      context.calcGrossProfit2SalesPebitda = '-'
-      context.calcOperatingProfit2SalesPebitda = '-'
-    }
-    if (!appraisal.renderPdfYear3) {
-      context.year3SalesGpPebitda = ''
-      context.sales3GpPebitda = '-'
-      context.calcGrossProfit3SalesPebitda = '-'
-      context.calcOperatingProfit3SalesPebitda = '-'
-    }
-    if (!appraisal.renderPdfYear4) {
-      context.year4SalesGpPebitda = ''
-      context.sales4GpPebitda = '-'
-      context.calcGrossProfit4SalesPebitda = '-'
-      context.calcOperatingProfit4SalesPebitda = '-'
-    }
-    if (!appraisal.renderPdfYear5) {
-      context.year5SalesGpPebitda = ''
-      context.sales5GpPebitda = '-'
-      context.calcGrossProfit5SalesPebitda = '-'
-      context.calcOperatingProfit5SalesPebitda = '-'
-    }
-    if (!appraisal.renderPdfYear6) {
-      context.year6SalesGpPebitda = ''
-      context.sales7GpPebitda = '-'
-      context.calcGrossProfit7SalesPebitda = '-'
-      context.calcOperatingProfit6SalesPebitda = '-'
-    }
-    // end salesGpPebitda chart
-
-    // start gmProfit chart
     context.calcGrossMarginPerc1GmProfit = appraisal.calcGrossMarginPerc1
     context.calcGrossMarginPerc2GmProfit = appraisal.calcGrossMarginPerc2
     context.calcGrossMarginPerc3GmProfit = appraisal.calcGrossMarginPerc3
@@ -507,7 +467,59 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfitPerc4GmProfit = appraisal.calcOperatingProfitPerc4
     context.calcOperatingProfitPerc5GmProfit = appraisal.calcOperatingProfitPerc5
     context.calcOperatingProfitPerc6GmProfit = appraisal.calcOperatingProfitPerc6
-    // ends gmProfit chart
+
+    /* verifying if there's any Year unmarked to show in the pdf  */
+    if (!appraisal.renderPdfYear1) {
+      context.year1ShowHide = ''
+      context.sales1GpPebitda = '-'
+      context.calcGrossProfit1SalesPebitda = '-'
+      context.calcOperatingProfit1SalesPebitda = '-'
+      context.calcGrossMarginPerc1GmProfit = '-'
+      context.calcOperatingProfitPerc1GmProfit = '-'
+    }
+    if (!appraisal.renderPdfYear2) {
+      context.year2ShowHide = ''
+      context.sales2GpPebitda = '-'
+      context.calcGrossProfit2SalesPebitda = '-'
+      context.calcOperatingProfit2SalesPebitda = '-'
+      context.calcGrossMarginPerc2GmProfit = '-'
+      context.calcOperatingProfitPerc2GmProfit = '-'
+    }
+    if (!appraisal.renderPdfYear3) {
+      context.year3ShowHide = ''
+      context.sales3GpPebitda = '-'
+      context.calcGrossProfit3SalesPebitda = '-'
+      context.calcOperatingProfit3SalesPebitda = '-'
+      context.calcGrossMarginPerc3GmProfit = '-'
+      context.calcOperatingProfitPerc3GmProfit = '-'
+    }
+    if (!appraisal.renderPdfYear4) {
+      context.year4ShowHide = ''
+      context.sales4GpPebitda = '-'
+      context.calcGrossProfit4SalesPebitda = '-'
+      context.calcOperatingProfit4SalesPebitda = '-'
+      context.calcGrossMarginPerc4GmProfit = '-'
+      context.calcOperatingProfitPerc4GmProfit = '-'
+    }
+    if (!appraisal.renderPdfYear5) {
+      context.year5ShowHide = ''
+      context.sales5GpPebitda = '-'
+      context.calcGrossProfit5SalesPebitda = '-'
+      context.calcOperatingProfit5SalesPebitda = '-'
+      context.calcGrossMarginPerc5GmProfit = '-'
+      context.calcOperatingProfitPerc5GmProfit = '-'
+    }
+    if (!appraisal.renderPdfYear6) {
+      context.year6ShowHide = ''
+      context.sales7GpPebitda = '-'
+      context.calcGrossProfit7SalesPebitda = '-'
+      context.calcOperatingProfit6SalesPebitda = '-'
+      context.calcGrossMarginPerc6GmProfit = '-'
+      context.calcOperatingProfitPerc6GmProfit = '-'
+    }
+    /* end verifying if there's any Year unmarked to show in the pdf  */
+
+    // end salesGpPebitda and gmProfit chart
 
     // start pricing chart
     let calcPricingMethod = numeral(appraisal.formulaValuePricingMethod)
