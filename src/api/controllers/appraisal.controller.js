@@ -687,24 +687,17 @@ export const generatePdf = async (req, res, next) => {
     context.descriptionGaugeMarket = descriptionMarket.label
     // end gauges
 
-    const checkYearRender = (render, value) => {
-      if (render) {
-        return value
-      }
-      return '-'
-    }
-
     // start table financial information
     for (let i = 1; i < 31; i++) {
       if (appraisal[`aaRow${i}`] || appraisal[`aaRow${i}`] !== '') {
         context.financialInformationArray.push({
           aaRow: appraisal[`aaRow${i}`],
-          aaRowYear1: checkYearRender(appraisal['renderPdfYear1'], appraisal[`aaRow${i}Year1`]),
-          aaRowYear2: checkYearRender(appraisal['renderPdfYear2'], appraisal[`aaRow${i}Year2`]),
-          aaRowYear3: checkYearRender(appraisal['renderPdfYear3'], appraisal[`aaRow${i}Year3`]),
-          aaRowYear4: checkYearRender(appraisal['renderPdfYear4'], appraisal[`aaRow${i}Year4`]),
-          aaRowYear5: checkYearRender(appraisal['renderPdfYear5'], appraisal[`aaRow${i}Year5`]),
-          aaRowYear7: checkYearRender(appraisal['renderPdfYear7'], appraisal[`aaRow${i}Year7`])
+          aaRowYear1: appraisal[`aaRow${i}Year1`],
+          aaRowYear2: appraisal[`aaRow${i}Year2`],
+          aaRowYear3: appraisal[`aaRow${i}Year3`],
+          aaRowYear4: appraisal[`aaRow${i}Year4`],
+          aaRowYear5: appraisal[`aaRow${i}Year5`],
+          aaRowYear7: appraisal[`aaRow${i}Year7`]
         })
       }
     }
