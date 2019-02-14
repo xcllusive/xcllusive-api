@@ -37,10 +37,6 @@
       margin-bottom: 4px;
     }
 
-    .page {
-      position: absolute;
-    }
-
     #pricingChart {
       height: 270px;
       width: 580px;
@@ -128,32 +124,22 @@
       border-spacing: 0;
       table-layout: fixed;
       width: 605px;
-      border-color: #80808085
     }
 
     .table-financial-information td {
-      /* font-family: Arial, sans-serif;
+      font-family: Arial, sans-serif;
       font-size: 12px;
       padding: 2px 4px;
       border-style: solid;
       border-width: 1px;
       overflow: hidden;
       word-break: normal;
-      border-color: black; */
+      border-color: black;
 
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      padding: 2px 4px;
-      border-style: solid;
-      border-width: 0px;
-      overflow: hidden;
-      word-break: normal;
-      border-top-width: 1px;
-      border-color: black
     }
 
     .table-financial-information th {
-      /* font-family: Arial, sans-serif;
+      font-family: Arial, sans-serif;
       font-size: 14px;
       font-weight: normal;
       padding: 10px 5px;
@@ -161,18 +147,6 @@
       border-width: 1px;
       overflow: hidden;
       word-break: normal;
-      border-color: black; */
-
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      font-weight: normal;
-      padding: 10px 5px;
-      border-style: solid;
-      border-width: 0px;
-      overflow: hidden;
-      word-break: normal;
-      border-top-width: 1px;
-      border-bottom-width: 1px;
       border-color: black;
     }
 
@@ -184,17 +158,7 @@
       font-weight: bold;
       font-size: 12px;
       border-color: inherit;
-      text-align: right;
-      vertical-align: middle;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
-
-    .table-financial-information .cell-value-normal {
-      font-weight: normal;
-      font-size: 12px;
-      border-color: inherit;
-      text-align: right;
+      text-align: center;
       vertical-align: middle;
       word-wrap: break-word;
       overflow-wrap: break-word;
@@ -228,6 +192,44 @@
       vertical-align: middle;
       padding: 10px 3px 0;
       white-space: nowrap;
+    }
+
+    .page {
+      position: absolute;
+    }
+
+    @media print {
+      thead {
+        display: table-row-group;
+      }
+
+      body,
+      div,
+      html,
+      img,
+      table {
+        padding: 0;
+        margin: 0;
+        overflow: visible !important;
+        opacity: 1;
+        float: none !important;
+        height: auto !important;
+      }
+
+      table,
+      tr {
+        page-break-inside: avoid;
+      }
+
+      .page {
+        position: absolute;
+      }
+    }
+
+    @page {
+      padding: 0;
+      margin: 0;
+      size: 800.64566929134px1132.3417322835;
     }
 
     .profitsTable {
@@ -339,40 +341,6 @@
       padding: 2px 4px
     }
 
-    @page {
-      padding: 0;
-      margin: 0 0 15mm 0;
-      size: 800.64566929134px1132.3417322835;
-    }
-
-    @media print {
-      thead {
-        display: table-row-group;
-      }
-
-      body,
-      div,
-      html,
-      img,
-      table {
-        padding: 0;
-        margin: 0;
-        overflow: visible !important;
-        opacity: 1;
-        float: none !important;
-        height: auto !important;
-      }
-
-      table,
-      tr {
-        page-break-inside: avoid;
-      }
-
-      .page {
-        position: absolute;
-      }
-    }
-
   </style>
 
 </head>
@@ -422,7 +390,7 @@
       </div>
     </div>
   </div>
-  <div data-page="2" class="page middle-page" style="top: 1076.3417322835px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="2" class="page middle-page" style="top: 1132.3417322835px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:145.64125984252px;left:309.20173228346px; z-index: 1067;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 203px; height: 55.282677165354px; background-color: ; z-index: 1067; font-size: 14px; line-height: 16px; text-align: center; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Opinion
@@ -490,7 +458,7 @@
       </div>
     </div>
   </div>
-  <div data-page="3" class="page middle-page" style="top: 2208.6834645669px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="3" class="page middle-page" style="top: 2264.6834645669px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:96.45874015748px;left:104.46519685039px; z-index: 1099;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 252px; height: 40.032283464567px; background-color: ; z-index: 1099; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Purpose
@@ -550,7 +518,7 @@
       </div>
     </div>
   </div>
-  <div data-page="4" class="page middle-page" style="top: 3173.0251968504px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="4" class="page middle-page" style="top: 3397.0251968504px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:76.251968503937px;left:104.46519685039px; z-index: 1107;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 151px; height: 23.256850393701px; background-color: ; z-index: 1107; font-size: 14px; line-height: 16px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">About
@@ -935,7 +903,7 @@
       </div>
     </div>
   </div>
-  <div data-page="5" class="page middle-page" style="top: 4249.3669291339px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="5" class="page middle-page" style="top: 4529.3669291339px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:76.251968503937px;left:96.45874015748px; z-index: 1185;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 607px; height: 25.163149606299px; background-color: ; z-index: 1185; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Business
@@ -1021,7 +989,7 @@
       </div>
     </div>
   </div>
-  <div data-page="6" class="page middle-page" style="top: 5325.7086614173px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="6" class="page middle-page" style="top: 5661.7086614173px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1306;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 396px; height: 22.113070866142px; background-color: ; z-index: 1306; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial
@@ -1041,132 +1009,132 @@
       <div class="display: table;">
         <table class="table-financial-information" cellpadding="0" cellspacing="0" align="right">
           <tr>
-            <th style="width: 150px; border-top-width: inherit" class="cell-empty"></th>
+            <th class="cell-empty"></th>
             {{#if renderPdfYear1}}
-            <th style="border-top-width: inherit" class="cell-value">{{year1}}</th>
+            <th class="cell-value">{{year1}}</th>
             {{/if}}
             {{#if renderPdfYear2}}
-            <th style="border-top-width: inherit" class="cell-value">{{year2}}</th>
+            <th class="cell-value">{{year2}}</th>
             {{/if}}
             {{#if renderPdfYear3}}
-            <th style="border-top-width: inherit" class="cell-value">{{year3}}</th>
+            <th class="cell-value">{{year3}}</th>
             {{/if}}
             {{#if renderPdfYear4}}
-            <th style="border-top-width: inherit" class="cell-value">{{year4}}</th>
+            <th class="cell-value">{{year4}}</th>
             {{/if}}
             {{#if renderPdfYear5}}
-            <th style="border-top-width: inherit" class="cell-value">{{year5}}</th>
+            <th class="cell-value">{{year5}}</th>
             {{/if}}
             {{#if renderPdfYear7}}
-            <th style="width: 65px; border-top-width: inherit" class="cell-value">{{year6}}</br>Annualised</th>
+            <th class="cell-value">{{year7}}</th>
             {{/if}}
           </tr>
           <tr>
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
+            <td class="cell-title"><span style="font-weight:bold">Total Sales</span></td>
             {{#if renderPdfYear1}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{sales1}}</td>
+            <td class="cell-value">{{sales1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{sales2}}</td>
+            <td class="cell-value">{{sales2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{sales3}}</td>
+            <td class="cell-value">{{sales3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{sales4}}</td>
+            <td class="cell-value">{{sales4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{sales5}}</td>
+            <td class="cell-value">{{sales5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{sales7}}</td>
+            <td class="cell-value">{{sales7}}</td>
             {{/if}}
           </tr>
           <tr>
             <td class="cell-title"><span style="font-weight:bold">COGS</span></td>
             {{#if renderPdfYear1}}
-            <td class="cell-value-normal">{{cogs1}}</td>
+            <td class="cell-value">{{cogs1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td class="cell-value-normal">{{cogs2}}</td>
+            <td class="cell-value">{{cogs2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td class="cell-value-normal">{{cogs3}}</td>
+            <td class="cell-value">{{cogs3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td class="cell-value-normal">{{cogs4}}</td>
+            <td class="cell-value">{{cogs4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td class="cell-value-normal">{{cogs5}}</td>
+            <td class="cell-value">{{cogs5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="-webkit-border-end-width: inherit" class="cell-value-normal">{{cogs7}}</td>
+            <td class="cell-value">{{cogs7}}</td>
             {{/if}}
           </tr>
-          <tr style="background-color: white;">
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-title"><span style="font-weight:bold">Gross Margin</span></td>
+          <tr style="background-color: #e2f3f7">
+            <td class="cell-title"><span style="font-weight:bold">Gross Margin</span></td>
             {{#if renderPdfYear1}}
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-value">{{calcGrossMargin1}}</td>
+            <td class="cell-value">{{calcGrossMargin1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-value">{{calcGrossMargin2}}</td>
+            <td class="cell-value">{{calcGrossMargin2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-value">{{calcGrossMargin3}}</td>
+            <td class="cell-value">{{calcGrossMargin3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-value">{{calcGrossMargin4}}</td>
+            <td class="cell-value">{{calcGrossMargin4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-value">{{calcGrossMargin5}}</td>
+            <td class="cell-value">{{calcGrossMargin5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="border-bottom-width:2px; border-color:black; border-style:solid; border-top-color: #80808085" class="cell-value">{{calcGrossMargin7}}</td>
+            <td class="cell-value">{{calcGrossMargin7}}</td>
             {{/if}}
           </tr>
           <tr>
-            <td class="cell-title"><span style="font-weight:bold">Gross Margin %</span></td>
+            <td class="cell-title">Gross Margin %</td>
             {{#if renderPdfYear1}}
-            <td class="cell-value-normal">{{calcGrossMarginPerc1}}</td>
+            <td class="cell-value">{{calcGrossMarginPerc1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td class="cell-value-normal">{{calcGrossMarginPerc2}}</td>
+            <td class="cell-value">{{calcGrossMarginPerc2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td class="cell-value-normal">{{calcGrossMarginPerc3}}</td>
+            <td class="cell-value">{{calcGrossMarginPerc3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td class="cell-value-normal">{{calcGrossMarginPerc4}}</td>
+            <td class="cell-value">{{calcGrossMarginPerc4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td class="cell-value-normal">{{calcGrossMarginPerc5}}</td>
+            <td class="cell-value">{{calcGrossMarginPerc5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td class="cell-value-normal">{{calcGrossMarginPerc7}}</td>
+            <td class="cell-value">{{calcGrossMarginPerc7}}</td>
             {{/if}}
           </tr>
           <tr>
             <td class="cell-title"><span style="font-weight:bold">Other Income</span></td>
             {{#if renderPdfYear1}}
-            <td class="cell-value-normal">{{otherIncome1}}</td>
+            <td class="cell-value">{{otherIncome1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td class="cell-value-normal">{{otherIncome2}}</td>
+            <td class="cell-value">{{otherIncome2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td class="cell-value-normal">{{otherIncome3}}</td>
+            <td class="cell-value">{{otherIncome3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td class="cell-value-normal">{{otherIncome4}}</td>
+            <td class="cell-value">{{otherIncome4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td class="cell-value-normal">{{otherIncome5}}</td>
+            <td class="cell-value">{{otherIncome5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td class="cell-value-normal">{{otherIncome7}}</td>
+            <td class="cell-value">{{otherIncome7}}</td>
             {{/if}}
           </tr>
-          <tr style="background-color: #e2f3f7">
+          <tr>
             <td class="cell-title"><span style="font-weight:bold">Gross Profit</span></td>
             {{#if renderPdfYear1}}
             <td class="cell-value">{{calcGrossProfit1}}</td>
@@ -1190,25 +1158,25 @@
           <tr>
             <td class="cell-title"><span style="font-weight:bold">Expenses</span></td>
             {{#if renderPdfYear1}}
-            <td class="cell-value-normal">{{expenses1}}</td>
+            <td class="cell-value">{{expenses1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td class="cell-value-normal">{{expenses2}}</td>
+            <td class="cell-value">{{expenses2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td class="cell-value-normal">{{expenses3}}</td>
+            <td class="cell-value">{{expenses3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td class="cell-value-normal">{{expenses4}}</td>
+            <td class="cell-value">{{expenses4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td class="cell-value-normal">{{expenses5}}</td>
+            <td class="cell-value">{{expenses5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td class="cell-value-normal">{{expenses7}}</td>
+            <td class="cell-value">{{expenses7}}</td>
             {{/if}}
           </tr>
-          <tr style="background-color: #e2f3f7">
+          <tr>
             <td class="cell-title"><span style="font-weight:bold">Operating Profit</span></td>
             {{#if renderPdfYear1}}
             <td class="cell-value">{{calcOperatingProfit1}}</td>
@@ -1229,29 +1197,29 @@
             <td class="cell-value">{{calcOperatingProfit7}}</td>
             {{/if}}
           </tr>
-          <tr>
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-title"><span style="font-weight:bold">Operating Profit %</span></td>
+          <tr style="background-color: #e2f3f7">
+            <td class="cell-title">Operating Profit %</td>
             {{#if renderPdfYear1}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value-normal">{{calcOperatingProfitPerc1}}</td>
+            <td class="cell-value">{{calcOperatingProfitPerc1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value-normal">{{calcOperatingProfitPerc2}}</td>
+            <td class="cell-value">{{calcOperatingProfitPerc2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value-normal">{{calcOperatingProfitPerc3}}</td>
+            <td class="cell-value">{{calcOperatingProfitPerc3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value-normal">{{calcOperatingProfitPerc4}}</td>
+            <td class="cell-value">{{calcOperatingProfitPerc4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value-normal">{{calcOperatingProfitPerc5}}</td>
+            <td class="cell-value">{{calcOperatingProfitPerc5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value-normal">{{calcOperatingProfitPerc7}}</td>
+            <td class="cell-value">{{calcOperatingProfitPerc7}}</td>
             {{/if}}
           </tr>
-          <tr style="border-top-color:white">
-            <td style="text-align: left; border-top-color:white;">
+          <tr>
+            <td colspan="7" style="text-align: center;">
               <span style="font-weight:bold">Addbacks and Adjustments</span>
             </td>
           </tr>
@@ -1259,96 +1227,96 @@
           <tr>
             <td class="cell-title">{{aaRow}}</td>
             {{#if ../renderPdfYear1}}
-            <td class="cell-value-normal">{{aaRowYear1}}</td>
+            <td class="cell-value">{{aaRowYear1}}</td>
             {{/if}}
             {{#if ../renderPdfYear2}}
-            <td class="cell-value-normal">{{aaRowYear2}}</td>
+            <td class="cell-value">{{aaRowYear2}}</td>
             {{/if}}
             {{#if ../renderPdfYear3}}
-            <td class="cell-value-normal">{{aaRowYear3}}</td>
+            <td class="cell-value">{{aaRowYear3}}</td>
             {{/if}}
             {{#if ../renderPdfYear4}}
-            <td class="cell-value-normal">{{aaRowYear4}}</td>
+            <td class="cell-value">{{aaRowYear4}}</td>
             {{/if}}
             {{#if ../renderPdfYear5}}
-            <td class="cell-value-normal">{{aaRowYear5}}</td>
+            <td class="cell-value">{{aaRowYear5}}</td>
             {{/if}}
             {{#if ../renderPdfYear7}}
-            <td class="cell-value-normal">{{aaRowYear7}}</td>
+            <td class="cell-value">{{aaRowYear7}}</td>
             {{/if}}
           </tr>
           {{/each}}
           <tr>
             <td class="cell-title"><span style="font-weight:bold">Total Adjusments</span></td>
             {{#if renderPdfYear1}}
-            <td class="cell-value-normal">{{totalAdjusments1}}</td>
+            <td class="cell-value">{{totalAdjusments1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td class="cell-value-normal">{{totalAdjusments2}}</td>
+            <td class="cell-value">{{totalAdjusments2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td class="cell-value-normal">{{totalAdjusments3}}</td>
+            <td class="cell-value">{{totalAdjusments3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td class="cell-value-normal">{{totalAdjusments4}}</td>
+            <td class="cell-value">{{totalAdjusments4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td class="cell-value-normal">{{totalAdjusments5}}</td>
+            <td class="cell-value">{{totalAdjusments5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td class="cell-value-normal">{{totalAdjusments7}}</td>
+            <td class="cell-value">{{totalAdjusments7}}</td>
             {{/if}}
           </tr>
-          <tr style="background-color: #ffffc7">
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-title">
+          <tr>
+            <td class="cell-title">
               <span style="font-weight:bold">Total Adjusted Profit INCL. Owner's
                 Wage</span>
             </td>
             {{#if renderPdfYear1}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{totalAdjustedProfit1}}</td>
+            <td class="cell-value">{{totalAdjustedProfit1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{totalAdjustedProfit2}}</td>
+            <td class="cell-value">{{totalAdjustedProfit2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{totalAdjustedProfit3}}</td>
+            <td class="cell-value">{{totalAdjustedProfit3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{totalAdjustedProfit4}}</td>
+            <td class="cell-value">{{totalAdjustedProfit4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{totalAdjustedProfit5}}</td>
+            <td class="cell-value">{{totalAdjustedProfit5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">{{totalAdjustedProfit7}}</td>
+            <td class="cell-value">{{totalAdjustedProfit7}}</td>
             {{/if}}
           </tr>
           <tr>
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-title"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
+            <td class="cell-title"><span style="font-weight:bold">Adjusted Profit (%)</span></td>
             {{#if renderPdfYear1}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-value-normal">{{adjustedProfitPerc1}}</td>
+            <td class="cell-value">{{adjustedProfitPerc1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-value-normal">{{adjustedProfitPerc2}}</td>
+            <td class="cell-value">{{adjustedProfitPerc2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-value-normal">{{adjustedProfitPerc3}}</td>
+            <td class="cell-value">{{adjustedProfitPerc3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-value-normal">{{adjustedProfitPerc4}}</td>
+            <td class="cell-value">{{adjustedProfitPerc4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-value-normal">{{adjustedProfitPerc5}}</td>
+            <td class="cell-value">{{adjustedProfitPerc5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit" class="cell-value-normal">{{adjustedProfitPerc7}}</td>
+            <td class="cell-value">{{adjustedProfitPerc7}}</td>
             {{/if}}
           </tr>
         </table>
       </div>
     </div>
   </div>
-  <div data-page="7" class="page middle-page" style="top: 6402.0503937008px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="7" class="page middle-page" style="top: 6794.0503937008px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1310;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 157px; height: 20.206771653543px; background-color: ; z-index: 1310; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Financial
@@ -1365,24 +1333,24 @@
         <table style="width: 600px" class="profitsTable">
           <tr>
             <th class="profitsTable-labelWhite">Last Year Profit</th>
-            <th style="text-align: right" class="profitsTable-valueWhite">{{lastYearProfit}}</th>
+            <th class="profitsTable-valueWhite">{{lastYearProfit}}</th>
             <th class="profitsTable-labelBlue" rowspan="2">Profit After Wages:</th>
-            <th style="text-align: right" class="profitsTable-valueWhite">{{lastYearProfitAfterWages}}</th>
+            <th class="profitsTable-valueWhite">{{lastYearProfitAfterWages}}</th>
           </tr>
           <tr>
             <td class="profitsTable-labelBlue">Average Profits</td>
-            <td style="text-align: right" class="profitsTable-valueBlue">{{avgProfits}}</td>
-            <td style="text-align: right" class="profitsTable-valueBlue">{{avgProfitsAfterWages}}</td>
+            <td class="profitsTable-valueBlue">{{avgProfits}}</td>
+            <td class="profitsTable-valueBlue">{{avgProfitsAfterWages}}</td>
           </tr>
           <tr>
             <td class="profitsTable-labelWhite">Stock Value</td>
-            <td style="text-align: right" class="profitsTable-valueWhite">{{currentStockLevel}}</td>
+            <td class="profitsTable-valueWhite">{{currentStockLevel}}</td>
             <td class="profitsTable-labelWhite">Stock Necessary <br />For Operation:</td>
-            <td style="text-align: right" class="profitsTable-valueWhite">{{stockNecessary}}</td>
+            <td class="profitsTable-valueWhite">{{stockNecessary}}</td>
           </tr>
           <tr>
             <td class="profitsTable-labelBlue">Physical Assets Excl. Stock</td>
-            <td style="text-align: right" class="profitsTable-valueBlue" colspan="3">{{physicalAssetValue}}</td>
+            <td class="profitsTable-valueBlue" colspan="3">{{physicalAssetValue}}</td>
           </tr>
         </table>
       </div>
@@ -1411,53 +1379,53 @@
             <td class="ownersPositionTable-rowGrey">Owner 1/New Owner</td>
             <td class="ownersPositionTable-rowGrey">{{owner1Position}}</td>
             <td class="ownersPositionTable-rowGrey">{{owner1HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowGrey">{{owner1AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner1AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowWhite">Owner 2</td>
             <td class="ownersPositionTable-rowWhite">{{owner2Position}}</td>
             <td class="ownersPositionTable-rowWhite">{{owner2HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowWhite">{{owner2AnnualWage}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner2AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowGrey">Owner 3</td>
             <td class="ownersPositionTable-rowGrey">{{owner3Position}}</td>
             <td class="ownersPositionTable-rowGrey">{{owner3HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowGrey">{{owner3AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner3AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowWhite">Owner 4</td>
             <td class="ownersPositionTable-rowWhite">{{owner4Position}}</td>
             <td class="ownersPositionTable-rowWhite">{{owner4HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowWhite">{{owner4AnnualWage}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner4AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowGrey">Owner 5</td>
             <td class="ownersPositionTable-rowGrey">{{owner5Position}}</td>
             <td class="ownersPositionTable-rowGrey">{{owner5HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowGrey">{{owner5AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner5AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowWhite">Owner 6</td>
             <td class="ownersPositionTable-rowWhite">{{owner6Position}}</td>
             <td class="ownersPositionTable-rowWhite">{{owner6HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowWhite">{{owner6AnnualWage}}</td>
+            <td class="ownersPositionTable-rowWhite">{{owner6AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowGrey">Owner 7</td>
             <td class="ownersPositionTable-rowGrey">{{owner7Position}}</td>
             <td class="ownersPositionTable-rowGrey">{{owner7HoursPWeek}}</td>
-            <td style="text-align: right" class="ownersPositionTable-rowGrey">{{owner7AnnualWage}}</td>
+            <td class="ownersPositionTable-rowGrey">{{owner7AnnualWage}}</td>
           </tr>
           <tr>
             <td class="ownersPositionTable-rowWhite" colspan="3">Total Wages</td>
-            <td style="text-align: right" class="ownersPositionTable-rowWhite">{{totalAnnualWages}}</td>
+            <td class="ownersPositionTable-rowWhite">{{totalAnnualWages}}</td>
           </tr>
         </table>
       </div>
     </div>
   </div>
-  <div data-page="8" class="page middle-page" style="top: 7478.3921259843px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="8" class="page middle-page" style="top: 7926.3921259843px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:77.395748031496px;left:96.077480314961px; z-index: 1316;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 605px; height: 56.045196850394px; background-color: ; z-index: 1316; font-size: 16px; line-height: 18px; text-align: left; color: #000000; font-family: opensans_normal; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">Following
@@ -1483,14 +1451,14 @@
           {{#each last10BusinessArray}}
           <tr>
             <td class="last10Businesses-businessType">{{businessType}}</td>
-            <td style="text-align: right" class="last10Businesses-rowWhite">{{turnOver}}</td>
-            <td style="text-align: right" class="last10Businesses-rowWhite">{{avg}}</td>
-            <td style="text-align: right" class="last10Businesses-rowWhite">{{lastYear}}</td>
-            <td style="text-align: center" class="last10Businesses-rowWhite">{{trend}}</td>
-            <td style="text-align: right" class="last10Businesses-rowWhite">{{stockValue}}</td>
-            <td style="text-align: right" class="last10Businesses-rowWhite">{{assetsValue}}</td>
-            <td style="text-align: right" class="last10Businesses-rowWhite">{{priceIncStock}}</td>
-            <td style="text-align: right" class="last10Businesses-multipliers">{{multiplier}}</td>
+            <td class="last10Businesses-rowWhite">{{turnOver}}</td>
+            <td class="last10Businesses-rowWhite">{{avg}}</td>
+            <td class="last10Businesses-rowWhite">{{lastYear}}</td>
+            <td class="last10Businesses-rowWhite">{{trend}}</td>
+            <td class="last10Businesses-rowWhite">{{stockValue}}</td>
+            <td class="last10Businesses-rowWhite">{{assetsValue}}</td>
+            <td class="last10Businesses-rowWhite">{{priceIncStock}}</td>
+            <td class="last10Businesses-multipliers">{{multiplier}}</td>
           </tr>
           <tr>
             <td class="last10Businesses-specialNotesTermsOfDeal">Special Notes</td>
@@ -1517,7 +1485,7 @@
       </div>
     </div>
   </div>
-  <div data-page="9" class="page middle-page" style="top: 8554.7338582677px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="9" class="page middle-page" style="top: 9058.7338582677px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:76.251968503937px;left:95.314960629921px; z-index: 1321;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1321; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Setting
@@ -1739,7 +1707,7 @@
       </div>
     </div>
   </div>
-  <div data-page="10" class="page middle-page" style="top: 9631.075590551px; height: 1076.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
+  <div data-page="10" class="page middle-page" style="top: 10191.075590551px; height: 1132.3417322835px; width: 800.64566929134px; border: solid 1px transparent;">
     <div style="position: absolute; top:79.302047244094px;left:96.45874015748px; z-index: 1359;">
       <div class="display: table;">
         <div class="" style="position: relative; width: 342px; height: 25.163149606299px; background-color: ; z-index: 1359; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: opensans_bold; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">Notes
@@ -1764,8 +1732,8 @@
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['{{year1ShowHide}}', '{{year2ShowHide}}', '{{year3ShowHide}}',
-          '{{year4ShowHide}}', '{{year5ShowHide}}', '{{year6ShowHide}}'
+        labels: ['{{year1SalesGpPebitda}}', '{{year2SalesGpPebitda}}', '{{year3SalesGpPebitda}}',
+          '{{year4SalesGpPebitda}}', '{{year5SalesGpPebitda}}', '{{year6SalesGpPebitda}}'
         ],
         datasets: [{
             label: 'Sales',
@@ -1863,19 +1831,19 @@
           fontSize: 15,
           rules: [{
             rule: '%v < 20',
-            text: 'Unsustainable R.'
+            text: '%v <br>Unsustainable R.'
           }, {
             rule: '%v >= 20 && %v < 40',
-            text: 'Challenge R.'
+            text: '%v <br>Challenge R.'
           }, {
             rule: '%v >= 40 && %v < 60',
-            text: 'Acceptable R.'
+            text: '%v <br>Acceptable R.'
           }, {
             rule: '%v >= 60 && %v < 80',
-            text: 'Attractive'
+            text: '%v <br>Attractive'
           }, {
             rule: '%v >= 80',
-            text: 'Highly Attractive'
+            text: '%v <br>Highly Attractive'
           }]
         }
       },
@@ -1947,12 +1915,12 @@
       type: 'line',
       data: {
         labels: [
-          '{{year1ShowHide}}',
-          '{{year2ShowHide}}',
-          '{{year3ShowHide}}',
-          '{{year4ShowHide}}',
-          '{{year5ShowHide}}',
-          '{{year6ShowHide}}'
+          '{{year1}}',
+          '{{year2}}',
+          '{{year3}}',
+          '{{year4}}',
+          '{{year5}}',
+          '{{year6}}'
         ],
         datasets: [{
             label: 'Gross Profit (%)',
@@ -2026,6 +1994,9 @@
         }
       }
     })
+
+  </script>
+  <script>
     var valueGaugeMarket = '{{valueSliderMarket}}'
     var myConfigGaugeMarket = {
       type: 'gauge',
@@ -2043,23 +2014,23 @@
           fontSize: 15,
           rules: [{
               rule: '%v <= 20',
-              text: 'Weak'
+              text: '%v<br>Weak'
             },
             {
               rule: '%v > 20 && %v <= 40',
-              text: 'Challenging'
+              text: '%v<br>Challenging'
             },
             {
               rule: '%v > 40 && %v <= 60',
-              text: 'Fair'
+              text: '%v<br>Fair'
             },
             {
               rule: '%v >= 60 && %v <= 80',
-              text: 'Good'
+              text: '%v<br>Good'
             },
             {
               rule: '%v > 80',
-              text: 'Bullish'
+              text: '%v<br>Bullish'
             }
           ]
         }
