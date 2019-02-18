@@ -1233,6 +1233,41 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      aaRow16Year5: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      aaRow16Year6: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      aaRow16Year7: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      aaRow17Year1: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      aaRow17Year2: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      aaRow17Year3: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
+      aaRow17Year4: {
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 0
+      },
       aaRow17Year5: {
         type: DataTypes.DOUBLE,
         allowNull: true,

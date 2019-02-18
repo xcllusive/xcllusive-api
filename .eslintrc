@@ -2,12 +2,17 @@
   "rules": {
     "no-console": "off",
     "no-underscore-dangle": 0,
-    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
-    "no-use-before-define": ["error", { "variables": false }],
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "next"
+    }],
+    "no-use-before-define": ["error", {
+      "variables": false
+    }],
     "no-multi-str": 0,
     "quotes": ["error", "single"],
     "eqeqeq": ["error"],
-    "semi": ["error", "never"]
+    "semi": ["error", "never"],
+    "array-element-newline": ["error", "never"]
   },
   "env": {
     "node": true

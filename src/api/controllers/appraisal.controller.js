@@ -24,7 +24,8 @@ export const list = async (req, res, next) => {
   const offset = req.skip
   const where = businessId ? {
     business_id: businessId
-  } : null
+  }
+    : null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -53,16 +54,14 @@ export const get = async (req, res, next) => {
         id: appraisalId
       },
       include: [{
-          model: models.Business
-        },
-        {
-          model: models.User,
-          as: 'CreatedBy'
-        },
-        {
-          model: models.User,
-          as: 'ModifiedBy'
-        }
+        model: models.Business
+      }, {
+        model: models.User,
+        as: 'CreatedBy'
+      }, {
+        model: models.User,
+        as: 'ModifiedBy'
+      }
       ]
     })
     return res.status(201).json({
@@ -99,12 +98,10 @@ export const create = async (req, res, next) => {
 
     const appraisal = await models.Appraisal.create(newAppraisal)
 
-    return res
-      .status(200)
-      .json({
-        data: appraisal,
-        message: `Appraisal ${appraisal.id} created`
-      })
+    return res.status(200).json({
+      data: appraisal,
+      message: `Appraisal ${appraisal.id} created`
+    })
   } catch (error) {
     return next(error)
   }
@@ -164,11 +161,9 @@ export const remove = async (req, res, next) => {
       }
     })
 
-    return res
-      .status(200)
-      .json({
-        message: `Appraisal ${appraisalId} removed with success`
-      })
+    return res.status(200).json({
+      message: `Appraisal ${appraisalId} removed with success`
+    })
   } catch (error) {
     return next(error)
   }
@@ -207,25 +202,9 @@ export const generatePdf = async (req, res, next) => {
     draft
   } = req.body
 
-  const templatePath = path.resolve(
-    'src',
-    'api',
-    'resources',
-    'pdf',
-    'templates',
-    'appraisal',
-    draft ? 'appraisalDraft.html' : 'appraisal.html'
-  )
+  const templatePath = path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'appraisal', draft ? 'appraisalDraft.html' : 'appraisal.html')
 
-  const destPdfGenerated = path.resolve(
-    'src',
-    'api',
-    'resources',
-    'pdf',
-    'generated',
-    'appraisal',
-    `${Date.now()}.pdf`
-  )
+  const destPdfGenerated = path.resolve('src', 'api', 'resources', 'pdf', 'generated', 'appraisal', `${Date.now()}.pdf`)
 
   const readFile = util.promisify(fs.readFile)
 
@@ -255,9 +234,7 @@ export const generatePdf = async (req, res, next) => {
       }
     })
 
-    const businessSoldselectedListOnlyId = JSON.parse(
-      appraisal.comparableDataSelectedList
-    )
+    const businessSoldselectedListOnlyId = JSON.parse(appraisal.comparableDataSelectedList)
 
     const comparableDataSelectedList = await models.BusinessSold.findAll({
       where: {
@@ -283,9 +260,12 @@ export const generatePdf = async (req, res, next) => {
       financialInformationArray: []
     }
 
-    const context = Object.assign(appraisal.get({
-      plain: true
-    }), variables)
+    const context = Object.assign(
+      appraisal.get({
+        plain: true
+      }),
+      variables
+    )
 
     // start prepared by
     const loggedUser = await models.User.findOne({
@@ -540,7 +520,7 @@ export const generatePdf = async (req, res, next) => {
     /* table 10 last businesses */
     let totalMultiplier = 0
 
-    context.last10BusinessArray = comparableDataSelectedList.map((item) => {
+    context.last10BusinessArray = comparableDataSelectedList.map(item => {
       let multiplier = 0
       let formulaComparableMultiplier = 0
       let formulaValuePricingMethod = ''
@@ -569,45 +549,32 @@ export const generatePdf = async (req, res, next) => {
       }
       if (appraisal.pricingMethod === 4) {
         context.multiplierLabel = 'Multiplier PEBITDA Avg'
-        multiplier = numeral(
-          item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
-        ).format('0,0.[99]')
+        multiplier = numeral(item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaAvg
       }
       if (appraisal.pricingMethod === 5) {
         context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
-        multiplier = numeral(
-          (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
-        ).format('0,0.[99]')
+        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaLastYear(item)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 6) {
         context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
-        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
-          '0,0.[99]'
-        )
+        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 7) {
         context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
-        multiplier = numeral(
-          item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
-        ).format('0,0.[99]')
+        multiplier = numeral(item.soldPrice / (pebitdaLastYear(item) + item.stockValue)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 8) {
         context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
-        multiplier = numeral(
-          item.soldPrice /
-          (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
-        ).format('0,0.[99]')
+        multiplier = numeral(item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 9) {
         context.multiplierLabel = 'T/O Multiplier'
-        multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format(
-          '0,0.[99]'
-        )
+        multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMTO
       }
       if (appraisal.pricingMethod === 10) {
@@ -622,12 +589,7 @@ export const generatePdf = async (req, res, next) => {
       }
 
       /* EBITDA */
-      if (
-        appraisal.pricingMethod === 1 ||
-        appraisal.pricingMethod === 2 ||
-        appraisal.pricingMethod === 5 ||
-        appraisal.pricingMethod === 6
-      ) {
+      if (appraisal.pricingMethod === 1 || appraisal.pricingMethod === 2 || appraisal.pricingMethod === 5 || appraisal.pricingMethod === 6) {
         context.avgLabel = 'EBITDA Avg'
         context.lastYearLabel = 'EBITDA Last Year'
         avg = numeral(ebitdaAvg(item)).format('$0,0')
@@ -644,9 +606,7 @@ export const generatePdf = async (req, res, next) => {
       ) {
         context.avgLabel = 'PEBITDA Avg'
         context.lastYearLabel = 'PEBITDA Last Year'
-        avg = numeral(
-          ebitdaAvg(item) + item.agreedWageForMainOwner
-        ).format('$0,0')
+        avg = numeral(ebitdaAvg(item) + item.agreedWageForMainOwner).format('$0,0')
         lastYear = numeral(pebitdaLastYear(item)).format('$0,0')
       }
 
@@ -658,9 +618,7 @@ export const generatePdf = async (req, res, next) => {
         trend: item.trend,
         stockValue: numeral(item.stockValue).format('$0,0'),
         assetsValue: numeral(item.assetValue).format('$0,0'),
-        priceIncStock: numeral(
-          item.soldPrice + item.stockValue
-        ).format('$0,0'),
+        priceIncStock: numeral(item.soldPrice + item.stockValue).format('$0,0'),
         multiplier: numeral(multiplier).format('0,0.[99]'),
         specialNotes: item.specialNotes,
         termsOfDeal: item.termsOfDeal,
@@ -704,12 +662,12 @@ export const generatePdf = async (req, res, next) => {
       if (appraisal[`aaRow${i}`] || appraisal[`aaRow${i}`] !== '') {
         context.financialInformationArray.push({
           aaRow: appraisal[`aaRow${i}`],
-          aaRowYear1: appraisal[`aaRow${i}Year1`],
-          aaRowYear2: appraisal[`aaRow${i}Year2`],
-          aaRowYear3: appraisal[`aaRow${i}Year3`],
-          aaRowYear4: appraisal[`aaRow${i}Year4`],
-          aaRowYear5: appraisal[`aaRow${i}Year5`],
-          aaRowYear7: appraisal[`aaRow${i}Year7`]
+          aaRowYear1: numeral(appraisal[`aaRow${i}Year1`]).format('0,0'),
+          aaRowYear2: numeral(appraisal[`aaRow${i}Year2`]).format('0,0'),
+          aaRowYear3: numeral(appraisal[`aaRow${i}Year3`]).format('0,0'),
+          aaRowYear4: numeral(appraisal[`aaRow${i}Year4`]).format('0,0'),
+          aaRowYear5: numeral(appraisal[`aaRow${i}Year5`]).format('0,0'),
+          aaRowYear7: numeral(appraisal[`aaRow${i}Year7`]).format('0,0')
         })
       }
     }
@@ -784,7 +742,10 @@ export const generatePdf = async (req, res, next) => {
       arrayNotesAssumptions.push(appraisal.notesAndAssumptions18)
     }
 
-    context.arrayNotesAssumptions = arrayNotesAssumptions.join(',').replace(/,/g, '</br></br></br>').split()
+    context.arrayNotesAssumptions = arrayNotesAssumptions
+      .join(',')
+      .replace(/,/g, '</br></br></br>')
+      .split()
     // finish notes and assumptions
 
     handlebars.registerHelper('each', (context, options) => {
@@ -809,9 +770,7 @@ export const generatePdf = async (req, res, next) => {
       headerTemplate: ' ',
       footerTemplate: `
               <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
-  appraisal.Business.businessName
-}</span>
+              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${appraisal.Business.businessName}</span>
               <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
               </div>`
     }
