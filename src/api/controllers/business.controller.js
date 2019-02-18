@@ -3,10 +3,14 @@ import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
-import { uploadToS3 } from '../modules/aws'
+import {
+  uploadToS3
+} from '../modules/aws'
 
 export const getBusiness = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const _mapValuesToArray = array => {
     if (array.length > 0) {
@@ -28,11 +32,19 @@ export const getBusiness = async (req, res, next) => {
 
   try {
     const business = await models.Business.findOne({
-      where: { id: idBusiness },
-      include: [
-        { model: models.User, as: 'CreatedBy' },
-        { model: models.User, as: 'ModifiedBy' },
-        { model: models.User, as: 'listingAgent' }
+      where: {
+        id: idBusiness
+      },
+      include: [{
+        model: models.User,
+        as: 'CreatedBy'
+      }, {
+        model: models.User,
+        as: 'ModifiedBy'
+      }, {
+        model: models.User,
+        as: 'listingAgent'
+      }
       ]
     })
     const stageList = await models.BusinessStage.findAll({
@@ -62,7 +74,9 @@ export const getBusiness = async (req, res, next) => {
     const usersBroker = await models.User.findAll({
       raw: true,
       attributes: ['id', 'firstName', 'lastName'],
-      where: { userType: 'Broker' }
+      where: {
+        userType: 'Broker'
+      }
     })
     const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
       raw: true,
@@ -76,7 +90,9 @@ export const getBusiness = async (req, res, next) => {
       where: {
         business_id: idBusiness
       },
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
     const countAllEnquiry = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
@@ -140,60 +156,37 @@ export const list = async (req, res, next) => {
         }
       } else {
         whereOptions.where.$or = []
-        whereOptions.where.$or.push(
-          {
-            businessName: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            firstNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            lastNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            suburb: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            searchNote: {
-              $like: `%${search}%`
-            }
+        whereOptions.where.$or.push({
+          businessName: {
+            $like: `%${search}%`
           }
-        )
+        }, {
+          firstNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          lastNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          suburb: {
+            $like: `%${search}%`
+          }
+        }, {
+          searchNote: {
+            $like: `%${search}%`
+          }
+        })
       }
     }
   }
 
   const options = {
     attributes: [
-      'id',
-      'businessName',
-      'firstNameV',
-      'lastNameV',
-      'address1',
-      'industry',
-      'listedPrice',
-      'description',
-      'stageId',
-      'productId',
-      'industryId',
-      'suburb',
-      'state',
-      'postCode',
-      'typeId',
-      'notifyOwner',
-      'vendorEmail'
+      'id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail'
     ],
     include: [
-      models.BusinessStage,
-      models.BusinessProduct
+      models.BusinessStage, models.BusinessProduct
       // {
       //   model: models.BusinessIndustry,
       //   where: { label: { $like: `%${search}%` } }
@@ -264,7 +257,9 @@ export const create = async (req, res, next) => {
     if (req.body.listingAgent) {
       // Verify exists template
       template = await models.EmailTemplate.findOne({
-        where: { title: 'Agent assign to business' }
+        where: {
+          title: 'Agent assign to business'
+        }
       })
 
       if (!template) {
@@ -277,7 +272,9 @@ export const create = async (req, res, next) => {
 
       // Verify exists listingAgent
       listingAgent = await models.User.findOne({
-        where: { id: req.body.listingAgent }
+        where: {
+          id: req.body.listingAgent
+        }
       })
 
       if (!listingAgent) {
@@ -316,12 +313,10 @@ export const create = async (req, res, next) => {
         subject: template.subject,
         html: templateCompiled(context),
         attachments: template.enableAttachment
-          ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
+          ? [{
+            filename: `${template.title.trim()}.pdf`,
+            path: template.attachmentPath
+          }]
           : []
       }
 
@@ -329,14 +324,18 @@ export const create = async (req, res, next) => {
       await mailer.sendMail(mailOptions)
     }
 
-    return res.status(200).json({ message: 'Business created sucessfully' })
+    return res.status(200).json({
+      message: 'Business created sucessfully'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const update = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const {
     stage,
@@ -365,36 +364,58 @@ export const update = async (req, res, next) => {
   req.body.modifiedBy_id = req.user.id
 
   try {
-    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
 
     if (!business.daysOnTheMarket && stage === 4) {
       req.body.daysOnTheMarket = moment()
     }
 
-    await models.Business.update(req.body, { where: { id: idBusiness } })
+    await models.Business.update(req.body, {
+      where: {
+        id: idBusiness
+      }
+    })
 
     return res
       .status(200)
-      .json({ message: `Business BS${idBusiness} updated with success` })
+      .json({
+        message: `Business BS${idBusiness} updated with success`
+      })
   } catch (error) {
     return next(error)
   }
 }
 
 export const remove = async (req, res, next) => {
-  const { id } = req.body
+  const {
+    id
+  } = req.body
   try {
-    await models.User.destroy({ where: { id } })
-    return res.status(200).json({ message: 'User removed with success' })
+    await models.User.destroy({
+      where: {
+        id
+      }
+    })
+    return res.status(200).json({
+      message: 'User removed with success'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const updateListingAgent = async (req, res, next) => {
-  const { listingAgentId } = req.body
+  const {
+    listingAgentId
+  } = req.body
 
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const data = {
     listingAgent_id: listingAgentId
@@ -410,7 +431,11 @@ export const updateListingAgent = async (req, res, next) => {
 
   try {
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -422,7 +447,9 @@ export const updateListingAgent = async (req, res, next) => {
 
     // Verify exists template
     const template = await models.EmailTemplate.findOne({
-      where: { title: 'Agent reassign to business' }
+      where: {
+        title: 'Agent reassign to business'
+      }
     })
 
     if (!template) {
@@ -435,7 +462,9 @@ export const updateListingAgent = async (req, res, next) => {
 
     // Verify exists listingAgent
     const listingAgent = await models.User.findOne({
-      where: { id: listingAgentId }
+      where: {
+        id: listingAgentId
+      }
     })
 
     if (!listingAgent) {
@@ -448,7 +477,9 @@ export const updateListingAgent = async (req, res, next) => {
 
     // Verify logged user
     const user = await models.User.findOne({
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     })
 
     // Compile the template to use variables
@@ -468,12 +499,10 @@ export const updateListingAgent = async (req, res, next) => {
       subject: template.subject,
       html: templateCompiled(context),
       attachments: template.enableAttachment
-        ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+        ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }]
         : []
     }
 
@@ -484,25 +513,38 @@ export const updateListingAgent = async (req, res, next) => {
   }
 
   try {
-    await models.Business.update(data, { where: { id: idBusiness } })
+    await models.Business.update(data, {
+      where: {
+        id: idBusiness
+      }
+    })
     return res
       .status(200)
-      .json({ message: `Agent list on business BS${idBusiness} updated with success` })
+      .json({
+        message: `Agent list on business BS${idBusiness} updated with success`
+      })
   } catch (error) {
     return next(error)
   }
 }
 
 export const updateStageLost = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const updateBusiness = req.body
 
   updateBusiness.modifiedBy_id = req.user.id
   updateBusiness.stageId = 8
+  updateBusiness.lostDate = moment().toDate()
 
   try {
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -512,13 +554,20 @@ export const updateStageLost = async (req, res, next) => {
       })
     }
 
-    await models.Business.update(updateBusiness, { where: { id: idBusiness } })
+    await models.Business.update(updateBusiness, {
+      where: {
+        id: idBusiness
+      }
+    })
 
     if (updateBusiness.pendingDone) {
-      await models.BusinessLog.update(
-        { followUpStatus: 'Done' },
-        { where: { business_id: idBusiness } }
-      )
+      await models.BusinessLog.update({
+        followUpStatus: 'Done'
+      }, {
+        where: {
+          business_id: idBusiness
+        }
+      })
     }
 
     if (updateBusiness.followUpLog) {
@@ -549,18 +598,27 @@ Did we want this business? ${
 
     return res
       .status(200)
-      .json({ message: `Business BS${idBusiness} updated with success` })
+      .json({
+        message: `Business BS${idBusiness} updated with success`
+      })
   } catch (error) {
     return next(error)
   }
 }
 
 export const enquiryBusiness = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -571,7 +629,11 @@ export const enquiryBusiness = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -583,7 +645,12 @@ export const enquiryBusiness = async (req, res, next) => {
 
     // Verify business attach to buyer
     let enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
-      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+      where: {
+        $and: {
+          business_id: businessId,
+          buyer_id: buyerId
+        }
+      }
     })
 
     if (!enquiryBusinessBuyer) {
@@ -615,11 +682,18 @@ export const enquiryBusiness = async (req, res, next) => {
 }
 
 export const emailToBuyer = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -630,7 +704,11 @@ export const emailToBuyer = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -642,7 +720,9 @@ export const emailToBuyer = async (req, res, next) => {
 
     // Verify exists template
     const template = await models.EmailTemplate.findOne({
-      where: { title: 'Send Email to Buyer' }
+      where: {
+        title: 'Send Email to Buyer'
+      }
     })
     if (!template) {
       throw new APIError({
@@ -665,12 +745,10 @@ export const emailToBuyer = async (req, res, next) => {
       subject: `${template.subject}`,
       html: templateCompiled(context),
       attachments: template.enableAttachment
-        ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+        ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }]
         : []
     }
 
@@ -700,11 +778,18 @@ export const emailToBuyer = async (req, res, next) => {
 }
 
 export const sendEnquiryOwner = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -715,7 +800,11 @@ export const sendEnquiryOwner = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -727,7 +816,9 @@ export const sendEnquiryOwner = async (req, res, next) => {
 
     // Verify exists template
     const template = await models.EmailTemplate.findOne({
-      where: { title: 'Send Enquiry to Owner' }
+      where: {
+        title: 'Send Enquiry to Owner'
+      }
     })
 
     if (!template) {
@@ -756,12 +847,10 @@ export const sendEnquiryOwner = async (req, res, next) => {
       subject: template.subject,
       html: templateCompiled(context),
       attachments: template.enableAttachment
-        ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+        ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }]
         : []
     }
 
@@ -789,13 +878,19 @@ export const sendEnquiryOwner = async (req, res, next) => {
 }
 
 export const getBuyersFromBusiness = async (req, res, next) => {
-  const { idBusiness } = req.params
-  const { showAll } = req.query
+  const {
+    idBusiness
+  } = req.params
+  const {
+    showAll
+  } = req.query
 
   try {
     // Verify exists business
     const business = await models.Business.findOne({
-      where: { id: idBusiness }
+      where: {
+        id: idBusiness
+      }
     })
 
     if (!business) {
@@ -808,13 +903,13 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 
     // Get buyers from business enquiry
     const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
-      where: { business_id: idBusiness },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer'
-        }
-      ]
+      where: {
+        business_id: idBusiness
+      },
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer'
+      }]
     })
 
     const array = []
@@ -847,10 +942,15 @@ export const getBuyersFromBusiness = async (req, res, next) => {
         }
         const lastLog = await models.BuyerLog.findOne({
           where,
-          order: [['dateTimeCreated', 'DESC']],
+          order: [
+            ['dateTimeCreated', 'DESC']
+          ],
           raw: true
         })
-        array.push({ lastLog, enquiry })
+        array.push({
+          lastLog,
+          enquiry
+        })
       }
       return array
     })
@@ -870,14 +970,18 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 }
 
 export const getGroupEmail = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   // const response = []
 
   try {
     // Verify exists business
     const business = await models.Business.findOne({
-      where: { id: idBusiness }
+      where: {
+        id: idBusiness
+      }
     })
 
     if (!business) {
@@ -890,13 +994,13 @@ export const getGroupEmail = async (req, res, next) => {
 
     // Get buyers from business enquiry
     const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
-      where: { business_id: idBusiness },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer'
-        }
-      ]
+      where: {
+        business_id: idBusiness
+      },
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer'
+      }]
     })
 
     const arrayGroupEmail = await Promise.all(
@@ -942,12 +1046,18 @@ export const getGroupEmail = async (req, res, next) => {
 }
 
 export const sendGroupEmail = async (req, res, next) => {
-  const { to, subject, body } = req.body
+  const {
+    to,
+    subject,
+    body
+  } = req.body
   const fileAttachment = req.files.attachment
   const sentTo = []
 
   try {
-    const emailToOffice = await models.SystemSettings.findOne({ where: 1 })
+    const emailToOffice = await models.SystemSettings.findOne({
+      where: 1
+    })
     for (let buyer of JSON.parse(to)) {
       const mailOptions = {
         to: buyer.email,
@@ -967,12 +1077,10 @@ export const sendGroupEmail = async (req, res, next) => {
         <p>www.xcllusive.com.au | (02) 9817 3331</p>
         `,
         attachments: fileAttachment
-          ? [
-            {
-              filename: fileAttachment.name,
-              content: fileAttachment.data
-            }
-          ]
+          ? [{
+            filename: fileAttachment.name,
+            content: fileAttachment.data
+          }]
           : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
@@ -989,11 +1097,15 @@ export const sendGroupEmail = async (req, res, next) => {
 }
 
 export const getStageSold = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   try {
     const sold = await models.BusinessSold.findOne({
-      where: { business_id: idBusiness }
+      where: {
+        business_id: idBusiness
+      }
     })
 
     return res.status(201).json({
@@ -1006,7 +1118,9 @@ export const getStageSold = async (req, res, next) => {
 }
 
 export const createStageSold = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const newSold = req.body
 
   newSold.business_id = idBusiness
@@ -1026,14 +1140,20 @@ export const createStageSold = async (req, res, next) => {
 }
 
 export const updateStageSold = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const updatedSold = req.body
 
   updatedSold.business_id = idBusiness
   updatedSold.modifiedBy_id = req.user.id
 
   try {
-    await models.BusinessSold.update(updatedSold, { where: { id: updatedSold.id } })
+    await models.BusinessSold.update(updatedSold, {
+      where: {
+        id: updatedSold.id
+      }
+    })
 
     return res.status(201).json({
       data: null,
@@ -1045,21 +1165,35 @@ export const updateStageSold = async (req, res, next) => {
 }
 
 export const finaliseStageSold = async (req, res, next) => {
-  const { idBusiness, idSold } = req.params
+  const {
+    idBusiness,
+    idSold
+  } = req.params
 
   try {
-    await models.BusinessSold.update(
-      { sold: true, modifiedBy_id: req.user.id },
-      { where: { id: idSold } }
-    )
-    await models.Business.update(
-      { stageId: 6, modifiedBy_id: req.user.id },
-      { where: { id: idBusiness } }
-    )
-    await models.BusinessLog.update(
-      { followUpStatus: 'Done' },
-      { where: { business_id: idBusiness } }
-    )
+    await models.BusinessSold.update({
+      sold: true,
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        id: idSold
+      }
+    })
+    await models.Business.update({
+      stageId: 6,
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        id: idBusiness
+      }
+    })
+    await models.BusinessLog.update({
+      followUpStatus: 'Done'
+    }, {
+      where: {
+        business_id: idBusiness
+      }
+    })
     return res.status(201).json({
       data: null,
       message: 'Stage change to Sold'
@@ -1072,12 +1206,19 @@ export const finaliseStageSold = async (req, res, next) => {
 export const getQtdeBusinessStageUser = async (req, res, next) => {
   try {
     const businessPotentialListingFilter = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 1 } },
+      where: {
+        $and: {
+          listingAgent_id: req.user.id,
+          stageId: 1
+        }
+      },
       include: {
         model: models.BusinessLog,
         as: 'BusinessLog',
         where: {
-          business_id: { $col: 'Business.id' },
+          business_id: {
+            $col: 'Business.id'
+          },
           followUpStatus: 'Pending',
           followUp: {
             $lte: moment().toDate()
@@ -1086,12 +1227,19 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
       }
     })
     const businessAppraisalFilter = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 9 } },
+      where: {
+        $and: {
+          listingAgent_id: req.user.id,
+          stageId: 9
+        }
+      },
       include: {
         model: models.BusinessLog,
         as: 'BusinessLog',
         where: {
-          business_id: { $col: 'Business.id' },
+          business_id: {
+            $col: 'Business.id'
+          },
           followUpStatus: 'Pending',
           followUp: {
             $lte: moment().toDate()
@@ -1101,30 +1249,49 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
     })
 
     const businessPotentialListing = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 1 } },
+      where: {
+        $and: {
+          listingAgent_id: req.user.id,
+          stageId: 1
+        }
+      },
       distinct: 'id',
       include: {
         model: models.BusinessLog,
         as: 'BusinessLog',
         where: {
-          business_id: { $col: 'Business.id' }
+          business_id: {
+            $col: 'Business.id'
+          }
         }
       }
     })
     const businessAppraisal = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 9 } },
+      where: {
+        $and: {
+          listingAgent_id: req.user.id,
+          stageId: 9
+        }
+      },
       distinct: 'id',
       include: {
         model: models.BusinessLog,
         as: 'BusinessLog',
         where: {
-          business_id: { $col: 'Business.id' }
+          business_id: {
+            $col: 'Business.id'
+          }
         }
       }
     })
 
     const businessForSale = await models.Business.count({
-      where: { $and: { listingAgent_id: req.user.id, stageId: 4 } }
+      where: {
+        $and: {
+          listingAgent_id: req.user.id,
+          stageId: 4
+        }
+      }
     })
 
     return res.status(201).json({
@@ -1168,33 +1335,27 @@ export const getAllPerUser = async (req, res, next) => {
         }
       } else {
         whereOptions.where.$or = []
-        whereOptions.where.$or.push(
-          {
-            businessName: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            firstNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            lastNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            suburb: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            searchNote: {
-              $like: `%${search}%`
-            }
+        whereOptions.where.$or.push({
+          businessName: {
+            $like: `%${search}%`
           }
-        )
+        }, {
+          firstNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          lastNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          suburb: {
+            $like: `%${search}%`
+          }
+        }, {
+          searchNote: {
+            $like: `%${search}%`
+          }
+        })
       }
     }
   }
@@ -1216,20 +1377,32 @@ export const getAllPerUser = async (req, res, next) => {
             model: models.BusinessLog,
             as: 'BusinessLog',
             where: {
-              business_id: { $col: 'Business.id' },
+              business_id: {
+                $col: 'Business.id'
+              },
               followUpStatus: 'Pending',
               followUp: {
                 $lte: moment().toDate()
               }
             }
           },
-          order: [[{ model: models.BusinessLog, as: 'BusinessLog' }, 'followUp', 'DESC']]
+          order: [
+            [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'followUp', 'DESC']
+          ]
         })
       )
 
       return res
         .status(200)
-        .json({ data: { rows: response }, message: 'Get businesses succesfuly.' })
+        .json({
+          data: {
+            rows: response
+          },
+          message: 'Get businesses succesfuly.'
+        })
     }
 
     const response = await models.Business.findAll(
@@ -1239,23 +1412,37 @@ export const getAllPerUser = async (req, res, next) => {
           model: models.BusinessLog,
           as: 'BusinessLog',
           where: {
-            business_id: { $col: 'Business.id' }
+            business_id: {
+              $col: 'Business.id'
+            }
           }
         },
-        order: [[{ model: models.BusinessLog, as: 'BusinessLog' }, 'followUp', 'DESC']]
+        order: [
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
+        ]
       })
     )
 
     return res
       .status(200)
-      .json({ data: { rows: response }, message: 'Get businesses succesfuly.' })
+      .json({
+        data: {
+          rows: response
+        },
+        message: 'Get businesses succesfuly.'
+      })
   } catch (err) {
     return next(err)
   }
 }
 
 export const updateStageMemo = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const updateMemo = req.body
 
   updateMemo.modifiedBy_id = req.user.id
@@ -1263,7 +1450,11 @@ export const updateStageMemo = async (req, res, next) => {
 
   try {
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: idBusiness } })
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -1278,30 +1469,46 @@ export const updateStageMemo = async (req, res, next) => {
 
     console.log(updateMemo)
 
-    await models.Business.update(updateMemo, { where: { id: idBusiness } })
+    await models.Business.update(updateMemo, {
+      where: {
+        id: idBusiness
+      }
+    })
 
     if (updateMemo.pendingDone) {
-      await models.BusinessLog.update(
-        { followUpStatus: 'Done' },
-        { where: { business_id: idBusiness } }
-      )
+      await models.BusinessLog.update({
+        followUpStatus: 'Done'
+      }, {
+        where: {
+          business_id: idBusiness
+        }
+      })
     }
 
     return res
       .status(200)
-      .json({ data: business, message: `Business BS${idBusiness} changed to sales memo` })
+      .json({
+        data: business,
+        message: `Business BS${idBusiness} changed to sales memo`
+      })
   } catch (error) {
     return next(error)
   }
 }
 
 export const uploadIM = async (req, res, next) => {
-  const { businessId } = req.body
+  const {
+    businessId
+  } = req.body
   const file = req.files.imFile
 
   try {
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -1338,13 +1545,19 @@ export const uploadIM = async (req, res, next) => {
     )
 
     // updated IM uploaded on business
-    await models.Business.update(
-      { imUploaded: true, imUrl: upload.Location },
-      { where: { id: businessId } }
-    )
+    await models.Business.update({
+      imUploaded: true,
+      imUrl: upload.Location
+    }, {
+      where: {
+        id: businessId
+      }
+    })
     return res
       .status(200)
-      .json({ message: `IM on business BS${business.id} uploaded successfully` })
+      .json({
+        message: `IM on business BS${business.id} uploaded successfully`
+      })
   } catch (error) {
     return next(error)
   }
