@@ -61,8 +61,7 @@ export const get = async (req, res, next) => {
       }, {
         model: models.User,
         as: 'ModifiedBy'
-      }
-      ]
+      }]
     })
     return res.status(201).json({
       data: response
@@ -662,12 +661,12 @@ export const generatePdf = async (req, res, next) => {
       if (appraisal[`aaRow${i}`] || appraisal[`aaRow${i}`] !== '') {
         context.financialInformationArray.push({
           aaRow: appraisal[`aaRow${i}`],
-          aaRowYear1: numeral(appraisal[`aaRow${i}Year1`]).format('0,0'),
-          aaRowYear2: numeral(appraisal[`aaRow${i}Year2`]).format('0,0'),
-          aaRowYear3: numeral(appraisal[`aaRow${i}Year3`]).format('0,0'),
-          aaRowYear4: numeral(appraisal[`aaRow${i}Year4`]).format('0,0'),
-          aaRowYear5: numeral(appraisal[`aaRow${i}Year5`]).format('0,0'),
-          aaRowYear7: numeral(appraisal[`aaRow${i}Year7`]).format('0,0')
+          aaRowYear1: `$ ${numeral(appraisal[`aaRow${i}Year1`]).format('0,0')}`,
+          aaRowYear2: `$ ${numeral(appraisal[`aaRow${i}Year2`]).format('0,0')}`,
+          aaRowYear3: `$ ${numeral(appraisal[`aaRow${i}Year3`]).format('0,0')}`,
+          aaRowYear4: `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}`,
+          aaRowYear5: `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}`,
+          aaRowYear7: `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}`
         })
       }
     }
