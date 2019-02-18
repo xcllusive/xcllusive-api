@@ -23,9 +23,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-    business_id: businessId
-  }
-    : null
+      business_id: businessId
+    } :
+    null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -532,43 +532,54 @@ export const generatePdf = async (req, res, next) => {
       let lastYear = 0
 
       if (appraisal.pricingMethod === 1) {
-        context.multiplierLabel = 'Multiplier EBITDA Last Year'
+        context.multiplierLabel = 'EBITDA Last Year'
         multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
       }
       if (appraisal.pricingMethod === 2) {
-        context.multiplierLabel = 'Multiplier EBITDA Avg'
+        context.multiplierLabel = 'EBITDA Avg'
         multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaAvg
       }
       if (appraisal.pricingMethod === 3) {
-        context.multiplierLabel = 'Multiplier PEBITDA Last Year'
+        context.multiplierLabel = 'PEBITDA Last Year'
         multiplier = item.soldPrice / pebitdaLastYear(item)
         context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
       }
       if (appraisal.pricingMethod === 4) {
-        context.multiplierLabel = 'Multiplier PEBITDA Avg'
-        multiplier = numeral(item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)).format('0,0.[99]')
+        context.multiplierLabel = 'PEBITDA Avg'
+        multiplier = numeral(
+          item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
+        ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaAvg
       }
       if (appraisal.pricingMethod === 5) {
-        context.multiplierLabel = 'Multiplier EBITDA Last Year With Stock'
-        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaLastYear(item)).format('0,0.[99]')
+        context.multiplierLabel = 'EBITDA Last Year With Stock'
+        multiplier = numeral(
+          (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
+        ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 6) {
-        context.multiplierLabel = 'Multiplier EBITDA Avg With Stock'
-        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format('0,0.[99]')
+        context.multiplierLabel = 'EBITDA Avg With Stock'
+        multiplier = numeral((item.soldPrice + item.stockValue) / ebitdaAvg(item)).format(
+          '0,0.[99]'
+        )
         context.formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 7) {
-        context.multiplierLabel = 'Multiplier PEBITDA Last Year With Stock'
-        multiplier = numeral(item.soldPrice / (pebitdaLastYear(item) + item.stockValue)).format('0,0.[99]')
+        context.multiplierLabel = 'PEBITDA Last Year With Stock'
+        multiplier = numeral(
+          item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
+        ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
       }
       if (appraisal.pricingMethod === 8) {
-        context.multiplierLabel = 'Multiplier PEBITDA Avg With Stock'
-        multiplier = numeral(item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)).format('0,0.[99]')
+        context.multiplierLabel = 'PEBITDA Avg With Stock'
+        multiplier = numeral(
+          item.soldPrice /
+          (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
+        ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
       }
       if (appraisal.pricingMethod === 9) {
@@ -768,8 +779,15 @@ export const generatePdf = async (req, res, next) => {
       displayHeaderFooter: true,
       headerTemplate: ' ',
       footerTemplate: `
+<<<<<<< HEAD
               <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
               <span style="float: left;">Sales Inspection Report and Business Appraisal for ${appraisal.Business.businessName}</span>
+=======
+              <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:10px;text-align:center;color:#61bbff;font-family: Trebuchet MS">
+              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
+  appraisal.Business.businessName
+}</span>
+>>>>>>> 3ea50f70f41452c0802685e3f152e648bce4cece
               <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
               </div>`
     }
