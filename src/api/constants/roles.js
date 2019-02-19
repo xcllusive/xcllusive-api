@@ -5,4 +5,4 @@ export const RESOURCES_MENU = 'RESOURCES_MENU'
 export const CLIENT_MANAGER_MENU = 'CLIENT_MANAGER_MENU'
 export const MANAGEMENT_MENU = 'MANAGEMENT_MENU'
 export const SYSTEM_SETTINGS_MENU = 'SYSTEM_SETTINGS_MENU'
-export const IGNORE_ROUTES = ['/user', '/buyer-register', '/email-template']
+export const IGNORE_ROUTES = ['/user', '/buyer-register', '/email-template', '/reports']
