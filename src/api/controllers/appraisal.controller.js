@@ -23,9 +23,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-      business_id: businessId
-    } :
-    null
+    business_id: businessId
+  }
+    : null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -779,15 +779,10 @@ export const generatePdf = async (req, res, next) => {
       displayHeaderFooter: true,
       headerTemplate: ' ',
       footerTemplate: `
-<<<<<<< HEAD
-              <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${appraisal.Business.businessName}</span>
-=======
               <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:10px;text-align:center;color:#61bbff;font-family: Trebuchet MS">
               <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
   appraisal.Business.businessName
 }</span>
->>>>>>> 3ea50f70f41452c0802685e3f152e648bce4cece
               <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
               </div>`
     }
