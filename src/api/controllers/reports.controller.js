@@ -14,21 +14,25 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [{
-        model: models.User,
-        attributes: ['firstName', 'lastName', 'dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
+      include: [
+        {
+          model: models.User,
+          attributes: ['firstName', 'lastName', 'dataRegion'],
+          as: 'listingAgent',
+          where: {
+            id: {
+              $col: 'Business.listingAgent_id'
+            }
           }
         }
-      }],
+      ],
       group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'id']
+        [
+          {
+            model: models.User,
+            as: 'listingAgent'
+          }, 'id'
+        ]
       ]
     })
 
@@ -40,21 +44,25 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [{
-        model: models.User,
-        attributes: ['firstName', 'lastName', 'dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
+      include: [
+        {
+          model: models.User,
+          attributes: ['firstName', 'lastName', 'dataRegion'],
+          as: 'listingAgent',
+          where: {
+            id: {
+              $col: 'Business.listingAgent_id'
+            }
           }
         }
-      }],
+      ],
       group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'id']
+        [
+          {
+            model: models.User,
+            as: 'listingAgent'
+          }, 'id'
+        ]
       ]
     })
 
@@ -66,35 +74,41 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [{
-        model: models.User,
-        attributes: ['firstName', 'lastName', 'dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
+      include: [
+        {
+          model: models.User,
+          attributes: ['firstName', 'lastName', 'dataRegion'],
+          as: 'listingAgent',
+          where: {
+            id: {
+              $col: 'Business.listingAgent_id'
+            }
           }
         }
-      }],
+      ],
       group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'id']
+        [
+          {
+            model: models.User,
+            as: 'listingAgent'
+          }, 'id'
+        ]
       ]
     })
 
-    console.log(dateTimeCreated, dateTimeCreatedCount, dateChangedToSalesMemorandum)
-    const test = _.union(dateTimeCreated, dateTimeCreatedCount, dateChangedToSalesMemorandum)
+    // const test = _.union(dateTimeCreated, dateTimeCreatedCount, dateChangedToSalesMemorandum)
 
-    // dateChangedToSalesMemorandum.map(async date => {
-    //   const object = _.find(date, o => {
-    //     return o.listingAgent_id === id
-    //   })
-    // })
+    const mergeArray = _.merge(dateTimeCreated, dateTimeCreatedCount)
+    const changedArrayName = dateChangedToSalesMemorandum.map(item => {
+      return {
+        listingAgent_id: item.listingAgent_id,
+        countImStage: item.count
+      }
+    })
+    const arrayFinal = _.merge(mergeArray, changedArrayName)
 
     return res.status(201).json({
-      data: test
+      data: arrayFinal
     })
   } catch (error) {
     return next(error)
