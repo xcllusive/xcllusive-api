@@ -3,16 +3,24 @@ import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
-import { uploadToS3 } from '../modules/aws'
-import { transformQueryAndCleanNull } from '../utils/sharedFunctionsObject'
+import {
+  uploadToS3
+} from '../modules/aws'
+import {
+  transformQueryAndCleanNull
+} from '../utils/sharedFunctionsObject'
 import Sequelize from 'sequelize'
 
 export const get = async (req, res, next) => {
-  const { idBuyer: id } = req.params
+  const {
+    idBuyer: id
+  } = req.params
 
   try {
     const buyer = await models.Buyer.findOne({
-      where: { id },
+      where: {
+        id
+      },
       include: [models.BusinessSource]
     })
 
@@ -36,16 +44,12 @@ export const get = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  let { search, perPage } = req.query
+  let {
+    search,
+    perPage
+  } = req.query
   let paramsSearch = [
-    'surname',
-    'firstName',
-    'email',
-    'telephone1Number',
-    'telephone1',
-    'telephone2',
-    'telephone3',
-    'emailOptional'
+    'surname', 'firstName', 'email', 'telephone1Number', 'telephone1', 'telephone2', 'telephone3', 'emailOptional'
   ]
   let whereOptions = {
     where: {}
@@ -68,8 +72,7 @@ export const list = async (req, res, next) => {
     })
     whereOptions.where.$or.push(
       Sequelize.where(
-        Sequelize.fn('concat', Sequelize.col('firstName'), ' ', Sequelize.col('surname')),
-        {
+        Sequelize.fn('concat', Sequelize.col('firstName'), ' ', Sequelize.col('surname')), {
           $like: `%${search}%`
         }
       )
@@ -79,25 +82,7 @@ export const list = async (req, res, next) => {
 
   const options = {
     attributes: [
-      'id',
-      'firstName',
-      'surname',
-      'email',
-      'streetName',
-      'telephone1Number',
-      'telephone1',
-      'telephone2',
-      'caSent',
-      'caReceived',
-      'suburb',
-      'state',
-      'source_id',
-      'postCode',
-      'priceFrom',
-      'priceTo',
-      'emailOptional',
-      'attachmentUrl',
-      'scanfilePath'
+      'id', 'firstName', 'surname', 'email', 'streetName', 'telephone1Number', 'telephone1', 'telephone2', 'caSent', 'caReceived', 'suburb', 'state', 'source_id', 'postCode', 'priceFrom', 'priceTo', 'emailOptional', 'attachmentUrl', 'scanfilePath'
     ],
     limit: perPage
   }
@@ -188,26 +173,7 @@ export const listBusiness = async (req, res, next) => {
 
   const options = {
     attributes: [
-      'id',
-      'businessName',
-      'firstNameV',
-      'lastNameV',
-      'address1',
-      'industry',
-      'listedPrice',
-      'description',
-      'stageId',
-      'productId',
-      'industryId',
-      'suburb',
-      'state',
-      'postCode',
-      'typeId',
-      'notifyOwner',
-      'dateTimeCreated',
-      'daysOnTheMarket',
-      'vendorPhone1',
-      'imUrl'
+      'id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'dateTimeCreated', 'daysOnTheMarket', 'vendorPhone1', 'imUrl'
     ],
     include: [models.BusinessStage, models.BusinessProduct]
   }
@@ -220,32 +186,45 @@ export const listBusiness = async (req, res, next) => {
         const buyers = await models.Buyer.findAndCountAll({
           raw: true,
           attributes: ['id'],
-          where: { $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }] },
-          include: [
-            {
-              attributes: ['buyer_id', 'business_id'],
-              model: models.EnquiryBusinessBuyer,
-              as: 'EnquiryBusinessBuyer',
-              where: { business_id: business.id }
-            },
-            {
-              attributes: ['buyer_id', 'business_id'],
-              model: models.BuyerLog,
-              as: 'BuyerLog',
-              where: {
-                buyer_id: { $col: 'EnquiryBusinessBuyer.buyer_id' },
-                business_id: business.id,
-                followUp: {
-                  $lte: moment().toDate()
-                },
-                followUpStatus: 'Pending'
+          where: {
+            $or: [{
+              caReceived: {
+                $eq: 1
               }
+            }, {
+              scanfilePath: {
+                $ne: ''
+              }
+            }]
+          },
+          include: [{
+            attributes: ['buyer_id', 'business_id'],
+            model: models.EnquiryBusinessBuyer,
+            as: 'EnquiryBusinessBuyer',
+            where: {
+              business_id: business.id
             }
+          }, {
+            attributes: ['buyer_id', 'business_id'],
+            model: models.BuyerLog,
+            as: 'BuyerLog',
+            where: {
+              buyer_id: {
+                $col: 'EnquiryBusinessBuyer.buyer_id'
+              },
+              business_id: business.id,
+              followUp: {
+                $lte: moment().toDate()
+              },
+              followUpStatus: 'Pending'
+            }
+          }
           ],
           group: [
-            [
-              { model: models.EnquiryBusinessBuyer, as: 'EnquiryBusinessBuyer' },
-              'buyer_id'
+            [{
+              model: models.EnquiryBusinessBuyer,
+              as: 'EnquiryBusinessBuyer'
+            }, 'buyer_id'
             ]
           ]
         })
@@ -253,11 +232,17 @@ export const listBusiness = async (req, res, next) => {
           where: {
             business_id: business.id
           },
-          order: [['dateTimeCreated', 'DESC']]
+          order: [
+            ['dateTimeCreated', 'DESC']
+          ]
         })
         const lastBrokerReport = await models.BrokerWeeklyReport.findOne({
-          where: { business_id: business.id },
-          order: [['dateTimeCreated', 'DESC']],
+          where: {
+            business_id: business.id
+          },
+          order: [
+            ['dateTimeCreated', 'DESC']
+          ],
           raw: true
         })
         return {
@@ -359,7 +344,9 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idBuyer } = req.params
+  const {
+    idBuyer
+  } = req.params
   const modifyBuyer = req.body
 
   modifyBuyer.modifiedBy_id = req.user.id
@@ -367,7 +354,9 @@ export const update = async (req, res, next) => {
   try {
     // Verify exists buyer
     const buyer = await models.Buyer.findOne({
-      where: { id: idBuyer }
+      where: {
+        id: idBuyer
+      }
     })
 
     if (!buyer) {
@@ -378,7 +367,11 @@ export const update = async (req, res, next) => {
       })
     }
 
-    await models.Buyer.update(modifyBuyer, { where: { id: idBuyer } })
+    await models.Buyer.update(modifyBuyer, {
+      where: {
+        id: idBuyer
+      }
+    })
     return res.status(201).json({
       data: modifyBuyer,
       message: 'Buyer updated with success'
@@ -389,21 +382,36 @@ export const update = async (req, res, next) => {
 }
 
 export const remove = async (req, res, next) => {
-  const { id } = req.body
+  const {
+    id
+  } = req.body
   try {
-    await models.User.destroy({ where: { id } })
-    return res.status(200).json({ message: 'User removed with success' })
+    await models.User.destroy({
+      where: {
+        id
+      }
+    })
+    return res.status(200).json({
+      message: 'User removed with success'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const sendCA = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -414,7 +422,11 @@ export const sendCA = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -426,7 +438,12 @@ export const sendCA = async (req, res, next) => {
 
     // Verify business attach to buyer
     const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
-      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+      where: {
+        $and: {
+          business_id: businessId,
+          buyer_id: buyerId
+        }
+      }
     })
 
     if (!enquiryBusinessBuyer) {
@@ -439,7 +456,9 @@ export const sendCA = async (req, res, next) => {
 
     // Verify exists template CA Sent
     const template = await models.EmailTemplate.findOne({
-      where: { id: 8 }
+      where: {
+        id: 8
+      }
     })
     if (!template) {
       throw new APIError({
@@ -463,12 +482,10 @@ export const sendCA = async (req, res, next) => {
       subject: template.subject,
       html: templateCompiled(context),
       attachments: template.enableAttachment
-        ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
+        ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }]
         : []
     }
 
@@ -476,13 +493,23 @@ export const sendCA = async (req, res, next) => {
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // Updated caSent on Buyer
-    await models.Buyer.update({ caSent: true }, { where: { id: buyerId } })
+    await models.Buyer.update({
+      caSent: true
+    }, {
+      where: {
+        id: buyerId
+      }
+    })
 
     // Updated all logs Pending to Done
-    await models.BuyerLog.update(
-      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
-      { where: { buyer_id: buyerId } }
-    )
+    await models.BuyerLog.update({
+      followUpStatus: 'Done',
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        buyer_id: buyerId
+      }
+    })
 
     // Insert in log
     await models.BuyerLog.create({
@@ -509,11 +536,18 @@ export const sendCA = async (req, res, next) => {
 }
 
 export const sendIM = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -525,8 +559,13 @@ export const sendIM = async (req, res, next) => {
 
     // // Verify exists business
     const business = await models.Business.findOne({
-      where: { id: businessId },
-      include: [{ model: models.User, as: 'listingAgent' }]
+      where: {
+        id: businessId
+      },
+      include: [{
+        model: models.User,
+        as: 'listingAgent'
+      }]
     })
 
     if (!business) {
@@ -548,7 +587,12 @@ export const sendIM = async (req, res, next) => {
 
     // Verify business attach to buyer
     const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
-      where: { $and: { business_id: businessId, buyer_id: buyerId } }
+      where: {
+        $and: {
+          business_id: businessId,
+          buyer_id: buyerId
+        }
+      }
     })
 
     if (!enquiryBusinessBuyer) {
@@ -561,7 +605,9 @@ export const sendIM = async (req, res, next) => {
 
     // Verify exists template
     const template = await models.EmailTemplate.findOne({
-      where: { title: 'Send Business IM' }
+      where: {
+        title: 'Send Business IM'
+      }
     })
     if (!template) {
       throw new APIError({
@@ -572,7 +618,9 @@ export const sendIM = async (req, res, next) => {
     }
 
     const brokerDetails = await models.User.findOne({
-      where: { id: business.brokerAccountName }
+      where: {
+        id: business.brokerAccountName
+      }
     })
 
     // Compile the template to use variables
@@ -611,17 +659,29 @@ export const sendIM = async (req, res, next) => {
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // Updated caSent on Buyer
-    await models.Buyer.update({ smSent: true }, { where: { id: buyerId } })
+    await models.Buyer.update({
+      smSent: true
+    }, {
+      where: {
+        id: buyerId
+      }
+    })
 
     // Updated all logs Pending to Done
-    await models.BuyerLog.update(
-      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
-      { where: { buyer_id: buyerId } }
-    )
+    await models.BuyerLog.update({
+      followUpStatus: 'Done',
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        buyer_id: buyerId
+      }
+    })
 
     const userLogged = await models.User.findOne({
       // attributes: ['firstName', 'lastName'],
-      where: { id: req.user.id }
+      where: {
+        id: req.user.id
+      }
     })
 
     // Insert in log
@@ -649,12 +709,19 @@ export const sendIM = async (req, res, next) => {
 }
 
 export const receivedCA = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
   const file = req.files.caFile
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -665,7 +732,11 @@ export const receivedCA = async (req, res, next) => {
     }
 
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -701,16 +772,24 @@ export const receivedCA = async (req, res, next) => {
     )
 
     // updated CA received on buyer
-    await models.Buyer.update(
-      { caReceived: true, attachmentUrl: upload.Location },
-      { where: { id: buyerId } }
-    )
+    await models.Buyer.update({
+      caReceived: true,
+      attachmentUrl: upload.Location
+    }, {
+      where: {
+        id: buyerId
+      }
+    })
 
     // Updated all logs Pending to Done
-    await models.BuyerLog.update(
-      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
-      { where: { buyer_id: buyerId } }
-    )
+    await models.BuyerLog.update({
+      followUpStatus: 'Done',
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        buyer_id: buyerId
+      }
+    })
 
     // Insert in log
     await models.BuyerLog.create({
@@ -735,14 +814,20 @@ export const receivedCA = async (req, res, next) => {
 }
 
 export const listLog = async (req, res, next) => {
-  const { idBuyer: id } = req.params
+  const {
+    idBuyer: id
+  } = req.params
 
   const limit = req.query.limit
   const offset = req.skip
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -753,14 +838,16 @@ export const listLog = async (req, res, next) => {
     }
 
     const logs = await models.BuyerLog.findAndCountAll({
-      where: { buyer_id: id },
-      order: [['dateTimeCreated', 'DESC']],
-      include: [
-        {
-          model: models.Business,
-          attributes: ['businessName']
-        }
+      where: {
+        buyer_id: id
+      },
+      order: [
+        ['dateTimeCreated', 'DESC']
       ],
+      include: [{
+        model: models.Business,
+        attributes: ['businessName']
+      }],
       limit,
       offset
     })
@@ -777,12 +864,20 @@ export const listLog = async (req, res, next) => {
 }
 
 export const listBusinessesFromBuyerLog = async (req, res, next) => {
-  const { idBuyer } = req.params
-  const { businessId } = req.query
+  const {
+    idBuyer
+  } = req.params
+  const {
+    businessId
+  } = req.query
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: idBuyer } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: idBuyer
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -793,21 +888,30 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
     }
 
     const logs = await models.BuyerLog.findAndCountAll({
-      where: { buyer_id: idBuyer, business_id: businessId },
-      order: [['followUp', 'DESC']],
-      include: [
-        {
-          model: models.Business,
-          attributes: ['businessName']
-        }
+      where: {
+        buyer_id: idBuyer,
+        business_id: businessId
+      },
+      order: [
+        ['followUp', 'DESC']
       ],
+      include: [{
+        model: models.Business,
+        attributes: ['businessName']
+      }],
       limit: req.query.limit,
       offset: req.skip
     })
 
     const lastLog = await models.BuyerLog.findOne({
-      where: { buyer_id: idBuyer, business_id: businessId, followUpStatus: 'Pending' },
-      order: [['dateTimeCreated', 'DESC']],
+      where: {
+        buyer_id: idBuyer,
+        business_id: businessId,
+        followUpStatus: 'Pending'
+      },
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       raw: true
     })
 
@@ -816,10 +920,9 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       lastLog,
       pageCount: logs.count,
       itemCount: Math.ceil(logs.count / req.query.limit),
-      message:
-        logs.length === 0
-          ? 'No business found for buyer'
-          : 'Get business from buyer succesfully'
+      message: logs.length === 0
+        ? 'No business found for buyer'
+        : 'Get business from buyer succesfully'
     })
   } catch (error) {
     return next(error)
@@ -827,19 +930,21 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
 }
 
 export const listBusinessesFromBuyer = async (req, res, next) => {
-  const { idBuyer } = req.params
+  const {
+    idBuyer
+  } = req.params
 
   try {
     // Verify exists buyer
     const buyers = await models.EnquiryBusinessBuyer.findAll({
-      where: { buyer_id: idBuyer },
+      where: {
+        buyer_id: idBuyer
+      },
       group: ['business_id'],
-      include: [
-        {
-          model: models.Business,
-          attributes: ['businessName']
-        }
-      ]
+      include: [{
+        model: models.Business,
+        attributes: ['businessName']
+      }]
     })
 
     if (!buyers) {
@@ -871,10 +976,15 @@ export const createLog = async (req, res, next) => {
   }
 
   try {
-    await models.BuyerLog.update(
-      { followUpStatus: 'Done', modifiedBy_id: req.user.id },
-      { where: { buyer_id: req.body.buyer_id, business_id: req.body.business_id } }
-    )
+    await models.BuyerLog.update({
+      followUpStatus: 'Done',
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        buyer_id: req.body.buyer_id,
+        business_id: req.body.business_id
+      }
+    })
 
     const log = await models.BuyerLog.create(newLog)
 
@@ -888,7 +998,9 @@ export const createLog = async (req, res, next) => {
 }
 
 export const updateLog = async (req, res, next) => {
-  const { idLog } = req.params
+  const {
+    idLog
+  } = req.params
   const updateLog = {
     text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
     followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
@@ -901,7 +1013,9 @@ export const updateLog = async (req, res, next) => {
   try {
     // Verify exists log
     const log = await models.BuyerLog.findOne({
-      where: { id: idLog }
+      where: {
+        id: idLog
+      }
     })
 
     if (!log) {
@@ -912,7 +1026,11 @@ export const updateLog = async (req, res, next) => {
       })
     }
 
-    await models.BuyerLog.update(updateLog, { where: { id: idLog } })
+    await models.BuyerLog.update(updateLog, {
+      where: {
+        id: idLog
+      }
+    })
 
     return res.status(201).json({
       data: log,
@@ -924,8 +1042,12 @@ export const updateLog = async (req, res, next) => {
 }
 
 export const finaliseLog = async (req, res, next) => {
-  const { idBuyer } = req.params
-  const { idBusiness } = req.body
+  const {
+    idBuyer
+  } = req.params
+  const {
+    idBusiness
+  } = req.body
 
   try {
     // Verify exists buyer and business
@@ -944,18 +1066,15 @@ export const finaliseLog = async (req, res, next) => {
       })
     }
 
-    await models.BuyerLog.update(
-      {
-        followUpStatus: 'Done',
-        modifiedBy_id: req.user.id
-      },
-      {
-        where: {
-          buyer_id: idBuyer,
-          business_id: idBusiness
-        }
+    await models.BuyerLog.update({
+      followUpStatus: 'Done',
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        buyer_id: idBuyer,
+        business_id: idBusiness
       }
-    )
+    })
 
     return res.status(201).json({
       data: {},
@@ -967,13 +1086,19 @@ export const finaliseLog = async (req, res, next) => {
 }
 
 export const getBuyersFromBusiness = async (req, res, next) => {
-  const { idBusiness } = req.params
-  const { showAll } = req.query
+  const {
+    idBusiness
+  } = req.params
+  const {
+    showAll
+  } = req.query
 
   try {
     // Verify exists business
     const business = await models.Business.findOne({
-      where: { id: idBusiness }
+      where: {
+        id: idBusiness
+      }
     })
 
     if (!business) {
@@ -986,16 +1111,24 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 
     // count buyers from business enquiry
     const countAllBuyersFromBusiness = await models.EnquiryBusinessBuyer.count({
-      where: { business_id: idBusiness },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer',
-          where: {
-            $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }]
-          }
+      where: {
+        business_id: idBusiness
+      },
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer',
+        where: {
+          $or: [{
+            caReceived: {
+              $eq: 1
+            }
+          }, {
+            scanfilePath: {
+              $ne: ''
+            }
+          }]
         }
-      ],
+      }],
       // group: [
       //   [
       //     { model: models.EnquiryBusinessBuyer, as: 'EnquiryBusinessBuyer' },
@@ -1006,7 +1139,9 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     })
 
     const whereBuyerLog = {
-      buyer_id: { $col: 'EnquiryBusinessBuyer.buyer_id' },
+      buyer_id: {
+        $col: 'EnquiryBusinessBuyer.buyer_id'
+      },
       business_id: idBusiness,
       followUp: {
         $lte: moment().toDate()
@@ -1015,7 +1150,15 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     }
 
     const whereBuyer = {
-      $or: [{ caReceived: { $eq: 1 } }, { scanfilePath: { $ne: '' } }]
+      $or: [{
+        caReceived: {
+          $eq: 1
+        }
+      }, {
+        scanfilePath: {
+          $ne: ''
+        }
+      }]
     }
 
     if (showAll && JSON.parse(showAll)) {
@@ -1028,28 +1171,28 @@ export const getBuyersFromBusiness = async (req, res, next) => {
     const buyersFromBusiness = await models.Buyer.findAll({
       attributes: ['id', 'caReceived', 'scanfilePath', 'firstName', 'surname'],
       where: whereBuyer,
-      include: [
-        {
-          attributes: ['buyer_id', 'business_id'],
-          model: models.EnquiryBusinessBuyer,
-          as: 'EnquiryBusinessBuyer',
-          where: { business_id: idBusiness }
-        },
-        {
-          attributes: [
-            'buyer_id',
-            'business_id',
-            'followUp',
-            'followUpStatus',
-            'text',
-            'dateTimeCreated'
-          ],
-          model: models.BuyerLog,
-          as: 'BuyerLog',
-          where: whereBuyerLog
+      include: [{
+        attributes: ['buyer_id', 'business_id'],
+        model: models.EnquiryBusinessBuyer,
+        as: 'EnquiryBusinessBuyer',
+        where: {
+          business_id: idBusiness
         }
+      }, {
+        attributes: [
+          'buyer_id', 'business_id', 'followUp', 'followUpStatus', 'text', 'dateTimeCreated'
+        ],
+        model: models.BuyerLog,
+        as: 'BuyerLog',
+        where: whereBuyerLog
+      }
       ],
-      order: [[{ model: models.BuyerLog, as: 'BuyerLog' }, 'followUp', 'DESC']]
+      order: [
+        [{
+          model: models.BuyerLog,
+          as: 'BuyerLog'
+        }, 'followUp', 'DESC']
+      ]
     })
     return res.status(201).json({
       data: {
@@ -1064,7 +1207,9 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 }
 
 export const getBusinessFromBuyer = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const _mapValuesToArray = array => {
     if (array.length > 0) {
@@ -1086,11 +1231,19 @@ export const getBusinessFromBuyer = async (req, res, next) => {
 
   try {
     const business = await models.Business.findOne({
-      where: { id: idBusiness },
-      include: [
-        { model: models.User, as: 'CreatedBy' },
-        { model: models.User, as: 'ModifiedBy' },
-        { model: models.User, as: 'listingAgent' }
+      where: {
+        id: idBusiness
+      },
+      include: [{
+        model: models.User,
+        as: 'CreatedBy'
+      }, {
+        model: models.User,
+        as: 'ModifiedBy'
+      }, {
+        model: models.User,
+        as: 'listingAgent'
+      }
       ]
     })
     const stageList = await models.BusinessStage.findAll({
@@ -1120,7 +1273,9 @@ export const getBusinessFromBuyer = async (req, res, next) => {
     const usersBroker = await models.User.findAll({
       raw: true,
       attributes: ['id', 'firstName', 'lastName'],
-      where: { userType: 'Broker' }
+      where: {
+        userType: 'Broker'
+      }
     })
     const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
       raw: true,
@@ -1134,7 +1289,9 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       where: {
         business_id: idBusiness
       },
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
     const countAllEnquiry = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
@@ -1163,14 +1320,18 @@ export const getBusinessFromBuyer = async (req, res, next) => {
 }
 
 export const getGroupEmail = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   // const response = []
 
   try {
     // Verify exists business
     const business = await models.Business.findOne({
-      where: { id: idBusiness }
+      where: {
+        id: idBusiness
+      }
     })
 
     if (!business) {
@@ -1183,13 +1344,13 @@ export const getGroupEmail = async (req, res, next) => {
 
     // Get buyers from business enquiry
     const buyersFromBusiness = await models.EnquiryBusinessBuyer.findAll({
-      where: { business_id: idBusiness },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer'
-        }
-      ]
+      where: {
+        business_id: idBusiness
+      },
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer'
+      }]
     })
 
     const arrayGroupEmail = await Promise.all(
@@ -1236,11 +1397,17 @@ export const getGroupEmail = async (req, res, next) => {
 }
 
 export const sendGroupEmail = async (req, res, next) => {
-  const { to, subject, body } = req.body
+  const {
+    to,
+    subject,
+    body
+  } = req.body
   const fileAttachment = req.files.attachment
   const sentTo = []
   try {
-    const emailToOffice = await models.SystemSettings.findOne({ where: 1 })
+    const emailToOffice = await models.SystemSettings.findOne({
+      where: 1
+    })
     for (let buyer of JSON.parse(to)) {
       const mailOptions = {
         to: buyer.email,
@@ -1260,12 +1427,10 @@ export const sendGroupEmail = async (req, res, next) => {
         <p>www.xcllusive.com.au | (02) 9817 3331</p>
         `,
         attachments: fileAttachment
-          ? [
-            {
-              filename: fileAttachment.name,
-              content: fileAttachment.data
-            }
-          ]
+          ? [{
+            filename: fileAttachment.name,
+            content: fileAttachment.data
+          }]
           : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
@@ -1300,7 +1465,9 @@ export const createWeeklyReport = async (req, res, next) => {
     // }
 
     const business = await models.Business.findOne({
-      where: { id: newWeeklyReport.business_id }
+      where: {
+        id: newWeeklyReport.business_id
+      }
     })
     if (moment(business.daysOnTheMarket).isValid()) {
       newWeeklyReport.daysOnTheMarket = moment().diff(business.daysOnTheMarket, 'day')
@@ -1315,31 +1482,38 @@ export const createWeeklyReport = async (req, res, next) => {
       business.data120DayGuarantee === '0' ? 'No' : 'Yes'
 
     const nOfEnquiries = await models.EnquiryBusinessBuyer.findAndCountAll({
-      where: { business_id: newWeeklyReport.business_id }
+      where: {
+        business_id: newWeeklyReport.business_id
+      }
     })
     newWeeklyReport.nOfEnquiries = nOfEnquiries.count
 
     const nOfEnquiries7Days = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
         business_id: newWeeklyReport.business_id,
-        dateTimeCreated: { $gte: sevenDaysAgo }
+        dateTimeCreated: {
+          $gte: sevenDaysAgo
+        }
       }
     })
     newWeeklyReport.nOfEnquiries7Days = nOfEnquiries7Days.count
 
     const nOfPendingTasks = await models.BuyerLog.count({
-      where: { business_id: newWeeklyReport.business_id, followUpStatus: 'Pending' },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer',
+      where: {
+        business_id: newWeeklyReport.business_id,
+        followUpStatus: 'Pending'
+      },
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer',
 
-          where: {
-            id: { $col: 'BuyerLog.buyer_id' },
-            caReceived: 1
-          }
+        where: {
+          id: {
+            $col: 'BuyerLog.buyer_id'
+          },
+          caReceived: 1
         }
-      ],
+      }],
       group: ['buyer_id']
     })
     newWeeklyReport.nOfPendingTasks = nOfPendingTasks.length
@@ -1347,7 +1521,9 @@ export const createWeeklyReport = async (req, res, next) => {
     const nOfNewLogs7Days = await models.BuyerLog.findAndCountAll({
       where: {
         business_id: newWeeklyReport.business_id,
-        dateTimeCreated: { $gte: sevenDaysAgo }
+        dateTimeCreated: {
+          $gte: sevenDaysAgo
+        }
       }
     })
     newWeeklyReport.nOfNewLogs7Days = nOfNewLogs7Days.count
@@ -1369,8 +1545,12 @@ export const getLastWeeklyReport = async (req, res, next) => {
 
   try {
     const lastWeeklyReport = await models.BrokerWeeklyReport.findOne({
-      where: { business_id: lastWK.businessId },
-      order: [['dateTimeCreated', 'DESC']],
+      where: {
+        business_id: lastWK.businessId
+      },
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       raw: true
     })
     return res.status(201).json({
@@ -1389,7 +1569,9 @@ export const updateWeeklyReport = async (req, res, next) => {
   try {
     // Verify exists report
     const report = await models.BrokerWeeklyReport.findOne({
-      where: { id: weeklyReport.id }
+      where: {
+        id: weeklyReport.id
+      }
     })
 
     if (!report) {
@@ -1405,11 +1587,15 @@ export const updateWeeklyReport = async (req, res, next) => {
         dateTimeCreatedToDo: weeklyReport.dateTimeCreatedToDo
       }
       await models.BrokerWeeklyReport.update(updateToDo, {
-        where: { id: weeklyReport.id }
+        where: {
+          id: weeklyReport.id
+        }
       })
     } else {
       await models.BrokerWeeklyReport.update(weeklyReport, {
-        where: { id: weeklyReport.id }
+        where: {
+          id: weeklyReport.id
+        }
       })
     }
     return res.status(201).json({
@@ -1445,8 +1631,13 @@ export const getBrokersPerRegion = async (req, res, next) => {
   try {
     // Verify exists buyer
     const brokers = await models.User.findAll({
-      where: { dataRegion: region, userType: 'Broker' },
-      order: [['firstName', 'ASC']]
+      where: {
+        dataRegion: region,
+        userType: 'Broker'
+      },
+      order: [
+        ['firstName', 'ASC']
+      ]
     })
 
     if (!brokers) {
@@ -1479,47 +1670,72 @@ export const getBusinessesPerBroker = async (req, res, next) => {
         brokerAccountName: broker,
         stageId: [3, 4, 5] // Sales Memo, For Sale, Under Offer
       },
-      order: [['businessName', 'ASC']]
+      order: [
+        ['businessName', 'ASC']
+      ]
     })
 
     const response = await Promise.all(
       businesses.map(async business => {
         const reports = await models.BrokerWeeklyReport.findOne({
-          where: { business_id: business.id },
-          order: [['dateTimeCreated', 'DESC']]
+          where: {
+            business_id: business.id
+          },
+          order: [
+            ['dateTimeCreated', 'DESC']
+          ]
         })
 
         const nOfEnquiries = await models.EnquiryBusinessBuyer.findAndCountAll({
-          where: { business_id: business.id }
+          where: {
+            business_id: business.id
+          }
         })
 
         const nOfEnquiries7Days = await models.EnquiryBusinessBuyer.findAndCountAll({
-          where: { business_id: business.id, dateTimeCreated: { $gte: sevenDaysAgo } }
+          where: {
+            business_id: business.id,
+            dateTimeCreated: {
+              $gte: sevenDaysAgo
+            }
+          }
         })
 
         const nOfPendingTasks = await models.BuyerLog.count({
-          where: { business_id: business.id, followUpStatus: 'Pending' },
-          include: [
-            {
-              model: models.Buyer,
-              as: 'Buyer',
+          where: {
+            business_id: business.id,
+            followUpStatus: 'Pending'
+          },
+          include: [{
+            model: models.Buyer,
+            as: 'Buyer',
 
-              where: {
-                id: { $col: 'BuyerLog.buyer_id' },
-                caReceived: 1
-              }
+            where: {
+              id: {
+                $col: 'BuyerLog.buyer_id'
+              },
+              caReceived: 1
             }
-          ],
+          }],
           group: ['buyer_id']
         })
 
         const nOfNewLogs7Days = await models.BuyerLog.findAndCountAll({
-          where: { business_id: business.id, dateTimeCreated: { $gte: sevenDaysAgo } }
+          where: {
+            business_id: business.id,
+            dateTimeCreated: {
+              $gte: sevenDaysAgo
+            }
+          }
         })
 
         const oneBeforeLastTextToDo = await models.BrokerWeeklyReport.findAll({
-          where: { business_id: business.id },
-          order: [['dateTimeCreated', 'DESC']]
+          where: {
+            business_id: business.id
+          },
+          order: [
+            ['dateTimeCreated', 'DESC']
+          ]
         })
 
         return {
@@ -1547,14 +1763,25 @@ export const getBusinessHistoricalWeekly = async (req, res, next) => {
 
   try {
     const historicalWeekly = await models.BrokerWeeklyReport.findAll({
-      where: { business_id: businessId },
-      order: [['dateTimeCreated', 'DESC']],
+      where: {
+        business_id: businessId
+      },
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       raw: true
     })
 
     const expectedObject = await models.BrokerWeeklyReport.findOne({
-      where: { business_id: businessId, expectedPrice: { $gt: 0 } },
-      order: [['dateTimeCreated', 'DESC']],
+      where: {
+        business_id: businessId,
+        expectedPrice: {
+          $gt: 0
+        }
+      },
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       raw: true
     })
 

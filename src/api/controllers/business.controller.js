@@ -44,8 +44,7 @@ export const getBusiness = async (req, res, next) => {
       }, {
         model: models.User,
         as: 'listingAgent'
-      }
-      ]
+      }]
     })
     const stageList = await models.BusinessStage.findAll({
       raw: true,
@@ -343,8 +342,8 @@ export const update = async (req, res, next) => {
     businessRating,
     businessIndustry,
     businessProduct,
-    // businessType,
-    typeId,
+    businessType,
+    // typeId,
     brokerAccountName,
     depositeTakenDate,
     settlementDate
@@ -355,8 +354,8 @@ export const update = async (req, res, next) => {
   req.body.ratingId = businessRating === '' ? undefined : businessRating
   req.body.industryId = businessIndustry === '' ? undefined : businessIndustry
   req.body.productId = businessProduct === '' ? undefined : businessProduct
-  // req.body.typeId = businessType === '' ? undefined : businessType
-  req.body.typeId = typeId === '' ? undefined : typeId
+  req.body.typeId = businessType === '' ? undefined : businessType
+  // req.body.typeId = typeId === '' ? undefined : typeId
   req.body.depositeTakenDate =
     depositeTakenDate instanceof Date ? depositeTakenDate : undefined
   req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
