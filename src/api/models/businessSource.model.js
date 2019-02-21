@@ -14,12 +14,10 @@ export default (sequelize, DataTypes) => {
   }, {
     createdAt: 'dateTimeCreated',
     updatedAt: 'dateTimeModified',
-    indexes: [
-      {
-        unique: true,
-        fields: ['id']
-      }
-    ]
+    indexes: [{
+      unique: true,
+      fields: ['id']
+    }]
   })
 
   return BusinessSource
