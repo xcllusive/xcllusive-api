@@ -96,10 +96,9 @@ export const getMarketingReport = async (req, res, next) => {
     /* ends Leads per Analyst */
 
     /* starts Leads per Source */
-    console.log('testeeee')
     const leadsPerSource = await models.Business.findAndCountAll({
       raw: true,
-      attributes: ['listingAgent_id'],
+      attributes: ['listingAgent_id', 'sourceId', 'dataRegion', 'id'],
       as: 'Business',
       where: {
         dateTimeCreated: {
@@ -126,18 +125,10 @@ export const getMarketingReport = async (req, res, next) => {
         }
       }],
       group: [
-        'sourceId'
+        'Business.sourceId', 'Business.dataRegion', 'Business.listingAgent_id'
       ]
-      // order: [
-      //   [{
-      //     model: models.Business,
-      //     as: 'Business'
-      //   }, 'listingAgent_id', 'DESC']
-      // ]
     })
-    // const test = _.uniqBy(leadsPerSource.rows, 'listingAgent_id')
-    console.log('test', leadsPerSource)
-
+    const arrayLeadsPerSource = _.merge(leadsPerSource.rows, leadsPerSource.count)
     /* ends Leads per Source */
 
     /* starts Total per Source */
@@ -193,7 +184,8 @@ export const getMarketingReport = async (req, res, next) => {
       data: {
         arrayFinal,
         arrayTotalPerSource,
-        totalGeralPerSource
+        totalGeralPerSource,
+        arrayLeadsPerSource
       }
     })
   } catch (error) {
