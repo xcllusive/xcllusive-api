@@ -1,7 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Business = sequelize.define(
-    'Business',
-    {
+    'Business', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -201,16 +200,13 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       }
-    },
-    {
+    }, {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [
-        {
-          unique: true,
-          fields: ['id']
-        }
-      ]
+      indexes: [{
+        unique: true,
+        fields: ['id']
+      }]
     }
   )
 
@@ -227,12 +223,25 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'brokerAccountName',
       as: 'AsBrokerAccountName'
     })
-    models.Business.belongsTo(models.BusinessStage, { foreignKey: 'stageId' })
-    models.Business.belongsTo(models.BusinessSource, { foreignKey: 'sourceId' })
-    models.Business.belongsTo(models.BusinessRating, { foreignKey: 'ratingId' })
-    models.Business.belongsTo(models.BusinessIndustry, { foreignKey: 'industryId' })
-    models.Business.belongsTo(models.BusinessProduct, { foreignKey: 'productId' })
-    models.Business.belongsTo(models.BusinessType, { foreignKey: 'typeId' })
+    models.Business.belongsTo(models.BusinessStage, {
+      foreignKey: 'stageId'
+    })
+    models.Business.belongsTo(models.BusinessSource, {
+      foreignKey: 'sourceId',
+      as: 'source'
+    })
+    models.Business.belongsTo(models.BusinessRating, {
+      foreignKey: 'ratingId'
+    })
+    models.Business.belongsTo(models.BusinessIndustry, {
+      foreignKey: 'industryId'
+    })
+    models.Business.belongsTo(models.BusinessProduct, {
+      foreignKey: 'productId'
+    })
+    models.Business.belongsTo(models.BusinessType, {
+      foreignKey: 'typeId'
+    })
     models.Business.belongsTo(models.BusinessStageNotSigned, {
       foreignKey: 'stageNotSignedId'
     })
