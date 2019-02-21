@@ -23,9 +23,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-      business_id: businessId
-    } :
-    null
+    business_id: businessId
+  }
+    : null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -758,6 +758,25 @@ export const generatePdf = async (req, res, next) => {
       .split()
     // finish notes and assumptions
 
+    context.totalAdjusments1 = numeral(context.totalAdjusments1).format('0,0')
+    context.totalAdjusments2 = numeral(context.totalAdjusments2).format('0,0')
+    context.totalAdjusments3 = numeral(context.totalAdjusments3).format('0,0')
+    context.totalAdjusments4 = numeral(context.totalAdjusments4).format('0,0')
+    context.totalAdjusments5 = numeral(context.totalAdjusments5).format('0,0')
+    context.totalAdjusments7 = numeral(context.totalAdjusments7).format('0,0')
+    context.adjustedProfitPerc1 = numeral(context.adjustedProfitPerc1).format('0,0')
+    context.adjustedProfitPerc2 = numeral(context.adjustedProfitPerc2).format('0,0')
+    context.adjustedProfitPerc3 = numeral(context.adjustedProfitPerc3).format('0,0')
+    context.adjustedProfitPerc4 = numeral(context.adjustedProfitPerc4).format('0,0')
+    context.adjustedProfitPerc5 = numeral(context.adjustedProfitPerc5).format('0,0')
+    context.adjustedProfitPerc7 = numeral(context.adjustedProfitPerc7).format('0,0')
+    context.totalAdjustedProfit1 = numeral(context.totalAdjustedProfit1).format('0,0')
+    context.totalAdjustedProfit2 = numeral(context.totalAdjustedProfit2).format('0,0')
+    context.totalAdjustedProfit3 = numeral(context.totalAdjustedProfit3).format('0,0')
+    context.totalAdjustedProfit4 = numeral(context.totalAdjustedProfit4).format('0,0')
+    context.totalAdjustedProfit5 = numeral(context.totalAdjustedProfit5).format('0,0')
+    context.totalAdjustedProfit7 = numeral(context.totalAdjustedProfit7).format('0,0')
+
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
       for (var i = 0, j = context.length; i < j; i++) {
@@ -779,15 +798,10 @@ export const generatePdf = async (req, res, next) => {
       displayHeaderFooter: true,
       headerTemplate: ' ',
       footerTemplate: `
-<<<<<<< HEAD
-              <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${appraisal.Business.businessName}</span>
-=======
               <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:10px;text-align:center;color:#61bbff;font-family: Trebuchet MS">
               <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
   appraisal.Business.businessName
 }</span>
->>>>>>> 3ea50f70f41452c0802685e3f152e648bce4cece
               <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
               </div>`
     }
