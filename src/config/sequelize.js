@@ -1,12 +1,16 @@
 import fs from 'fs'
 import path from 'path'
 import Sequelize from 'sequelize'
-import { mysql } from './vars'
+import {
+  mysql
+} from './vars'
 
 const basename = path.basename(__filename)
 const db = {}
 
-const { Op } = Sequelize
+const {
+  Op
+} = Sequelize
 
 const sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
   host: mysql.uri,
