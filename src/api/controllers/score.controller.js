@@ -7,23 +7,38 @@ import Path from 'path'
 import numeral from 'numeral'
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
-import { happy, neutral, sad } from '../constants/icons'
+import {
+  happy,
+  neutral,
+  sad
+} from '../constants/icons'
 import mailer from '../modules/mailer'
 
 const ReadFile = Util.promisify(fs.readFile)
 
 export const list = async (req, res, next) => {
-  const { business } = req.query
+  const {
+    business
+  } = req.query
 
   const limit = req.query.limit
   const offset = req.skip
-  const where = business ? { business_id: business } : null
-  const include = [
-    { model: models.ScoreRegister, as: 'currentInterest' },
-    { model: models.ScoreRegister, as: 'infoTransMomen' },
-    { model: models.ScoreRegister, as: 'perceivedPrice' },
-    { model: models.ScoreRegister, as: 'perceivedRisk' }
-  ]
+  const where = business ? {
+    business_id: business
+  } : null
+  const include = [{
+    model: models.ScoreRegister,
+    as: 'currentInterest'
+  }, {
+    model: models.ScoreRegister,
+    as: 'infoTransMomen'
+  }, {
+    model: models.ScoreRegister,
+    as: 'perceivedPrice'
+  }, {
+    model: models.ScoreRegister,
+    as: 'perceivedRisk'
+  }]
 
   try {
     const response = await models.Score.findAndCountAll({
@@ -31,7 +46,9 @@ export const list = async (req, res, next) => {
       limit,
       offset,
       include,
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
     return res.status(201).json({
       data: response,
@@ -44,17 +61,28 @@ export const list = async (req, res, next) => {
 }
 
 export const get = async (req, res, next) => {
-  const { scoreId } = req.params
+  const {
+    scoreId
+  } = req.params
 
   try {
     const response = await models.Score.findOne({
-      where: { id: scoreId },
-      include: [
-        { model: models.ScoreRegister, as: 'currentInterest' },
-        { model: models.ScoreRegister, as: 'infoTransMomen' },
-        { model: models.ScoreRegister, as: 'perceivedPrice' },
-        { model: models.ScoreRegister, as: 'perceivedRisk' }
-      ]
+      where: {
+        id: scoreId
+      },
+      include: [{
+        model: models.ScoreRegister,
+        as: 'currentInterest'
+      }, {
+        model: models.ScoreRegister,
+        as: 'infoTransMomen'
+      }, {
+        model: models.ScoreRegister,
+        as: 'perceivedPrice'
+      }, {
+        model: models.ScoreRegister,
+        as: 'perceivedRisk'
+      }]
     })
 
     return res.status(201).json({
@@ -75,72 +103,104 @@ export const create = async (req, res, next) => {
       where: {
         business_id: newScore.business_id
       },
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
     newScore.version =
       lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 1
     const score = await models.Score.create(newScore)
 
-    return res.status(200).json({ data: score, message: 'Score created' })
+    return res.status(200).json({
+      data: score,
+      message: 'Score created'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const update = async (req, res, next) => {
-  const { scoreId } = req.params
+  const {
+    scoreId
+  } = req.params
   const updateScore = req.body
   updateScore.modifiedBy_id = req.user.id
 
   try {
-    await models.Score.update(updateScore, { where: { id: scoreId } })
-    return res.status(200).json({ message: 'Score updated with success' })
+    await models.Score.update(updateScore, {
+      where: {
+        id: scoreId
+      }
+    })
+    return res.status(200).json({
+      message: 'Score updated with success'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const remove = async (req, res, next) => {
-  const { scoreId } = req.params
+  const {
+    scoreId
+  } = req.params
 
   try {
-    await models.Score.destroy({ where: { id: scoreId } })
+    await models.Score.destroy({
+      where: {
+        id: scoreId
+      }
+    })
 
-    return res.status(200).json({ message: 'Score removed with success' })
+    return res.status(200).json({
+      message: 'Score removed with success'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const initial = async (req, res, next) => {
-  const { business } = req.query
+  const {
+    business
+  } = req.query
 
   try {
     const yours = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
         business_id: business,
         dateTimeCreated: {
-          $gt: moment().subtract(4, 'weeks')
+          $gt: moment().subtract(30, 'days')
         }
       }
     })
     const avg = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
         dateTimeCreated: {
-          $gt: moment().subtract(4, 'weeks')
+          $gt: moment().subtract(30, 'days')
         }
       }
     })
+
+    const totalBusinessForSale = await models.Business.count({
+      where: {
+        stageId: 4
+      }
+    })
+
     const lastScore = await models.Score.findOne({
       where: {
         business_id: business
       },
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
 
     return res.status(200).json({
       data: {
-        avg: avg.count,
+        avg: numeral(avg.count / totalBusinessForSale).format('0.0[0]'),
         yours: yours.count,
         lastScore: lastScore
       },
@@ -152,7 +212,9 @@ export const initial = async (req, res, next) => {
 }
 
 export const makePdf = async (req, res, next) => {
-  const { scoreId } = req.params
+  const {
+    scoreId
+  } = req.params
 
   const templatePath = Path.resolve(
     'src',
@@ -176,14 +238,25 @@ export const makePdf = async (req, res, next) => {
   try {
     // Verify exists score
     const score = await models.Score.findOne({
-      where: { id: scoreId },
-      include: [
-        { model: models.Business, as: 'Business' },
-        { model: models.ScoreRegister, as: 'currentInterest' },
-        { model: models.ScoreRegister, as: 'infoTransMomen' },
-        { model: models.ScoreRegister, as: 'perceivedPrice' },
-        { model: models.ScoreRegister, as: 'perceivedRisk' }
-      ]
+      where: {
+        id: scoreId
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business'
+      }, {
+        model: models.ScoreRegister,
+        as: 'currentInterest'
+      }, {
+        model: models.ScoreRegister,
+        as: 'infoTransMomen'
+      }, {
+        model: models.ScoreRegister,
+        as: 'perceivedPrice'
+      }, {
+        model: models.ScoreRegister,
+        as: 'perceivedRisk'
+      }]
     })
 
     if (!score) {
@@ -200,29 +273,27 @@ export const makePdf = async (req, res, next) => {
       }
     })
 
-    const enquiriesTotalLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll(
-      {
-        where: {
-          dateTimeCreated: {
-            $gt: moment().subtract(4, 'weeks')
-          }
+    const enquiriesTotalLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        dateTimeCreated: {
+          $gt: moment().subtract(4, 'weeks')
         }
       }
-    )
+    })
 
-    const enquiriesBusinessLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll(
-      {
-        where: {
-          business_id: score.Business.id,
-          dateTimeCreated: {
-            $gt: moment().subtract(4, 'weeks')
-          }
+    const enquiriesBusinessLastFourWeeks = await models.EnquiryBusinessBuyer.findAndCountAll({
+      where: {
+        business_id: score.Business.id,
+        dateTimeCreated: {
+          $gt: moment().subtract(4, 'weeks')
         }
       }
-    )
+    })
 
     const businessesForSale = await models.Business.findAndCountAll({
-      where: { stageId: 4 }
+      where: {
+        stageId: 4
+      }
     })
 
     const enquiries = await models.ScoreRegister.findOne({
@@ -235,7 +306,9 @@ export const makePdf = async (req, res, next) => {
       where: {
         business_id: score.Business.id
       },
-      order: [['dateTimeCreated', 'DESC']],
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       limit: [1, 1]
     })
 
@@ -244,17 +317,17 @@ export const makePdf = async (req, res, next) => {
         stageId: 6
       },
       attributes: ['businessName', 'listedPrice', 'dateTimeModified', 'daysOnTheMarket'],
-      order: [['dateTimeModified', 'DESC']],
-      include: [
-        {
-          model: models.Score,
-          where: {
-            dateSent: {
-              $ne: null
-            }
+      order: [
+        ['dateTimeModified', 'DESC']
+      ],
+      include: [{
+        model: models.Score,
+        where: {
+          dateSent: {
+            $ne: null
           }
         }
-      ],
+      }],
       limit: 20
     })
 
@@ -262,7 +335,9 @@ export const makePdf = async (req, res, next) => {
       where: {
         business_id: score.Business.id
       },
-      order: [['dateTimeCreated', 'DESC']],
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       limit: 10
     })
 
@@ -441,7 +516,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_10_20 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
-                chartNumberOfBusinessSold.column_10_20
+              chartNumberOfBusinessSold.column_10_20
             )
 
             percBusinessSold.column_10_20 =
@@ -468,7 +543,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_21_30 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
-                chartNumberOfBusinessSold.column_21_30
+              chartNumberOfBusinessSold.column_21_30
             )
 
             percBusinessSold.column_21_30 =
@@ -498,7 +573,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_31_40 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
-                chartNumberOfBusinessSold.column_31_40
+              chartNumberOfBusinessSold.column_31_40
             )
 
             percBusinessSold.column_31_40 =
@@ -525,7 +600,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_41_50 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
-                chartNumberOfBusinessSold.column_41_50
+              chartNumberOfBusinessSold.column_41_50
             )
 
             percBusinessSold.column_41_50 =
@@ -553,7 +628,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_51_60 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
-                chartNumberOfBusinessSold.column_51_60
+              chartNumberOfBusinessSold.column_51_60
             )
 
             percBusinessSold.column_51_60 =
@@ -580,7 +655,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_61_70 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
-                chartNumberOfBusinessSold.column_61_70
+              chartNumberOfBusinessSold.column_61_70
             )
 
             percBusinessSold.column_61_70 =
@@ -607,7 +682,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_71_80 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
-                chartNumberOfBusinessSold.column_71_80
+              chartNumberOfBusinessSold.column_71_80
             )
 
             percBusinessSold.column_71_80 =
@@ -634,7 +709,7 @@ export const makePdf = async (req, res, next) => {
 
             chartDaysOnTheMarket.column_81_90 = Math.trunc(
               (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
-                chartNumberOfBusinessSold.column_81_90
+              chartNumberOfBusinessSold.column_81_90
             )
 
             percBusinessSold.column_81_90 =
@@ -775,22 +850,30 @@ export const makePdf = async (req, res, next) => {
     })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
-    await page.goto(`data:text/html,${template}`, { waitUntil: 'networkidle2' })
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle2'
+    })
 
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
     // Send Email
 
-    const settings = await models.SystemSettings.findOne({ where: 1 })
+    const settings = await models.SystemSettings.findOne({
+      where: 1
+    })
 
     const broker = await models.User.findOne({
-      where: { id: score.Business.brokerAccountName }
+      where: {
+        id: score.Business.brokerAccountName
+      }
     })
 
     // Verify exists template
     const templateEmail = await models.EmailTemplate.findOne({
-      where: { title: 'Score Email' }
+      where: {
+        title: 'Score Email'
+      }
     })
 
     if (!templateEmail) {
@@ -814,19 +897,23 @@ export const makePdf = async (req, res, next) => {
       subject: `Score - ${score.Business.businessName} - ${templateEmail.subject}`,
       html: templateEmailCompiled(contextTemplateEmail),
       replyTo: broker.email,
-      attachments: [
-        {
-          filename: `${templateEmail.title.trim()}.pdf`,
-          path: destPdfGenerated
-        }
-      ]
+      attachments: [{
+        filename: `${templateEmail.title.trim()}.pdf`,
+        path: destPdfGenerated
+      }]
     }
 
     // Send Email
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // Updated caSent on Buyer
-    await models.Score.update({ dateSent: moment() }, { where: { id: scoreId } })
+    await models.Score.update({
+      dateSent: moment()
+    }, {
+      where: {
+        id: scoreId
+      }
+    })
 
     // remove pdf temp
     await fs.unlink(destPdfGenerated)
