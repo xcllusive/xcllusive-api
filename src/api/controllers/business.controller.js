@@ -311,12 +311,10 @@ export const create = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [{
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
 
       // Send Email
@@ -497,12 +495,10 @@ export const updateListingAgent = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [{
-          filename: `${template.title.trim()}.pdf`,
-          path: template.attachmentPath
-        }]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -743,12 +739,10 @@ export const emailToBuyer = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: `${template.subject}`,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [{
-          filename: `${template.title.trim()}.pdf`,
-          path: template.attachmentPath
-        }]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -845,12 +839,10 @@ export const sendEnquiryOwner = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [{
-          filename: `${template.title.trim()}.pdf`,
-          path: template.attachmentPath
-        }]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -1063,8 +1055,7 @@ export const sendGroupEmail = async (req, res, next) => {
         from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
         subject,
         replyTo: buyer.replyTo
-          ? req.user.email
-          : `${req.user.email}, ${emailToOffice.emailOffice}`,
+          ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         
@@ -1075,12 +1066,10 @@ export const sendGroupEmail = async (req, res, next) => {
         <p>Xcllusive Business Sales</p>
         <p>www.xcllusive.com.au | (02) 9817 3331</p>
         `,
-        attachments: fileAttachment
-          ? [{
-            filename: fileAttachment.name,
-            content: fileAttachment.data
-          }]
-          : []
+        attachments: fileAttachment ? [{
+          filename: fileAttachment.name,
+          content: fileAttachment.data
+        }] : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
       if (resMailer) sentTo.push(resMailer.envelope.to[0])
@@ -1293,13 +1282,23 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
       }
     })
 
+    const businessLost = await models.Business.count({
+      where: {
+        $and: {
+          listingAgent_id: req.user.id,
+          stageId: 8
+        }
+      }
+    })
+
     return res.status(201).json({
       data: {
         businessPotentialListingFilter,
         businessPotentialListing,
         businessAppraisalFilter,
         businessAppraisal,
-        businessForSale
+        businessForSale,
+        businessLost
       }
     })
   } catch (error) {
