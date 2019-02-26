@@ -218,14 +218,12 @@ export const listBusiness = async (req, res, next) => {
               },
               followUpStatus: 'Pending'
             }
-          }
-          ],
+          }],
           group: [
             [{
               model: models.EnquiryBusinessBuyer,
               as: 'EnquiryBusinessBuyer'
-            }, 'buyer_id'
-            ]
+            }, 'buyer_id']
           ]
         })
         const lastScore = await models.Score.findOne({
@@ -481,12 +479,10 @@ export const sendCA = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [{
-          filename: `${template.title.trim()}.pdf`,
-          path: template.attachmentPath
-        }]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -631,8 +627,7 @@ export const sendIM = async (req, res, next) => {
       agents_name: `${brokerDetails.firstName} ${brokerDetails.lastName}`,
       agents_email: brokerDetails.email,
       agents_phone: brokerDetails.phoneMobile
-        ? brokerDetails.phoneMobile
-        : brokerDetails.phoneWork
+        ? brokerDetails.phoneMobile : brokerDetails.phoneWork
     }
 
     // Set email options
@@ -641,18 +636,16 @@ export const sendIM = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: `${business.businessName} - ${template.subject}`,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [
-          // {
-          //   filename: `${template.title.trim()}.pdf`,
-          //   path: template.attachmentPath
-          // },
-          {
-            filename: `${business.businessName.trim()}_IM_${business.id}.pdf`,
-            path: business.imUrl
-          }
-        ]
-        : []
+      attachments: template.enableAttachment ? [
+        // {
+        //   filename: `${template.title.trim()}.pdf`,
+        //   path: template.attachmentPath
+        // },
+        {
+          filename: `${business.businessName.trim()}_IM_${business.id}.pdf`,
+          path: business.imUrl
+        }
+      ] : []
     }
 
     // Send Email
@@ -921,8 +914,7 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       pageCount: logs.count,
       itemCount: Math.ceil(logs.count / req.query.limit),
       message: logs.length === 0
-        ? 'No business found for buyer'
-        : 'Get business from buyer succesfully'
+        ? 'No business found for buyer' : 'Get business from buyer succesfully'
     })
   } catch (error) {
     return next(error)
@@ -1185,8 +1177,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
         model: models.BuyerLog,
         as: 'BuyerLog',
         where: whereBuyerLog
-      }
-      ],
+      }],
       order: [
         [{
           model: models.BuyerLog,
@@ -1243,8 +1234,7 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       }, {
         model: models.User,
         as: 'listingAgent'
-      }
-      ]
+      }]
     })
     const stageList = await models.BusinessStage.findAll({
       raw: true,
@@ -1414,8 +1404,7 @@ export const sendGroupEmail = async (req, res, next) => {
         from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
         subject,
         replyTo: buyer.replyTo
-          ? req.user.email
-          : `${req.user.email}, ${emailToOffice.emailOffice}`,
+          ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         
@@ -1426,12 +1415,10 @@ export const sendGroupEmail = async (req, res, next) => {
         <p>Xcllusive Business Sales</p>
         <p>www.xcllusive.com.au | (02) 9817 3331</p>
         `,
-        attachments: fileAttachment
-          ? [{
-            filename: fileAttachment.name,
-            content: fileAttachment.data
-          }]
-          : []
+        attachments: fileAttachment ? [{
+          filename: fileAttachment.name,
+          content: fileAttachment.data
+        }] : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
       if (resMailer) sentTo.push(resMailer.envelope.to[0])
@@ -1632,7 +1619,7 @@ export const getBrokersPerRegion = async (req, res, next) => {
     // Verify exists buyer
     const brokers = await models.User.findAll({
       where: {
-        dataRegion: region,
+        officeId: region,
         userType: 'Broker'
       },
       order: [
@@ -1747,8 +1734,7 @@ export const getBusinessesPerBroker = async (req, res, next) => {
           nOfPendingTasks: nOfPendingTasks.length,
           nOfNewLogs7Days,
           arrayOneBeforeLastTextToDo: oneBeforeLastTextToDo[1]
-            ? oneBeforeLastTextToDo[1]
-            : null
+            ? oneBeforeLastTextToDo[1] : null
         }
       })
     )
