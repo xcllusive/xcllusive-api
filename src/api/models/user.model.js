@@ -20,8 +20,7 @@ const hashPassword = async user => {
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define(
-    'User',
-    {
+    'User', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -93,21 +92,22 @@ export default (sequelize, DataTypes) => {
       dataRegion: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      officeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
-    },
-    {
+    }, {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
       hooks: {
         beforeCreate: hashPassword,
         beforeUpdate: hashPassword
       },
-      indexes: [
-        {
-          unique: true,
-          fields: ['id', 'email']
-        }
-      ]
+      indexes: [{
+        unique: true,
+        fields: ['id', 'email']
+      }]
     }
   )
 

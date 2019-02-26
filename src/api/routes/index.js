@@ -19,6 +19,7 @@ import appraisalRegisterRoutes from './appraisalRegister.route'
 import appraisalRouter from './appraisal.route'
 import comparableDataRoutes from './comparableData.route'
 import reportsRoutes from './reports.route'
+import officeRegisterRoutes from './officeRegister.route'
 
 const router = express.Router()
 
@@ -42,5 +43,6 @@ router.use('/appraisal-register', appraisalRegisterRoutes)
 router.use('/appraisal', appraisalRouter)
 router.use('/comparable-data', comparableDataRoutes)
 router.use('/reports', reportsRoutes)
+router.use('/office-register', officeRegisterRoutes)
 
 export default router
