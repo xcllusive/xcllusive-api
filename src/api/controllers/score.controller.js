@@ -225,6 +225,7 @@ export const makePdf = async (req, res, next) => {
     'score',
     'score.html'
   )
+
   const destPdfGenerated = Path.resolve(
     'src',
     'api',
@@ -850,10 +851,7 @@ export const makePdf = async (req, res, next) => {
     })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
-    await page.goto(`data:text/html,${template}`, {
-      waitUntil: 'networkidle2'
-    })
-
+    await page.setContent(template)
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
@@ -916,7 +914,15 @@ export const makePdf = async (req, res, next) => {
     })
 
     // remove pdf temp
-    await fs.unlink(destPdfGenerated)
+    await fs.unlink(destPdfGenerated, err => {
+      if (err) {
+        throw new APIError({
+          message: 'Error on exclude pdf temp file',
+          status: 500,
+          isPublic: true
+        })
+      }
+    })
 
     // return res.sendFile(destPdfGenerated)
     return res.status(200).json({

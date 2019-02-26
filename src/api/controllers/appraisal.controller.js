@@ -822,9 +822,9 @@ export const generatePdf = async (req, res, next) => {
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
-    await page.goto(`data:text/html,${template}`, {
-      waitUntil: 'networkidle0'
-    })
+    // await page.goto(`data:text/html,${template}`, {
+    //   waitUntil: 'networkidle0'
+    // })
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
