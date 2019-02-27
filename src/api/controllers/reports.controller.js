@@ -305,12 +305,23 @@ export const getMarketingReport = async (req, res, next) => {
     const arrayLeadsPerSourceAdelaideIMMerge = _.merge(leadsPerSourceAdelaideIM.rows, leadsPerSourceAdelaideIM.count)
     const changedArrayAdelaideName = arrayLeadsPerSourceAdelaideIMMerge.map(item => {
       return {
+        sourceId: item.sourceId,
         'source.label': item['source.label'],
         'listingAgent.dataRegion': item['listingAgent.dataRegion'],
         countSourceImStageAdelaide: item.count
       }
     })
-    const arrayLeadsPerSourceAdelaide = _.merge(arrayLeadsPerSourceAdelaideCreated, changedArrayAdelaideName)
+    let arrayLeadsPerSourceAdelaide = []
+    arrayLeadsPerSourceAdelaideCreated.forEach(items => {
+      changedArrayAdelaideName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, arrayLeadsPerSourceAdelaideCreated)
+        }
+      })
+    })
 
     // Camberra
     const leadsPerSourceCamberraCreated = await models.Business.findAndCountAll({
@@ -385,7 +396,17 @@ export const getMarketingReport = async (req, res, next) => {
         countSourceImStageCamberra: item.count
       }
     })
-    const arrayLeadsPerSourceCamberra = _.merge(arrayLeadsPerSourceCamberraCreated, changedArrayCamberraName)
+    let arrayLeadsPerSourceCamberra = []
+    arrayLeadsPerSourceCamberraCreated.forEach(items => {
+      changedArrayCamberraName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, arrayLeadsPerSourceCamberraCreated)
+        }
+      })
+    })
 
     // Cowra
     const leadsPerSourceCowraCreated = await models.Business.findAndCountAll({
@@ -455,12 +476,23 @@ export const getMarketingReport = async (req, res, next) => {
     const arrayLeadsPerSourceCowraIMMerge = _.merge(leadsPerSourceCowraIM.rows, leadsPerSourceCowraIM.count)
     const changedArrayCowraName = arrayLeadsPerSourceCowraIMMerge.map(item => {
       return {
+        sourceId: item.sourceId,
         'source.label': item['source.label'],
         'listingAgent.dataRegion': item['listingAgent.dataRegion'],
         countSourceImStageCowra: item.count
       }
     })
-    const arrayLeadsPerSourceCowra = _.merge(arrayLeadsPerSourceCowraCreated, changedArrayCowraName)
+    let arrayLeadsPerSourceCowra = []
+    arrayLeadsPerSourceCowraCreated.forEach(items => {
+      changedArrayCowraName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, arrayLeadsPerSourceCowraCreated)
+        }
+      })
+    })
 
     // Gosford
     const leadsPerSourceGosfordCreated = await models.Business.findAndCountAll({
@@ -530,12 +562,23 @@ export const getMarketingReport = async (req, res, next) => {
     const arrayLeadsPerSourceGosfordIMMerge = _.merge(leadsPerSourceGosfordIM.rows, leadsPerSourceGosfordIM.count)
     const changedArrayGosfordName = arrayLeadsPerSourceGosfordIMMerge.map(item => {
       return {
+        sourceId: item.sourceId,
         'source.label': item['source.label'],
         'listingAgent.dataRegion': item['listingAgent.dataRegion'],
         countSourceImStageGosford: item.count
       }
     })
-    const arrayLeadsPerSourceGosford = _.merge(arrayLeadsPerSourceGosfordCreated, changedArrayGosfordName)
+    let arrayLeadsPerSourceGosford = []
+    arrayLeadsPerSourceGosfordCreated.forEach(items => {
+      changedArrayGosfordName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, arrayLeadsPerSourceGosfordCreated)
+        }
+      })
+    })
 
     // Melbourne
     const leadsPerSourceMelbourneCreated = await models.Business.findAndCountAll({
@@ -603,14 +646,26 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceMelbourneIMMerge = _.merge(leadsPerSourceMelbourneIM.rows, leadsPerSourceMelbourneIM.count)
+
     const changedArrayMelbourneName = arrayLeadsPerSourceMelbourneIMMerge.map(item => {
       return {
+        sourceId: item.sourceId,
         'source.label': item['source.label'],
         'listingAgent.dataRegion': item['listingAgent.dataRegion'],
         countSourceImStageMelbourne: item.count
       }
     })
-    const arrayLeadsPerSourceMelbourne = _.merge(arrayLeadsPerSourceMelbourneCreated, changedArrayMelbourneName)
+    let arrayLeadsPerSourceMelbourne = []
+    arrayLeadsPerSourceMelbourneCreated.forEach(items => {
+      changedArrayMelbourneName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, arrayLeadsPerSourceMelbourneCreated)
+        }
+      })
+    })
 
     // Sydney
     const leadsPerSourceSydneyCreated = await models.Business.findAndCountAll({
@@ -680,12 +735,23 @@ export const getMarketingReport = async (req, res, next) => {
     const arrayLeadsPerSourceSydneyIMMerge = _.merge(leadsPerSourceSydneyIM.rows, leadsPerSourceSydneyIM.count)
     const changedArraySydneyName = arrayLeadsPerSourceSydneyIMMerge.map(item => {
       return {
+        sourceId: item.sourceId,
         'source.label': item['source.label'],
         'listingAgent.dataRegion': item['listingAgent.dataRegion'],
         countSourceImStageSydney: item.count
       }
     })
-    const arrayLeadsPerSourceSydney = _.merge(arrayLeadsPerSourceSydneyCreated, changedArraySydneyName)
+    let arrayLeadsPerSourceSydney = []
+    arrayLeadsPerSourceMelbourneCreated.forEach(items => {
+      changedArraySydneyName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, arrayLeadsPerSourceSydneyCreated)
+        }
+      })
+    })
 
     // Queensland
     const leadsPerSourceQueenslandCreated = await models.Business.findAndCountAll({
@@ -755,12 +821,23 @@ export const getMarketingReport = async (req, res, next) => {
     const arrayLeadsPerSourceQueenslandIMMerge = _.merge(leadsPerSourceQueenslandIM.rows, leadsPerSourceQueenslandIM.count)
     const changedArrayQueenslandName = arrayLeadsPerSourceQueenslandIMMerge.map(item => {
       return {
+        sourceId: item.sourceId,
         'source.label': item['source.label'],
         'listingAgent.dataRegion': item['listingAgent.dataRegion'],
         countSourceImStageQueensland: item.count
       }
     })
-    const arrayLeadsPerSourceQueensland = _.merge(arrayLeadsPerSourceQueenslandCreated, changedArrayQueenslandName)
+    let arrayLeadsPerSourceQueensland = []
+    arrayLeadsPerSourceQueenslandCreated.forEach(items => {
+      changedArrayQueenslandName.forEach(items2 => {
+        if (items.sourceId === items2.sourceId) {
+          const mergeToArray = _.merge(items2, items)
+          arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, mergeToArray)
+        } else {
+          arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, arrayLeadsPerSourceQueenslandCreated)
+        }
+      })
+    })
 
     // STARTS TOTAL LEADS PER SOURCE
     // const totalLeadsPerSourceIM = await models.Business.count({

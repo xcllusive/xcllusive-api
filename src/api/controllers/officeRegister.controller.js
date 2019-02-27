@@ -40,12 +40,20 @@ export const get = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
   const {
-    label
+    label,
+    address,
+    phoneNumber,
+    license,
+    abn
   } = req.body
 
   try {
     await models.OfficeRegister.create({
-      label
+      label,
+      address,
+      phoneNumber,
+      license,
+      abn
     })
 
     return res.status(200).json({
@@ -58,7 +66,11 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
   const {
-    label
+    label,
+    address,
+    phoneNumber,
+    license,
+    abn
   } = req.body
 
   const {
@@ -67,7 +79,11 @@ export const update = async (req, res, next) => {
 
   try {
     await models.OfficeRegister.update({
-      label
+      label,
+      address,
+      phoneNumber,
+      license,
+      abn
     }, {
       where: {
         id: officeRegisterId
