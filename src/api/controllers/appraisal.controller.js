@@ -268,20 +268,22 @@ export const generatePdf = async (req, res, next) => {
 
     // start prepared by
     const loggedUser = await models.User.findOne({
+      raw: true,
       where: {
         id: req.user.id
-      }
+      },
+      include: [{
+        model: models.OfficeRegister,
+        as: 'office',
+        where: {
+          id: {
+            $col: 'User.officeId'
+          }
+        }
+      }]
     })
-    var regionOfficeUser = ''
-    if (loggedUser.dataRegion === 'Sydney Office') regionOfficeUser = 'G14, 1-15 Barr Street, Balmain NSW 2041'
-    if (loggedUser.dataRegion === 'Melbourne Office') regionOfficeUser = 'Suite 2, 276 High Street, Kew, VIC 3101'
-    if (loggedUser.dataRegion === 'Queensland Office') regionOfficeUser = 'Spring Hill, Qld 4004'
-    if (loggedUser.dataRegion === 'Gosford Office') regionOfficeUser = 'Pegasus Business Centre, Suite 2a/3 Racecourse Rd, Gosford NSW 2250'
-    if (loggedUser.dataRegion === 'Cowra Office') regionOfficeUser = 'PO Box 182, Cowra, NSW 2794'
-    if (loggedUser.dataRegion === 'Camberra Office') regionOfficeUser = 'Cooma, NSW 2630'
-    if (loggedUser.dataRegion === 'Adelaide Office') regionOfficeUser = 'Westpac House Level 30, 91 King William Street, Adelaide SA 5000'
 
-    context.preparedBy = `Xcllusive Business Sales </br>${regionOfficeUser} </br>(02) 9817 3331 </br>www.xcllusive.com.au </br>Lic: 172 3536 </br>ABN: 99 144 870 762`
+    context.preparedBy = `Xcllusive Business Sales </br>${loggedUser['office.address']} </br>${loggedUser['office.phoneNumber']} </br>www.xcllusive.com.au </br>Lic: ${loggedUser['office.license']} </br>ABN: ${loggedUser['office.abn']}`
     // ends prepared by
 
     /* profits table */
@@ -822,9 +824,10 @@ export const generatePdf = async (req, res, next) => {
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
-    // await page.goto(`data:text/html,${template}`, {
-    //   waitUntil: 'networkidle0'
-    // })
+    // await page.setContent(template)
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle0'
+    })
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
