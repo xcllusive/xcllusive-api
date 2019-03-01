@@ -371,6 +371,10 @@ export const update = async (req, res, next) => {
       req.body.daysOnTheMarket = moment()
     }
 
+    if (business.stageId !== 4 && req.body.stageId === 4) {
+      req.body.dateChangedToForSale = moment()
+    }
+
     await models.Business.update(req.body, {
       where: {
         id: idBusiness
@@ -1464,8 +1468,6 @@ export const updateStageMemo = async (req, res, next) => {
 
     updateMemo.dateChangedToSalesMemorandum = moment().toDate()
     updateMemo.currentPrice = updateMemo.listedPrice
-
-    console.log(updateMemo)
 
     await models.Business.update(updateMemo, {
       where: {

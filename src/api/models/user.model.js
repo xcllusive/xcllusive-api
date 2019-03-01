@@ -129,6 +129,10 @@ export default (sequelize, DataTypes) => {
     models.User.hasMany(models.EmailTemplate, {
       foreignKey: 'modifiedBy_id'
     })
+    models.User.belongsTo(models.OfficeRegister, {
+      foreignKey: 'officeId',
+      as: 'office'
+    })
   }
 
   return User
