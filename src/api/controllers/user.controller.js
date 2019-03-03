@@ -11,17 +11,23 @@ import {
 } from '../constants/roles'
 
 export const getLogged = async (req, res, next) => {
-  const { id } = req.query
+  const {
+    id
+  } = req.query
   try {
     let userLogged = {}
 
     if (id > 0) {
       userLogged = await models.User.findOne({
-        where: { id: id }
+        where: {
+          id: id
+        }
       })
     } else {
       userLogged = await models.User.findOne({
-        where: { id: req.user.id }
+        where: {
+          id: req.user.id
+        }
       })
     }
 
@@ -34,7 +40,12 @@ export const getLogged = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { search, admin, broker, introducer } = req.query
+  const {
+    search,
+    admin,
+    broker,
+    introducer
+  } = req.query
 
   const isAdmin = admin ? JSON.parse(admin) : true
   const isBroker = broker ? JSON.parse(broker) : true
@@ -47,28 +58,26 @@ export const list = async (req, res, next) => {
 
   try {
     const whereOptions =
-      search && search.length > 1
-        ? {
-          where: {
-            $or: [
-              {
-                firstName: {
-                  $like: `%${search}%`
-                }
-              },
-              {
-                lastName: {
-                  $like: `%${search}%`
-                }
-              }
-            ],
-            userType: arrayType
-          }
+      search && search.length > 1 ? {
+        where: {
+          $or: [{
+            firstName: {
+              $like: `%${search}%`
+            }
+          }, {
+            lastName: {
+              $like: `%${search}%`
+            }
+          }],
+          userType: arrayType
         }
-        : null
+      }
+      : null
 
     const options = {
-      attributes: { exclude: ['password'] },
+      attributes: {
+        exclude: ['password']
+      },
       where: {
         userType: arrayType
       }
@@ -108,17 +117,28 @@ export const create = async (req, res, next) => {
   req.body.createBy = req.user.id
 
   try {
-    const { email } = req.body
+    const {
+      email
+    } = req.body
     const userExists = await models.User.findOne({
       attributes: ['email'],
-      where: { email }
+      where: {
+        email
+      }
     })
     if (userExists) {
-      const err = { message: 'User already exists', status: 400, isPublic: true }
+      const err = {
+        message: 'User already exists',
+        status: 400,
+        isPublic: true
+      }
       throw err
     }
     const newUser = await models.User.create(req.body)
-    return res.status(200).json({ data: newUser, message: 'User created with success' })
+    return res.status(200).json({
+      data: newUser,
+      message: 'User created with success'
+    })
   } catch (err) {
     return next(err)
   }
@@ -158,21 +178,35 @@ export const update = async (req, res, next) => {
   if (!password) delete req.body.password
 
   try {
-    await models.User.update(req.body, { where: { id: req.body.id } })
+    await models.User.update(req.body, {
+      where: {
+        id: req.body.id
+      }
+    })
     return res
       .status(200)
-      .json({ message: `User ${req.body.firstName} updated with success` })
+      .json({
+        message: `User ${req.body.firstName} updated with success`
+      })
   } catch (err) {
     return next(err)
   }
 }
 
 export const remove = async (req, res, next) => {
-  const { id } = req.body
+  const {
+    id
+  } = req.body
 
   try {
-    await models.User.destroy({ where: { id } })
-    return res.status(200).json({ message: 'User removed with success' })
+    await models.User.destroy({
+      where: {
+        id
+      }
+    })
+    return res.status(200).json({
+      message: 'User removed with success'
+    })
   } catch (error) {
     return next(error)
   }
