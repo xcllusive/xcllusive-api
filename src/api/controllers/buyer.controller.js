@@ -1405,6 +1405,7 @@ export const sendGroupEmail = async (req, res, next) => {
         subject,
         replyTo: buyer.replyTo
           ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
+        cc: req.user.email,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         

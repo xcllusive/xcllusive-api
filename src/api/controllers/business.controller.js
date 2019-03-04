@@ -1562,3 +1562,19 @@ export const uploadIM = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getAllPhonesEmailsBusinesses = async (req, res, next) => {
+  try {
+    const phonesAndEmail = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'businessName', 'vendorPhone1', 'vendorEmail']
+    })
+
+    return res.status(201).json({
+      data: phonesAndEmail,
+      message: ''
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
