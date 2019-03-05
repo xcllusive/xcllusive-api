@@ -1781,3 +1781,54 @@ export const getBusinessHistoricalWeekly = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const verifyDuplicatedBuyer = async (req, res, next) => {
+  const {
+    telephone1,
+    email
+  } = req.query
+
+  const telephoneRaw = telephone1.split(' ').join('').split('-').join('')
+
+  let whereOptions = {}
+  if (email !== '' && email !== ' ') {
+    whereOptions.$or = [{
+      email: {
+        $like: `%${email}%`
+      }
+    }]
+  }
+  if (telephone1 !== '' && telephone1 !== ' ') {
+    if (email !== '' && email !== ' ') {
+      whereOptions.$or.push([{
+        telephone1Number: {
+          $like: `%${telephoneRaw}%`
+        }
+      }])
+    } else {
+      whereOptions.$or = [{
+        telephone1Number: {
+          $like: `%${telephoneRaw}%`
+        }
+      }]
+    }
+  }
+
+  try {
+    let duplicatedBuyers = null
+    if ((telephone1 !== '' && telephone1 !== ' ') || (email !== '' && email !== ' ')) {
+      duplicatedBuyers = await models.Buyer.findOne({
+        raw: true,
+        attributes: ['firstName', 'surname', 'email', 'telephone1'],
+        where: whereOptions
+      })
+    }
+
+    return res.status(201).json({
+      data: duplicatedBuyers,
+      message: ''
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
