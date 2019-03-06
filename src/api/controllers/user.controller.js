@@ -118,7 +118,8 @@ export const create = async (req, res, next) => {
 
   try {
     const {
-      email
+      email,
+      officeId
     } = req.body
     const userExists = await models.User.findOne({
       attributes: ['email'],
@@ -134,6 +135,16 @@ export const create = async (req, res, next) => {
       }
       throw err
     }
+
+    const regionlabel = await models.OfficeRegister.findOne({
+      raw: true,
+      attributes: ['label'],
+      where: {
+        id: officeId
+      }
+    })
+    req.body.dataRegion = regionlabel
+
     const newUser = await models.User.create(req.body)
     return res.status(200).json({
       data: newUser,
