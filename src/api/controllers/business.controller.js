@@ -288,7 +288,7 @@ export const create = async (req, res, next) => {
     newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
-      text: 'New  Business',
+      text: 'New Business',
       createdBy_id: req.user.id,
       followUpStatus: 'Pending',
       followUp: moment(),
@@ -322,6 +322,7 @@ export const create = async (req, res, next) => {
     }
 
     return res.status(200).json({
+      data: business,
       message: 'Business created sucessfully'
     })
   } catch (error) {
@@ -1563,15 +1564,38 @@ export const uploadIM = async (req, res, next) => {
   }
 }
 
-export const getAllPhonesEmailsBusinesses = async (req, res, next) => {
-  try {
-    const phonesAndEmail = await models.Business.findAll({
-      raw: true,
-      attributes: ['id', 'businessName', 'vendorPhone1', 'vendorEmail']
-    })
+export const verifyDuplicatedBusiness = async (req, res, next) => {
+  const {
+    vendorPhone1,
+    vendorEmail
+  } = req.query
 
+  const telephoneRaw = vendorPhone1.split(' ').join('').split('-').join('')
+
+  try {
+    const businesses = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'firstNameV', 'lastNameV', 'businessName', 'vendorPhone1', 'vendorEmail']
+      // where: {
+      //   $or: [{
+      //     vendorPhone1: {
+      //       $like: `%${telephoneRaw}%`
+      //     }
+      //   }, {
+      //     vendorEmail: {
+      //       $like: `%${vendorEmail}%`
+      //     }
+      //   }]
+      // }
+    })
+    let duplicatedBusiness = null
+    businesses.forEach(item => {
+      if ((item.vendorPhone1 && item.vendorPhone1.split(' ').join('').split('-').join('') === telephoneRaw) || (item.vendorEmail === vendorEmail)) {
+        duplicatedBusiness = item
+      }
+    })
     return res.status(201).json({
-      data: phonesAndEmail,
+      data: duplicatedBusiness,
       message: ''
     })
   } catch (error) {

@@ -23,7 +23,7 @@ import {
   getAllPerUser,
   updateStageMemo,
   uploadIM,
-  getAllPhonesEmailsBusinesses
+  verifyDuplicatedBusiness
 } from '../controllers/business.controller'
 
 import {
@@ -45,7 +45,7 @@ router.use(authMiddleware).use(authorizeMiddleware({
 
 router.route('/upload-im').post(validate(validation.uploadedIM), uploadIM)
 
-router.route('/phones-emails-businesses').get(getAllPhonesEmailsBusinesses)
+router.route('/duplicated-business').get(verifyDuplicatedBusiness)
 
 router.route('/:idBusiness/stage-sales-memo').put(updateStageMemo)
 
