@@ -91,7 +91,7 @@ export default (sequelize, DataTypes) => {
       },
       dataRegion: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       officeId: {
         type: DataTypes.INTEGER,
