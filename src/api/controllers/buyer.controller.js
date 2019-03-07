@@ -1000,8 +1000,6 @@ export const updateLog = async (req, res, next) => {
     modifiedBy_id: req.user.id
   }
 
-  console.log('ESTOU AQUI')
-
   try {
     // Verify exists log
     const log = await models.BuyerLog.findOne({
@@ -1184,7 +1182,14 @@ export const getBuyersFromBusiness = async (req, res, next) => {
           as: 'BuyerLog'
         }, 'followUp', 'DESC']
       ]
+
     })
+    // console.log(buyersFromBusiness)
+    // if (showAll) {
+    //   console.log('cayo')
+    //   console.log(buyersFromBusiness)
+    // }
+
     return res.status(201).json({
       data: {
         array: buyersFromBusiness,
