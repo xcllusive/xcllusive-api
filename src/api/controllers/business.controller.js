@@ -1121,6 +1121,18 @@ export const createStageSold = async (req, res, next) => {
   newSold.modifiedBy_id = req.user.id
 
   try {
+    await models.Business.update({
+      typeId: newSold.businessType,
+      businessType: newSold.businessType,
+      industry: newSold.industry
+    }, {
+      where: {
+        id: idBusiness
+      }
+    })
+
+    console.log(newSold)
+
     const sold = await models.BusinessSold.create(newSold)
 
     return res.status(201).json({
@@ -1142,6 +1154,16 @@ export const updateStageSold = async (req, res, next) => {
   updatedSold.modifiedBy_id = req.user.id
 
   try {
+    await models.Business.update({
+      typeId: updatedSold.businessType,
+      businessType: updatedSold.businessType,
+      industry: updatedSold.industry
+    }, {
+      where: {
+        id: idBusiness
+      }
+    })
+
     await models.BusinessSold.update(updatedSold, {
       where: {
         id: updatedSold.id
