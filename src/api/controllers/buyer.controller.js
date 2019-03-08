@@ -1184,11 +1184,6 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       ]
 
     })
-    // console.log(buyersFromBusiness)
-    // if (showAll) {
-    //   console.log('cayo')
-    //   console.log(buyersFromBusiness)
-    // }
 
     return res.status(201).json({
       data: {
