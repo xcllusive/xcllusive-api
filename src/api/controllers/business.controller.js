@@ -1610,7 +1610,7 @@ export const verifyDuplicatedBusiness = async (req, res, next) => {
     })
     let duplicatedBusiness = null
     businesses.forEach(item => {
-      if ((item.vendorPhone1 && item.vendorPhone1.split(' ').join('').split('-').join('') === telephoneRaw) || (item.vendorEmail === vendorEmail)) {
+      if ((item.vendorPhone1 && item.vendorPhone1.split(' ').join('').split('-').join('') === telephoneRaw) || (item.vendorEmail && item.vendorEmail === vendorEmail)) {
         duplicatedBusiness = item
       }
     })
