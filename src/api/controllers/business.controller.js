@@ -1131,8 +1131,6 @@ export const createStageSold = async (req, res, next) => {
       }
     })
 
-    console.log(newSold)
-
     const sold = await models.BusinessSold.create(newSold)
 
     return res.status(201).json({

@@ -95,6 +95,18 @@ export default (sequelize, DataTypes) => {
       industry: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      year1Label: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      year2Label: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      year3Label: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',
