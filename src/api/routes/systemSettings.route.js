@@ -3,17 +3,28 @@ import validate from 'express-validation'
 import * as validation from '../validations/systemSettings.validation'
 import {
   getAllSettings,
-  update
+  update,
+  executeJavaScript
 } from '../controllers/systemSettings.controller'
-import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
-import { SYSTEM_SETTINGS_MENU } from '../constants/roles'
+import {
+  authMiddleware,
+  authorizeMiddleware
+} from '../middlewares/auth'
+import {
+  SYSTEM_SETTINGS_MENU
+} from '../constants/roles'
 
 const router = express.Router()
 
-router.use(authMiddleware).use(authorizeMiddleware({ roles: [SYSTEM_SETTINGS_MENU] }))
+router.use(authMiddleware).use(authorizeMiddleware({
+  roles: [SYSTEM_SETTINGS_MENU]
+}))
 
 router.route('/')
   .get(getAllSettings)
   .put(validate(validation.update), update)
+
+router.route('/execute-javascript')
+  .get(executeJavaScript)
 
 export default router
