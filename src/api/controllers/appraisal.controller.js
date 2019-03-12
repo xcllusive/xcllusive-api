@@ -76,6 +76,7 @@ export const create = async (req, res, next) => {
 
   newAppraisal.createdBy_id = req.user.id
   newAppraisal.dateTimeCreated = moment().toDate()
+  newAppraisal.comparableDataSelectedList = '[]'
 
   try {
     // Verify exists appraisal to change the stage to appraisal if you do not have any
