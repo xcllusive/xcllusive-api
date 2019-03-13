@@ -576,24 +576,45 @@ export const updateStageLost = async (req, res, next) => {
 
 Lost Notes: ${updateBusiness.afterSalesNotes}
 
-Mark all Pending communications with this Vendor as Done: ${
-  updateBusiness.pendingDone === true ? 'Yes' : 'No'
-}
-
 Did you meet with this vendor? ${
   updateBusiness.saleNotesLostMeeting === true ? 'Yes' : 'No'
-} : ${updateBusiness.recoveryStageNotWant}
+}
 
 Did we want this business? ${
   updateBusiness.saleNotesLostWant === true ? 'Yes' : 'No'
-} : ${updateBusiness.recoveryStageNotSigned}
+}
 
 `,
         createdBy_id: req.user.id,
-        followUpStatus: 'Done',
+        followUpStatus: 'Pending',
         followUp: moment(updateBusiness.date),
         business_id: idBusiness
       })
+    }
+
+    if (updateBusiness.addLeadNurtureList) {
+      const systemSettings = await models.SystemSettings.findOne({
+        where: {
+          id: 1
+        }
+      })
+      const emailMarketing = systemSettings.emailMarketing
+      const mailOptions = {
+        to: emailMarketing,
+        from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+        subject: 'Lead Nurture',
+        html: `Please add to Lead Nurture List:
+        </br></br>
+        <b>Business Name:</b> ${business.businessName}
+        </br>
+        <b>Owner:</b> ${business.firstNameV} ${business.lastNameV}
+        </br>
+        <b>Email:</b> ${business.vendorEmail}
+        `
+      }
+
+      // Send Email
+      await mailer.sendMail(mailOptions)
     }
 
     return res
@@ -1417,6 +1438,38 @@ export const getAllPerUser = async (req, res, next) => {
           ]
         })
       )
+      if (parseInt(stageId) === 1) {
+        const businessesLost = await models.Business.findAll(
+          Object.assign(whereOptions, {
+            attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+            where: {
+              stageId: 8
+            },
+            include: {
+              model: models.BusinessLog,
+              as: 'BusinessLog',
+              where: {
+                business_id: {
+                  $col: 'Business.id'
+                },
+                followUpStatus: 'Pending',
+                followUp: {
+                  $lte: moment().toDate()
+                }
+              }
+            },
+            order: [
+              [{
+                model: models.BusinessLog,
+                as: 'BusinessLog'
+              }, 'followUp', 'DESC']
+            ]
+          })
+        )
+        businessesLost.forEach(item => {
+          response.push(item)
+        })
+      }
 
       return res
         .status(200)

@@ -39,7 +39,6 @@ export const update = async (req, res, next) => {
         isPublic: true
       })
     }
-
     await models.SystemSettings.update(updateSettings, {
       where: {
         id: 1
@@ -68,7 +67,6 @@ export const executeJavaScript = async (req, res, next) => {
     const mergedArray = _.merge(allDuplicatedPending.count, allDuplicatedPending.rows)
 
     mergedArray.forEach(async item => {
-      console.log(item.count)
       if (item.count > 1) {
         const listDuplicatedPerBuyer = await models.BuyerLog.findAll({
           raw: true,
@@ -99,11 +97,9 @@ export const executeJavaScript = async (req, res, next) => {
         })
       }
     })
-
-    // console.log(newArray)
     return res.status(201).json({
       data: allDuplicatedPending,
-      message: 'System Settings updated with success'
+      message: 'JavaScript executed successfully'
     })
   } catch (error) {
     return next(error)
