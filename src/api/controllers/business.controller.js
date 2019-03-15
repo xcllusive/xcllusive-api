@@ -1124,7 +1124,7 @@ export const getStageSold = async (req, res, next) => {
 
     return res.status(201).json({
       data: sold,
-      message: 'Get sold successfuly'
+      message: 'Get sold successfully'
     })
   } catch (error) {
     return next(error)
@@ -1156,7 +1156,7 @@ export const createStageSold = async (req, res, next) => {
 
     return res.status(201).json({
       data: sold,
-      message: 'Create with successfuly'
+      message: 'Create with successfully'
     })
   } catch (error) {
     return next(error)
@@ -1191,7 +1191,7 @@ export const updateStageSold = async (req, res, next) => {
 
     return res.status(201).json({
       data: null,
-      message: 'Update with successfuly'
+      message: 'Update with successfully'
     })
   } catch (error) {
     return next(error)

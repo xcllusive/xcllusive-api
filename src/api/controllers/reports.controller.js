@@ -1,4 +1,5 @@
 import models from '../../config/sequelize'
+import APIError from '../utils/APIError'
 import _ from 'lodash'
 
 export const getMarketingReport = async (req, res, next) => {
@@ -936,6 +937,84 @@ export const getMarketingReport = async (req, res, next) => {
         arrayLeadsPerSourceQueensland,
         arrayOffices
       }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getAllAnalysts = async (req, res, next) => {
+  const _mapValuesToArray = array => {
+    if (array.length > 0) {
+      if (array[0].firstName) {
+        return array.map((item, index) => ({
+          key: index,
+          text: `${item.firstName} ${item.lastName}`,
+          value: item.id
+        }))
+      }
+      return array.map((item, index) => ({
+        key: index,
+        text: item.label,
+        value: item.id
+      }))
+    }
+    return []
+  }
+
+  try {
+    const allAnalysts = await models.User.findAll({
+      raw: true,
+      where: {
+        listingAgent: true
+      },
+      order: [
+        ['firstName', 'ASC']
+      ]
+    })
+    if (!allAnalysts) {
+      throw new APIError({
+        message: 'Analysts not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(201).json({
+      data: _mapValuesToArray(allAnalysts),
+      message: 'Analysts got successfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getAnalystReport = async (req, res, next) => {
+  const analystId = req.query.analystId
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  try {
+    const allAnalysts = await models.User.findAll({
+      raw: true,
+      where: {
+        listingAgent: true
+      },
+      order: [
+        ['firstName', 'ASC']
+      ]
+    })
+    if (!allAnalysts) {
+      throw new APIError({
+        message: 'Analysts not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(201).json({
+      data: _mapValuesToArray(allAnalysts),
+      message: 'Analysts got successfully'
     })
   } catch (error) {
     return next(error)

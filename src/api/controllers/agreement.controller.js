@@ -407,7 +407,7 @@ export const sendEmail = async (req, res, next) => {
 
     return res.status(201).json({
       data: responseMailer,
-      message: 'Send email successfuly'
+      message: 'Send email successfully'
     })
   } catch (error) {
     return next(error)

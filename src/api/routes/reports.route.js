@@ -1,7 +1,9 @@
 import express from 'express'
 // import validate from 'express-validation'
 import {
-  getMarketingReport
+  getMarketingReport,
+  getAllAnalysts,
+  getAnalystReport
 } from '../controllers/reports.controller'
 import {
   authMiddleware,
@@ -20,5 +22,13 @@ router.use(authMiddleware).use(authorizeMiddleware({
 router
   .route('/marketing-report')
   .get(getMarketingReport)
+
+router
+  .route('/all-analysts')
+  .get(getAllAnalysts)
+
+router
+  .route('/analysts-report')
+  .get(getAnalystReport)
 
 export default router
