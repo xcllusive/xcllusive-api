@@ -1413,6 +1413,7 @@ export const getAllPerUser = async (req, res, next) => {
   }
 
   try {
+    let totalLostRecontact = 0
     if (filterLog && JSON.parse(filterLog)) {
       const response = await models.Business.findAll(
         Object.assign(whereOptions, {
@@ -1438,36 +1439,42 @@ export const getAllPerUser = async (req, res, next) => {
           ]
         })
       )
-      if (parseInt(stageId) === 1) {
-        const businessesLost = await models.Business.findAll(
-          Object.assign(whereOptions, {
-            attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+      const businessesLost = await models.Business.findAll(
+        Object.assign(whereOptions, {
+          attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+          where: {
+            stageId: 8,
+            listingAgent_id: req.user.id
+          },
+          include: {
+            model: models.BusinessLog,
+            as: 'BusinessLog',
             where: {
-              stageId: 8
-            },
-            include: {
-              model: models.BusinessLog,
-              as: 'BusinessLog',
-              where: {
-                business_id: {
-                  $col: 'Business.id'
-                },
-                followUpStatus: 'Pending',
-                followUp: {
-                  $lte: moment().toDate()
-                }
+              business_id: {
+                $col: 'Business.id'
+              },
+              followUpStatus: 'Pending',
+              followUp: {
+                $lte: moment().toDate()
               }
-            },
-            order: [
-              [{
-                model: models.BusinessLog,
-                as: 'BusinessLog'
-              }, 'followUp', 'DESC']
-            ]
-          })
-        )
+            }
+          },
+          order: [
+            [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'followUp', 'DESC']
+          ]
+        })
+      )
+
+      totalLostRecontact = businessesLost.length
+      if (parseInt(stageId) === 1) {
         businessesLost.forEach(item => {
           response.push(item)
+        })
+        response.sort(function (a, b) {
+          return new Date(b.BusinessLog[0].followUp) - new Date(a.BusinessLog[0].followUp)
         })
       }
 
@@ -1475,7 +1482,8 @@ export const getAllPerUser = async (req, res, next) => {
         .status(200)
         .json({
           data: {
-            rows: response
+            rows: response,
+            totalLostRecontact
           },
           message: 'Get businesses succesfuly.'
         })
@@ -1501,12 +1509,50 @@ export const getAllPerUser = async (req, res, next) => {
         ]
       })
     )
+    const businessesLost = await models.Business.findAll(
+      Object.assign(whereOptions, {
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+        where: {
+          stageId: 8,
+          listingAgent_id: req.user.id
+        },
+        include: {
+          model: models.BusinessLog,
+          as: 'BusinessLog',
+          where: {
+            business_id: {
+              $col: 'Business.id'
+            },
+            followUpStatus: 'Pending',
+            followUp: {
+              $lte: moment().toDate()
+            }
+          }
+        },
+        order: [
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
+        ]
+      })
+    )
+    totalLostRecontact = businessesLost.length
+    if (parseInt(stageId) === 1) {
+      businessesLost.forEach(item => {
+        response.push(item)
+      })
+      response.sort(function (a, b) {
+        return new Date(b.BusinessLog[0].followUp) - new Date(a.BusinessLog[0].followUp)
+      })
+    }
 
     return res
       .status(200)
       .json({
         data: {
-          rows: response
+          rows: response,
+          totalLostRecontact
         },
         message: 'Get businesses succesfuly.'
       })
