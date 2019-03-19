@@ -537,6 +537,7 @@ export const updateStageLost = async (req, res, next) => {
   updateBusiness.modifiedBy_id = req.user.id
   updateBusiness.stageId = 8
   updateBusiness.lostDate = moment().toDate()
+  updateBusiness.addLeadNurtureList = updateBusiness.addLeadNurtureList === 'Yes'
 
   try {
     // Verify exists business

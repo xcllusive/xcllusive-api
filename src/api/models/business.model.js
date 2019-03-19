@@ -199,6 +199,10 @@ export default (sequelize, DataTypes) => {
       conductedAt: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      addLeadNurtureList: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',
@@ -243,10 +247,12 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'typeId'
     })
     models.Business.belongsTo(models.BusinessStageNotSigned, {
-      foreignKey: 'stageNotSignedId'
+      foreignKey: 'stageNotSignedId',
+      as: 'stageNotSigned'
     })
     models.Business.belongsTo(models.BusinessStageNotWant, {
-      foreignKey: 'stageNotWantId'
+      foreignKey: 'stageNotWantId',
+      as: 'stageNotWant'
     })
     models.Business.hasMany(models.BusinessLog, {
       foreignKey: 'business_id',
