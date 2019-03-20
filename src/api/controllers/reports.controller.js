@@ -1166,3 +1166,41 @@ export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getBusinessesPerAnalyst = async (req, res, next) => {
+  const analystId = req.query.analystId
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  try {
+    const listBusinessesDateCreated = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        },
+        listingAgent_id: analystId
+      }
+    })
+
+    const listBusinessesSalesMemorandum = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+      where: {
+        dateChangedToSalesMemorandum: {
+          $between: [dateFrom, dateTo]
+        },
+        listingAgent_id: analystId
+      }
+    })
+    return res.status(201).json({
+      data: {
+        listBusinessesDateCreated,
+        listBusinessesSalesMemorandum
+      }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
