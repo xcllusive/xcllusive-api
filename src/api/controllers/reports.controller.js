@@ -304,25 +304,27 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceAdelaideIMMerge = _.merge(leadsPerSourceAdelaideIM.rows, leadsPerSourceAdelaideIM.count)
-    const changedArrayAdelaideName = arrayLeadsPerSourceAdelaideIMMerge.map(item => {
-      return {
-        sourceId: item.sourceId,
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageAdelaide: item.count
-      }
-    })
-    let arrayLeadsPerSourceAdelaide = []
-    arrayLeadsPerSourceAdelaideCreated.forEach(items => {
-      changedArrayAdelaideName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, arrayLeadsPerSourceAdelaideCreated)
+    let arrayLeadsPerSourceAdelaide = arrayLeadsPerSourceAdelaideCreated
+    if (arrayLeadsPerSourceAdelaideIMMerge.length > 0) {
+      const changedArrayAdelaideName = arrayLeadsPerSourceAdelaideIMMerge.map(item => {
+        return {
+          sourceId: item.sourceId,
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageAdelaide: item.count
         }
       })
-    })
+      arrayLeadsPerSourceAdelaideCreated.forEach(items => {
+        changedArrayAdelaideName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, arrayLeadsPerSourceAdelaideCreated)
+          }
+        })
+      })
+    }
 
     // Camberra
     const leadsPerSourceCamberraCreated = await models.Business.findAndCountAll({
@@ -390,24 +392,26 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceCamberraIMMerge = _.merge(leadsPerSourceCamberraIM.rows, leadsPerSourceCamberraIM.count)
-    const changedArrayCamberraName = arrayLeadsPerSourceCamberraIMMerge.map(item => {
-      return {
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageCamberra: item.count
-      }
-    })
-    let arrayLeadsPerSourceCamberra = []
-    arrayLeadsPerSourceCamberraCreated.forEach(items => {
-      changedArrayCamberraName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, arrayLeadsPerSourceCamberraCreated)
+    let arrayLeadsPerSourceCamberra = arrayLeadsPerSourceCamberraCreated
+    if (arrayLeadsPerSourceCamberraIMMerge.length > 0) {
+      const changedArrayCamberraName = arrayLeadsPerSourceCamberraIMMerge.map(item => {
+        return {
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageCamberra: item.count
         }
       })
-    })
+      arrayLeadsPerSourceCamberraCreated.forEach(items => {
+        changedArrayCamberraName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, arrayLeadsPerSourceCamberraCreated)
+          }
+        })
+      })
+    }
 
     // Cowra
     const leadsPerSourceCowraCreated = await models.Business.findAndCountAll({
@@ -475,25 +479,27 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceCowraIMMerge = _.merge(leadsPerSourceCowraIM.rows, leadsPerSourceCowraIM.count)
-    const changedArrayCowraName = arrayLeadsPerSourceCowraIMMerge.map(item => {
-      return {
-        sourceId: item.sourceId,
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageCowra: item.count
-      }
-    })
-    let arrayLeadsPerSourceCowra = []
-    arrayLeadsPerSourceCowraCreated.forEach(items => {
-      changedArrayCowraName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, arrayLeadsPerSourceCowraCreated)
+    let arrayLeadsPerSourceCowra = arrayLeadsPerSourceCowraCreated
+    if (arrayLeadsPerSourceCowraIMMerge.length > 0) {
+      const changedArrayCowraName = arrayLeadsPerSourceCowraIMMerge.map(item => {
+        return {
+          sourceId: item.sourceId,
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageCowra: item.count
         }
       })
-    })
+      arrayLeadsPerSourceCowraCreated.forEach(items => {
+        changedArrayCowraName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, arrayLeadsPerSourceCowraCreated)
+          }
+        })
+      })
+    }
 
     // Gosford
     const leadsPerSourceGosfordCreated = await models.Business.findAndCountAll({
@@ -561,25 +567,27 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceGosfordIMMerge = _.merge(leadsPerSourceGosfordIM.rows, leadsPerSourceGosfordIM.count)
-    const changedArrayGosfordName = arrayLeadsPerSourceGosfordIMMerge.map(item => {
-      return {
-        sourceId: item.sourceId,
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageGosford: item.count
-      }
-    })
-    let arrayLeadsPerSourceGosford = []
-    arrayLeadsPerSourceGosfordCreated.forEach(items => {
-      changedArrayGosfordName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, arrayLeadsPerSourceGosfordCreated)
+    let arrayLeadsPerSourceGosford = arrayLeadsPerSourceGosfordCreated
+    if (arrayLeadsPerSourceGosfordIMMerge.length > 0) {
+      const changedArrayGosfordName = arrayLeadsPerSourceGosfordIMMerge.map(item => {
+        return {
+          sourceId: item.sourceId,
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageGosford: item.count
         }
       })
-    })
+      arrayLeadsPerSourceGosfordCreated.forEach(items => {
+        changedArrayGosfordName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, arrayLeadsPerSourceGosfordCreated)
+          }
+        })
+      })
+    }
 
     // Melbourne
     const leadsPerSourceMelbourneCreated = await models.Business.findAndCountAll({
@@ -647,26 +655,27 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceMelbourneIMMerge = _.merge(leadsPerSourceMelbourneIM.rows, leadsPerSourceMelbourneIM.count)
-
-    const changedArrayMelbourneName = arrayLeadsPerSourceMelbourneIMMerge.map(item => {
-      return {
-        sourceId: item.sourceId,
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageMelbourne: item.count
-      }
-    })
-    let arrayLeadsPerSourceMelbourne = []
-    arrayLeadsPerSourceMelbourneCreated.forEach(items => {
-      changedArrayMelbourneName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, arrayLeadsPerSourceMelbourneCreated)
+    let arrayLeadsPerSourceMelbourne = arrayLeadsPerSourceMelbourneCreated
+    if (arrayLeadsPerSourceMelbourneIMMerge.length > 0) {
+      const changedArrayMelbourneName = arrayLeadsPerSourceMelbourneIMMerge.map(item => {
+        return {
+          sourceId: item.sourceId,
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageMelbourne: item.count
         }
       })
-    })
+      arrayLeadsPerSourceMelbourneCreated.forEach(items => {
+        changedArrayMelbourneName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, arrayLeadsPerSourceMelbourneCreated)
+          }
+        })
+      })
+    }
 
     // Sydney
     const leadsPerSourceSydneyCreated = await models.Business.findAndCountAll({
@@ -734,25 +743,27 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceSydneyIMMerge = _.merge(leadsPerSourceSydneyIM.rows, leadsPerSourceSydneyIM.count)
-    const changedArraySydneyName = arrayLeadsPerSourceSydneyIMMerge.map(item => {
-      return {
-        sourceId: item.sourceId,
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageSydney: item.count
-      }
-    })
-    let arrayLeadsPerSourceSydney = []
-    arrayLeadsPerSourceMelbourneCreated.forEach(items => {
-      changedArraySydneyName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, arrayLeadsPerSourceSydneyCreated)
+    let arrayLeadsPerSourceSydney = arrayLeadsPerSourceSydneyCreated
+    if (arrayLeadsPerSourceSydneyIMMerge.length > 0) {
+      const changedArraySydneyName = arrayLeadsPerSourceSydneyIMMerge.map(item => {
+        return {
+          sourceId: item.sourceId,
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageSydney: item.count
         }
       })
-    })
+      arrayLeadsPerSourceMelbourneCreated.forEach(items => {
+        changedArraySydneyName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, arrayLeadsPerSourceSydneyCreated)
+          }
+        })
+      })
+    }
 
     // Queensland
     const leadsPerSourceQueenslandCreated = await models.Business.findAndCountAll({
@@ -820,25 +831,27 @@ export const getMarketingReport = async (req, res, next) => {
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceQueenslandIMMerge = _.merge(leadsPerSourceQueenslandIM.rows, leadsPerSourceQueenslandIM.count)
-    const changedArrayQueenslandName = arrayLeadsPerSourceQueenslandIMMerge.map(item => {
-      return {
-        sourceId: item.sourceId,
-        'source.label': item['source.label'],
-        'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-        countSourceImStageQueensland: item.count
-      }
-    })
-    let arrayLeadsPerSourceQueensland = []
-    arrayLeadsPerSourceQueenslandCreated.forEach(items => {
-      changedArrayQueenslandName.forEach(items2 => {
-        if (items.sourceId === items2.sourceId) {
-          const mergeToArray = _.merge(items2, items)
-          arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, mergeToArray)
-        } else {
-          arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, arrayLeadsPerSourceQueenslandCreated)
+    let arrayLeadsPerSourceQueensland = arrayLeadsPerSourceQueenslandCreated
+    if (arrayLeadsPerSourceQueenslandIMMerge.length > 0) {
+      const changedArrayQueenslandName = arrayLeadsPerSourceQueenslandIMMerge.map(item => {
+        return {
+          sourceId: item.sourceId,
+          'source.label': item['source.label'],
+          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+          countSourceImStageQueensland: item.count
         }
       })
-    })
+      arrayLeadsPerSourceQueenslandCreated.forEach(items => {
+        changedArrayQueenslandName.forEach(items2 => {
+          if (items.sourceId === items2.sourceId) {
+            const mergeToArray = _.merge(items2, items)
+            arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, mergeToArray)
+          } else {
+            arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, arrayLeadsPerSourceQueenslandCreated)
+          }
+        })
+      })
+    }
 
     // STARTS TOTAL LEADS PER SOURCE
     // const totalLeadsPerSourceIM = await models.Business.count({
@@ -1003,6 +1016,25 @@ export const getAnalystReport = async (req, res, next) => {
     }
   }
 
+  let include = [{
+    model: models.BusinessLog,
+    as: 'BusinessLog',
+    where: {
+      business_id: {
+        $col: 'Business.id'
+      }
+    }
+  }, {
+    model: models.BusinessSource,
+    attributes: ['label'],
+    as: 'source',
+    where: {
+      id: {
+        $col: 'Business.sourceId'
+      }
+    }
+  }]
+
   if (parseInt(stageId)) {
     whereOptions.where.stageId = {
       $eq: `${parseInt(stageId)}`
@@ -1012,48 +1044,49 @@ export const getAnalystReport = async (req, res, next) => {
     whereOptions.where.lostDate = {
       $between: [dateFrom, dateTo]
     }
+    include = [{
+      model: models.BusinessLog,
+      as: 'BusinessLog',
+      where: {
+        business_id: {
+          $col: 'Business.id'
+        }
+      }
+    }, {
+      model: models.BusinessSource,
+      attributes: ['label'],
+      as: 'source',
+      where: {
+        id: {
+          $col: 'Business.sourceId'
+        }
+      }
+    }, {
+      model: models.BusinessStageNotSigned,
+      attributes: ['label'],
+      as: 'stageNotSigned',
+      where: {
+        id: {
+          $col: 'Business.stageNotSignedId'
+        }
+      }
+    }, {
+      model: models.BusinessStageNotWant,
+      attributes: ['label'],
+      as: 'stageNotWant',
+      where: {
+        id: {
+          $col: 'Business.stageNotWantId'
+        }
+      }
+    }]
   }
 
   try {
     const response = await models.Business.findAll(
       Object.assign(whereOptions, {
         attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId', 'saleNotesLostMeeting', 'saleNotesLostWant', 'lostDate', 'afterSalesNotes', 'addLeadNurtureList'],
-        include: [{
-          model: models.BusinessLog,
-          as: 'BusinessLog',
-          where: {
-            business_id: {
-              $col: 'Business.id'
-            }
-          }
-        }, {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.BusinessStageNotSigned,
-          attributes: ['label'],
-          as: 'stageNotSigned',
-          where: {
-            id: {
-              $col: 'Business.stageNotSignedId'
-            }
-          }
-        }, {
-          model: models.BusinessStageNotWant,
-          attributes: ['label'],
-          as: 'stageNotWant',
-          where: {
-            id: {
-              $col: 'Business.stageNotWantId'
-            }
-          }
-        }],
+        include: include,
         order: [
           [{
             model: models.BusinessLog,
