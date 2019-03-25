@@ -1309,6 +1309,68 @@ export const getBusinessFromBuyer = async (req, res, next) => {
   }
 }
 
+export const updateBusinessFromBuyers = async (req, res, next) => {
+  const {
+    idBusiness
+  } = req.params
+
+  const {
+    stage,
+    businessSource,
+    businessRating,
+    businessIndustry,
+    businessProduct,
+    businessType,
+    // typeId,
+    brokerAccountName,
+    depositeTakenDate,
+    settlementDate
+  } = req.body
+
+  req.body.stageId = stage === '' ? undefined : stage
+  req.body.sourceId = businessSource === '' ? undefined : businessSource
+  req.body.ratingId = businessRating === '' ? undefined : businessRating
+  req.body.industryId = businessIndustry === '' ? undefined : businessIndustry
+  req.body.productId = businessProduct === '' ? undefined : businessProduct
+  req.body.typeId = businessType === '' ? undefined : businessType
+  // req.body.typeId = typeId === '' ? undefined : typeId
+  req.body.depositeTakenDate =
+    depositeTakenDate instanceof Date ? depositeTakenDate : undefined
+  req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
+  req.body.brokerAccountName = brokerAccountName === '' ? undefined : brokerAccountName
+  req.body.modifiedBy_id = req.user.id
+
+  try {
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
+
+    if (!business.daysOnTheMarket && stage === 4) {
+      req.body.daysOnTheMarket = moment()
+    }
+
+    if (business.stageId !== 4 && req.body.stageId === 4) {
+      req.body.dateChangedToForSale = moment()
+    }
+
+    await models.Business.update(req.body, {
+      where: {
+        id: idBusiness
+      }
+    })
+
+    return res
+      .status(200)
+      .json({
+        message: `Business BS${idBusiness} updated with success`
+      })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const getGroupEmail = async (req, res, next) => {
   const {
     idBusiness
@@ -1827,6 +1889,133 @@ export const verifyDuplicatedBuyer = async (req, res, next) => {
     return res.status(201).json({
       data: duplicatedBuyers,
       message: ''
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const updateBusinessFromBuyer = async (req, res, next) => {
+  const {
+    idBusiness
+  } = req.params
+
+  const {
+    stage,
+    businessSource,
+    businessRating,
+    businessIndustry,
+    businessProduct,
+    businessType,
+    // typeId,
+    brokerAccountName,
+    depositeTakenDate,
+    settlementDate
+  } = req.body
+
+  req.body.stageId = stage === '' ? undefined : stage
+  req.body.sourceId = businessSource === '' ? undefined : businessSource
+  req.body.ratingId = businessRating === '' ? undefined : businessRating
+  req.body.industryId = businessIndustry === '' ? undefined : businessIndustry
+  req.body.productId = businessProduct === '' ? undefined : businessProduct
+  req.body.typeId = businessType === '' ? undefined : businessType
+  // req.body.typeId = typeId === '' ? undefined : typeId
+  req.body.depositeTakenDate =
+    depositeTakenDate instanceof Date ? depositeTakenDate : undefined
+  req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
+  req.body.brokerAccountName = brokerAccountName === '' ? undefined : brokerAccountName
+  req.body.modifiedBy_id = req.user.id
+
+  try {
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
+
+    if (!business.daysOnTheMarket && stage === 4) {
+      req.body.daysOnTheMarket = moment()
+    }
+
+    if (business.stageId !== 4 && req.body.stageId === 4) {
+      req.body.dateChangedToForSale = moment()
+    }
+
+    await models.Business.update(req.body, {
+      where: {
+        id: idBusiness
+      }
+    })
+
+    return res
+      .status(200)
+      .json({
+        message: `Business BS${idBusiness} updated with success`
+      })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getBusinessLogFromBuyer = async (req, res, next) => {
+  const {
+    businessId,
+    search
+  } = req.query
+  const whereOptions = {
+    business_id: businessId
+  }
+
+  try {
+    // Verify exists buyer
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
+
+    if (!business) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    if (search) {
+      whereOptions.$or = [{
+        text: {
+          $like: `%${search}%`
+        }
+      }, {
+        followUpStatus: {
+          $like: `%${search}%`
+        }
+      }]
+    }
+
+    const logs = await models.BusinessLog.findAll({
+      where: whereOptions,
+      order: [
+        ['followUp', 'DESC']
+      ],
+      include: [{
+        model: models.Business,
+        attributes: ['businessName']
+      }, {
+        model: models.User,
+        as: 'CreatedBy'
+      }, {
+        model: models.User,
+        as: 'ModifiedBy'
+      }]
+    })
+
+    return res.status(201).json({
+      data: logs,
+      message: logs.length === 0
+        ? 'Nothing business log found'
+        : 'Get business log with succesfully'
     })
   } catch (error) {
     return next(error)

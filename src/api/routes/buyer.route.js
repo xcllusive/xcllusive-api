@@ -26,7 +26,9 @@ import {
   getBrokersPerRegion,
   getBusinessesPerBroker,
   getBusinessHistoricalWeekly,
-  verifyDuplicatedBuyer
+  verifyDuplicatedBuyer,
+  updateBusinessFromBuyer,
+  getBusinessLogFromBuyer
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import {
@@ -45,7 +47,8 @@ router.use(authMiddleware).use(authorizeMiddleware({
 
 router.route('/from-business/:idBusiness').get(getBuyersFromBusiness)
 
-router.route('/business-from-buyer/:idBusiness').get(getBusinessFromBuyer)
+router.route('/business-from-buyer/:idBusiness').get(getBusinessFromBuyer).put(updateBusinessFromBuyer)
+router.route('/business-log-from-buyer').get(getBusinessLogFromBuyer)
 
 router.route('/business').get(validate(validation.listBusiness), listBusiness)
 

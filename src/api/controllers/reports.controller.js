@@ -11,7 +11,15 @@ export const getMarketingReport = async (req, res, next) => {
     const dateTimeCreated = await models.Business.findAll({
       raw: true,
       attributes: ['listingAgent_id'],
-      where: {
+      where:
+      // Sequelize.where(
+      //   Sequelize.fn('date', Sequelize.col('dateTimeCreated')), 'between', dateFrom,
+      //   Sequelize.and(
+      //     Sequelize.fn('date', Sequelize.col('dateTimeCreated')), '<=', dateTo
+      //   )
+      // ),
+
+      {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
         }
@@ -1085,7 +1093,7 @@ export const getAnalystReport = async (req, res, next) => {
   try {
     const response = await models.Business.findAll(
       Object.assign(whereOptions, {
-        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId', 'saleNotesLostMeeting', 'saleNotesLostWant', 'lostDate', 'afterSalesNotes', 'addLeadNurtureList'],
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId', 'saleNotesLostMeeting', 'saleNotesLostWant', 'lostDate', 'afterSalesNotes', 'addLeadNurtureList', 'dateTimeCreated'],
         include: include,
         order: [
           [{
