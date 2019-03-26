@@ -96,21 +96,23 @@ export const getMarketingReport = async (req, res, next) => {
     })
 
     const mergeArray = _.merge(dateTimeCreated, dateTimeCreatedCount)
-    const changedArrayName = dateChangedToSalesMemorandum.map(item => {
-      return {
-        listingAgent_id: item.listingAgent_id,
-        countImStage: item.count
-      }
-    })
-    let arrayFinal = []
-    changedArrayName.forEach(items => {
-      mergeArray.forEach(items2 => {
-        if (items.listingAgent_id === items2.listingAgent_id) {
-          const mergeToArray = _.merge(items2, items)
-          arrayFinal = _.merge(mergeArray, mergeToArray)
+    let arrayFinal = dateTimeCreated
+    if (mergeArray.length > 0) {
+      const changedArrayName = dateChangedToSalesMemorandum.map(item => {
+        return {
+          listingAgent_id: item.listingAgent_id,
+          countImStage: item.count
         }
       })
-    })
+      changedArrayName.forEach(items => {
+        mergeArray.forEach(items2 => {
+          if (items.listingAgent_id === items2.listingAgent_id) {
+            const mergeToArray = _.merge(items2, items)
+            arrayFinal = _.merge(mergeArray, mergeToArray)
+          }
+        })
+      })
+    }
 
     let sumLeadsAdelaide = 0
     let sumImAdelaide = 0
