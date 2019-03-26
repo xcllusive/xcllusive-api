@@ -28,7 +28,9 @@ import {
   getBusinessHistoricalWeekly,
   verifyDuplicatedBuyer,
   updateBusinessFromBuyer,
-  getBusinessLogFromBuyer
+  getBusinessLogFromBuyer,
+  updateBusinessLogFromBuyer,
+  finaliseBusinessLogFromBuyer
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 import {
@@ -49,6 +51,9 @@ router.route('/from-business/:idBusiness').get(getBuyersFromBusiness)
 
 router.route('/business-from-buyer/:idBusiness').get(getBusinessFromBuyer).put(updateBusinessFromBuyer)
 router.route('/business-log-from-buyer').get(getBusinessLogFromBuyer)
+router.route('/business-log-from-buyer/:idBusiness/finalise').post(finaliseBusinessLogFromBuyer)
+
+router.route('/business-log-from-buyer/:idBusiness').put(updateBusinessLogFromBuyer)
 
 router.route('/business').get(validate(validation.listBusiness), listBusiness)
 

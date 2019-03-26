@@ -2021,3 +2021,56 @@ export const getBusinessLogFromBuyer = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const updateBusinessLogFromBuyer = async (req, res, next) => {
+  const {
+    idBusiness
+  } = req.params
+  const newLog = req.body
+
+  try {
+    await models.BusinessLog.update({
+      followUpStatus: 'Done'
+    }, {
+      where: {
+        business_id: idBusiness
+      }
+    })
+
+    await models.BusinessLog.create({
+      text: newLog.businessLog_text,
+      createdBy_id: req.user.id,
+      followUpStatus: 'Pending',
+      followUp: moment(newLog.businessLog_followUp),
+      business_id: idBusiness
+    })
+    return res.status(200).json({
+      message: 'Business log Saved'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const finaliseBusinessLogFromBuyer = async (req, res, next) => {
+  console.log('olaaa')
+  const {
+    idBusiness
+  } = req.params
+
+  try {
+    await models.BusinessLog.update({
+      followUpStatus: 'Done'
+    }, {
+      where: {
+        business_id: idBusiness
+      }
+    })
+
+    return res.status(200).json({
+      message: 'Business log finalised'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
