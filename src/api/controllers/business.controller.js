@@ -538,6 +538,8 @@ export const updateStageLost = async (req, res, next) => {
   updateBusiness.stageId = 8
   updateBusiness.lostDate = moment().toDate()
   updateBusiness.addLeadNurtureList = updateBusiness.addLeadNurtureList === 'Yes'
+  updateBusiness.stageNotSignedId = !updateBusiness.recoveryStageNotSigned ? 1 : updateBusiness.recoveryStageNotSigned
+  updateBusiness.stageNotWantId = !updateBusiness.recoveryStageNotWant ? 1 : updateBusiness.recoveryStageNotWant
 
   try {
     // Verify exists business
@@ -554,7 +556,6 @@ export const updateStageLost = async (req, res, next) => {
         isPublic: true
       })
     }
-
     await models.Business.update(updateBusiness, {
       where: {
         id: idBusiness
