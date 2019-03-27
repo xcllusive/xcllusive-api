@@ -1401,6 +1401,9 @@ export const getGroupEmail = async (req, res, next) => {
       },
       include: [{
         model: models.Buyer,
+        where: {
+          caReceived: 1
+        },
         as: 'Buyer'
       }]
     })
@@ -1420,7 +1423,6 @@ export const getGroupEmail = async (req, res, next) => {
           })
         )
 
-        console.log('aqui', item.Buyer.caReceived, item.Buyer.scanfilePath)
         if (item.Buyer.caReceived || item.Buyer.scanfilePath !== '') {
           return {
             id: item.Buyer.id,
