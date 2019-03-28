@@ -600,6 +600,11 @@ Did we want this business? ${
           id: 1
         }
       })
+      const analyst = await models.User.findOne({
+        where: {
+          id: business.listingAgent_id
+        }
+      })
       const emailMarketing = systemSettings.emailMarketing
       const mailOptions = {
         to: emailMarketing,
@@ -607,11 +612,14 @@ Did we want this business? ${
         subject: 'Lead Nurture',
         html: `Please add to Lead Nurture List:
         </br></br>
+        <b>Business Number:</b> ${business.id}
         <b>Business Name:</b> ${business.businessName}
         </br>
         <b>Owner:</b> ${business.firstNameV} ${business.lastNameV}
         </br>
         <b>Email:</b> ${business.vendorEmail}
+        </br>
+        <b>Analyst:</b> ${analyst.firstName} ${analyst.lastName}
         `
       }
 
