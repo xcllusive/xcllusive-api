@@ -113,7 +113,7 @@ export default (sequelize, DataTypes) => {
         allowNull: true
       },
       saleNotesLostWant: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: true
       },
       lastNameV: {
