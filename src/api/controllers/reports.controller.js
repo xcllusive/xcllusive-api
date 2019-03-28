@@ -1247,3 +1247,68 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getEnquiryReport = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  console.log('opa', dateFrom)
+
+  try {
+    const newEnquiries = await models.Buyer.findAndCountAll({
+      raw: true,
+      attributes: ['source_id', 'dateTimeCreated'],
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [{
+        model: models.EnquiryBusinessBuyer,
+        as: 'EnquiryBusinessBuyer',
+        attributes: ['dateTimeCreated'],
+        where: {
+          buyer_id: {
+            $col: 'Buyer.id'
+          }
+        }
+      }, {
+        model: models.BuyerSource,
+        as: 'BuyerSource',
+        attributes: ['label'],
+        where: {
+          id: {
+            $col: 'Buyer.source_id'
+          }
+        }
+      }],
+      group: [
+        [{
+          model: models.BuyerSource,
+          as: 'BuyerSource'
+        }, 'id']
+      ],
+      order: [
+        [{
+          model: models.BuyerSource,
+          as: 'BuyerSource'
+        }, 'id', 'ASC']
+      ]
+    })
+    const arrayNewEnquiries = _.merge(newEnquiries.count, newEnquiries.rows)
+
+    const countNewEnquiries = newEnquiries.count.map(item => {
+      return item.count
+    })
+    const totalNewEnquiries = countNewEnquiries.reduce((a, b) => a + b)
+
+    return res.status(201).json({
+      data: {
+        arrayNewEnquiries,
+        totalNewEnquiries
+      }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

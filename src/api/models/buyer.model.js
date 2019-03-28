@@ -1,7 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Buyer = sequelize.define(
-    'Buyer',
-    {
+    'Buyer', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -147,16 +146,13 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       }
-    },
-    {
+    }, {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [
-        {
-          unique: true,
-          fields: ['id']
-        }
-      ]
+      indexes: [{
+        unique: true,
+        fields: ['id']
+      }]
     }
   )
 
@@ -178,7 +174,13 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'buyer_id',
       as: 'BuyerLog'
     })
-    models.Buyer.belongsTo(models.BuyerType, { foreignKey: 'typeId' })
+    models.Buyer.belongsTo(models.BuyerType, {
+      foreignKey: 'typeId'
+    })
+    models.Buyer.belongsTo(models.BuyerSource, {
+      foreignKey: 'source_id',
+      as: 'BuyerSource'
+    })
   }
 
   return Buyer
