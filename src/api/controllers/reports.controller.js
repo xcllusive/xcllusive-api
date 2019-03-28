@@ -1252,8 +1252,6 @@ export const getEnquiryReport = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
 
-  console.log('opa', dateFrom)
-
   try {
     const newEnquiries = await models.Buyer.findAndCountAll({
       raw: true,
@@ -1296,16 +1294,29 @@ export const getEnquiryReport = async (req, res, next) => {
       ]
     })
     const arrayNewEnquiries = _.merge(newEnquiries.count, newEnquiries.rows)
+    const arrayNewEnquiriesOrderByBigger = arrayNewEnquiries.sort(function (a, b) {
+      return b.count - a.count
+    })
 
     const countNewEnquiries = newEnquiries.count.map(item => {
       return item.count
     })
     const totalNewEnquiries = countNewEnquiries.reduce((a, b) => a + b)
 
+    const totalEnquiries = await models.EnquiryBusinessBuyer.count({
+      raw: true,
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      }
+    })
+
     return res.status(201).json({
       data: {
-        arrayNewEnquiries,
-        totalNewEnquiries
+        arrayNewEnquiriesOrderByBigger,
+        totalNewEnquiries,
+        totalEnquiries
       }
     })
   } catch (error) {
