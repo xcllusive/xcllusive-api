@@ -1251,6 +1251,65 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
 export const getEnquiryReport = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
+  const listOfIdOfAnalysts = req.query.listOfIdOfAnalysts
+  let hasAnalystsSelected = true
+  if (listOfIdOfAnalysts === 'false') hasAnalystsSelected = false
+
+  let include = []
+  if (hasAnalystsSelected) {
+    include = [{
+      model: models.EnquiryBusinessBuyer,
+      as: 'EnquiryBusinessBuyer',
+      attributes: ['dateTimeCreated'],
+      where: {
+        buyer_id: {
+          $col: 'Buyer.id'
+        }
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business',
+        attributes: ['listingAgent_id'],
+        where: {
+          id: {
+            $col: 'EnquiryBusinessBuyer.business_id'
+          },
+          listingAgent_id: {
+            $in: listOfIdOfAnalysts
+          }
+        }
+      }]
+    }, {
+      model: models.BuyerSource,
+      as: 'BuyerSource',
+      attributes: ['label'],
+      where: {
+        id: {
+          $col: 'Buyer.source_id'
+        }
+      }
+    }]
+  } else {
+    include = [{
+      model: models.EnquiryBusinessBuyer,
+      as: 'EnquiryBusinessBuyer',
+      attributes: ['dateTimeCreated'],
+      where: {
+        buyer_id: {
+          $col: 'Buyer.id'
+        }
+      }
+    }, {
+      model: models.BuyerSource,
+      as: 'BuyerSource',
+      attributes: ['label'],
+      where: {
+        id: {
+          $col: 'Buyer.source_id'
+        }
+      }
+    }]
+  }
 
   try {
     const newEnquiries = await models.Buyer.findAndCountAll({
@@ -1261,25 +1320,7 @@ export const getEnquiryReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [{
-        model: models.EnquiryBusinessBuyer,
-        as: 'EnquiryBusinessBuyer',
-        attributes: ['dateTimeCreated'],
-        where: {
-          buyer_id: {
-            $col: 'Buyer.id'
-          }
-        }
-      }, {
-        model: models.BuyerSource,
-        as: 'BuyerSource',
-        attributes: ['label'],
-        where: {
-          id: {
-            $col: 'Buyer.source_id'
-          }
-        }
-      }],
+      include: include,
       group: [
         [{
           model: models.BuyerSource,
@@ -1297,20 +1338,43 @@ export const getEnquiryReport = async (req, res, next) => {
     const arrayNewEnquiriesOrderByBigger = arrayNewEnquiries.sort(function (a, b) {
       return b.count - a.count
     })
-
     const countNewEnquiries = newEnquiries.count.map(item => {
       return item.count
     })
     const totalNewEnquiries = countNewEnquiries.reduce((a, b) => a + b)
-
-    const totalEnquiries = await models.EnquiryBusinessBuyer.count({
-      raw: true,
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
+    let totalEnquiries = 0
+    if (hasAnalystsSelected) {
+      totalEnquiries = await models.EnquiryBusinessBuyer.count({
+        raw: true,
+        where: {
+          dateTimeCreated: {
+            $between: [dateFrom, dateTo]
+          }
+        },
+        include: [{
+          model: models.Business,
+          as: 'Business',
+          attributes: ['listingAgent_id'],
+          where: {
+            id: {
+              $col: 'EnquiryBusinessBuyer.business_id'
+            },
+            listingAgent_id: {
+              $in: listOfIdOfAnalysts
+            }
+          }
+        }]
+      })
+    } else {
+      totalEnquiries = await models.EnquiryBusinessBuyer.count({
+        raw: true,
+        where: {
+          dateTimeCreated: {
+            $between: [dateFrom, dateTo]
+          }
         }
-      }
-    })
+      })
+    }
 
     return res.status(201).json({
       data: {
