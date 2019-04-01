@@ -143,6 +143,9 @@ export const getMarketingReport = async (req, res, next) => {
     let indexQueensland = 0
     let sumConvertionRateQueensland = 0
     arrayFinal.forEach(items => {
+      if (!items.countImStage) {
+        items.countImStage = 0
+      }
       if (items['listingAgent.dataRegion'] === 'Adelaide Office') {
         sumLeadsAdelaide = sumLeadsAdelaide + items.count
         sumImAdelaide = sumImAdelaide + items.countImStage
