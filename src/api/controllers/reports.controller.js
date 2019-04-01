@@ -1337,6 +1337,15 @@ export const getEnquiryReport = async (req, res, next) => {
         }, 'id', 'ASC']
       ]
     })
+
+    if (newEnquiries.count.length === 0) {
+      throw new APIError({
+        message: 'There`s no data in the period information',
+        status: 404,
+        isPublic: true
+      })
+    }
+
     const arrayNewEnquiries = _.merge(newEnquiries.count, newEnquiries.rows)
     const arrayNewEnquiriesOrderByBigger = arrayNewEnquiries.sort(function (a, b) {
       return b.count - a.count
