@@ -214,7 +214,7 @@ export const listBusiness = async (req, res, next) => {
               },
               business_id: business.id,
               followUp: {
-                $lte: moment().toDate()
+                $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
               },
               followUpStatus: 'Pending'
             }
