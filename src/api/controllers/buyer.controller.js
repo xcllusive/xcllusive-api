@@ -1134,7 +1134,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       },
       business_id: idBusiness,
       followUp: {
-        $lte: moment().toDate()
+        $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
       },
       followUpStatus: 'Pending'
     }
@@ -2016,8 +2016,7 @@ export const getBusinessLogFromBuyer = async (req, res, next) => {
     return res.status(201).json({
       data: logs,
       message: logs.length === 0
-        ? 'Nothing business log found'
-        : 'Get business log with succesfully'
+        ? 'Nothing business log found' : 'Get business log with succesfully'
     })
   } catch (error) {
     return next(error)
