@@ -511,7 +511,7 @@ export const sendCA = async (req, res, next) => {
     await models.BuyerLog.create({
       followUpStatus: 'Pending',
       text: 'CA Sent',
-      followUp: moment().add(1, 'days'),
+      followUp: moment().add(1, 'days').format('YYYY-MM-DD hh:mm:ss'),
       business_id: businessId,
       buyer_id: buyerId,
       createdBy_id: req.user.id,
@@ -681,7 +681,7 @@ export const sendIM = async (req, res, next) => {
     await models.BuyerLog.create({
       text: `IM Sent to Buyer by ${userLogged.firstName} ${userLogged.lastName}`,
       followUpStatus: 'Pending',
-      followUp: moment().add(1, 'days'),
+      followUp: moment().add(1, 'days').format('YYYY-MM-DD hh:mm:ss'),
       business_id: businessId,
       buyer_id: buyerId,
       createdBy_id: req.user.id,
@@ -788,7 +788,7 @@ export const receivedCA = async (req, res, next) => {
     await models.BuyerLog.create({
       text: 'CA Received',
       followUpStatus: 'Pending',
-      followUp: moment().add(1, 'days'),
+      followUp: moment().add(1, 'days').format('YYYY-MM-DD hh:mm:ss'),
       business_id: businessId,
       buyer_id: buyerId,
       createdBy_id: req.user.id,

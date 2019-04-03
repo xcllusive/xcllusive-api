@@ -208,7 +208,7 @@ export const list = async (req, res, next) => {
               business_id: business.id,
               followUpStatus: 'Pending',
               followUp: {
-                $lte: moment().toDate()
+                $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
               }
             },
             raw: true
@@ -291,7 +291,7 @@ export const create = async (req, res, next) => {
       text: 'New Business',
       createdBy_id: req.user.id,
       followUpStatus: 'Pending',
-      followUp: moment(),
+      followUp: moment().format('YYYY-DD-MM hh:mm:ss'),
       business_id: business.get('id')
     })
 
@@ -696,7 +696,7 @@ export const enquiryBusiness = async (req, res, next) => {
     await models.BuyerLog.create({
       text: 'Business Enquired',
       followUpStatus: 'Done',
-      followUp: moment(),
+      followUp: moment().format('YYYY-DD-MM hh:mm:ss'),
       business_id: businessId,
       buyer_id: buyerId,
       createdBy_id: req.user.id,
@@ -788,7 +788,7 @@ export const emailToBuyer = async (req, res, next) => {
     await models.BuyerLog.create({
       text: `Email to Buyer ${buyer.id} Sent (Under Offer)`,
       followUpStatus: 'Done',
-      followUp: moment(),
+      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
       business_id: businessId,
       buyer_id: buyerId,
       createdBy_id: req.user.id,
@@ -888,7 +888,7 @@ export const sendEnquiryOwner = async (req, res, next) => {
     await models.BuyerLog.create({
       text: 'Enquiry to Owner Sent',
       followUpStatus: 'Done',
-      followUp: moment(),
+      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
       business_id: businessId,
       buyer_id: buyerId,
       createdBy_id: req.user.id,
@@ -945,7 +945,7 @@ export const getBuyersFromBusiness = async (req, res, next) => {
         buyer_id: enquiry.buyer_id,
         business_id: idBusiness,
         followUp: {
-          $lte: moment().toDate()
+          $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
         },
         followUpStatus: 'Pending'
       }
@@ -1265,7 +1265,7 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
           },
           followUpStatus: 'Pending',
           followUp: {
-            $lte: moment().toDate()
+            $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
           }
         }
       }
@@ -1286,7 +1286,7 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
           },
           followUpStatus: 'Pending',
           followUp: {
-            $lte: moment().toDate()
+            $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
           }
         }
       }
@@ -1437,7 +1437,7 @@ export const getAllPerUser = async (req, res, next) => {
               },
               followUpStatus: 'Pending',
               followUp: {
-                $lte: moment().toDate()
+                $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
               }
             }
           },
@@ -1465,7 +1465,7 @@ export const getAllPerUser = async (req, res, next) => {
               },
               followUpStatus: 'Pending',
               followUp: {
-                $lte: moment().toDate()
+                $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
               }
             }
           },
@@ -1535,7 +1535,7 @@ export const getAllPerUser = async (req, res, next) => {
             },
             followUpStatus: 'Pending',
             followUp: {
-              $lte: moment().toDate()
+              $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
             }
           }
         },
