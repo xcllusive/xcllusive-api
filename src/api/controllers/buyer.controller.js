@@ -886,7 +886,7 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
         business_id: businessId
       },
       order: [
-        ['followUp', 'DESC']
+        ['dateTimeCreated', 'DESC']
       ],
       include: [{
         model: models.Business,
