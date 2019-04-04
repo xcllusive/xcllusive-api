@@ -239,7 +239,17 @@ export const generatePdf = async (req, res, next) => {
     const comparableDataSelectedList = await models.BusinessSold.findAll({
       where: {
         id: Array.from(businessSoldselectedListOnlyId)
-      }
+      },
+      include: [{
+        attributes: ['label'],
+        model: models.BusinessType,
+        as: 'BusinessType',
+        where: {
+          id: {
+            $col: 'BusinessSold.businessType'
+          }
+        }
+      }]
     })
 
     const variables = {
@@ -259,6 +269,8 @@ export const generatePdf = async (req, res, next) => {
       client10TO: appraisal.client10TO ? 'Yes' : 'No',
       financialInformationArray: []
     }
+
+    // console.log(businessType)
 
     const context = Object.assign(
       appraisal.get({
@@ -436,21 +448,21 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfit5SalesPebitda = appraisal.calcOperatingProfit5
     context.calcOperatingProfit6SalesPebitda = appraisal.calcOperatingProfit6
 
-    context.calcGrossMarginPerc1GmProfit = appraisal.calcGrossMarginPerc1
-    context.calcGrossMarginPerc2GmProfit = appraisal.calcGrossMarginPerc2
-    context.calcGrossMarginPerc3GmProfit = appraisal.calcGrossMarginPerc3
-    context.calcGrossMarginPerc4GmProfit = appraisal.calcGrossMarginPerc4
-    context.calcGrossMarginPerc5GmProfit = appraisal.calcGrossMarginPerc5
-    context.calcGrossMarginPerc6GmProfit = appraisal.calcGrossMarginPerc6
+    context.calcGrossMarginPerc1GmProfit = numeral(appraisal.calcGrossMarginPerc1).format('0,0.[0]')
+    context.calcGrossMarginPerc2GmProfit = numeral(appraisal.calcGrossMarginPerc2).format('0,0.[0]')
+    context.calcGrossMarginPerc3GmProfit = numeral(appraisal.calcGrossMarginPerc3).format('0,0.[0]')
+    context.calcGrossMarginPerc4GmProfit = numeral(appraisal.calcGrossMarginPerc4).format('0,0.[0]')
+    context.calcGrossMarginPerc5GmProfit = numeral(appraisal.calcGrossMarginPerc5).format('0,0.[0]')
+    context.calcGrossMarginPerc6GmProfit = numeral(appraisal.calcGrossMarginPerc6).format('0,0.[0]')
 
-    context.calcOperatingProfitPerc1GmProfit = appraisal.calcOperatingProfitPerc1
-    context.calcOperatingProfitPerc2GmProfit = appraisal.calcOperatingProfitPerc2
-    context.calcOperatingProfitPerc3GmProfit = appraisal.calcOperatingProfitPerc3
-    context.calcOperatingProfitPerc4GmProfit = appraisal.calcOperatingProfitPerc4
-    context.calcOperatingProfitPerc5GmProfit = appraisal.calcOperatingProfitPerc5
-    context.calcOperatingProfitPerc6GmProfit = appraisal.calcOperatingProfitPerc6
+    context.calcOperatingProfitPerc1GmProfit = numeral(appraisal.calcOperatingProfitPerc1).format('0,0.[0]')
+    context.calcOperatingProfitPerc2GmProfit = numeral(appraisal.calcOperatingProfitPerc2).format('0,0.[0]')
+    context.calcOperatingProfitPerc3GmProfit = numeral(appraisal.calcOperatingProfitPerc3).format('0,0.[0]')
+    context.calcOperatingProfitPerc4GmProfit = numeral(appraisal.calcOperatingProfitPerc4).format('0,0.[0]')
+    context.calcOperatingProfitPerc5GmProfit = numeral(appraisal.calcOperatingProfitPerc5).format('0,0.[0]')
+    context.calcOperatingProfitPerc6GmProfit = numeral(appraisal.calcOperatingProfitPerc6).format('0,0.[0]')
 
-    /* verifying if there's any Year unmarked to show in the pdf  */
+    /* verifying if there's any Year unmark to show in the pdf  */
     if (!appraisal.renderPdfYear1) {
       context.year1ShowHide = ''
       context.sales1GpPebitda = '-'
@@ -626,7 +638,7 @@ export const generatePdf = async (req, res, next) => {
       totalMultiplier = totalMultiplier + multiplier
 
       return {
-        businessType: item.businessType,
+        businessType: item.BusinessType.label,
         turnOver: numeral(item.latestFullYearTotalRevenue).format('$0,0'),
         trend: item.trend,
         stockValue: numeral(item.stockValue).format('$0,0'),

@@ -1,19 +1,42 @@
 import _ from 'lodash'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
-import { stringify } from 'querystring'
 
 export const list = async (req, res, next) => {
-  const { limit, type, priceRangeStart, priceRangeEnd, trend } = req.query
+  const {
+    limit,
+    type,
+    priceRangeStart,
+    priceRangeEnd,
+    trend
+  } = req.query
   const offset = req.skip
 
   let whereOptions = {
     sold: 1
   }
 
-  if (type) whereOptions.businessType = { $like: `%${type}%` }
-  if (priceRangeStart) whereOptions.soldPrice = { $gte: priceRangeStart }
-  if (priceRangeEnd) whereOptions.soldPrice = { $lte: priceRangeEnd }
+  let whereOptionsBusinessType = {
+    id: {
+      $col: 'BusinessSold.businessType'
+    }
+  }
+
+  if (type) {
+    whereOptionsBusinessType.label = {
+      $like: `%${type}%`
+    }
+  }
+  if (priceRangeStart) {
+    whereOptions.soldPrice = {
+      $gte: priceRangeStart
+    }
+  }
+  if (priceRangeEnd) {
+    whereOptions.soldPrice = {
+      $lte: priceRangeEnd
+    }
+  }
   if (priceRangeStart && priceRangeEnd) {
     whereOptions.soldPrice = {
       $and: {
@@ -30,13 +53,24 @@ export const list = async (req, res, next) => {
         isPublic: true
       })
     }
-    whereOptions.trend = { $or: JSON.parse(trend) }
+    whereOptions.trend = {
+      $or: JSON.parse(trend)
+    }
   }
 
   try {
     const businessesSold = await models.BusinessSold.findAndCountAll({
+      raw: true,
       where: whereOptions,
-      order: [['soldDate', 'DESC']],
+      include: [{
+        attributes: ['label'],
+        model: models.BusinessType,
+        as: 'BusinessType',
+        where: whereOptionsBusinessType
+      }],
+      order: [
+        ['soldDate', 'DESC']
+      ],
       limit,
       offset
     })
@@ -54,10 +88,16 @@ export const list = async (req, res, next) => {
 }
 
 export const get = async (req, res, next) => {
-  const { idAppraisal } = req.params
+  const {
+    idAppraisal
+  } = req.params
 
   try {
-    const appraisal = await models.Appraisal.findOne({ where: { id: idAppraisal } })
+    const appraisal = await models.Appraisal.findOne({
+      where: {
+        id: idAppraisal
+      }
+    })
 
     if (!appraisal) {
       throw new APIError({
@@ -83,19 +123,37 @@ export const get = async (req, res, next) => {
     )
 
     const comparableDataSelectedList = await models.BusinessSold.findAll({
-      where: { id: Array.from(businessSoldselectedListOnlyId) }
+      where: {
+        id: Array.from(businessSoldselectedListOnlyId)
+      },
+      include: [{
+        attributes: ['label'],
+        model: models.BusinessType,
+        as: 'BusinessType',
+        where: {
+          id: {
+            $col: 'BusinessSold.businessType'
+          }
+        }
+      }]
     })
 
     return res
       .status(200)
-      .json({ data: comparableDataSelectedList, message: 'Get Selected list' })
+      .json({
+        data: comparableDataSelectedList,
+        message: 'Get Selected list'
+      })
   } catch (error) {
     return next(error)
   }
 }
 
 export const save = async (req, res, next) => {
-  const { appraisalId, selectedList } = req.body
+  const {
+    appraisalId,
+    selectedList
+  } = req.body
 
   // if (selectedList.isArray()) {
   //   throw new APIError({
@@ -108,14 +166,18 @@ export const save = async (req, res, next) => {
   const selectedListOnlyId = _.map(selectedList, 'id')
 
   try {
-    await models.Appraisal.update(
-      {
-        comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
-      },
-      { where: { id: appraisalId } }
-    )
+    await models.Appraisal.update({
+      comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
+    }, {
+      where: {
+        id: appraisalId
+      }
+    })
 
-    return res.status(200).json({ data: null, message: 'Get Selected list' })
+    return res.status(200).json({
+      data: null,
+      message: 'Get Selected list'
+    })
   } catch (error) {
     return next(error)
   }

@@ -130,6 +130,10 @@ export default (sequelize, DataTypes) => {
     models.BusinessSold.belongsTo(models.Business, {
       foreignKey: 'business_id'
     })
+    models.BusinessSold.belongsTo(models.BusinessType, {
+      foreignKey: 'businessType',
+      as: 'BusinessType'
+    })
   }
 
   return BusinessSold
