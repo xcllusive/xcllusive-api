@@ -1248,6 +1248,16 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      aaRow16YesNo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
+      },
+      aaRow17: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+      },
       aaRow17Year1: {
         type: DataTypes.DOUBLE,
         allowNull: true,
