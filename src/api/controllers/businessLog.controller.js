@@ -53,8 +53,7 @@ export const list = async (req, res, next) => {
         followUpStatus: {
           $like: `%${search}%`
         }
-      }
-      ]
+      }]
     }
 
     const logs = await models.BusinessLog.findAll({
@@ -71,8 +70,7 @@ export const list = async (req, res, next) => {
       }, {
         model: models.User,
         as: 'ModifiedBy'
-      }
-      ]
+      }]
     })
 
     return res.status(201).json({
@@ -105,7 +103,7 @@ export const save = async (req, res, next) => {
       text: newLog.businessLog_text,
       createdBy_id: req.user.id,
       followUpStatus: 'Pending',
-      followUp: moment(newLog.businessLog_followUp),
+      followUp: moment(newLog.businessLog_followUp).format('YYYY-MM-DD hh:mm:ss'),
       business_id: idBusiness
     })
     return res.status(200).json({

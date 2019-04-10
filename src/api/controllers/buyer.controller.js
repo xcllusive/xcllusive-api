@@ -2042,7 +2042,7 @@ export const updateBusinessLogFromBuyer = async (req, res, next) => {
       text: newLog.businessLog_text,
       createdBy_id: req.user.id,
       followUpStatus: 'Pending',
-      followUp: moment(newLog.businessLog_followUp),
+      followUp: moment(newLog.businessLog_followUp).format('YYYY-MM-DD hh:mm:ss'),
       business_id: idBusiness
     })
     return res.status(200).json({

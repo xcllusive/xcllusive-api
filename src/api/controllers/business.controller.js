@@ -291,7 +291,7 @@ export const create = async (req, res, next) => {
       text: 'New Business',
       createdBy_id: req.user.id,
       followUpStatus: 'Pending',
-      followUp: moment().format('YYYY-DD-MM hh:mm:ss'),
+      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
       business_id: business.get('id')
     })
 
@@ -589,7 +589,7 @@ Did we want this business? ${
 `,
         createdBy_id: req.user.id,
         followUpStatus: 'Pending',
-        followUp: moment(updateBusiness.date),
+        followUp: moment(updateBusiness.date).format('YYYY-MM-DD hh:mm:ss'),
         business_id: idBusiness
       })
     }
