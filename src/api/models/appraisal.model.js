@@ -2497,6 +2497,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      calcGrossMargin7: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
       calcGrossMarginPerc1: {
         type: DataTypes.STRING,
         allowNull: true,
