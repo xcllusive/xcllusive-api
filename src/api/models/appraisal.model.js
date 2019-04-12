@@ -2532,6 +2532,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      calcGrossMarginPerc7: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
       calcGrossProfit1: {
         type: DataTypes.STRING,
         allowNull: true,

@@ -82,6 +82,13 @@ module.exports = {
         }
       ), queryInterface.addColumn(
         'Appraisal',
+        'calcGrossMargin7', {
+          type: Sequelize.STRING,
+          allowNull: true,
+          defaultValue: 0
+        }
+      ), queryInterface.addColumn(
+        'Appraisal',
         'calcGrossMarginPerc1', {
           type: Sequelize.STRING,
           allowNull: true,
@@ -118,6 +125,13 @@ module.exports = {
       ), queryInterface.addColumn(
         'Appraisal',
         'calcGrossMarginPerc6', {
+          type: Sequelize.STRING,
+          allowNull: true,
+          defaultValue: 0
+        }
+      ), queryInterface.addColumn(
+        'Appraisal',
+        'calcGrossMarginPerc7', {
           type: Sequelize.STRING,
           allowNull: true,
           defaultValue: 0

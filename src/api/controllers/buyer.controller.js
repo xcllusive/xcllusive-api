@@ -666,7 +666,8 @@ export const sendIM = async (req, res, next) => {
       modifiedBy_id: req.user.id
     }, {
       where: {
-        buyer_id: buyerId
+        buyer_id: buyerId,
+        business_id: business.id
       }
     })
 
