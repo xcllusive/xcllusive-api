@@ -1,6 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Appraisal = sequelize.define(
-    'Appraisal', {
+    'Appraisal',
+    {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -2567,6 +2568,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      calcGrossProfit7: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
       calcOperatingProfit1: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -2597,6 +2603,11 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0
       },
+      calcOperatingProfit7: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
       calcOperatingProfitPerc1: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -2623,6 +2634,11 @@ export default (sequelize, DataTypes) => {
         defaultValue: 0
       },
       calcOperatingProfitPerc6: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 0
+      },
+      calcOperatingProfitPerc7: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: 0
@@ -2732,13 +2748,16 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 1
       }
-    }, {
+    },
+    {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [{
-        unique: true,
-        fields: ['id']
-      }]
+      indexes: [
+        {
+          unique: true,
+          fields: ['id']
+        }
+      ]
     }
   )
 
