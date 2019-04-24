@@ -122,16 +122,16 @@ export const update = async (req, res, next) => {
   })
 
   let totalCompleted = 0
-  if (appraisal.confirmAbout) totalCompleted = 10
-  if (appraisal.confirmBusinessAnalysis) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmBusinessDetail) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmComparableData) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmCustomersSuppliers) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmFinancialAnalysis) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmNotesAndAssumptions) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmOwnershipFinalNotes) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmPremisesEnployees) totalCompleted = totalCompleted + 10
-  if (appraisal.confirmPricing) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmAbout || (appraisal.confirmAbout && updatedValues.confirmAbout === undefined)) totalCompleted = 10
+  if (updatedValues.confirmBusinessAnalysis || (appraisal.confirmBusinessAnalysis && updatedValues.confirmBusinessAnalysis === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmBusinessDetail || (appraisal.confirmBusinessDetail && updatedValues.confirmBusinessDetail === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmComparableData || (appraisal.confirmComparableData && updatedValues.confirmComparableData === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmCustomersSuppliers || (appraisal.confirmCustomersSuppliers && updatedValues.confirmCustomersSuppliers === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmFinancialAnalysis || (appraisal.confirmFinancialAnalysis && updatedValues.confirmFinancialAnalysis === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmNotesAndAssumptions || (appraisal.confirmNotesAndAssumptions && updatedValues.confirmNotesAndAssumptions === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmOwnershipFinalNotes || (appraisal.confirmOwnershipFinalNotes && updatedValues.confirmOwnershipFinalNotes === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmPremisesEnployees || (appraisal.confirmPremisesEnployees && updatedValues.confirmPremisesEnployees === undefined)) totalCompleted = totalCompleted + 10
+  if (updatedValues.confirmPricing || (appraisal.confirmPricing && updatedValues.confirmPricing === undefined)) totalCompleted = totalCompleted + 10
 
   updatedValues.completed = totalCompleted
 
