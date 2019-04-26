@@ -13,7 +13,7 @@ export const list = async (req, res, next) => {
       where,
       limit,
       offset
-    })
+    })    
     return res.status(201).json({
       data: response,
       pageCount: response.count,
