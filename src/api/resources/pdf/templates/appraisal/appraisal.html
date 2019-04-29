@@ -1207,7 +1207,7 @@
           {{{criticalIssuesList}}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:786px;left:-100px; z-index: 1229;">
+    <div style="position: absolute; top:778px;left:-100px; z-index: 1229;">
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 100%; height: 40.032283464567px; background-color: ; z-index: 1229; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
@@ -1215,12 +1215,11 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:765px;left:96.45874015748px; z-index: 1248;">
+    <div style="position: absolute; top:755px;left:96.45874015748px; z-index: 1248;">
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1248; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: Trebuchet MS; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          Business
-          risk assessment</div>
+          Business risk assessment</div>
       </div>
     </div>
     <div style="position: absolute; top:929px;left:-100px; z-index: 1229;">
@@ -1231,25 +1230,24 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:940px;left:96.45874015748px; z-index: 1250;">
+    <div style="position: absolute; top:925px;left:96.45874015748px; z-index: 1250;">
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 379px; height: 22.113070866142px; background-color: ; z-index: 1250; font-size: 16px; line-height: 18px; text-align: left; color: #0076ad; font-family: Trebuchet MS; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          Current
-          market assessment</div>
+          Current market assessment</div>
       </div>
     </div>
-    <div style="position: absolute; top:836px;left:478.4811023622px; z-index: 1304;">
+    <div style="position: absolute; top:825px;left:425px; z-index: 1304;">
       <div class="display: table;">
         <div class=""
-          style="position: relative; width: 227px; height: 71.295590551181px; background-color: ; z-index: 1304; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
+          style="position: relative; width: 320px; height: 71.295590551181px; background-color: ; z-index: 1304; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
           {{descriptionGaugeBusinessRisk}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:985px;left:478.4811023622px; z-index: 1305;">
+    <div style="position: absolute; top:970px;left:425px; z-index: 1305;">
       <div class="display: table;">
         <div class=""
-          style="position: relative; width: 227px; height: 73.20188976378px; background-color: ; z-index: 1305; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
+          style="position: relative; width: 320px; height: 73.20188976378px; background-color: ; z-index: 1305; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
           {{descriptionGaugeMarket}}</div>
       </div>
     </div>
@@ -1269,12 +1267,12 @@
         <div class=""          
           style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
           The reason business purchasers look to buy and invest into a business is by far mostly driven by
-future profits that the business will generate. So it is important to accurately, fairly and realistically
-analyse profitability of the business from the buyers perspective.<br/>
-Following are some of the points that need to be examined and adjusted accordingly: fair market
-wages for the owners and related parties that work in the business, one off expenses which will
-not be repeated, expenses that will in increase in the future.<br />
-Following is the analysis of the profit and loss of the subject business for past X years:</div>
+          future profits that the business will generate. So it is important to accurately, fairly and realistically
+          analyse profitability of the business from the buyers perspective.<br/>
+          Following are some of the points that need to be examined and adjusted accordingly: fair market
+          wages for the owners and related parties that work in the business, one off expenses which will
+          not be repeated, expenses that will in increase in the future.<br />
+          Following is the analysis of the profit and loss of the subject business for past {{totalYearsUsed}} years:</div>
       </div>
     </div>
     <div style="position: absolute; top:245px;left:95.314960629921px; z-index: 1308;">
@@ -1329,7 +1327,7 @@ Following is the analysis of the profit and loss of the subject business for pas
             {{/if}}
             {{#if renderPdfYear7}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{sales7}}</td>
+              {{calcAnnualised1}}</td>
             {{/if}}
           </tr>
           <tr>
@@ -1350,7 +1348,7 @@ Following is the analysis of the profit and loss of the subject business for pas
             <td class="cell-value-normal">{{cogs5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td style="-webkit-border-end-width: inherit" class="cell-value-normal">{{cogs7}}</td>
+            <td style="-webkit-border-end-width: inherit" class="cell-value-normal">{{calcAnnualised2}}</td>
             {{/if}}
           </tr>
           <tr style="background-color: white;">
@@ -1420,7 +1418,7 @@ Following is the analysis of the profit and loss of the subject business for pas
             <td class="cell-value-normal">{{otherIncome5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td class="cell-value-normal">{{otherIncome7}}</td>
+            <td class="cell-value-normal">{{calcAnnualised5}}</td>
             {{/if}}
           </tr>
           <tr style="background-color: #e2f3f7">
@@ -1462,7 +1460,7 @@ Following is the analysis of the profit and loss of the subject business for pas
             <td class="cell-value-normal">{{expenses5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
-            <td class="cell-value-normal">{{expenses7}}</td>
+            <td class="cell-value-normal">{{calcAnnualised7}}</td>
             {{/if}}
           </tr>
           <tr style="background-color: #e2f3f7">
@@ -1570,27 +1568,27 @@ Following is the analysis of the profit and loss of the subject business for pas
             </td>
             {{#if renderPdfYear1}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{totalAdjustedProfit1}}</td>
+              ${{totalAdjustedProfit1}}</td>
             {{/if}}
             {{#if renderPdfYear2}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{totalAdjustedProfit2}}</td>
+              ${{totalAdjustedProfit2}}</td>
             {{/if}}
             {{#if renderPdfYear3}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{totalAdjustedProfit3}}</td>
+              ${{totalAdjustedProfit3}}</td>
             {{/if}}
             {{#if renderPdfYear4}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{totalAdjustedProfit4}}</td>
+              ${{totalAdjustedProfit4}}</td>
             {{/if}}
             {{#if renderPdfYear5}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{totalAdjustedProfit5}}</td>
+              ${{totalAdjustedProfit5}}</td>
             {{/if}}
             {{#if renderPdfYear7}}
             <td style="border-top-width:2px; border-top-color:black; border-top-style:solid" class="cell-value">
-              {{totalAdjustedProfit7}}</td>
+              ${{totalAdjustedProfit7}}</td>
             {{/if}}
           </tr>
           <tr>
@@ -1600,32 +1598,32 @@ Following is the analysis of the profit and loss of the subject business for pas
             {{#if renderPdfYear1}}
             <td
               style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit"
-              class="cell-value-normal">{{adjustedProfitPerc1}}</td>
+              class="cell-value-normal">{{adjustedProfitPerc1}} %</td>
             {{/if}}
             {{#if renderPdfYear2}}
             <td
               style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit"
-              class="cell-value-normal">{{adjustedProfitPerc2}}</td>
+              class="cell-value-normal">{{adjustedProfitPerc2}} %</td>
             {{/if}}
             {{#if renderPdfYear3}}
             <td
               style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit"
-              class="cell-value-normal">{{adjustedProfitPerc3}}</td>
+              class="cell-value-normal">{{adjustedProfitPerc3}} %</td>
             {{/if}}
             {{#if renderPdfYear4}}
             <td
               style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit"
-              class="cell-value-normal">{{adjustedProfitPerc4}}</td>
+              class="cell-value-normal">{{adjustedProfitPerc4}} %</td>
             {{/if}}
             {{#if renderPdfYear5}}
             <td
               style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit"
-              class="cell-value-normal">{{adjustedProfitPerc5}}</td>
+              class="cell-value-normal">{{adjustedProfitPerc5}} %</td>
             {{/if}}
             {{#if renderPdfYear7}}
             <td
               style="border-top-width:2px; border-top-color:black; border-top-style:solid; border-bottom-width: inherit"
-              class="cell-value-normal">{{adjustedProfitPerc7}}</td>
+              class="cell-value-normal">{{adjustedProfitPerc7}} %</td>
             {{/if}}
           </tr>
         </table>
@@ -1766,7 +1764,7 @@ Following is the analysis of the profit and loss of the subject business for pas
       <div class="display: table;">
         <div class=""
         style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: Trebuchet MS; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
-          Following is a list of XX actual businesses sold by us. With financial and business details as well
+          Following is a list of {{totalBusinessesComparableSelectedList}} actual businesses sold by us. With financial and business details as well
           as achieved prices with calculated multiplier based on appropriate and relevant data.</div>
       </div>
     </div>
@@ -2259,14 +2257,14 @@ Following is the analysis of the profit and loss of the subject business for pas
         fontSize: 18
       },
       plotarea: {
-        marginTop: 45
+        marginTop: 32
       },
       plot: {
         size: '100%',
         valueBox: {
           placement: 'center',
           text: '%v', //default
-          fontSize: 15,
+          fontSize: 16,
           rules: [{
             rule: '%v < 20',
             text: '<br/>Unsustainable R.'
@@ -2300,7 +2298,7 @@ Following is the analysis of the profit and loss of the subject business for pas
           visible: false
         },
         item: {
-          fontSize: 12,
+          fontSize: 13,
           angle: 0,
           offsetR: -10,
           rules: [{
@@ -2308,7 +2306,7 @@ Following is the analysis of the profit and loss of the subject business for pas
             offsetX: 15
           }]
         },
-        labels: ['Unsustainable R.', 'Challenge R.', '', 'Acceptable R.', 'Attractive', 'Highly Attractive'],
+        labels: ['Unsustainable', 'Challenge', '', 'Acceptable', 'Attractive', 'Highly Attractive'],
         ring: {
           size: 50,
           rules: [{
@@ -2439,14 +2437,14 @@ Following is the analysis of the profit and loss of the subject business for pas
         fontSize: 18
       },
       plotarea: {
-        marginTop: 45
+        marginTop: 30
       },
       plot: {
         size: '100%',
         valueBox: {
           placement: 'center',
           text: '%v', //default
-          fontSize: 15,
+          fontSize: 16,
           rules: [{
               rule: '%v <= 20',
               text: '<br/>Weak'

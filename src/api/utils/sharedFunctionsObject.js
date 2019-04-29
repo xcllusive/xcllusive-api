@@ -80,35 +80,35 @@ export const pebitdaLastYear = businessSold => {
 export const avgProfit = appraisal => {
   let count = 0
   let totalYear = 0
-  if (appraisal.year6 > 0) {
+  if (appraisal.year6 > 0 && appraisal.renderPdfYear7) {
     count = count + 1
     totalYear =
-      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+      totalYear + appraisal.totalAdjustedProfit7 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year5 > 0) {
+  if (appraisal.year5 > 0 && appraisal.renderPdfYear5) {
     count = count + 1
     totalYear =
-      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+      totalYear + appraisal.totalAdjustedProfit5 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year4 > 0) {
+  if (appraisal.year4 > 0 && appraisal.renderPdfYear4) {
     count = count + 1
     totalYear =
-      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+      totalYear + appraisal.totalAdjustedProfit4 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year3 > 0) {
+  if (appraisal.year3 > 0 && appraisal.renderPdfYear3) {
     count = count + 1
     totalYear =
-      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+      totalYear + appraisal.totalAdjustedProfit3 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year2 > 0) {
+  if (appraisal.year2 > 0 && appraisal.renderPdfYear2) {
     count = count + 1
     totalYear =
-      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+      totalYear + appraisal.totalAdjustedProfit2 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year1 > 0) {
+  if (appraisal.year1 > 0 && appraisal.renderPdfYear1) {
     count = count + 1
     totalYear =
-      totalYear + 3000 /* change for the field Total Adjusted Profit INCL. Owners Wages */
+      totalYear + appraisal.totalAdjustedProfit1 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
 
   return totalYear / count

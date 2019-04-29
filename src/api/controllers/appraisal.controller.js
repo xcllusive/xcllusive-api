@@ -360,14 +360,14 @@ export const generatePdf = async (req, res, next) => {
     context.sales3 = numeral(appraisal.sales3).format('$0,0')
     context.sales4 = numeral(appraisal.sales4).format('$0,0')
     context.sales5 = numeral(appraisal.sales5).format('$0,0')
-    context.sales7 = numeral(appraisal.sales7).format('$0,0')
+    context.calcAnnualised1 = numeral(appraisal.calcAnnualised1).format('$0,0')
 
     context.cogs1 = numeral(appraisal.cogs1).format('$0,0')
     context.cogs2 = numeral(appraisal.cogs2).format('$0,0')
     context.cogs3 = numeral(appraisal.cogs3).format('$0,0')
     context.cogs4 = numeral(appraisal.cogs4).format('$0,0')
     context.cogs5 = numeral(appraisal.cogs5).format('$0,0')
-    context.cogs7 = numeral(appraisal.cogs7).format('$0,0')
+    context.calcAnnualised2 = numeral(appraisal.calcAnnualised2).format('$0,0')
 
     context.calcGrossMargin1 = numeral(appraisal.calcGrossMargin1).format('$0,0')
     context.calcGrossMargin2 = numeral(appraisal.calcGrossMargin2).format('$0,0')
@@ -375,20 +375,22 @@ export const generatePdf = async (req, res, next) => {
     context.calcGrossMargin4 = numeral(appraisal.calcGrossMargin4).format('$0,0')
     context.calcGrossMargin5 = numeral(appraisal.calcGrossMargin5).format('$0,0')
     context.calcGrossMargin6 = numeral(appraisal.calcGrossMargin6).format('$0,0')
+    context.calcGrossMargin7 = numeral(appraisal.calcGrossMargin7).format('$0,0')
 
-    context.calcGrossMarginPerc1 = `${appraisal.calcGrossMarginPerc1}%`
-    context.calcGrossMarginPerc2 = `${appraisal.calcGrossMarginPerc2}%`
-    context.calcGrossMarginPerc3 = `${appraisal.calcGrossMarginPerc3}%`
-    context.calcGrossMarginPerc4 = `${appraisal.calcGrossMarginPerc4}%`
-    context.calcGrossMarginPerc5 = `${appraisal.calcGrossMarginPerc5}%`
-    context.calcGrossMarginPerc6 = `${appraisal.calcGrossMarginPerc6}%`
+    context.calcGrossMarginPerc1 = `${Math.round(appraisal.calcGrossMarginPerc1)}%`
+    context.calcGrossMarginPerc2 = `${Math.round(appraisal.calcGrossMarginPerc2)}%`
+    context.calcGrossMarginPerc3 = `${Math.round(appraisal.calcGrossMarginPerc3)}%`
+    context.calcGrossMarginPerc4 = `${Math.round(appraisal.calcGrossMarginPerc4)}%`
+    context.calcGrossMarginPerc5 = `${Math.round(appraisal.calcGrossMarginPerc5)}%`
+    context.calcGrossMarginPerc6 = `${Math.round(appraisal.calcGrossMarginPerc6)}%`
+    context.calcGrossMarginPerc7 = `${Math.round(appraisal.calcGrossMarginPerc7)}%`
 
     context.otherIncome1 = numeral(appraisal.otherIncome1).format('$0,0')
     context.otherIncome2 = numeral(appraisal.otherIncome2).format('$0,0')
     context.otherIncome3 = numeral(appraisal.otherIncome3).format('$0,0')
     context.otherIncome4 = numeral(appraisal.otherIncome4).format('$0,0')
     context.otherIncome5 = numeral(appraisal.otherIncome5).format('$0,0')
-    context.otherIncome7 = numeral(appraisal.otherIncome7).format('$0,0')
+    context.calcAnnualised5 = numeral(appraisal.calcAnnualised5).format('$0,0')
 
     context.calcGrossProfit1 = numeral(appraisal.calcGrossProfit1).format('$0,0')
     context.calcGrossProfit2 = numeral(appraisal.calcGrossProfit2).format('$0,0')
@@ -402,7 +404,7 @@ export const generatePdf = async (req, res, next) => {
     context.expenses3 = numeral(appraisal.expenses3).format('$0,0')
     context.expenses4 = numeral(appraisal.expenses4).format('$0,0')
     context.expenses5 = numeral(appraisal.expenses5).format('$0,0')
-    context.expenses7 = numeral(appraisal.expenses7).format('$0,0')
+    context.calcAnnualised7 = numeral(appraisal.calcAnnualised7).format('$0,0')
 
     context.calcOperatingProfit1 = numeral(appraisal.calcOperatingProfit1).format('$0,0')
     context.calcOperatingProfit2 = numeral(appraisal.calcOperatingProfit2).format('$0,0')
@@ -410,13 +412,15 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfit4 = numeral(appraisal.calcOperatingProfit4).format('$0,0')
     context.calcOperatingProfit5 = numeral(appraisal.calcOperatingProfit5).format('$0,0')
     context.calcOperatingProfit6 = numeral(appraisal.calcOperatingProfit6).format('$0,0')
+    context.calcOperatingProfit7 = numeral(appraisal.calcOperatingProfit7).format('$0,0')
 
-    context.calcOperatingProfitPerc1 = `${appraisal.calcOperatingProfitPerc1}%`
-    context.calcOperatingProfitPerc2 = `${appraisal.calcOperatingProfitPerc2}%`
-    context.calcOperatingProfitPerc3 = `${appraisal.calcOperatingProfitPerc3}%`
-    context.calcOperatingProfitPerc4 = `${appraisal.calcOperatingProfitPerc4}%`
-    context.calcOperatingProfitPerc5 = `${appraisal.calcOperatingProfitPerc5}%`
-    context.calcOperatingProfitPerc6 = `${appraisal.calcOperatingProfitPerc6}%`
+    context.calcOperatingProfitPerc1 = `${Math.round(appraisal.calcOperatingProfitPerc1)}%`
+    context.calcOperatingProfitPerc2 = `${Math.round(appraisal.calcOperatingProfitPerc2)}%`
+    context.calcOperatingProfitPerc3 = `${Math.round(appraisal.calcOperatingProfitPerc3)}%`
+    context.calcOperatingProfitPerc4 = `${Math.round(appraisal.calcOperatingProfitPerc4)}%`
+    context.calcOperatingProfitPerc5 = `${Math.round(appraisal.calcOperatingProfitPerc5)}%`
+    context.calcOperatingProfitPerc6 = `${Math.round(appraisal.calcOperatingProfitPerc6)}%`
+    context.calcOperatingProfitPerc7 = `${Math.round(appraisal.calcOperatingProfitPerc7)}%`
     // end Financial Information Table
 
     // start salesGpPebitda chart
@@ -791,6 +795,18 @@ export const generatePdf = async (req, res, next) => {
     context.totalAdjustedProfit4 = numeral(context.totalAdjustedProfit4).format('0,0')
     context.totalAdjustedProfit5 = numeral(context.totalAdjustedProfit5).format('0,0')
     context.totalAdjustedProfit7 = numeral(context.totalAdjustedProfit7).format('0,0')
+
+    let totalYearsUsed = 0
+    if (appraisal.renderPdfYear6) totalYearsUsed = totalYearsUsed + 1
+    if (appraisal.renderPdfYear5) totalYearsUsed = totalYearsUsed + 1
+    if (appraisal.renderPdfYear4) totalYearsUsed = totalYearsUsed + 1
+    if (appraisal.renderPdfYear3) totalYearsUsed = totalYearsUsed + 1
+    if (appraisal.renderPdfYear2) totalYearsUsed = totalYearsUsed + 1
+    if (appraisal.renderPdfYear1) totalYearsUsed = totalYearsUsed + 1
+    context.totalYearsUsed = totalYearsUsed
+
+    const totalBusinessesComparableSelectedList = JSON.parse(appraisal.comparableDataSelectedList).length
+    context.totalBusinessesComparableSelectedList = totalBusinessesComparableSelectedList
 
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
