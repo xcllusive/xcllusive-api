@@ -7,16 +7,25 @@ import {
   sendEmail,
   getEmailTemplate
 } from '../controllers/agreement.controller'
-
-import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
-
+import {
+  authMiddleware,
+  authorizeMiddleware
+} from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 import validation from '../validations/agreement.validation'
-
-import { BUSINESS_MENU } from '../constants/roles'
+import {
+  BUSINESS_MENU
+} from '../constants/roles'
 
 const router = express.Router()
 
-router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+router.use(authMiddleware).use(authorizeMiddleware({
+  roles: [BUSINESS_MENU]
+}))
+
+router.use(controlActivityUser('Business'))
 
 router
   .route('/generate')

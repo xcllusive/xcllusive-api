@@ -33,10 +33,14 @@ import {
   finaliseBusinessLogFromBuyer
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
+// import models from '../../config/sequelize'
 import {
   authMiddleware,
   authorizeMiddleware
 } from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 import {
   BUYER_MENU
 } from '../constants/roles'
@@ -46,6 +50,8 @@ const router = express.Router()
 router.use(authMiddleware).use(authorizeMiddleware({
   roles: [BUYER_MENU]
 }))
+
+router.use(controlActivityUser('Buyer'))
 
 router.route('/from-business/:idBusiness').get(getBuyersFromBusiness)
 

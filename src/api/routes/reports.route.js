@@ -16,6 +16,9 @@ import {
 import {
   MANAGEMENT_MENU
 } from '../constants/roles'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
@@ -24,6 +27,9 @@ router.use(authMiddleware).use(
     roles: [MANAGEMENT_MENU]
   })
 )
+
+router.use(controlActivityUser('Management'))
+
 router.route('/analyst-report').get(getAnalystReport)
 
 router.route('/marketing-report').get(getMarketingReport)

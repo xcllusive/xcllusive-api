@@ -1,14 +1,31 @@
 import express from 'express'
 
-import { list, get, save, finalise } from '../controllers/businessLog.controller'
+import {
+  list,
+  get,
+  save,
+  finalise
+} from '../controllers/businessLog.controller'
 
-import { BUSINESS_MENU } from '../constants/roles'
+import {
+  BUSINESS_MENU
+} from '../constants/roles'
 
-import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
+import {
+  authMiddleware,
+  authorizeMiddleware
+} from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
-router.use(authMiddleware).use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+router.use(authMiddleware).use(authorizeMiddleware({
+  roles: [BUSINESS_MENU]
+}))
+
+router.use(controlActivityUser('Business'))
 
 router.route('/').get(list)
 

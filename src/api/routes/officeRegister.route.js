@@ -16,12 +16,17 @@ import {
   authMiddleware,
   authorizeMiddleware
 } from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({
   roles: [SYSTEM_SETTINGS_MENU]
 }))
+
+router.use(controlActivityUser('SystemSettings'))
 
 router
   .route('/')

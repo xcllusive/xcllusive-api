@@ -1,7 +1,13 @@
 import express from 'express'
 import validate from 'express-validation'
 
-import { list, get, create, update, remove } from '../controllers/scoreRegister.controller'
+import {
+  list,
+  get,
+  create,
+  update,
+  remove
+} from '../controllers/scoreRegister.controller'
 import * as validation from '../validations/scoreRegister.validation'
 
 import {
@@ -13,12 +19,19 @@ import {
   authMiddleware,
   authorizeMiddleware
 } from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
 router
   .use(authMiddleware)
-  .use(authorizeMiddleware({ roles: [BUSINESS_MENU, BUYER_MENU] }))
+  .use(authorizeMiddleware({
+    roles: [BUSINESS_MENU, BUYER_MENU]
+  }))
+
+router.use(controlActivityUser('Buyer'))
 
 router
   .route('/')

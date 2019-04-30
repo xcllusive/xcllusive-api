@@ -1,6 +1,11 @@
 import express from 'express'
 
-import { list, create, update, remove } from '../controllers/businessRegister.controller'
+import {
+  list,
+  create,
+  update,
+  remove
+} from '../controllers/businessRegister.controller'
 
 import {
   BUSINESS_MENU
@@ -10,12 +15,19 @@ import {
   authMiddleware,
   authorizeMiddleware
 } from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
 router
   .use(authMiddleware)
-  .use(authorizeMiddleware({ roles: [BUSINESS_MENU] }))
+  .use(authorizeMiddleware({
+    roles: [BUSINESS_MENU]
+  }))
+
+router.use(controlActivityUser('Business'))
 
 router
   .route('/')

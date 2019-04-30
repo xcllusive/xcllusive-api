@@ -36,12 +36,17 @@ import {
 } from '../middlewares/auth'
 
 import * as validation from '../validations/business.validation'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({
   roles: [BUSINESS_MENU]
 }))
+
+router.use(controlActivityUser('Business'))
 
 router.route('/upload-im').post(validate(validation.uploadedIM), uploadIM)
 
