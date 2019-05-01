@@ -52,6 +52,14 @@ export const login = async (req, res, next) => {
       roles: user.roles
     }
 
+    const newControlActivity = {
+      menu: 'Login',
+      userId_logged: user.id,
+      dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
+      dateCreated: moment().format('YYYY-MM-DD')
+    }
+    await models.ControlActivity.create(newControlActivity)
+
     return res.status(200).json({
       user: userResponse,
       accessToken: jwtSignUser(userResponse)
@@ -75,7 +83,8 @@ export const logout = async (req, res, next) => {
   const newControlActivity = {
     menu: 'Logout',
     userId_logged: req.body.user.id,
-    dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss')
+    dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
+    dateCreated: moment().format('YYYY-MM-DD')
   }
   try {
     await models.ControlActivity.create(newControlActivity)

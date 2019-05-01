@@ -20,7 +20,7 @@ const router = express.Router()
 
 router.route('/logout').post(logout)
 
-router.use(controlActivityUser('Login'))
+router
   .route('/login')
   .post(validate(validation.login), login)
 
