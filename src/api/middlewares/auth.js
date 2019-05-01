@@ -76,13 +76,13 @@ export const authMiddleware = (req, res, next) => {
 
   return jwt.verify(token, jwtSecret, (err, decoded) => {
     if (err) {
-      // const newControlActivity = {
-      //   menu: 'Logout',
-      //   userId_logged: req.user.id,
-      //   dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
-      //   date: moment().format('YYYY-MM-DD')
-      // }
-      // models.ControlActivity.create(newControlActivity)
+      const newControlActivity = {
+        menu: 'Logout',
+        userId_logged: req.user.id,
+        dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
+        date: moment().format('YYYY-MM-DD')
+      }
+      models.ControlActivity.create(newControlActivity)
       return res.status(401).send({
         message: 'Token invalid'
       })

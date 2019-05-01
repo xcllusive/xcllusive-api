@@ -15,14 +15,14 @@ export const controlActivityUser = (menu) => {
           menu: menu,
           userId_logged: user.id,
           dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
-          date: moment().format('YYYY-MM-DD')
+          dateCreated: moment().format('YYYY-MM-DD')
         }
       } else {
         newControlActivity = {
           menu: menu,
           userId_logged: req.user.id,
           dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
-          date: moment().format('YYYY-MM-DD')
+          dateCreated: moment().format('YYYY-MM-DD')
         }
       }
 
