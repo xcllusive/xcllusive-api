@@ -1,8 +1,16 @@
 import jwt from 'jsonwebtoken'
-import { intersection } from 'lodash'
+import {
+  intersection
+} from 'lodash'
 import APIError from '../utils/APIError'
-import { jwtSecret } from '../../config/vars'
-import { IGNORE_ROUTES } from '../constants/roles'
+import {
+  jwtSecret
+} from '../../config/vars'
+import models from '../../config/sequelize'
+import moment from 'moment'
+import {
+  IGNORE_ROUTES
+} from '../constants/roles'
 
 const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   const error = err || info
@@ -15,7 +23,9 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
 
   try {
     if (error || !user) throw error
-    await logIn(user, { session: false })
+    await logIn(user, {
+      session: false
+    })
   } catch (e) {
     return next(apiError)
   }
@@ -43,23 +53,40 @@ export const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization
 
   if (!authHeader) {
-    return res.status(401).send({ message: 'No token provided' })
+    return res.status(401).send({
+      message: 'No token provided'
+    })
   }
 
   const parts = authHeader.split(' ')
 
   if (!parts.length === 2) {
-    return res.status(401).send({ message: 'Token error' })
+    return res.status(401).send({
+      message: 'Token error'
+    })
   }
 
   const [scheme, token] = parts
 
   if (!/^Bearer$/i.test(scheme)) {
-    return res.status(401).send({ message: 'Token malformatted' })
+    return res.status(401).send({
+      message: 'Token malformatted'
+    })
   }
 
   return jwt.verify(token, jwtSecret, (err, decoded) => {
-    if (err) return res.status(401).send({ message: 'Token invalid' })
+    if (err) {
+      const newControlActivity = {
+        menu: 'Logout',
+        userId_logged: req.user.id,
+        dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
+        date: moment().format('YYYY-MM-DD')
+      }
+      models.ControlActivity.create(newControlActivity)
+      return res.status(401).send({
+        message: 'Token invalid'
+      })
+    }
 
     req.user = decoded
     return next()
@@ -67,13 +94,19 @@ export const authMiddleware = (req, res, next) => {
 }
 
 export const authorizeMiddleware = settings => {
-  const { roles } = settings
+  const {
+    roles
+  } = settings
 
   return (req, res, next) => {
-    const { user } = req
+    const {
+      user
+    } = req
 
     if (!user) {
-      return res.status(403).send({ message: 'Not Authorized' })
+      return res.status(403).send({
+        message: 'Not Authorized'
+      })
     }
     if (IGNORE_ROUTES.includes(req.baseUrl)) {
       return next()
@@ -82,7 +115,9 @@ export const authorizeMiddleware = settings => {
       const tokenRoles = JSON.parse(req.user.roles)
       // console.log(roles, tokenRoles)
       if (!intersection(roles, tokenRoles).length > 0) {
-        return res.status(403).send({ message: 'Not Authorized' })
+        return res.status(403).send({
+          message: 'Not Authorized'
+        })
       }
     }
 

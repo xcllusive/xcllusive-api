@@ -1,7 +1,11 @@
 import jwt from 'jsonwebtoken'
+import moment from 'moment'
 // import moment from 'moment-timezone'
 
-import { jwtExpirationInterval, jwtSecret } from '../../config/vars'
+import {
+  jwtExpirationInterval,
+  jwtSecret
+} from '../../config/vars'
 import models from '../../config/sequelize'
 
 const jwtSignUser = user => {
@@ -12,8 +16,15 @@ const jwtSignUser = user => {
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body
-    const user = await models.User.findOne({ where: { email } })
+    const {
+      email,
+      password
+    } = req.body
+    const user = await models.User.findOne({
+      where: {
+        email
+      }
+    })
 
     if (!user) {
       const err = {
@@ -58,4 +69,18 @@ export const loginWithToken = async (req, res, next) => {
       roles: req.user.roles
     }
   })
+}
+
+export const logout = async (req, res, next) => {
+  const newControlActivity = {
+    menu: 'Logout',
+    userId_logged: req.body.user.id,
+    dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss')
+  }
+  try {
+    await models.ControlActivity.create(newControlActivity)
+    return next()
+  } catch (error) {
+    return next(error)
+  }
 }

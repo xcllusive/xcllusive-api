@@ -6,7 +6,8 @@ import {
   getAnalystReport,
   getQtdeBusinessesStagePerUser,
   getBusinessesPerAnalyst,
-  getEnquiryReport
+  getEnquiryReport,
+  activityRequestReport
 } from '../controllers/reports.controller'
 import {
   authMiddleware,
@@ -41,5 +42,7 @@ router.route('/all-analysts').get(getAllAnalysts)
 router.route('/qtde-businesses-stage-per-user').get(getQtdeBusinessesStagePerUser)
 
 router.route('/businesses-list-analyst').get(getBusinessesPerAnalyst)
+
+router.route('/activity-request-report').get(activityRequestReport)
 
 export default router

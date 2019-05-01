@@ -11,6 +11,10 @@ export default (sequelize, DataTypes) => {
       menu: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      dateCreated: {
+        type: DataTypes.DATE,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',

@@ -5,8 +5,12 @@ import validation from '../validations/auth.validation'
 
 import {
   login,
-  loginWithToken
+  loginWithToken,
+  logout
 } from '../controllers/auth.controller'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 import {
   authMiddleware
@@ -14,7 +18,9 @@ import {
 
 const router = express.Router()
 
-router
+router.route('/logout').post(logout)
+
+router.use(controlActivityUser('Login'))
   .route('/login')
   .post(validate(validation.login), login)
 

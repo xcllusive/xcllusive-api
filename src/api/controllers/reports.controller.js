@@ -1399,3 +1399,31 @@ export const getEnquiryReport = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const activityRequestReport = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  try {
+    const listUserActivity = await models.ControlActivity.findAndCountAll({
+      raw: true,
+      attributes: ['userId_logged', 'dateCreated'],
+      where: {
+        dateCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      group: ['userId_logged', 'dateCreated']
+    })
+
+    const mergelistUserActivity = _.merge(listUserActivity.rows, listUserActivity.count)
+
+    return res.status(201).json({
+      data: {
+        mergelistUserActivity
+      }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
