@@ -1,6 +1,7 @@
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
 import _ from 'lodash'
+import moment from 'moment'
 
 export const getMarketingReport = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
@@ -1400,7 +1401,45 @@ export const getEnquiryReport = async (req, res, next) => {
   }
 }
 
-export const activityRequestReport = async (req, res, next) => {
+export const activityRequestControlPerUser = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+  const userId = req.query.userIdSelected
+
+  try {
+    const listUserActivity = await models.ControlActivity.findAndCountAll({
+      raw: true,
+      attributes: ['userId_logged', 'dateCreated'],
+      where: {
+        userId_logged: userId,
+        dateCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      group: ['userId_logged', 'dateCreated']
+    })
+
+    const mergelistUserActivity = _.merge(listUserActivity.rows, listUserActivity.count)
+
+    const mergedToArray = Object.values(mergelistUserActivity)
+
+    const formattedListUserActivity = mergedToArray.map(item => {
+      return {
+        userId_logged: item.userId_logged,
+        totalRequests: item.count,
+        dateCreated: moment(item.dateCreated).format('DD/MM/YYYY')
+      }
+    })
+
+    return res.status(201).json({
+      data: formattedListUserActivity
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const activityRequestControl = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
 
@@ -1418,26 +1457,12 @@ export const activityRequestReport = async (req, res, next) => {
 
     const mergelistUserActivity = _.merge(listUserActivity.rows, listUserActivity.count)
 
-    // const merged = _.groupBy(mergelistUserActivity, (item) => {
-    //   return item.userId_logged === 1 ? item
+    const mergedToObject = _.groupBy(mergelistUserActivity, 'userId_logged')
 
-    //   // item.userId_logged.join()
-    // })
-
-    const merged = _.groupBy(mergelistUserActivity, 'userId_logged')
-
-    // const test = _.find(mergelistUserActivity, function (o) {
-    //   console.log(o)
-    //   return o.userId_logged === 1
-    // })
-    console.log(merged)
-
-    // mergelistUserActivity.map((item, index) => {
-    //   console.log(item)
-    // })
+    const mergedToArray = Object.values(mergedToObject)
 
     return res.status(201).json({
-      data: mergelistUserActivity
+      data: mergedToArray
     })
   } catch (error) {
     return next(error)

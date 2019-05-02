@@ -1,25 +1,10 @@
 import express from 'express'
 // import validate from 'express-validation'
-import {
-  getMarketingReport,
-  getAllAnalysts,
-  getAnalystReport,
-  getQtdeBusinessesStagePerUser,
-  getBusinessesPerAnalyst,
-  getEnquiryReport,
-  activityRequestReport
-} from '../controllers/reports.controller'
-import {
-  authMiddleware,
-  authorizeMiddleware
-} from '../middlewares/auth'
+import { getMarketingReport, getAllAnalysts, getAnalystReport, getQtdeBusinessesStagePerUser, getBusinessesPerAnalyst, getEnquiryReport, activityRequestControlPerUser } from '../controllers/reports.controller'
+import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
 
-import {
-  MANAGEMENT_MENU
-} from '../constants/roles'
-import {
-  controlActivityUser
-} from '../middlewares/controlActivity'
+import { MANAGEMENT_MENU } from '../constants/roles'
+import { controlActivityUser } from '../middlewares/controlActivity'
 
 const router = express.Router()
 
@@ -43,6 +28,6 @@ router.route('/qtde-businesses-stage-per-user').get(getQtdeBusinessesStagePerUse
 
 router.route('/businesses-list-analyst').get(getBusinessesPerAnalyst)
 
-router.route('/activity-request-report').get(activityRequestReport)
+router.route('/activity-request-per-user-report').get(activityRequestControlPerUser)
 
 export default router
