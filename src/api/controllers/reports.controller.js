@@ -1418,10 +1418,26 @@ export const activityRequestReport = async (req, res, next) => {
 
     const mergelistUserActivity = _.merge(listUserActivity.rows, listUserActivity.count)
 
+    // const merged = _.groupBy(mergelistUserActivity, (item) => {
+    //   return item.userId_logged === 1 ? item
+
+    //   // item.userId_logged.join()
+    // })
+
+    const merged = _.groupBy(mergelistUserActivity, 'userId_logged')
+
+    // const test = _.find(mergelistUserActivity, function (o) {
+    //   console.log(o)
+    //   return o.userId_logged === 1
+    // })
+    console.log(merged)
+
+    // mergelistUserActivity.map((item, index) => {
+    //   console.log(item)
+    // })
+
     return res.status(201).json({
-      data: {
-        mergelistUserActivity
-      }
+      data: mergelistUserActivity
     })
   } catch (error) {
     return next(error)

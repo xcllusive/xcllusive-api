@@ -78,7 +78,7 @@ export const authMiddleware = (req, res, next) => {
     if (err) {
       const newControlActivity = {
         menu: 'Logout',
-        userId_logged: req.user.id,
+        userId_logged: decoded.id,
         dateTimeCreated: moment().format('YYYY-MM-DD hh:mm:ss'),
         date: moment().format('YYYY-MM-DD')
       }
