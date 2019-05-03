@@ -1401,12 +1401,106 @@ export const getEnquiryReport = async (req, res, next) => {
   }
 }
 
+export const getUsersPerRegion = async (req, res, next) => {
+  const region = req.query.region
+
+  const _mapValuesToArray = array => {
+    if (array.length > 0) {
+      if (array[0].firstName) {
+        return array.map((item, index) => ({
+          key: index,
+          text: `${item.firstName} ${item.lastName}`,
+          value: item.id
+        }))
+      }
+      return array.map((item, index) => ({
+        key: index,
+        text: item.label,
+        value: item.id
+      }))
+    }
+    return []
+  }
+
+  try {
+    // Verify exists buyer
+    const users = await models.User.findAll({
+      where: {
+        officeId: region
+      },
+      order: [
+        ['firstName', 'ASC']
+      ]
+    })
+
+    if (!users) {
+      throw new APIError({
+        message: 'Users not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(201).json({
+      data: _mapValuesToArray(users),
+      message: 'Get users per region succesfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const activityRequestControlPerUser = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
   const userId = req.query.userIdSelected
 
+  const totalDays = (moment(dateTo).diff(moment(dateFrom), 'days') + 1)
+
   try {
+    var test = null
+    let arrayTest = []
+    let listTest = null
+    for (let i = 0; i < totalDays; i++) {
+      test = moment(dateFrom).add(i, 'days')
+      const dateStart = moment(test).format('YYYY-MM-DD 00:00:00')
+      const dateEnd = moment(test).format('YYYY-MM-DD 23:59:59')
+      listTest = await models.ControlActivity.findAndCountAll({
+        raw: true,
+        attributes: ['userId_logged', 'dateCreated'],
+        where: {
+          userId_logged: userId,
+          dateTimeCreated: {
+            $between: [dateStart, dateEnd]
+          }
+        },
+        group: ['userId_logged', 'dateCreated']
+      })
+      const mergelistUserActivityTest = _.merge(listTest.rows, listTest.count)
+      const mergedToArrayTest = Object.values(mergelistUserActivityTest)
+      // console.log(mergedToArrayTest)
+      if (mergedToArrayTest.length === 0) {
+        arrayTest.push({
+          userId_logged: parseInt(userId),
+          dateCreated: moment(test).format('YYYY-MM-DD'),
+          count: 0
+        })
+      } else {
+        // console.log(arrayTest)
+        arrayTest.push(
+          mergedToArrayTest
+        )
+      }
+    }
+    console.log(arrayTest)
+    const formattedListUserActivityTest = arrayTest.map(item => {
+      return {
+        userId_logged: item.userId_logged,
+        totalRequests: item.count,
+        dateCreated: moment(item.dateCreated).format('DD/MM/YYYY')
+      }
+    })
+
     const listUserActivity = await models.ControlActivity.findAndCountAll({
       raw: true,
       attributes: ['userId_logged', 'dateCreated'],
@@ -1430,39 +1524,85 @@ export const activityRequestControlPerUser = async (req, res, next) => {
         dateCreated: moment(item.dateCreated).format('DD/MM/YYYY')
       }
     })
+    const countTotalsPerDate = listUserActivity.count.map(({
+      count
+    }) => count)
+    const maxTotalsPerDate = Math.max(...countTotalsPerDate)
+    const minTotalsPerDate = Math.min(...countTotalsPerDate)
+    const avgTotalsPerDate = Math.round(_.meanBy(listUserActivity.count, (p) => p.count))
 
-    return res.status(201).json({
-      data: formattedListUserActivity
-    })
-  } catch (error) {
-    return next(error)
-  }
-}
-
-export const activityRequestControl = async (req, res, next) => {
-  const dateFrom = req.query.dateFrom
-  const dateTo = req.query.dateTo
-
-  try {
-    const listUserActivity = await models.ControlActivity.findAndCountAll({
+    /* Get Total From All Analysts */
+    const totalAnalysts = await models.ControlActivity.count({
       raw: true,
-      attributes: ['userId_logged', 'dateCreated'],
+      include: [{
+        model: models.User,
+        as: 'userLogged',
+        where: {
+          id: {
+            $col: 'ControlActivity.userId_logged'
+          },
+          listingAgent: 1,
+          roles: {
+            $like: '%BUSINESS_MENU%'
+          }
+        }
+      }],
       where: {
         dateCreated: {
           $between: [dateFrom, dateTo]
         }
       },
-      group: ['userId_logged', 'dateCreated']
+      group: ['dateCreated', 'userId_logged']
     })
+    const countTotalsAnalystsPerDate = totalAnalysts.map(({
+      count
+    }) => count)
+    const maxTotalsAnalystsPerDate = Math.max(...countTotalsAnalystsPerDate)
+    const avgTotalsAnalystsPerDate = Math.round(_.meanBy(totalAnalysts, (p) => p.count))
+    /* End */
 
-    const mergelistUserActivity = _.merge(listUserActivity.rows, listUserActivity.count)
+    /* Get Total From All Brokers */
+    const totalBrokers = await models.ControlActivity.count({
+      raw: true,
+      include: [{
+        model: models.User,
+        as: 'userLogged',
+        where: {
+          id: {
+            $col: 'ControlActivity.userId_logged'
+          },
+          listingAgent: 0,
+          userType: 'Broker',
+          roles: {
+            $notLike: '%BUSINESS_MENU%'
+          }
+        }
+      }],
+      where: {
+        dateCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      group: ['dateCreated', 'userId_logged']
+    })
+    const countTotalsBrokersPerDate = totalBrokers.map(({
+      count
+    }) => count)
+    const maxTotalsBrokersPerDate = Math.max(...countTotalsBrokersPerDate)
+    const avgTotalsBrokersPerDate = Math.round(_.meanBy(totalBrokers, (p) => p.count))
+    /* End */
 
-    const mergedToObject = _.groupBy(mergelistUserActivity, 'userId_logged')
-
-    const mergedToArray = Object.values(mergedToObject)
+    console.log(formattedListUserActivity)
 
     return res.status(201).json({
-      data: mergedToArray
+      data: formattedListUserActivityTest,
+      maxTotalsPerDate,
+      minTotalsPerDate,
+      avgTotalsPerDate,
+      maxTotalsAnalystsPerDate,
+      avgTotalsAnalystsPerDate,
+      maxTotalsBrokersPerDate,
+      avgTotalsBrokersPerDate
     })
   } catch (error) {
     return next(error)

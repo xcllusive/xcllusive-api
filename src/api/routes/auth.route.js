@@ -8,9 +8,6 @@ import {
   loginWithToken,
   logout
 } from '../controllers/auth.controller'
-import {
-  controlActivityUser
-} from '../middlewares/controlActivity'
 
 import {
   authMiddleware

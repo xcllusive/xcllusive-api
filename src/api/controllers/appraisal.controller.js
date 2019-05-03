@@ -81,12 +81,15 @@ export const create = async (req, res, next) => {
   try {
     // Verify exists appraisal to change the stage to appraisal if you do not have any
     const haveAppraisal = await models.Appraisal.findOne({
+      raw: true,
       where: {
         business_id: newAppraisal.business_id
       }
     })
     if (!haveAppraisal) {
-      const updateBusiness = req.body
+      const updateBusiness = {}
+      updateBusiness.comparableDataSelectedList = '[]'
+      updateBusiness.business_id = req.body.business_id
       updateBusiness.modifiedBy_id = req.user.id
       updateBusiness.stageId = 9
       await models.Business.update(updateBusiness, {
