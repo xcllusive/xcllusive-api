@@ -143,7 +143,7 @@ export const create = async (req, res, next) => {
         id: officeId
       }
     })
-    req.body.dataRegion = regionlabel
+    req.body.dataRegion = regionlabel.label
 
     const newUser = await models.User.create(req.body)
     return res.status(200).json({
