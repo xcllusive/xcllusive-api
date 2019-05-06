@@ -8,7 +8,8 @@ import {
   getBusinessesPerAnalyst,
   getEnquiryReport,
   activityRequestControlPerUser,
-  getUsersPerRegion
+  getUsersPerRegion,
+  getDailyTimeActivityReport
 } from '../controllers/reports.controller'
 import {
   authMiddleware,
@@ -47,5 +48,7 @@ router.route('/businesses-list-analyst').get(getBusinessesPerAnalyst)
 router.route('/activity-request-per-user-report').get(activityRequestControlPerUser)
 
 router.route('/users-per-region').get(getUsersPerRegion)
+
+router.route('/daily-time-activity-report').get(getDailyTimeActivityReport)
 
 export default router

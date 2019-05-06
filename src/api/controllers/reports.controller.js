@@ -1455,17 +1455,19 @@ export const activityRequestControlPerUser = async (req, res, next) => {
   const dateTo = req.query.dateTo
   const userId = req.query.userIdSelected
 
-  const totalDays = (moment(dateTo).diff(moment(dateFrom), 'days') + 1)
+  const dateB = moment(dateTo)
+  const dateC = moment(dateFrom)
+  const totalDays = (dateB.diff(dateC, 'days') + 1)
 
   try {
-    var test = null
-    let arrayTest = []
-    let listTest = null
+    let date = null
+    let array = []
+    let listUserActivity = null
     for (let i = 0; i < totalDays; i++) {
-      test = moment(dateFrom).add(i, 'days')
-      const dateStart = moment(test).format('YYYY-MM-DD 00:00:00')
-      const dateEnd = moment(test).format('YYYY-MM-DD 23:59:59')
-      listTest = await models.ControlActivity.findAndCountAll({
+      date = moment(dateFrom).add(i, 'days')
+      const dateStart = moment(date).format('YYYY-MM-DD 00:00:00')
+      const dateEnd = moment(date).format('YYYY-MM-DD 23:59:59')
+      listUserActivity = await models.ControlActivity.count({
         raw: true,
         attributes: ['userId_logged', 'dateCreated'],
         where: {
@@ -1476,60 +1478,36 @@ export const activityRequestControlPerUser = async (req, res, next) => {
         },
         group: ['userId_logged', 'dateCreated']
       })
-      const mergelistUserActivityTest = _.merge(listTest.rows, listTest.count)
-      const mergedToArrayTest = Object.values(mergelistUserActivityTest)
-      // console.log(mergedToArrayTest)
-      if (mergedToArrayTest.length === 0) {
-        arrayTest.push({
+      if (listUserActivity.length === 0) {
+        array.push({
           userId_logged: parseInt(userId),
-          dateCreated: moment(test).format('YYYY-MM-DD'),
+          dateCreated: moment(date).format('YYYY-MM-DD'),
           count: 0
         })
       } else {
-        // console.log(arrayTest)
-        arrayTest.push(
-          mergedToArrayTest
-        )
+        array.push({
+          userId_logged: parseInt(userId),
+          dateCreated: moment(date).format('YYYY-MM-DD'),
+          count: listUserActivity[0].count
+        })
       }
     }
-    console.log(arrayTest)
-    const formattedListUserActivityTest = arrayTest.map(item => {
+
+    const formattedListUserActivity = array.map(item => {
       return {
         userId_logged: item.userId_logged,
-        totalRequests: item.count,
+        activity: item.count,
         dateCreated: moment(item.dateCreated).format('DD/MM/YYYY')
       }
     })
 
-    const listUserActivity = await models.ControlActivity.findAndCountAll({
-      raw: true,
-      attributes: ['userId_logged', 'dateCreated'],
-      where: {
-        userId_logged: userId,
-        dateCreated: {
-          $between: [dateFrom, dateTo]
-        }
-      },
-      group: ['userId_logged', 'dateCreated']
-    })
-
-    const mergelistUserActivity = _.merge(listUserActivity.rows, listUserActivity.count)
-
-    const mergedToArray = Object.values(mergelistUserActivity)
-
-    const formattedListUserActivity = mergedToArray.map(item => {
-      return {
-        userId_logged: item.userId_logged,
-        totalRequests: item.count,
-        dateCreated: moment(item.dateCreated).format('DD/MM/YYYY')
-      }
-    })
-    const countTotalsPerDate = listUserActivity.count.map(({
+    const countTotalsPerDate = array.map(({
       count
     }) => count)
     const maxTotalsPerDate = Math.max(...countTotalsPerDate)
-    const minTotalsPerDate = Math.min(...countTotalsPerDate)
-    const avgTotalsPerDate = Math.round(_.meanBy(listUserActivity.count, (p) => p.count))
+
+    const minTotalsPerDate = Math.min(...countTotalsPerDate.filter(zero => zero !== 0))
+    const avgTotalsPerDate = Math.round(_.meanBy(array, (p) => p.count))
 
     /* Get Total From All Analysts */
     const totalAnalysts = await models.ControlActivity.count({
@@ -1592,10 +1570,8 @@ export const activityRequestControlPerUser = async (req, res, next) => {
     const avgTotalsBrokersPerDate = Math.round(_.meanBy(totalBrokers, (p) => p.count))
     /* End */
 
-    console.log(formattedListUserActivity)
-
     return res.status(201).json({
-      data: formattedListUserActivityTest,
+      data: formattedListUserActivity,
       maxTotalsPerDate,
       minTotalsPerDate,
       avgTotalsPerDate,
@@ -1603,6 +1579,48 @@ export const activityRequestControlPerUser = async (req, res, next) => {
       avgTotalsAnalystsPerDate,
       maxTotalsBrokersPerDate,
       avgTotalsBrokersPerDate
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getDailyTimeActivityReport = async (req, res, next) => {
+  const id = req.query.id
+  const date = req.query.date
+
+  var dateString = date
+  dateString = dateString.substr(3, 2) + '-' + dateString.substr(0, 2) + '-' + dateString.substr(6, 4)
+  // const dateStart = moment(dateString).format('YYYY-MM-DD 00:00:00')
+  // const dateEnd = moment(dateString).format('YYYY-MM-DD 23:59:59')
+
+  try {
+    let dailyTime = 0
+    let array = []
+    for (let i = 0; i < 24; i++) {
+      let dateTimeBegin = moment(dateString).format(`YYYY-MM-DD ${i}:00:00`)
+      let dateTimeEnd = moment(dateString).format(`YYYY-MM-DD ${i}:59:59`)
+      // console.log('dateTimeBegin', dateTimeBegin)
+      // console.log('dateTimeEnd', dateTimeEnd)
+      dailyTime = await models.ControlActivity.count({
+        raw: true,
+        attributes: ['dateTimeCreated'],
+        where: {
+          userId_logged: id,
+          dateTimeCreated: {
+            $between: [dateTimeBegin, dateTimeEnd]
+          }
+        }
+      })
+
+      array.push({
+        time: i <= 9 ? `0${i}:00:00` : `${i}:00:00`,
+        activity: dailyTime
+      })
+    }
+    return res.status(201).json({
+      data: array,
+      message: 'Get report succesfully'
     })
   } catch (error) {
     return next(error)
