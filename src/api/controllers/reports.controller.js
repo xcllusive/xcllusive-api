@@ -1600,8 +1600,6 @@ export const getDailyTimeActivityReport = async (req, res, next) => {
     for (let i = 0; i < 24; i++) {
       let dateTimeBegin = moment(dateString).format(`YYYY-MM-DD ${i}:00:00`)
       let dateTimeEnd = moment(dateString).format(`YYYY-MM-DD ${i}:59:59`)
-      // console.log('dateTimeBegin', dateTimeBegin)
-      // console.log('dateTimeEnd', dateTimeEnd)
       dailyTime = await models.ControlActivity.count({
         raw: true,
         attributes: ['dateTimeCreated'],
@@ -1618,8 +1616,15 @@ export const getDailyTimeActivityReport = async (req, res, next) => {
         activity: dailyTime
       })
     }
+    const user = await models.User.findOne({
+      raw: true,
+      where: {
+        id: id
+      }
+    })
     return res.status(201).json({
       data: array,
+      user,
       message: 'Get report succesfully'
     })
   } catch (error) {
