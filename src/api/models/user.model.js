@@ -96,6 +96,10 @@ export default (sequelize, DataTypes) => {
       officeId: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+      listingAgentCtc: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',

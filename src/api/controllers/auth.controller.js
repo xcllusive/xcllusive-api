@@ -49,7 +49,9 @@ export const login = async (req, res, next) => {
     const userResponse = {
       id: user.id,
       email: user.email,
-      roles: user.roles
+      roles: user.roles,
+      listingAgent: user.listingAgent,
+      listingAgentCtc: user.listingAgentCtc
     }
 
     const newControlActivity = {

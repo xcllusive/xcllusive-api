@@ -44,6 +44,9 @@ export const getBusiness = async (req, res, next) => {
       }, {
         model: models.User,
         as: 'listingAgent'
+      }, {
+        model: models.User,
+        as: 'listingAgentCtc'
       }]
     })
     const stageList = await models.BusinessStage.findAll({
@@ -412,7 +415,8 @@ export const remove = async (req, res, next) => {
 
 export const updateListingAgent = async (req, res, next) => {
   const {
-    listingAgentId
+    listingAgentId,
+    listingAgentCtcId
   } = req.body
 
   const {
@@ -420,7 +424,8 @@ export const updateListingAgent = async (req, res, next) => {
   } = req.params
 
   const data = {
-    listingAgent_id: listingAgentId
+    listingAgent_id: listingAgentId > 0 ? listingAgentId : null,
+    listingAgentCtc_id: listingAgentCtcId > 0 ? listingAgentCtcId : null
   }
 
   if (!idBusiness || idBusiness === 'undefined') {
@@ -462,21 +467,6 @@ export const updateListingAgent = async (req, res, next) => {
       })
     }
 
-    // Verify exists listingAgent
-    const listingAgent = await models.User.findOne({
-      where: {
-        id: listingAgentId
-      }
-    })
-
-    if (!listingAgent) {
-      throw new APIError({
-        message: 'Listing agent not found',
-        status: 404,
-        isPublic: true
-      })
-    }
-
     // Verify logged user
     const user = await models.User.findOne({
       where: {
@@ -484,30 +474,88 @@ export const updateListingAgent = async (req, res, next) => {
       }
     })
 
-    // Compile the template to use variables
-    const templateCompiled = Handlebars.compile(template.body)
-    const context = {
-      agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
-      agent_first_name: listingAgent.firstName,
-      business_name: business.businessName,
-      user_name: user.firstName,
-      business_id: business.id
+    let mailOptions = {}
+    let mailOptionsCtc = {}
+
+    // Verify exists listingAgent
+    if (listingAgentId > 0 && business.listingAgent_id !== listingAgentId) {
+      const listingAgent = await models.User.findOne({
+        where: {
+          id: listingAgentId
+        }
+      })
+
+      if (!listingAgent) {
+        throw new APIError({
+          message: 'Listing agent not found',
+          status: 404,
+          isPublic: true
+        })
+      }
+      // Compile the template to use variables
+      const templateCompiled = Handlebars.compile(template.body)
+      const context = {
+        agent_full_name: `${listingAgent.firstName} ${listingAgent.lastName}`,
+        agent_first_name: listingAgent.firstName,
+        business_name: business.businessName,
+        user_name: user.firstName,
+        business_id: business.id
+      }
+
+      // Set email options
+      mailOptions = {
+        to: listingAgent.email,
+        from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+        subject: template.subject,
+        html: templateCompiled(context),
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
+      }
+      // Send Email
+      await mailer.sendMail(mailOptions)
     }
 
-    // Set email options
-    const mailOptions = {
-      to: listingAgent.email,
-      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
-      subject: template.subject,
-      html: templateCompiled(context),
-      attachments: template.enableAttachment ? [{
-        filename: `${template.title.trim()}.pdf`,
-        path: template.attachmentPath
-      }] : []
-    }
+    // Verify exists listingAgent
+    if (listingAgentCtcId > 0 && business.listingAgentCtc_id !== listingAgentCtcId) {
+      const listingAgentCtc = await models.User.findOne({
+        where: {
+          id: listingAgentCtcId
+        }
+      })
 
-    // Send Email
-    await mailer.sendMail(mailOptions)
+      if (!listingAgentCtc) {
+        throw new APIError({
+          message: 'Listing agent not found',
+          status: 404,
+          isPublic: true
+        })
+      }
+      // Compile the template to use variables
+      const templateCompiled = Handlebars.compile(template.body)
+      const context = {
+        agent_full_name: `${listingAgentCtc.firstName} ${listingAgentCtc.lastName}`,
+        agent_first_name: listingAgentCtc.firstName,
+        business_name: business.businessName,
+        user_name: user.firstName,
+        business_id: business.id
+      }
+
+      // Set email options
+      mailOptionsCtc = {
+        to: listingAgentCtc.email,
+        from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+        subject: template.subject,
+        html: templateCompiled(context),
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
+      }
+      // Send Email
+      await mailer.sendMail(mailOptionsCtc)
+    }
   } catch (error) {
     return next(error)
   }
@@ -1090,8 +1138,8 @@ export const sendGroupEmail = async (req, res, next) => {
         to: buyer.email,
         from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
         subject,
-        replyTo: buyer.replyTo
-          ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
+        replyTo: buyer.replyTo ?
+          req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         
@@ -1248,6 +1296,27 @@ export const finaliseStageSold = async (req, res, next) => {
 }
 
 export const getQtdeBusinessStageUser = async (req, res, next) => {
+  let whereOptions = {}
+  if (req.user.listingAgentCtc) {
+    whereOptions = {
+      listingAgentCtc_id: {
+        $eq: req.user.id
+      }
+
+    }
+  } else {
+    whereOptions = {
+      listingAgent_id: {
+        $eq: req.user.id
+      },
+      $or: [{
+        listingAgentCtc_id: req.user.id
+      }, {
+        listingAgentCtc_id: null
+      }]
+    }
+  }
+
   try {
     const businessPotentialListingFilter = await models.Business.count({
       where: {
@@ -1366,10 +1435,43 @@ export const getAllPerUser = async (req, res, next) => {
   let search = req.query.search
   const stageId = req.query.stageId
   let filterLog = req.query.filterLog
-  let whereOptions = {
-    where: {
-      listingAgent_id: {
-        $eq: req.user.id
+  // let whereOptions = {
+  //   where: {
+  //     listingAgent_id: {
+  //       $eq: req.user.id
+  //     }
+  //   }
+  // }
+
+  let whereOptions = {}
+  let whereStageLost = {}
+  if (req.user.listingAgentCtc) {
+    whereStageLost = {
+      stageId: 8,
+      listingAgentCtc_id: req.user.id
+    }
+    whereOptions = {
+      where: {
+        listingAgentCtc_id: {
+          $eq: req.user.id
+        }
+      }
+    }
+  } else {
+    whereStageLost = {
+      stageId: 8,
+      listingAgent_id: req.user.id
+    }
+    whereOptions = {
+      where: {
+        listingAgent_id: {
+          $eq: req.user.id
+        },
+        $or: [{
+          listingAgentCtc_id: req.user.id
+        }, {
+          listingAgentCtc_id: null
+        }]
       }
     }
   }
@@ -1452,10 +1554,7 @@ export const getAllPerUser = async (req, res, next) => {
       const businessesLost = await models.Business.findAll(
         Object.assign(whereOptions, {
           attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
-          where: {
-            stageId: 8,
-            listingAgent_id: req.user.id
-          },
+          where: whereStageLost,
           include: {
             model: models.BusinessLog,
             as: 'BusinessLog',
@@ -1495,7 +1594,7 @@ export const getAllPerUser = async (req, res, next) => {
             rows: response,
             totalLostRecontact
           },
-          message: 'Get businesses succesfuly.'
+          message: 'Get businesses succesfully.'
         })
     }
 
@@ -1522,10 +1621,7 @@ export const getAllPerUser = async (req, res, next) => {
     const businessesLost = await models.Business.findAll(
       Object.assign(whereOptions, {
         attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
-        where: {
-          stageId: 8,
-          listingAgent_id: req.user.id
-        },
+        where: whereStageLost,
         include: {
           model: models.BusinessLog,
           as: 'BusinessLog',

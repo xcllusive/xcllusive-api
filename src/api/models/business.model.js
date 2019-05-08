@@ -275,6 +275,10 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'listingAgent_id',
       as: 'listingAgent'
     })
+    models.Business.belongsTo(models.User, {
+      foreignKey: 'listingAgentCtc_id',
+      as: 'listingAgentCtc'
+    })
     models.Business.hasMany(models.BrokerWeeklyReport, {
       foreignKey: 'business_id',
       as: 'BrokerWeeklyReport'
