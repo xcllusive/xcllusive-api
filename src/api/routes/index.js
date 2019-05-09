@@ -21,6 +21,8 @@ import comparableDataRoutes from './comparableData.route'
 import reportsRoutes from './reports.route'
 import officeRegisterRoutes from './officeRegister.route'
 
+import ctcReportsRoutes from './CTC/reports.route'
+
 const router = express.Router()
 
 router.get('/', (req, res) => res.send('API is working !'))
@@ -44,5 +46,8 @@ router.use('/appraisal', appraisalRouter)
 router.use('/comparable-data', comparableDataRoutes)
 router.use('/reports', reportsRoutes)
 router.use('/office-register', officeRegisterRoutes)
+
+/* CTC Routes */
+router.use('/ctc-reports', ctcReportsRoutes)
 
 export default router
