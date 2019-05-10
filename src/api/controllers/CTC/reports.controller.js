@@ -134,6 +134,7 @@ export const getMarketingReport = async (req, res, next) => {
           }
         }, {
           model: models.User,
+          attributes: ['dataRegion'],
           as: 'listingAgentCtc',
           where: {
             id: {
@@ -178,35 +179,111 @@ export const getMarketingReport = async (req, res, next) => {
       ],
       group: ['Business.sourceId']
     })
-    console.log(arrayLeadsPerSourceTotalLeadsMerged)
+
     const arrayLeadsPerSourceSignedUpMerged = _.merge(leadsPerSourceSignedUp.rows, leadsPerSourceSignedUp.count)
-    let arrayLeadsPerSource = arrayLeadsPerSourceTotalLeadsMerged
+    const arrayMerged = _.merge(arrayLeadsPerSourceTotalLeadsMerged, arrayLeadsPerSourceSignedUpMerged)
+    let arrayLeadsPerSource = arrayMerged
     if (arrayLeadsPerSourceSignedUpMerged.length > 0) {
       const changedArrayName = arrayLeadsPerSourceSignedUpMerged.map(item => {
         return {
           sourceId: item.sourceId,
           'source.label': item['source.label'],
-          countSourceSignedUpStage: item.count
+          countSourceSignedUp: item.count
         }
       })
-      arrayLeadsPerSourceTotalLeadsMerged.forEach(items => {
+      arrayMerged.forEach(items => {
         changedArrayName.forEach(items2 => {
           if (items.sourceId === items2.sourceId) {
             const mergeToArray = _.merge(items2, items)
             arrayLeadsPerSource = _.merge(changedArrayName, mergeToArray)
           } else {
-            arrayLeadsPerSource = _.merge(changedArrayName, arrayLeadsPerSourceTotalLeadsMerged)
+            arrayLeadsPerSource = _.merge(changedArrayName, arrayMerged)
           }
         })
       })
     }
     /* end Leads per Source */
 
+    /* starts Total per Source */
+    const totalPerSource = await models.Business.findAndCountAll({
+      raw: true,
+      attributes: ['sourceId'],
+      as: 'Business',
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [
+        {
+          model: models.BusinessSource,
+          attributes: ['label'],
+          as: 'source',
+          where: {
+            id: {
+              $col: 'Business.sourceId'
+            }
+          }
+        }, {
+          model: models.User,
+          attributes: ['dataRegion'],
+          as: 'listingAgentCtc',
+          where: {
+            id: {
+              $col: 'Business.listingAgentCtc_id'
+            }
+          }
+        }
+      ],
+      group: [
+        [
+          {
+            model: models.BusinessSource,
+            as: 'source'
+          }, 'id'
+        ]
+      ]
+    })
+    const arrayTotalPerSource = _.merge(totalPerSource.rows, totalPerSource.count)
+
+    const totalGeralPerSource = await models.Business.count({
+      raw: true,
+      as: 'Business',
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [
+        {
+          model: models.BusinessSource,
+          as: 'source',
+          where: {
+            id: {
+              $col: 'Business.sourceId'
+            }
+          }
+        }, {
+          model: models.User,
+          attributes: ['dataRegion'],
+          as: 'listingAgentCtc',
+          where: {
+            id: {
+              $col: 'Business.listingAgentCtc_id'
+            }
+          }
+        }
+      ]
+    })
+    /* ends Total per Source */
+
     return res.status(201).json({
       data: {
         leadsPerAnalyst,
         totalsArray,
-        arrayLeadsPerSource
+        arrayLeadsPerSource,
+        arrayTotalPerSource,
+        totalGeralPerSource
       }
     })
   } catch (error) {
