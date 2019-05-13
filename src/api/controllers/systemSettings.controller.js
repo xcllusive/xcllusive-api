@@ -1,6 +1,7 @@
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
 import _ from 'lodash'
+import path from 'path'
 
 export const getAllSettings = async (req, res, next) => {
   try {
@@ -47,6 +48,75 @@ export const update = async (req, res, next) => {
     return res.status(201).json({
       data: updateSettings,
       message: 'System Settings updated with success'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const exportBuyers = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  var objArray = [{
+    'id': 0,
+    'name': 'xxxx',
+    'is_active': 'false'
+  }, {
+    'id': 1,
+    'name': 'yyyy',
+    'is_active': 'true'
+  }]
+
+  try {
+    const buyer = await models.Buyer.findAll({
+      raw: true,
+      attributes: ['firstName', 'surname', 'email'],
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      order: [
+        ['dateTimeCreated', 'ASC']
+      ]
+    })
+
+    if (!buyer) {
+      throw new APIError({
+        message: 'There is none buyer in the period informed',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const xlsx = require('xlsx')
+    var newWb = xlsx.utils.book_new()
+    var newWs = xlsx.utils.json_to_sheet(buyer)
+    xlsx.utils.book_append_sheet(newWb, newWs, 'New Data')
+    const destExcelGenerated = path.resolve('buyersExported.xlsx')
+    xlsx.writeFile(newWb, 'buyersExported.xlsx')
+
+    const blob = new Blob([buyer], {
+      type: 'text/xlsx'
+    })
+    console.log(blob)
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.setAttribute('hidden', '')
+    a.setAttribute('href', url)
+    a.setAttribute('download', 'buyersExported.xlsx')
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    // const destExcelGenerated = path.resolve('buyersExported.xlsx')
+    // res.download(destExcelGenerated, err => {
+    //   console.log('cayo', err)
+    // })
+
+    return res.status(201).json({
+      data: '',
+      message: 'Success'
     })
   } catch (error) {
     return next(error)

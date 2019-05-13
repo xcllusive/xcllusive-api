@@ -4,7 +4,8 @@ import * as validation from '../validations/systemSettings.validation'
 import {
   getAllSettings,
   update,
-  executeJavaScript
+  executeJavaScript,
+  exportBuyers
 } from '../controllers/systemSettings.controller'
 import {
   authMiddleware,
@@ -28,6 +29,9 @@ router.use(controlActivityUser('SystemSettings'))
 router.route('/')
   .get(getAllSettings)
   .put(validate(validation.update), update)
+
+router.route('/export-buyers')
+  .get(exportBuyers)
 
 router.route('/execute-javascript')
   .get(executeJavaScript)
