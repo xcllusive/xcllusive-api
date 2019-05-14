@@ -31,7 +31,7 @@ router.route('/')
   .put(validate(validation.update), update)
 
 router.route('/export-buyers')
-  .get(exportBuyers)
+  .post(exportBuyers)
 
 router.route('/execute-javascript')
   .get(executeJavaScript)

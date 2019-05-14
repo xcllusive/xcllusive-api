@@ -1265,7 +1265,8 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'firstName', 'lastName'],
       where: {
-        userType: 'Broker'
+        userType: 'Broker',
+        active: 1
       }
     })
     const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
@@ -1686,7 +1687,8 @@ export const getBrokersPerRegion = async (req, res, next) => {
     const brokers = await models.User.findAll({
       where: {
         officeId: region,
-        userType: 'Broker'
+        userType: 'Broker',
+        active: 1
       },
       order: [
         ['firstName', 'ASC']

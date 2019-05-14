@@ -80,7 +80,12 @@ export const list = async (req, res, next) => {
       },
       where: {
         userType: arrayType
-      }
+      },
+      order: [
+        [
+          'active', 'DESC'
+        ], ['id', 'ASC']
+      ]
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))
     return res.status(200).json(users)
@@ -198,6 +203,34 @@ export const update = async (req, res, next) => {
       .status(200)
       .json({
         message: `User ${req.body.firstName} updated with success`
+      })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+export const activeInactive = async (req, res, next) => {
+  const user = req.body
+
+  let activeInactive = null
+  if (user.active) {
+    user.active = false
+    activeInactive = 'Inactive'
+  } else {
+    user.active = true
+    activeInactive = 'Active'
+  }
+
+  try {
+    await models.User.update(user, {
+      where: {
+        id: user.id
+      }
+    })
+    return res
+      .status(200)
+      .json({
+        message: `User ${req.body.firstName} is now ${activeInactive}`
       })
   } catch (err) {
     return next(err)

@@ -13,37 +13,33 @@ export const getMarketingReport = async (req, res, next) => {
       raw: true,
       attributes: ['listingAgent_id'],
       where:
-        // Sequelize.where(
-        //   Sequelize.fn('date', Sequelize.col('dateTimeCreated')), 'between', dateFrom,
-        //   Sequelize.and(
-        //     Sequelize.fn('date', Sequelize.col('dateTimeCreated')), '<=', dateTo
-        //   )
-        // ),
+      // Sequelize.where(
+      //   Sequelize.fn('date', Sequelize.col('dateTimeCreated')), 'between', dateFrom,
+      //   Sequelize.and(
+      //     Sequelize.fn('date', Sequelize.col('dateTimeCreated')), '<=', dateTo
+      //   )
+      // ),
 
-        {
-          dateTimeCreated: {
-            $between: [dateFrom, dateTo]
-          }
-        },
-      include: [
-        {
-          model: models.User,
-          attributes: ['firstName', 'lastName', 'dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            }
+      {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [{
+        model: models.User,
+        attributes: ['firstName', 'lastName', 'dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
           }
         }
-      ],
+      }],
       group: [
-        [
-          {
-            model: models.User,
-            as: 'listingAgent'
-          }, 'id'
-        ]
+        [{
+          model: models.User,
+          as: 'listingAgent'
+        }, 'id']
       ]
     })
 
@@ -55,25 +51,21 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.User,
-          attributes: ['firstName', 'lastName', 'dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            }
+      include: [{
+        model: models.User,
+        attributes: ['firstName', 'lastName', 'dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
           }
         }
-      ],
+      }],
       group: [
-        [
-          {
-            model: models.User,
-            as: 'listingAgent'
-          }, 'id'
-        ]
+        [{
+          model: models.User,
+          as: 'listingAgent'
+        }, 'id']
       ]
     })
 
@@ -85,26 +77,22 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.User,
-          attributes: ['firstName', 'lastName', 'dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            listingAgent: 1
-          }
+      include: [{
+        model: models.User,
+        attributes: ['firstName', 'lastName', 'dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          listingAgent: 1
         }
-      ],
+      }],
       group: [
-        [
-          {
-            model: models.User,
-            as: 'listingAgent'
-          }, 'id'
-        ]
+        [{
+          model: models.User,
+          as: 'listingAgent'
+        }, 'id']
       ]
     })
 
@@ -274,28 +262,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Adelaide Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Adelaide Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceAdelaideCreated = _.merge(leadsPerSourceAdelaideCreated.rows, leadsPerSourceAdelaideCreated.count)
@@ -309,28 +295,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Adelaide Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Adelaide Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceAdelaideIMMerge = _.merge(leadsPerSourceAdelaideIM.rows, leadsPerSourceAdelaideIM.count)
@@ -366,28 +350,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Camberra Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Camberra Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceCamberraCreated = _.merge(leadsPerSourceCamberraCreated.rows, leadsPerSourceCamberraCreated.count)
@@ -401,28 +383,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Camberra Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Camberra Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceCamberraIMMerge = _.merge(leadsPerSourceCamberraIM.rows, leadsPerSourceCamberraIM.count)
@@ -457,28 +437,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Cowra Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Cowra Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceCowraCreated = _.merge(leadsPerSourceCowraCreated.rows, leadsPerSourceCowraCreated.count)
@@ -492,28 +470,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Cowra Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Cowra Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceCowraIMMerge = _.merge(leadsPerSourceCowraIM.rows, leadsPerSourceCowraIM.count)
@@ -549,28 +525,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Gosford Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Gosford Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceGosfordCreated = _.merge(leadsPerSourceGosfordCreated.rows, leadsPerSourceGosfordCreated.count)
@@ -584,28 +558,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Gosford Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Gosford Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceGosfordIMMerge = _.merge(leadsPerSourceGosfordIM.rows, leadsPerSourceGosfordIM.count)
@@ -641,28 +613,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Melbourne Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Melbourne Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceMelbourneCreated = _.merge(leadsPerSourceMelbourneCreated.rows, leadsPerSourceMelbourneCreated.count)
@@ -676,28 +646,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Melbourne Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Melbourne Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceMelbourneIMMerge = _.merge(leadsPerSourceMelbourneIM.rows, leadsPerSourceMelbourneIM.count)
@@ -733,28 +701,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Sydney Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Sydney Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceSydneyCreated = _.merge(leadsPerSourceSydneyCreated.rows, leadsPerSourceSydneyCreated.count)
@@ -768,28 +734,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Sydney Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Sydney Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceSydneyIMMerge = _.merge(leadsPerSourceSydneyIM.rows, leadsPerSourceSydneyIM.count)
@@ -825,28 +789,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Queensland Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Queensland Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceQueenslandCreated = _.merge(leadsPerSourceQueenslandCreated.rows, leadsPerSourceQueenslandCreated.count)
@@ -860,28 +822,26 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
-          }
-        }, {
-          model: models.User,
-          attributes: ['dataRegion'],
-          as: 'listingAgent',
-          where: {
-            id: {
-              $col: 'Business.listingAgent_id'
-            },
-            dataRegion: 'Queensland Office'
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }, {
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Queensland Office'
+        }
+      }],
       group: ['Business.sourceId']
     })
     const arrayLeadsPerSourceQueenslandIMMerge = _.merge(leadsPerSourceQueenslandIM.rows, leadsPerSourceQueenslandIM.count)
@@ -951,25 +911,21 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          attributes: ['label'],
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ],
+      }],
       group: [
-        [
-          {
-            model: models.BusinessSource,
-            as: 'source'
-          }, 'id'
-        ]
+        [{
+          model: models.BusinessSource,
+          as: 'source'
+        }, 'id']
       ]
     })
     const arrayTotalPerSource = _.merge(totalPerSource.rows, totalPerSource.count)
@@ -982,17 +938,15 @@ export const getMarketingReport = async (req, res, next) => {
           $between: [dateFrom, dateTo]
         }
       },
-      include: [
-        {
-          model: models.BusinessSource,
-          as: 'source',
-          where: {
-            id: {
-              $col: 'Business.sourceId'
-            }
+      include: [{
+        model: models.BusinessSource,
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
           }
         }
-      ]
+      }]
     })
     /* ends Total per Source */
 
@@ -1039,9 +993,12 @@ export const getAllAnalysts = async (req, res, next) => {
     const allAnalysts = await models.User.findAll({
       raw: true,
       where: {
-        listingAgent: true
+        listingAgent: true,
+        active: 1
       },
-      order: [['firstName', 'ASC']]
+      order: [
+        ['firstName', 'ASC']
+      ]
     })
     if (!allAnalysts) {
       throw new APIError({
@@ -1074,8 +1031,35 @@ export const getAnalystReport = async (req, res, next) => {
     }
   }
 
-  let include = [
-    {
+  let include = [{
+    model: models.BusinessLog,
+    as: 'BusinessLog',
+    where: {
+      business_id: {
+        $col: 'Business.id'
+      }
+    }
+  }, {
+    model: models.BusinessSource,
+    attributes: ['label'],
+    as: 'source',
+    where: {
+      id: {
+        $col: 'Business.sourceId'
+      }
+    }
+  }]
+
+  if (parseInt(stageId)) {
+    whereOptions.where.stageId = {
+      $eq: `${parseInt(stageId)}`
+    }
+  }
+  if (stageId && parseInt(stageId) === 8) {
+    whereOptions.where.lostDate = {
+      $between: [dateFrom, dateTo]
+    }
+    include = [{
       model: models.BusinessLog,
       as: 'BusinessLog',
       where: {
@@ -1092,56 +1076,25 @@ export const getAnalystReport = async (req, res, next) => {
           $col: 'Business.sourceId'
         }
       }
-    }
-  ]
-
-  if (parseInt(stageId)) {
-    whereOptions.where.stageId = {
-      $eq: `${parseInt(stageId)}`
-    }
-  }
-  if (stageId && parseInt(stageId) === 8) {
-    whereOptions.where.lostDate = {
-      $between: [dateFrom, dateTo]
-    }
-    include = [
-      {
-        model: models.BusinessLog,
-        as: 'BusinessLog',
-        where: {
-          business_id: {
-            $col: 'Business.id'
-          }
-        }
-      }, {
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.BusinessStageNotSigned,
-        attributes: ['label'],
-        as: 'stageNotSigned',
-        where: {
-          id: {
-            $col: 'Business.stageNotSignedId'
-          }
-        }
-      }, {
-        model: models.BusinessStageNotWant,
-        attributes: ['label'],
-        as: 'stageNotWant',
-        where: {
-          id: {
-            $col: 'Business.stageNotWantId'
-          }
+    }, {
+      model: models.BusinessStageNotSigned,
+      attributes: ['label'],
+      as: 'stageNotSigned',
+      where: {
+        id: {
+          $col: 'Business.stageNotSignedId'
         }
       }
-    ]
+    }, {
+      model: models.BusinessStageNotWant,
+      attributes: ['label'],
+      as: 'stageNotWant',
+      where: {
+        id: {
+          $col: 'Business.stageNotWantId'
+        }
+      }
+    }]
   }
 
   try {
@@ -1150,12 +1103,10 @@ export const getAnalystReport = async (req, res, next) => {
         attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId', 'saleNotesLostMeeting', 'saleNotesLostWant', 'lostDate', 'afterSalesNotes', 'addLeadNurtureList', 'dateTimeCreated'],
         include: include,
         order: [
-          [
-            {
-              model: models.BusinessLog,
-              as: 'BusinessLog'
-            }, 'followUp', 'DESC'
-          ]
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
         ]
       })
     )
@@ -1311,64 +1262,58 @@ export const getEnquiryReport = async (req, res, next) => {
 
   let include = []
   if (hasAnalystsSelected) {
-    include = [
-      {
-        model: models.EnquiryBusinessBuyer,
-        as: 'EnquiryBusinessBuyer',
-        attributes: ['dateTimeCreated'],
-        where: {
-          buyer_id: {
-            $col: 'Buyer.id'
-          }
-        },
-        include: [
-          {
-            model: models.Business,
-            as: 'Business',
-            attributes: ['listingAgent_id'],
-            where: {
-              id: {
-                $col: 'EnquiryBusinessBuyer.business_id'
-              },
-              listingAgent_id: {
-                $in: listOfIdOfAnalysts
-              }
-            }
-          }
-        ]
-      }, {
-        model: models.BuyerSource,
-        as: 'BuyerSource',
-        attributes: ['label'],
+    include = [{
+      model: models.EnquiryBusinessBuyer,
+      as: 'EnquiryBusinessBuyer',
+      attributes: ['dateTimeCreated'],
+      where: {
+        buyer_id: {
+          $col: 'Buyer.id'
+        }
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business',
+        attributes: ['listingAgent_id'],
         where: {
           id: {
-            $col: 'Buyer.source_id'
+            $col: 'EnquiryBusinessBuyer.business_id'
+          },
+          listingAgent_id: {
+            $in: listOfIdOfAnalysts
           }
         }
+      }]
+    }, {
+      model: models.BuyerSource,
+      as: 'BuyerSource',
+      attributes: ['label'],
+      where: {
+        id: {
+          $col: 'Buyer.source_id'
+        }
       }
-    ]
+    }]
   } else {
-    include = [
-      {
-        model: models.EnquiryBusinessBuyer,
-        as: 'EnquiryBusinessBuyer',
-        attributes: ['dateTimeCreated'],
-        where: {
-          buyer_id: {
-            $col: 'Buyer.id'
-          }
-        }
-      }, {
-        model: models.BuyerSource,
-        as: 'BuyerSource',
-        attributes: ['label'],
-        where: {
-          id: {
-            $col: 'Buyer.source_id'
-          }
+    include = [{
+      model: models.EnquiryBusinessBuyer,
+      as: 'EnquiryBusinessBuyer',
+      attributes: ['dateTimeCreated'],
+      where: {
+        buyer_id: {
+          $col: 'Buyer.id'
         }
       }
-    ]
+    }, {
+      model: models.BuyerSource,
+      as: 'BuyerSource',
+      attributes: ['label'],
+      where: {
+        id: {
+          $col: 'Buyer.source_id'
+        }
+      }
+    }]
   }
 
   try {
@@ -1382,20 +1327,16 @@ export const getEnquiryReport = async (req, res, next) => {
       },
       include: include,
       group: [
-        [
-          {
-            model: models.BuyerSource,
-            as: 'BuyerSource'
-          }, 'id'
-        ]
+        [{
+          model: models.BuyerSource,
+          as: 'BuyerSource'
+        }, 'id']
       ],
       order: [
-        [
-          {
-            model: models.BuyerSource,
-            as: 'BuyerSource'
-          }, 'id', 'ASC'
-        ]
+        [{
+          model: models.BuyerSource,
+          as: 'BuyerSource'
+        }, 'id', 'ASC']
       ]
     })
 
@@ -1424,21 +1365,19 @@ export const getEnquiryReport = async (req, res, next) => {
             $between: [dateFrom, dateTo]
           }
         },
-        include: [
-          {
-            model: models.Business,
-            as: 'Business',
-            attributes: ['listingAgent_id'],
-            where: {
-              id: {
-                $col: 'EnquiryBusinessBuyer.business_id'
-              },
-              listingAgent_id: {
-                $in: listOfIdOfAnalysts
-              }
+        include: [{
+          model: models.Business,
+          as: 'Business',
+          attributes: ['listingAgent_id'],
+          where: {
+            id: {
+              $col: 'EnquiryBusinessBuyer.business_id'
+            },
+            listingAgent_id: {
+              $in: listOfIdOfAnalysts
             }
           }
-        ]
+        }]
       })
     } else {
       totalEnquiries = await models.EnquiryBusinessBuyer.count({
@@ -1488,9 +1427,12 @@ export const getUsersPerRegion = async (req, res, next) => {
     // Verify exists buyer
     const users = await models.User.findAll({
       where: {
-        officeId: region
+        officeId: region,
+        active: 1
       },
-      order: [['firstName', 'ASC']]
+      order: [
+        ['firstName', 'ASC']
+      ]
     })
 
     if (!users) {
@@ -1561,7 +1503,9 @@ export const activityRequestControlPerUser = async (req, res, next) => {
       }
     })
 
-    const countTotalsPerDate = array.map(({ count }) => count)
+    const countTotalsPerDate = array.map(({
+      count
+    }) => count)
     const maxTotalsPerDate = Math.max(...countTotalsPerDate)
 
     const minTotalsPerDate = Math.min(...countTotalsPerDate.filter(zero => zero !== 0))
@@ -1570,21 +1514,19 @@ export const activityRequestControlPerUser = async (req, res, next) => {
     /* Get Total From All Analysts */
     const totalAnalysts = await models.ControlActivity.count({
       raw: true,
-      include: [
-        {
-          model: models.User,
-          as: 'userLogged',
-          where: {
-            id: {
-              $col: 'ControlActivity.userId_logged'
-            },
-            listingAgent: 1,
-            roles: {
-              $like: '%BUSINESS_MENU%'
-            }
+      include: [{
+        model: models.User,
+        as: 'userLogged',
+        where: {
+          id: {
+            $col: 'ControlActivity.userId_logged'
+          },
+          listingAgent: 1,
+          roles: {
+            $like: '%BUSINESS_MENU%'
           }
         }
-      ],
+      }],
       where: {
         dateCreated: {
           $between: [dateFrom, dateTo]
@@ -1592,7 +1534,9 @@ export const activityRequestControlPerUser = async (req, res, next) => {
       },
       group: ['dateCreated', 'userId_logged']
     })
-    const countTotalsAnalystsPerDate = totalAnalysts.map(({ count }) => count)
+    const countTotalsAnalystsPerDate = totalAnalysts.map(({
+      count
+    }) => count)
     const maxTotalsAnalystsPerDate = Math.max(...countTotalsAnalystsPerDate)
     const avgTotalsAnalystsPerDate = Math.round(_.meanBy(totalAnalysts, p => p.count))
     /* End */
@@ -1600,22 +1544,20 @@ export const activityRequestControlPerUser = async (req, res, next) => {
     /* Get Total From All Brokers */
     const totalBrokers = await models.ControlActivity.count({
       raw: true,
-      include: [
-        {
-          model: models.User,
-          as: 'userLogged',
-          where: {
-            id: {
-              $col: 'ControlActivity.userId_logged'
-            },
-            listingAgent: 0,
-            userType: 'Broker',
-            roles: {
-              $notLike: '%BUSINESS_MENU%'
-            }
+      include: [{
+        model: models.User,
+        as: 'userLogged',
+        where: {
+          id: {
+            $col: 'ControlActivity.userId_logged'
+          },
+          listingAgent: 0,
+          userType: 'Broker',
+          roles: {
+            $notLike: '%BUSINESS_MENU%'
           }
         }
-      ],
+      }],
       where: {
         dateCreated: {
           $between: [dateFrom, dateTo]
@@ -1623,7 +1565,9 @@ export const activityRequestControlPerUser = async (req, res, next) => {
       },
       group: ['dateCreated', 'userId_logged']
     })
-    const countTotalsBrokersPerDate = totalBrokers.map(({ count }) => count)
+    const countTotalsBrokersPerDate = totalBrokers.map(({
+      count
+    }) => count)
     const maxTotalsBrokersPerDate = Math.max(...countTotalsBrokersPerDate)
     const avgTotalsBrokersPerDate = Math.round(_.meanBy(totalBrokers, p => p.count))
     /* End */

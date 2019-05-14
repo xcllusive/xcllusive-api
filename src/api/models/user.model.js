@@ -100,6 +100,10 @@ export default (sequelize, DataTypes) => {
       listingAgentCtc: {
         type: DataTypes.BOOLEAN,
         allowNull: true
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',

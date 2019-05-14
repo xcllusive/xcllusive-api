@@ -3,10 +3,14 @@ import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
-import { uploadToS3 } from '../modules/aws'
+import {
+  uploadToS3
+} from '../modules/aws'
 
 export const getBusiness = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const _mapValuesToArray = array => {
     if (array.length > 0) {
@@ -31,21 +35,19 @@ export const getBusiness = async (req, res, next) => {
       where: {
         id: idBusiness
       },
-      include: [
-        {
-          model: models.User,
-          as: 'CreatedBy'
-        }, {
-          model: models.User,
-          as: 'ModifiedBy'
-        }, {
-          model: models.User,
-          as: 'listingAgent'
-        }, {
-          model: models.User,
-          as: 'listingAgentCtc'
-        }
-      ]
+      include: [{
+        model: models.User,
+        as: 'CreatedBy'
+      }, {
+        model: models.User,
+        as: 'ModifiedBy'
+      }, {
+        model: models.User,
+        as: 'listingAgent'
+      }, {
+        model: models.User,
+        as: 'listingAgentCtc'
+      }]
     })
     const stageList = await models.BusinessStage.findAll({
       raw: true,
@@ -75,7 +77,8 @@ export const getBusiness = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'firstName', 'lastName'],
       where: {
-        userType: 'Broker'
+        userType: 'Broker',
+        active: 1
       }
     })
     const stageNotSignedList = await models.BusinessStageNotSigned.findAll({
@@ -90,7 +93,9 @@ export const getBusiness = async (req, res, next) => {
       where: {
         business_id: idBusiness
       },
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
     const countAllEnquiry = await models.EnquiryBusinessBuyer.findAndCountAll({
       where: {
@@ -154,33 +159,27 @@ export const list = async (req, res, next) => {
         }
       } else {
         whereOptions.where.$or = []
-        whereOptions.where.$or.push(
-          {
-            businessName: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            firstNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            lastNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            suburb: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            searchNote: {
-              $like: `%${search}%`
-            }
+        whereOptions.where.$or.push({
+          businessName: {
+            $like: `%${search}%`
           }
-        )
+        }, {
+          firstNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          lastNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          suburb: {
+            $like: `%${search}%`
+          }
+        }, {
+          searchNote: {
+            $like: `%${search}%`
+          }
+        })
       }
     }
   }
@@ -314,14 +313,10 @@ export const create = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
 
       // Send Email
@@ -338,7 +333,9 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const {
     stage,
@@ -395,7 +392,9 @@ export const update = async (req, res, next) => {
 }
 
 export const remove = async (req, res, next) => {
-  const { id } = req.body
+  const {
+    id
+  } = req.body
   try {
     await models.User.destroy({
       where: {
@@ -411,9 +410,14 @@ export const remove = async (req, res, next) => {
 }
 
 export const updateListingAgent = async (req, res, next) => {
-  const { listingAgentId, listingAgentCtcId } = req.body
+  const {
+    listingAgentId,
+    listingAgentCtcId
+  } = req.body
 
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   const data = {
     listingAgent_id: listingAgentId > 0 ? listingAgentId : null,
@@ -500,14 +504,10 @@ export const updateListingAgent = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
       // Send Email
       await mailer.sendMail(mailOptions)
@@ -544,14 +544,10 @@ export const updateListingAgent = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [
-            {
-              filename: `${template.title.trim()}.pdf`,
-              path: template.attachmentPath
-            }
-          ]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
       // Send Email
       await mailer.sendMail(mailOptionsCtc)
@@ -575,7 +571,9 @@ export const updateListingAgent = async (req, res, next) => {
 }
 
 export const updateStageLost = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const updateBusiness = req.body
 
   updateBusiness.modifiedBy_id = req.user.id
@@ -607,16 +605,13 @@ export const updateStageLost = async (req, res, next) => {
     })
 
     if (updateBusiness.pendingDone) {
-      await models.BusinessLog.update(
-        {
-          followUpStatus: 'Done'
-        },
-        {
-          where: {
-            business_id: idBusiness
-          }
+      await models.BusinessLog.update({
+        followUpStatus: 'Done'
+      }, {
+        where: {
+          business_id: idBusiness
         }
-      )
+      })
     }
 
     if (updateBusiness.followUpLog) {
@@ -679,7 +674,10 @@ Did we want this business? ${updateBusiness.saleNotesLostWant === true ? 'Yes' :
 }
 
 export const enquiryBusiness = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
@@ -751,7 +749,10 @@ export const enquiryBusiness = async (req, res, next) => {
 }
 
 export const emailToBuyer = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
@@ -810,14 +811,10 @@ export const emailToBuyer = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: `${template.subject}`,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -846,7 +843,10 @@ export const emailToBuyer = async (req, res, next) => {
 }
 
 export const sendEnquiryOwner = async (req, res, next) => {
-  const { buyerId, businessId } = req.body
+  const {
+    buyerId,
+    businessId
+  } = req.body
 
   try {
     // Verify exists buyer
@@ -911,14 +911,10 @@ export const sendEnquiryOwner = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [
-          {
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }
-        ]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -945,8 +941,12 @@ export const sendEnquiryOwner = async (req, res, next) => {
 }
 
 export const getBuyersFromBusiness = async (req, res, next) => {
-  const { idBusiness } = req.params
-  const { showAll } = req.query
+  const {
+    idBusiness
+  } = req.params
+  const {
+    showAll
+  } = req.query
 
   try {
     // Verify exists business
@@ -969,12 +969,10 @@ export const getBuyersFromBusiness = async (req, res, next) => {
       where: {
         business_id: idBusiness
       },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer'
-        }
-      ]
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer'
+      }]
     })
 
     const array = []
@@ -1007,7 +1005,9 @@ export const getBuyersFromBusiness = async (req, res, next) => {
         }
         const lastLog = await models.BuyerLog.findOne({
           where,
-          order: [['dateTimeCreated', 'DESC']],
+          order: [
+            ['dateTimeCreated', 'DESC']
+          ],
           raw: true
         })
         array.push({
@@ -1033,7 +1033,9 @@ export const getBuyersFromBusiness = async (req, res, next) => {
 }
 
 export const getGroupEmail = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   // const response = []
 
@@ -1058,12 +1060,10 @@ export const getGroupEmail = async (req, res, next) => {
       where: {
         business_id: idBusiness
       },
-      include: [
-        {
-          model: models.Buyer,
-          as: 'Buyer'
-        }
-      ]
+      include: [{
+        model: models.Buyer,
+        as: 'Buyer'
+      }]
     })
 
     const arrayGroupEmail = await Promise.all(
@@ -1109,7 +1109,11 @@ export const getGroupEmail = async (req, res, next) => {
 }
 
 export const sendGroupEmail = async (req, res, next) => {
-  const { to, subject, body } = req.body
+  const {
+    to,
+    subject,
+    body
+  } = req.body
   const fileAttachment = req.files.attachment
   const sentTo = []
 
@@ -1133,14 +1137,10 @@ export const sendGroupEmail = async (req, res, next) => {
         <p>Xcllusive Business Sales</p>
         <p>www.xcllusive.com.au | (02) 9817 3331</p>
         `,
-        attachments: fileAttachment
-          ? [
-            {
-              filename: fileAttachment.name,
-              content: fileAttachment.data
-            }
-          ]
-          : []
+        attachments: fileAttachment ? [{
+          filename: fileAttachment.name,
+          content: fileAttachment.data
+        }] : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
       if (resMailer) sentTo.push(resMailer.envelope.to[0])
@@ -1156,7 +1156,9 @@ export const sendGroupEmail = async (req, res, next) => {
 }
 
 export const getStageSold = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
 
   try {
     const sold = await models.BusinessSold.findOne({
@@ -1175,7 +1177,9 @@ export const getStageSold = async (req, res, next) => {
 }
 
 export const createStageSold = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const newSold = req.body
 
   newSold.business_id = idBusiness
@@ -1183,18 +1187,15 @@ export const createStageSold = async (req, res, next) => {
   newSold.modifiedBy_id = req.user.id
 
   try {
-    await models.Business.update(
-      {
-        typeId: newSold.businessType,
-        businessType: newSold.businessType,
-        industry: newSold.industry
-      },
-      {
-        where: {
-          id: idBusiness
-        }
+    await models.Business.update({
+      typeId: newSold.businessType,
+      businessType: newSold.businessType,
+      industry: newSold.industry
+    }, {
+      where: {
+        id: idBusiness
       }
-    )
+    })
 
     const sold = await models.BusinessSold.create(newSold)
 
@@ -1208,25 +1209,24 @@ export const createStageSold = async (req, res, next) => {
 }
 
 export const updateStageSold = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const updatedSold = req.body
 
   updatedSold.business_id = idBusiness
   updatedSold.modifiedBy_id = req.user.id
 
   try {
-    await models.Business.update(
-      {
-        typeId: updatedSold.businessType,
-        businessType: updatedSold.businessType,
-        industry: updatedSold.industry
-      },
-      {
-        where: {
-          id: idBusiness
-        }
+    await models.Business.update({
+      typeId: updatedSold.businessType,
+      businessType: updatedSold.businessType,
+      industry: updatedSold.industry
+    }, {
+      where: {
+        id: idBusiness
       }
-    )
+    })
 
     await models.BusinessSold.update(updatedSold, {
       where: {
@@ -1244,41 +1244,35 @@ export const updateStageSold = async (req, res, next) => {
 }
 
 export const finaliseStageSold = async (req, res, next) => {
-  const { idBusiness, idSold } = req.params
+  const {
+    idBusiness,
+    idSold
+  } = req.params
 
   try {
-    await models.BusinessSold.update(
-      {
-        sold: true,
-        modifiedBy_id: req.user.id
-      },
-      {
-        where: {
-          id: idSold
-        }
+    await models.BusinessSold.update({
+      sold: true,
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        id: idSold
       }
-    )
-    await models.Business.update(
-      {
-        stageId: 6,
-        modifiedBy_id: req.user.id
-      },
-      {
-        where: {
-          id: idBusiness
-        }
+    })
+    await models.Business.update({
+      stageId: 6,
+      modifiedBy_id: req.user.id
+    }, {
+      where: {
+        id: idBusiness
       }
-    )
-    await models.BusinessLog.update(
-      {
-        followUpStatus: 'Done'
-      },
-      {
-        where: {
-          business_id: idBusiness
-        }
+    })
+    await models.BusinessLog.update({
+      followUpStatus: 'Done'
+    }, {
+      where: {
+        business_id: idBusiness
       }
-    )
+    })
     return res.status(201).json({
       data: null,
       message: 'Stage change to Sold'
@@ -1324,52 +1318,44 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
       listingAgent_id: {
         $eq: req.user.id
       },
-      $or: [
-        {
-          listingAgentCtc_id: req.user.id
-        }, {
-          listingAgentCtc_id: null
-        }
-      ],
+      $or: [{
+        listingAgentCtc_id: req.user.id
+      }, {
+        listingAgentCtc_id: null
+      }],
       stageId: 1
     }
     whereOptionsAppraisal = {
       listingAgent_id: {
         $eq: req.user.id
       },
-      $or: [
-        {
-          listingAgentCtc_id: req.user.id
-        }, {
-          listingAgentCtc_id: null
-        }
-      ],
+      $or: [{
+        listingAgentCtc_id: req.user.id
+      }, {
+        listingAgentCtc_id: null
+      }],
       stageId: 9
     }
     whereOptionsForSale = {
       listingAgent_id: {
         $eq: req.user.id
       },
-      $or: [
-        {
-          listingAgentCtc_id: req.user.id
-        }, {
-          listingAgentCtc_id: null
-        }
-      ],
+      $or: [{
+        listingAgentCtc_id: req.user.id
+      }, {
+        listingAgentCtc_id: null
+      }],
       stageId: 4
     }
     whereOptionsLost = {
       listingAgent_id: {
         $eq: req.user.id
       },
-      $or: [
-        {
-          listingAgentCtc_id: req.user.id
-        }, {
-          listingAgentCtc_id: null
-        }
-      ],
+      $or: [{
+        listingAgentCtc_id: req.user.id
+      }, {
+        listingAgentCtc_id: null
+      }],
       stageId: 8
     }
   }
@@ -1494,13 +1480,11 @@ export const getAllPerUser = async (req, res, next) => {
         listingAgent_id: {
           $eq: req.user.id
         },
-        $or: [
-          {
-            listingAgentCtc_id: req.user.id
-          }, {
-            listingAgentCtc_id: null
-          }
-        ]
+        $or: [{
+          listingAgentCtc_id: req.user.id
+        }, {
+          listingAgentCtc_id: null
+        }]
       }
     }
   }
@@ -1522,33 +1506,27 @@ export const getAllPerUser = async (req, res, next) => {
         if (req.user.listingAgentCtc) {
           whereOptions.where.$or = []
         }
-        whereOptions.where.$or.push(
-          {
-            businessName: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            firstNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            lastNameV: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            suburb: {
-              $like: `%${search}%`
-            }
-          },
-          {
-            searchNote: {
-              $like: `%${search}%`
-            }
+        whereOptions.where.$or.push({
+          businessName: {
+            $like: `%${search}%`
           }
-        )
+        }, {
+          firstNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          lastNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          suburb: {
+            $like: `%${search}%`
+          }
+        }, {
+          searchNote: {
+            $like: `%${search}%`
+          }
+        })
       }
     }
   }
@@ -1581,12 +1559,10 @@ export const getAllPerUser = async (req, res, next) => {
             }
           },
           order: [
-            [
-              {
-                model: models.BusinessLog,
-                as: 'BusinessLog'
-              }, 'followUp', 'DESC'
-            ]
+            [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'followUp', 'DESC']
           ]
         })
       )
@@ -1608,12 +1584,10 @@ export const getAllPerUser = async (req, res, next) => {
             }
           },
           order: [
-            [
-              {
-                model: models.BusinessLog,
-                as: 'BusinessLog'
-              }, 'followUp', 'DESC'
-            ]
+            [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'followUp', 'DESC']
           ]
         })
       )
@@ -1650,12 +1624,10 @@ export const getAllPerUser = async (req, res, next) => {
           }
         },
         order: [
-          [
-            {
-              model: models.BusinessLog,
-              as: 'BusinessLog'
-            }, 'followUp', 'DESC'
-          ]
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
         ]
       })
     )
@@ -1677,12 +1649,10 @@ export const getAllPerUser = async (req, res, next) => {
           }
         },
         order: [
-          [
-            {
-              model: models.BusinessLog,
-              as: 'BusinessLog'
-            }, 'followUp', 'DESC'
-          ]
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
         ]
       })
     )
@@ -1709,7 +1679,9 @@ export const getAllPerUser = async (req, res, next) => {
 }
 
 export const updateStageMemo = async (req, res, next) => {
-  const { idBusiness } = req.params
+  const {
+    idBusiness
+  } = req.params
   const updateMemo = req.body
 
   updateMemo.modifiedBy_id = req.user.id
@@ -1741,16 +1713,13 @@ export const updateStageMemo = async (req, res, next) => {
     })
 
     if (updateMemo.pendingDone) {
-      await models.BusinessLog.update(
-        {
-          followUpStatus: 'Done'
-        },
-        {
-          where: {
-            business_id: idBusiness
-          }
+      await models.BusinessLog.update({
+        followUpStatus: 'Done'
+      }, {
+        where: {
+          business_id: idBusiness
         }
-      )
+      })
     }
 
     return res.status(200).json({
@@ -1763,7 +1732,9 @@ export const updateStageMemo = async (req, res, next) => {
 }
 
 export const uploadIM = async (req, res, next) => {
-  const { businessId } = req.body
+  const {
+    businessId
+  } = req.body
   const file = req.files.imFile
 
   try {
@@ -1805,17 +1776,14 @@ export const uploadIM = async (req, res, next) => {
     const upload = await uploadToS3('xcllusive-im', file, `${business.businessName}_IM_${business.id}.pdf`)
 
     // updated IM uploaded on business
-    await models.Business.update(
-      {
-        imUploaded: true,
-        imUrl: upload.Location
-      },
-      {
-        where: {
-          id: businessId
-        }
+    await models.Business.update({
+      imUploaded: true,
+      imUrl: upload.Location
+    }, {
+      where: {
+        id: businessId
       }
-    )
+    })
     return res.status(200).json({
       message: `IM on business BS${business.id} uploaded successfully`
     })
@@ -1825,7 +1793,10 @@ export const uploadIM = async (req, res, next) => {
 }
 
 export const verifyDuplicatedBusiness = async (req, res, next) => {
-  const { vendorPhone1, vendorEmail } = req.query
+  const {
+    vendorPhone1,
+    vendorEmail
+  } = req.query
 
   const telephoneRaw = vendorPhone1
     .split(' ')

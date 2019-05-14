@@ -335,7 +335,8 @@ export const getAllAnalysts = async (req, res, next) => {
     const allAnalysts = await models.User.findAll({
       raw: true,
       where: {
-        listingAgentCtc: true
+        listingAgentCtc: true,
+        active: 1
       },
       order: [
         ['firstName', 'ASC']

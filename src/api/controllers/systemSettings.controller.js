@@ -2,6 +2,8 @@ import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
 import _ from 'lodash'
 import path from 'path'
+import fs from 'fs'
+import moment from 'moment'
 
 export const getAllSettings = async (req, res, next) => {
   try {
@@ -55,23 +57,13 @@ export const update = async (req, res, next) => {
 }
 
 export const exportBuyers = async (req, res, next) => {
-  const dateFrom = req.query.dateFrom
-  const dateTo = req.query.dateTo
-
-  var objArray = [{
-    'id': 0,
-    'name': 'xxxx',
-    'is_active': 'false'
-  }, {
-    'id': 1,
-    'name': 'yyyy',
-    'is_active': 'true'
-  }]
+  const dateFrom = req.body.dateFrom
+  const dateTo = req.body.dateTo
 
   try {
     const buyer = await models.Buyer.findAll({
       raw: true,
-      attributes: ['firstName', 'surname', 'email'],
+      attributes: ['firstName', 'surname', 'email', 'state'],
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
@@ -94,29 +86,40 @@ export const exportBuyers = async (req, res, next) => {
     var newWb = xlsx.utils.book_new()
     var newWs = xlsx.utils.json_to_sheet(buyer)
     xlsx.utils.book_append_sheet(newWb, newWs, 'New Data')
-    const destExcelGenerated = path.resolve('buyersExported.xlsx')
-    xlsx.writeFile(newWb, 'buyersExported.xlsx')
+    const destXlsxGenerated = path.resolve(
+      'src',
+      'api',
+      'resources',
+      'xls',
+      'exports',
+      `buyers${moment().format('DD_MM_YYYY_hh_mm_ss')}.xlsx`
+    )
+    xlsx.writeFile(newWb, destXlsxGenerated)
 
-    const blob = new Blob([buyer], {
-      type: 'text/xlsx'
-    })
-    console.log(blob)
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.setAttribute('hidden', '')
-    a.setAttribute('href', url)
-    a.setAttribute('download', 'buyersExported.xlsx')
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    // const destExcelGenerated = path.resolve('buyersExported.xlsx')
-    // res.download(destExcelGenerated, err => {
-    //   console.log('cayo', err)
-    // })
-
-    return res.status(201).json({
-      data: '',
-      message: 'Success'
+    return res.download(destXlsxGenerated, async err => {
+      fs.unlink(destXlsxGenerated, error => {
+        if (error) {
+          throw new APIError({
+            message: 'Error on send xlsx',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
+      if (err) {
+        throw new APIError({
+          message: 'Error on send xlsx',
+          status: 500,
+          isPublic: true
+        })
+      } else {
+        const exportLog = {}
+        exportLog.exportedPeriodFrom = req.body.dateFrom
+        exportLog.exportedPeriodTo = req.body.dateTo
+        exportLog.type = 'Buyer Export'
+        exportLog.createdBy_id = req.user.id
+        await models.ExportLog.create(exportLog)
+      }
     })
   } catch (error) {
     return next(error)
