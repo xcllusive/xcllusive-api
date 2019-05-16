@@ -24,7 +24,25 @@ export const controlActivityUser = (menu) => {
         }
       }
 
-      await models.ControlActivity.create(newControlActivity)
+      const lastActivity = await models.ControlActivity.findOne({
+        where: {
+          userId_logged: req.user.id,
+          menu: menu,
+          dateCreated: moment().format('YYYY-MM-DD')
+        },
+        order: [
+          [
+            'dateTimeCreated', 'DESC'
+          ]
+        ]
+      })
+      if (moment().format('YYYY-MM-DD hh:mm:ss') !== (lastActivity && moment(lastActivity.dateTimeCreated).format('YYYY-MM-DD hh:mm:ss'))) {
+        await models.ControlActivity.create(newControlActivity)
+      } else {
+        if (lastActivity === null) {
+          await models.ControlActivity.create(newControlActivity)
+        }
+      }
       return next()
     } catch (error) {
       return next(error)

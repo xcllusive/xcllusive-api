@@ -1,6 +1,5 @@
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
-import _ from 'lodash'
 import path from 'path'
 import fs from 'fs'
 import moment from 'moment'
@@ -128,53 +127,85 @@ export const exportBuyers = async (req, res, next) => {
 
 export const executeJavaScript = async (req, res, next) => {
   try {
-    const allDuplicatedPending = await models.BuyerLog.findAndCountAll({
-      raw: true,
-      attributes: ['id', 'buyer_id', 'followUpStatus', 'dateTimeCreated'],
-      where: {
-        followUpStatus: 'Pending'
-      },
-      group: ['buyer_id']
+    const buyersCtc = await models.BuyersCtcTest.findAll({
+      raw: true
     })
 
-    const mergedArray = _.merge(allDuplicatedPending.count, allDuplicatedPending.rows)
-
-    mergedArray.forEach(async item => {
-      if (item.count > 1) {
-        const listDuplicatedPerBuyer = await models.BuyerLog.findAll({
-          raw: true,
-          attributes: ['id'],
-          where: {
-            buyer_id: item.buyer_id,
-            followUpStatus: 'Pending'
-          }
-        })
-        const arrayDuplicates = await Promise.all(
-          listDuplicatedPerBuyer.map(dupl => {
-            return dupl.id
-          })
-        )
-        var maxArray = Math.max.apply(null, arrayDuplicates)
-        const listToRemove = _.remove(arrayDuplicates, item => {
-          return item !== maxArray
-        })
-
-        await models.BuyerLog.update({
-          followUpStatus: 'Done'
-        }, {
-          where: {
-            id: {
-              $in: listToRemove
+    const response = await Promise.all(
+      buyersCtc.map(async (buyer) => {
+        if (buyer.email) {
+          const findBuyer = await models.ExportBuyerCtcTest.findOne({
+            raw: true,
+            where: {
+              email: buyer.email
             }
+          })
+          if (!findBuyer) {
+            models.ExportBuyerCtcTest.create(buyer)
+            console.log('will create buyer')
           }
-        })
-      }
-    })
+        }
+      })
+
+    )
     return res.status(201).json({
-      data: allDuplicatedPending,
+      data: response,
       message: 'JavaScript executed successfully'
     })
   } catch (error) {
     return next(error)
   }
 }
+
+// export const executeJavaScript = async (req, res, next) => {
+//   try {
+//     const allDuplicatedPending = await models.BuyerLog.findAndCountAll({
+//       raw: true,
+//       attributes: ['id', 'buyer_id', 'followUpStatus', 'dateTimeCreated'],
+//       where: {
+//         followUpStatus: 'Pending'
+//       },
+//       group: ['buyer_id']
+//     })
+
+//     const mergedArray = _.merge(allDuplicatedPending.count, allDuplicatedPending.rows)
+
+//     mergedArray.forEach(async item => {
+//       if (item.count > 1) {
+//         const listDuplicatedPerBuyer = await models.BuyerLog.findAll({
+//           raw: true,
+//           attributes: ['id'],
+//           where: {
+//             buyer_id: item.buyer_id,
+//             followUpStatus: 'Pending'
+//           }
+//         })
+//         const arrayDuplicates = await Promise.all(
+//           listDuplicatedPerBuyer.map(dupl => {
+//             return dupl.id
+//           })
+//         )
+//         var maxArray = Math.max.apply(null, arrayDuplicates)
+//         const listToRemove = _.remove(arrayDuplicates, item => {
+//           return item !== maxArray
+//         })
+
+//         await models.BuyerLog.update({
+//           followUpStatus: 'Done'
+//         }, {
+//           where: {
+//             id: {
+//               $in: listToRemove
+//             }
+//           }
+//         })
+//       }
+//     })
+//     return res.status(201).json({
+//       data: allDuplicatedPending,
+//       message: 'JavaScript executed successfully'
+//     })
+//   } catch (error) {
+//     return next(error)
+//   }
+// }

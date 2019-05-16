@@ -1460,10 +1460,12 @@ export const sendGroupEmail = async (req, res, next) => {
   } = req.body
   const fileAttachment = req.files.attachment
   const sentTo = []
+  const listSent = []
   try {
     const emailToOffice = await models.SystemSettings.findOne({
       where: 1
     })
+    let sent = false
     for (let buyer of JSON.parse(to)) {
       const mailOptions = {
         to: buyer.email,
@@ -1471,7 +1473,6 @@ export const sendGroupEmail = async (req, res, next) => {
         subject,
         replyTo: buyer.replyTo
           ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
-        cc: req.user.email,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         
@@ -1488,8 +1489,51 @@ export const sendGroupEmail = async (req, res, next) => {
         }] : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
-      if (resMailer) sentTo.push(resMailer.envelope.to[0])
+      if (resMailer) {
+        sentTo.push(resMailer.envelope.to[0])
+        listSent.push({
+          name: `${buyer.firstName} ${buyer.lastName}`,
+          email: buyer.email
+        })
+        sent = true
+      }
     }
+
+    let stringTest = '</br>'
+    listSent.map(item => {
+      stringTest = stringTest + JSON.stringify(item)
+    })
+
+    console.log(JSON.stringify(stringTest))
+
+    // if (sent) {
+    //   const mailOptions = {
+    //     // to: `${req.user.email}, ${emailToOffice.emailOffice}`,
+    //     to: 'amanda@xcllusive.com.au',
+    //     from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
+    //     subject: 'Group Email Sent',
+    //     html: `
+    //     <p>Hi TEST</p>
+
+    //     </br>
+    //     <p>You have sent the following email:</p>
+    //     </br>
+
+    //     <p>${body}</p>
+    //     </br>
+
+    //     <p>You have sent the following email:</p>
+
+    //     </br>
+    //       <p>${JSON.stringify(listSent)}</p>
+    //     </br>
+
+    //     <p>Xcllusive Business Sales</p>
+    //     <p>www.xcllusive.com.au | (02) 9817 3331</p>
+    //     `
+    //   }
+    //   const resMailer = await mailer.sendMail(mailOptions)
+    // }
 
     return res.status(201).json({
       data: sentTo,
