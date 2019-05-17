@@ -1456,16 +1456,17 @@ export const sendGroupEmail = async (req, res, next) => {
   const {
     to,
     subject,
-    body
+    body,
+    businessId
   } = req.body
   const fileAttachment = req.files.attachment
   const sentTo = []
-  const listSent = []
   try {
     const emailToOffice = await models.SystemSettings.findOne({
       where: 1
     })
     let sent = false
+    let stringEmail = ''
     for (let buyer of JSON.parse(to)) {
       const mailOptions = {
         to: buyer.email,
@@ -1490,54 +1491,59 @@ export const sendGroupEmail = async (req, res, next) => {
       }
       const resMailer = await mailer.sendMail(mailOptions)
       if (resMailer) {
-        sentTo.push(resMailer.envelope.to[0])
-        listSent.push({
-          name: `${buyer.firstName} ${buyer.lastName}`,
-          email: buyer.email
+        // Insert in log
+        await models.BuyerLog.create({
+          followUpStatus: 'Done',
+          text: `Group Email Sent: ${body}`,
+          followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+          business_id: parseInt(businessId),
+          buyer_id: buyer.id,
+          createdBy_id: req.user.id,
+          modifiedBy_id: req.user.id
         })
+
+        sentTo.push(resMailer.envelope.to[0])
+        stringEmail = stringEmail + `</br></br>name: ${buyer.firstName} ${buyer.lastName}</br> email: ${buyer.email}`
         sent = true
       }
     }
 
-    let stringTest = '</br>'
-    listSent.map(item => {
-      stringTest = stringTest + JSON.stringify(item)
-    })
+    if (sent) {
+      const userLogged = await models.User.findOne({
+        where: {
+          id: req.user.id
+        }
+      })
+      const mailOptions = {
+        to: `${req.user.email}, ${emailToOffice.emailOffice}`,
+        from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
+        subject: 'Group Email Sent',
+        html: `
+        <p>Hi ${userLogged.firstName}</p>
 
-    console.log(JSON.stringify(stringTest))
+        </br>
+        <p>You have sent the following email:</p>
+        </br>
 
-    // if (sent) {
-    //   const mailOptions = {
-    //     // to: `${req.user.email}, ${emailToOffice.emailOffice}`,
-    //     to: 'amanda@xcllusive.com.au',
-    //     from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
-    //     subject: 'Group Email Sent',
-    //     html: `
-    //     <p>Hi TEST</p>
+        <p>${body}</p>
+        </br>
 
-    //     </br>
-    //     <p>You have sent the following email:</p>
-    //     </br>
+        <p>You have sent the following email:</p>
 
-    //     <p>${body}</p>
-    //     </br>
+        </br>
+          <p>${stringEmail}</p>
+        </br>
 
-    //     <p>You have sent the following email:</p>
-
-    //     </br>
-    //       <p>${JSON.stringify(listSent)}</p>
-    //     </br>
-
-    //     <p>Xcllusive Business Sales</p>
-    //     <p>www.xcllusive.com.au | (02) 9817 3331</p>
-    //     `
-    //   }
-    //   const resMailer = await mailer.sendMail(mailOptions)
-    // }
+        <p>Xcllusive Business Sales</p>
+        <p>www.xcllusive.com.au | (02) 9817 3331</p>
+        `
+      }
+      await mailer.sendMail(mailOptions)
+    }
 
     return res.status(201).json({
       data: sentTo,
-      message: 'Group emails sent successfully'
+      message: 'Group email sent successfully'
     })
   } catch (error) {
     return next(error)
