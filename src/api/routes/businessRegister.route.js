@@ -15,9 +15,6 @@ import {
   authMiddleware,
   authorizeMiddleware
 } from '../middlewares/auth'
-import {
-  controlActivityUser
-} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
@@ -26,8 +23,6 @@ router
   .use(authorizeMiddleware({
     roles: [BUSINESS_MENU]
   }))
-
-router.use(controlActivityUser('Business'))
 
 router
   .route('/')

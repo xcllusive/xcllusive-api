@@ -102,6 +102,10 @@ export const getBusiness = async (req, res, next) => {
         business_id: idBusiness
       }
     })
+    const ctcSourceList = await models.CtcBusinessSource.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
 
     const response = {
       business,
@@ -115,7 +119,8 @@ export const getBusiness = async (req, res, next) => {
       typeList: _mapValuesToArray(typeList),
       usersBroker: _mapValuesToArray(usersBroker),
       stageNotSignedList: _mapValuesToArray(stageNotSignedList),
-      stageNotWantList: _mapValuesToArray(stageNotWantList)
+      stageNotWantList: _mapValuesToArray(stageNotWantList),
+      ctcSourceList: _mapValuesToArray(ctcSourceList)
     }
     return res.status(200).json(response)
   } catch (err) {
@@ -248,12 +253,15 @@ export const create = async (req, res, next) => {
     stageId: 1, // Potencial Listing
     createdBy_id: req.user.id,
     modifiedBy_id: req.user.id,
-    brokerAccountName: req.user.id
+    brokerAccountName: req.user.id,
+    ctcSourceId: req.body.ctcSourceId,
+    company_id: req.body.company
   }
 
   let template = null
   let listingAgent = null
 
+  if (req.body.listingAgent === null) req.body.listingAgent = req.body.listingAgentCtc
   try {
     if (req.body.listingAgent) {
       // Verify exists template
@@ -286,8 +294,12 @@ export const create = async (req, res, next) => {
         })
       }
     }
+    if (req.body.company === 1) {
+      newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
+    } else {
+      newBusiness.listingAgentCtc_id = req.body.listingAgent || req.user.id
+    }
 
-    newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
     const business = await models.Business.create(newBusiness)
     await models.BusinessLog.create({
       text: 'New Business',

@@ -283,6 +283,14 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'business_id',
       as: 'BrokerWeeklyReport'
     })
+    models.Business.belongsTo(models.CtcBusinessSource, {
+      foreignKey: 'ctcSourceId',
+      as: 'sourceCtc'
+    })
+    models.Business.belongsTo(models.Company, {
+      foreignKey: 'company_id',
+      as: 'company'
+    })
   }
 
   return Business

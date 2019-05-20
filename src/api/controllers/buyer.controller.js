@@ -1290,6 +1290,10 @@ export const getBusinessFromBuyer = async (req, res, next) => {
         business_id: idBusiness
       }
     })
+    const ctcSourceList = await models.CtcBusinessSource.findAll({
+      raw: true,
+      attributes: ['id', 'label']
+    })
 
     const response = {
       business,
@@ -1303,7 +1307,8 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       typeList: _mapValuesToArray(typeList),
       usersBroker: _mapValuesToArray(usersBroker),
       stageNotSignedList: _mapValuesToArray(stageNotSignedList),
-      stageNotWantList: _mapValuesToArray(stageNotWantList)
+      stageNotWantList: _mapValuesToArray(stageNotWantList),
+      ctcSourceOptions: _mapValuesToArray(ctcSourceList)
     }
     return res.status(200).json(response)
   } catch (err) {
