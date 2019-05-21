@@ -255,13 +255,15 @@ export const create = async (req, res, next) => {
     modifiedBy_id: req.user.id,
     brokerAccountName: req.user.id,
     ctcSourceId: req.body.ctcSourceId,
-    company_id: req.body.company
+    company_id: req.body.company,
+    willReassign: req.body.willReassign
   }
 
   let template = null
   let listingAgent = null
 
-  if (req.body.listingAgent === null) req.body.listingAgent = req.body.listingAgentCtc
+  const listingAgentXcllusive = req.body.listingAgent
+  if (req.body.listingAgent === null || newBusiness.willReassign) req.body.listingAgent = req.body.listingAgentCtc
   try {
     if (req.body.listingAgent) {
       // Verify exists template
@@ -297,6 +299,7 @@ export const create = async (req, res, next) => {
     if (req.body.company === 1) {
       newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
     } else {
+      if (newBusiness.willReassign) newBusiness.listingAgent = listingAgentXcllusive
       newBusiness.listingAgentCtc_id = req.body.listingAgent || req.user.id
     }
 
