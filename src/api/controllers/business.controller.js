@@ -300,7 +300,7 @@ export const create = async (req, res, next) => {
       newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
     } else {
       if (newBusiness.willReassign) newBusiness.listingAgent = listingAgentXcllusive
-      newBusiness.listingAgentCtc_id = req.body.listingAgent || req.user.id
+      newBusiness.listingAgentCtc_id = req.body.listingAgent
     }
 
     const business = await models.Business.create(newBusiness)
