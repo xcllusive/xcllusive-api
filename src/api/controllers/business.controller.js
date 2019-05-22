@@ -543,6 +543,9 @@ export const updateListingAgent = async (req, res, next) => {
           isPublic: true
         })
       }
+      // set company to CTC
+      data.company_id = 2
+
       // Compile the template to use variables
       const templateCompiled = Handlebars.compile(template.body)
       const context = {
