@@ -308,7 +308,7 @@ export const create = async (req, res, next) => {
       }
     }
     if (req.body.company === 1) {
-      newBusiness.listingAgent_id = req.body.listingAgent
+      newBusiness.listingAgent_id = req.body.listingAgent ? req.body.listingAgent : req.user.id
       newBusiness.ctcSourceId = 1
       newBusiness.ctcStageId = 1
     } else {
