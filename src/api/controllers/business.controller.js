@@ -299,8 +299,8 @@ export const create = async (req, res, next) => {
     if (req.body.company === 1) {
       newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
     } else {
-      if (newBusiness.willReassign) newBusiness.listingAgent = listingAgentXcllusive
-      newBusiness.listingAgentCtc_id = req.body.listingAgent
+      if (newBusiness.willReassign) newBusiness.listingAgent_id = listingAgentXcllusive
+      newBusiness.listingAgentCtc_id = req.body.listingAgentCtc
     }
 
     const business = await models.Business.create(newBusiness)
