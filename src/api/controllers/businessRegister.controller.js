@@ -9,7 +9,7 @@ export const list = async (req, res, next) => {
   const offset = req.skip
 
   try {
-    switch (parseInt(businessRegister, 11)) {
+    switch (parseInt(businessRegister, 10)) {
       case 1:
         const registers1 = await models.BusinessSource.findAndCountAll({
           limit,
@@ -101,6 +101,21 @@ export const list = async (req, res, next) => {
           pageCount: registers9.count,
           itemCount: Math.ceil(registers9.count / req.query.limit)
         })
+      case 10:
+        const registers10 = await models.CtcBusinessStage.findAndCountAll({
+          where: {
+            id: {
+              $ne: 1
+            }
+          },
+          limit,
+          offset
+        })
+        return res.status(201).json({
+          data: registers10,
+          pageCount: registers10.count,
+          itemCount: Math.ceil(registers10.count / req.query.limit)
+        })
       default:
         throw new Error(`Business register ${businessRegister} does not exist`)
     }
@@ -158,6 +173,11 @@ export const create = async (req, res, next) => {
     }
     if (businessRegisterType === 9) {
       await models.BusinessStageNotWant.create({
+        label
+      })
+    }
+    if (businessRegisterType === 10) {
+      await models.CtcBusinessStage.create({
         label
       })
     }
@@ -265,6 +285,15 @@ export const update = async (req, res, next) => {
         }
       })
     }
+    if (businessRegisterType === 10) {
+      await models.CtcBusinessStage.update({
+        label
+      }, {
+        where: {
+          id
+        }
+      })
+    }
     if (!businessRegisterType) {
       throw new Error('Business register type does not exist')
     }
@@ -295,13 +324,13 @@ export const remove = async (req, res, next) => {
           sourceId: id
         }
       })
-
       if (existsRegisterType.length > 0) {
         return res.status(406).json({
           error: `You can NOT delete that! Business register ${id} has been using in one or more businesses`
         })
       }
     }
+
     if (registerType === 6) {
       const existsRegisterType = await models.Business.findAll({
         raw: true,
@@ -310,7 +339,21 @@ export const remove = async (req, res, next) => {
           ctcSourceId: id
         }
       })
+      if (existsRegisterType.length > 0) {
+        return res.status(406).json({
+          error: `You can NOT delete that! Business register ${id} has been using in one or more businesses`
+        })
+      }
+    }
 
+    if (registerType === 10) {
+      const existsRegisterType = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'sourceId'],
+        where: {
+          ctcStageId: id
+        }
+      })
       if (existsRegisterType.length > 0) {
         return res.status(406).json({
           error: `You can NOT delete that! Business register ${id} has been using in one or more businesses`
@@ -376,6 +419,13 @@ export const remove = async (req, res, next) => {
     }
     if (registerType === 9) {
       await models.BusinessStageNotWant.destroy({
+        where: {
+          id
+        }
+      })
+    }
+    if (registerType === 10) {
+      await models.CtcBusinessStage.destroy({
         where: {
           id
         }

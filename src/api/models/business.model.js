@@ -291,6 +291,9 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'company_id',
       as: 'company'
     })
+    models.Business.belongsTo(models.CtcBusinessStage, {
+      foreignKey: 'ctcStageId'
+    })
   }
 
   return Business

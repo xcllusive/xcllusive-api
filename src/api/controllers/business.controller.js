@@ -106,6 +106,15 @@ export const getBusiness = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
+    const ctcStageList = await models.CtcBusinessStage.findAll({
+      raw: true,
+      where: {
+        id: {
+          $ne: 1
+        }
+      },
+      attributes: ['id', 'label']
+    })
 
     const response = {
       business,
@@ -120,7 +129,8 @@ export const getBusiness = async (req, res, next) => {
       usersBroker: _mapValuesToArray(usersBroker),
       stageNotSignedList: _mapValuesToArray(stageNotSignedList),
       stageNotWantList: _mapValuesToArray(stageNotWantList),
-      ctcSourceList: _mapValuesToArray(ctcSourceList)
+      ctcSourceList: _mapValuesToArray(ctcSourceList),
+      ctcStageList: _mapValuesToArray(ctcStageList)
     }
     return res.status(200).json(response)
   } catch (err) {
@@ -256,7 +266,8 @@ export const create = async (req, res, next) => {
     brokerAccountName: req.user.id,
     ctcSourceId: req.body.ctcSourceId,
     company_id: req.body.company,
-    willReassign: req.body.willReassign
+    willReassign: req.body.willReassign,
+    ctcStageId: req.body.ctcStageId
   }
 
   let template = null
@@ -297,7 +308,9 @@ export const create = async (req, res, next) => {
       }
     }
     if (req.body.company === 1) {
-      newBusiness.listingAgent_id = req.body.listingAgent || req.user.id
+      newBusiness.listingAgent_id = req.body.listingAgent
+      newBusiness.ctcSourceId = 1
+      newBusiness.ctcStageId = 1
     } else {
       if (newBusiness.willReassign) newBusiness.listingAgent_id = listingAgentXcllusive
       newBusiness.listingAgentCtc_id = req.body.listingAgentCtc
@@ -362,7 +375,8 @@ export const update = async (req, res, next) => {
     // typeId,
     brokerAccountName,
     depositeTakenDate,
-    settlementDate
+    settlementDate,
+    ctcSourceId
   } = req.body
 
   req.body.stageId = stage === '' ? undefined : stage
@@ -376,6 +390,7 @@ export const update = async (req, res, next) => {
   req.body.settlementDate = settlementDate instanceof Date ? settlementDate : undefined
   req.body.brokerAccountName = brokerAccountName === '' ? undefined : brokerAccountName
   req.body.modifiedBy_id = req.user.id
+  req.body.ctcSourceId = ctcSourceId === '' ? 1 : ctcSourceId
 
   try {
     const business = await models.Business.findOne({
