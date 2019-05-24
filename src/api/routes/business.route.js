@@ -23,7 +23,9 @@ import {
   getAllPerUser,
   updateStageMemo,
   uploadIM,
-  verifyDuplicatedBusiness
+  verifyDuplicatedBusiness,
+  getCtcAllPerUser,
+  getCtcQtdeBusinessStageUser
 } from '../controllers/business.controller'
 
 import {
@@ -55,8 +57,10 @@ router.route('/duplicated-business').get(verifyDuplicatedBusiness)
 router.route('/:idBusiness/stage-sales-memo').put(updateStageMemo)
 
 router.route('/qtde-business-stage-user').get(getQtdeBusinessStageUser)
+router.route('/ctc-qtde-business-stage-user').get(getCtcQtdeBusinessStageUser)
 
 router.route('/businesses-user').get(getAllPerUser)
+router.route('/ctc-businesses-user').get(getCtcAllPerUser)
 
 router
   .route('/:idBusiness/group-email')

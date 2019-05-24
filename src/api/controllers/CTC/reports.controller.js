@@ -15,7 +15,8 @@ export const getMarketingReport = async (req, res, next) => {
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 2
       },
       include: [{
         model: models.User,
@@ -42,7 +43,8 @@ export const getMarketingReport = async (req, res, next) => {
       where: {
         dateChangedToSalesMemorandum: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 2
       },
       include: [{
         model: models.User,
@@ -107,20 +109,21 @@ export const getMarketingReport = async (req, res, next) => {
     /* starts Leads per Source */
     const leadsPerSourceTotalLeads = await models.Business.findAndCountAll({
       raw: true,
-      attributes: ['sourceId'],
+      attributes: ['ctcSourceId'],
       as: 'Business',
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 2
       },
       include: [{
-        model: models.BusinessSource,
+        model: models.CtcBusinessSource,
         attributes: ['label'],
-        as: 'source',
+        as: 'sourceCtc',
         where: {
           id: {
-            $col: 'Business.sourceId'
+            $col: 'Business.ctcSourceId'
           }
         }
       }, {
@@ -133,26 +136,27 @@ export const getMarketingReport = async (req, res, next) => {
           }
         }
       }],
-      group: ['Business.sourceId']
+      group: ['Business.ctcSourceId']
     })
     const arrayLeadsPerSourceTotalLeadsMerged = _.merge(leadsPerSourceTotalLeads.rows, leadsPerSourceTotalLeads.count)
 
     const leadsPerSourceSignedUp = await models.Business.findAndCountAll({
       raw: true,
-      attributes: ['sourceId'],
+      attributes: ['ctcSourceId'],
       as: 'Business',
       where: {
         dateChangedToSalesMemorandum: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 2
       },
       include: [{
-        model: models.BusinessSource,
+        model: models.CtcBusinessSource,
         attributes: ['label'],
-        as: 'source',
+        as: 'sourceCtc',
         where: {
           id: {
-            $col: 'Business.sourceId'
+            $col: 'Business.ctcSourceId'
           }
         }
       }, {
@@ -165,7 +169,7 @@ export const getMarketingReport = async (req, res, next) => {
           }
         }
       }],
-      group: ['Business.sourceId']
+      group: ['Business.ctcSourceId']
     })
 
     const arrayLeadsPerSourceSignedUpMerged = _.merge(leadsPerSourceSignedUp.rows, leadsPerSourceSignedUp.count)
@@ -175,7 +179,7 @@ export const getMarketingReport = async (req, res, next) => {
       const changedArrayName = arrayLeadsPerSourceSignedUpMerged.map(item => {
         return {
           sourceId: item.sourceId,
-          'source.label': item['source.label'],
+          'sourceCtc.label': item['sourceCtc.label'],
           countSourceSignedUp: item.count
         }
       })
@@ -195,20 +199,21 @@ export const getMarketingReport = async (req, res, next) => {
     /* starts Total per Source */
     const totalPerSource = await models.Business.findAndCountAll({
       raw: true,
-      attributes: ['sourceId'],
+      attributes: ['ctcSourceId'],
       as: 'Business',
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 2
       },
       include: [{
-        model: models.BusinessSource,
+        model: models.CtcBusinessSource,
         attributes: ['label'],
-        as: 'source',
+        as: 'sourceCtc',
         where: {
           id: {
-            $col: 'Business.sourceId'
+            $col: 'Business.ctcSourceId'
           }
         }
       }, {
@@ -223,8 +228,8 @@ export const getMarketingReport = async (req, res, next) => {
       }],
       group: [
         [{
-          model: models.BusinessSource,
-          as: 'source'
+          model: models.CtcBusinessSource,
+          as: 'sourceCtc'
         }, 'id']
       ]
     })
@@ -236,14 +241,15 @@ export const getMarketingReport = async (req, res, next) => {
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 2
       },
       include: [{
-        model: models.BusinessSource,
-        as: 'source',
+        model: models.CtcBusinessSource,
+        as: 'sourceCtc',
         where: {
           id: {
-            $col: 'Business.sourceId'
+            $col: 'Business.ctcSourceId'
           }
         }
       }, {
@@ -286,6 +292,7 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
         },
+        company_id: 2,
         listingAgentCtc_id: analystId
       }
     })
@@ -297,6 +304,7 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
         dateChangedToSalesMemorandum: {
           $between: [dateFrom, dateTo]
         },
+        company_id: 2,
         listingAgentCtc_id: analystId
       }
     })
@@ -361,16 +369,37 @@ export const getAllAnalysts = async (req, res, next) => {
 
 export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
   const analystId = req.query.analystId
-  const dateFrom = req.query.dateFrom
-  const dateTo = req.query.dateTo
+  // const dateFrom = req.query.dateFrom
+  // const dateTo = req.query.dateTo
 
   try {
-    const businessPotentialListing = await models.Business.count({
+    const businessNew = await models.Business.count({
       where: {
         $and: {
           listingAgentCtc_id: analystId,
-          stageId: 1
-        }
+          ctcStageId: 2
+        },
+        company_id: 2
+      },
+      distinct: 'id',
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: {
+            $col: 'Business.id'
+          }
+        },
+        company_id: 2
+      }
+    })
+    const businessCold = await models.Business.count({
+      where: {
+        $and: {
+          listingAgentCtc_id: analystId,
+          ctcStageId: 3
+        },
+        company_id: 2
       },
       distinct: 'id',
       include: {
@@ -383,11 +412,13 @@ export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
         }
       }
     })
-    const businessAppraisal = await models.Business.count({
+
+    const businessPotential = await models.Business.count({
       where: {
         $and: {
           listingAgentCtc_id: analystId,
-          stageId: 9
+          ctcStageId: 4,
+          company_id: 2
         }
       },
       distinct: 'id',
@@ -402,11 +433,32 @@ export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
       }
     })
 
-    const businessForSale = await models.Business.count({
+    const businessHot = await models.Business.count({
       where: {
         $and: {
           listingAgentCtc_id: analystId,
-          stageId: 4
+          ctcStageId: 5,
+          company_id: 2
+        }
+      },
+      distinct: 'id',
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: {
+            $col: 'Business.id'
+          }
+        }
+      }
+    })
+
+    const businessEngaged = await models.Business.count({
+      where: {
+        $and: {
+          listingAgentCtc_id: analystId,
+          ctcStageId: 6,
+          company_id: 2
         }
       },
       distinct: 'id',
@@ -425,10 +477,8 @@ export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
       where: {
         $and: {
           listingAgentCtc_id: analystId,
-          stageId: 8,
-          lostDate: {
-            $between: [dateFrom, dateTo]
-          }
+          ctcStageId: 7,
+          company_id: 2
         }
       },
       distinct: 'id',
@@ -445,9 +495,11 @@ export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
 
     return res.status(201).json({
       data: {
-        businessPotentialListing,
-        businessAppraisal,
-        businessForSale,
+        businessNew,
+        businessCold,
+        businessPotential,
+        businessHot,
+        businessEngaged,
         businessLost
       }
     })
@@ -466,7 +518,8 @@ export const getAnalystReport = async (req, res, next) => {
     where: {
       listingAgentCtc_id: {
         $eq: analystId
-      }
+      },
+      company_id: 2
     }
   }
 
@@ -479,18 +532,18 @@ export const getAnalystReport = async (req, res, next) => {
       }
     }
   }, {
-    model: models.BusinessSource,
+    model: models.CtcBusinessSource,
     attributes: ['label'],
-    as: 'source',
+    as: 'sourceCtc',
     where: {
       id: {
-        $col: 'Business.sourceId'
+        $col: 'Business.ctcSourceId'
       }
     }
   }]
 
   if (parseInt(stageId)) {
-    whereOptions.where.stageId = {
+    whereOptions.where.ctcStageId = {
       $eq: `${parseInt(stageId)}`
     }
   }
@@ -507,12 +560,12 @@ export const getAnalystReport = async (req, res, next) => {
         }
       }
     }, {
-      model: models.BusinessSource,
+      model: models.CtcBusinessSource,
       attributes: ['label'],
-      as: 'source',
+      as: 'sourceCtc',
       where: {
         id: {
-          $col: 'Business.sourceId'
+          $col: 'Business.ctcSourceId'
         }
       }
     }, {
@@ -539,7 +592,7 @@ export const getAnalystReport = async (req, res, next) => {
   try {
     const response = await models.Business.findAll(
       Object.assign(whereOptions, {
-        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId', 'saleNotesLostMeeting', 'saleNotesLostWant', 'lostDate', 'afterSalesNotes', 'addLeadNurtureList', 'dateTimeCreated'],
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'ctcStageId', 'saleNotesLostMeeting', 'saleNotesLostWant', 'lostDate', 'afterSalesNotes', 'addLeadNurtureList', 'dateTimeCreated'],
         include: include,
         order: [
           [{

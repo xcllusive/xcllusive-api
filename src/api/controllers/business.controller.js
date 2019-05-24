@@ -274,7 +274,7 @@ export const create = async (req, res, next) => {
   let listingAgent = null
 
   const listingAgentXcllusive = req.body.listingAgent
-  if (req.body.listingAgent === null || newBusiness.willReassign) req.body.listingAgent = req.body.listingAgentCtc
+  if (req.body.listingAgent === null || newBusiness.willReassign) req.body.listingAgent = req.body.listingAgentCtc || req.user.id
   try {
     if (req.body.listingAgent) {
       // Verify exists template
@@ -308,12 +308,12 @@ export const create = async (req, res, next) => {
       }
     }
     if (req.body.company === 1) {
-      newBusiness.listingAgent_id = req.body.listingAgent ? req.body.listingAgent : req.user.id
+      newBusiness.listingAgent_id = req.body.listingAgent !== '' ? req.body.listingAgent : req.user.id
       newBusiness.ctcSourceId = 1
       newBusiness.ctcStageId = 1
     } else {
       if (newBusiness.willReassign) newBusiness.listingAgent_id = listingAgentXcllusive
-      newBusiness.listingAgentCtc_id = req.body.listingAgentCtc
+      newBusiness.listingAgentCtc_id = req.body.listingAgentCtc || req.user.id
     }
 
     const business = await models.Business.create(newBusiness)
@@ -1477,6 +1477,138 @@ export const getQtdeBusinessStageUser = async (req, res, next) => {
   }
 }
 
+export const getCtcQtdeBusinessStageUser = async (req, res, next) => {
+  const whereOptionsNew = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 2
+  }
+  const whereOptionsCold = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 3
+  }
+  const whereOptionsPotential = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 4
+  }
+  const whereOptionsHot = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 5
+  }
+  const whereOptionsEngaged = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 6
+  }
+  const whereOptionsLost = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 7
+  }
+
+  try {
+    const businessNewFilter = await models.Business.count({
+      where: whereOptionsNew,
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: {
+            $col: 'Business.id'
+          },
+          followUpStatus: 'Pending',
+          followUp: {
+            $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
+          }
+        }
+      }
+    })
+    const businessColdFilter = await models.Business.count({
+      where: whereOptionsCold,
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: {
+            $col: 'Business.id'
+          },
+          followUpStatus: 'Pending',
+          followUp: {
+            $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
+          }
+        }
+      }
+    })
+
+    const businessNew = await models.Business.count({
+      where: whereOptionsNew,
+      distinct: 'id',
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: {
+            $col: 'Business.id'
+          }
+        }
+      }
+    })
+    const businessCold = await models.Business.count({
+      where: whereOptionsCold,
+      distinct: 'id',
+      include: {
+        model: models.BusinessLog,
+        as: 'BusinessLog',
+        where: {
+          business_id: {
+            $col: 'Business.id'
+          }
+        }
+      }
+    })
+
+    const businessPotential = await models.Business.count({
+      where: whereOptionsPotential
+    })
+
+    const businessHot = await models.Business.count({
+      where: whereOptionsHot
+    })
+
+    const businessEngaged = await models.Business.count({
+      where: whereOptionsEngaged
+    })
+
+    const businessLost = await models.Business.count({
+      where: whereOptionsLost
+    })
+
+    return res.status(201).json({
+      data: {
+        businessNewFilter,
+        businessNew,
+        businessColdFilter,
+        businessCold,
+        businessPotential,
+        businessHot,
+        businessEngaged,
+        businessLost
+      }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const getAllPerUser = async (req, res, next) => {
   let search = req.query.search
   const stageId = req.query.stageId
@@ -1703,6 +1835,213 @@ export const getAllPerUser = async (req, res, next) => {
       data: {
         rows: response,
         totalLostRecontact
+      },
+      message: 'Get businesses succesfuly.'
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+export const getCtcAllPerUser = async (req, res, next) => {
+  let search = req.query.search
+  const stageId = req.query.stageId
+  let filterLog = req.query.filterLog
+  // let whereOptions = {
+  //   where: {
+  //     listingAgent_id: {
+  //       $eq: req.user.id
+  //     }
+  //   }
+  // }
+  const whereStageLost = {
+    stageId: 7,
+    listingAgentCtc_id: req.user.id
+  }
+  const whereOptions = {
+    where: {
+      listingAgentCtc_id: {
+        $eq: req.user.id
+      }
+    }
+  }
+
+  if (search && search.length > 0) {
+    if (search.includes('BS') || search.includes('bs')) {
+      if (search.includes('BS')) search = search.replace(/BS/g, '')
+      if (search.includes('bs')) search = search.replace(/bs/g, '')
+      whereOptions.where.id = {
+        $eq: search
+      }
+    } else {
+      if (parseInt(search)) {
+        whereOptions.where.listedPrice = {
+          $lte: search * 1.1,
+          $gte: search * 0.9
+        }
+      } else {
+        whereOptions.where.$or = []
+
+        whereOptions.where.$or.push({
+          businessName: {
+            $like: `%${search}%`
+          }
+        }, {
+          firstNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          lastNameV: {
+            $like: `%${search}%`
+          }
+        }, {
+          suburb: {
+            $like: `%${search}%`
+          }
+        }, {
+          searchNote: {
+            $like: `%${search}%`
+          }
+        })
+      }
+    }
+  }
+
+  if (stageId && stageId.length > 0) {
+    if (parseInt(stageId)) {
+      whereOptions.where.ctcStageId = {
+        $eq: `${parseInt(stageId)}`
+      }
+    }
+  }
+
+  try {
+    if (filterLog && JSON.parse(filterLog)) {
+      const response = await models.Business.findAll(
+        Object.assign(whereOptions, {
+          attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+          include: {
+            model: models.BusinessLog,
+            as: 'BusinessLog',
+            where: {
+              business_id: {
+                $col: 'Business.id'
+              },
+              followUpStatus: 'Pending',
+              followUp: {
+                $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
+              }
+            }
+          },
+          order: [
+            [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'followUp', 'DESC']
+          ]
+        })
+      )
+      const businessesLost = await models.Business.findAll(
+        Object.assign(whereOptions, {
+          attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+          where: whereStageLost,
+          include: {
+            model: models.BusinessLog,
+            as: 'BusinessLog',
+            where: {
+              business_id: {
+                $col: 'Business.id'
+              },
+              followUpStatus: 'Pending',
+              followUp: {
+                $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
+              }
+            }
+          },
+          order: [
+            [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'followUp', 'DESC']
+          ]
+        })
+      )
+
+      if (parseInt(stageId) === 1) {
+        businessesLost.forEach(item => {
+          response.push(item)
+        })
+        response.sort(function (a, b) {
+          return new Date(b.BusinessLog[0].followUp) - new Date(a.BusinessLog[0].followUp)
+        })
+      }
+
+      return res.status(200).json({
+        data: {
+          rows: response
+        },
+        message: 'Get businesses succesfully.'
+      })
+    }
+
+    const response = await models.Business.findAll(
+      Object.assign(whereOptions, {
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+        include: {
+          model: models.BusinessLog,
+          as: 'BusinessLog',
+          where: {
+            business_id: {
+              $col: 'Business.id'
+            }
+          }
+        },
+        order: [
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
+        ]
+      })
+    )
+    const businessesLost = await models.Business.findAll(
+      Object.assign(whereOptions, {
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'stageId'],
+        where: whereStageLost,
+        include: {
+          model: models.BusinessLog,
+          as: 'BusinessLog',
+          where: {
+            business_id: {
+              $col: 'Business.id'
+            },
+            followUpStatus: 'Pending',
+            followUp: {
+              $lte: moment(new Date()).format('YYYY-MM-DD 23:59:59')
+            }
+          }
+        },
+        order: [
+          [{
+            model: models.BusinessLog,
+            as: 'BusinessLog'
+          }, 'followUp', 'DESC']
+        ]
+      })
+    )
+
+    if (parseInt(stageId) === 1) {
+      businessesLost.forEach(item => {
+        response.push(item)
+      })
+      response.sort(function (a, b) {
+        return new Date(b.BusinessLog[0].followUp) - new Date(a.BusinessLog[0].followUp)
+      })
+    }
+
+    return res.status(200).json({
+      data: {
+        rows: response
       },
       message: 'Get businesses succesfuly.'
     })

@@ -1637,8 +1637,6 @@ export const createWeeklyReport = async (req, res, next) => {
     })
     newWeeklyReport.nOfNewLogs7Days = nOfNewLogs7Days.count
 
-    console.log(newWeeklyReport)
-
     const buyer = await models.BrokerWeeklyReport.create(newWeeklyReport)
     return res.status(201).json({
       data: buyer,
@@ -2112,7 +2110,6 @@ export const updateBusinessLogFromBuyer = async (req, res, next) => {
 }
 
 export const finaliseBusinessLogFromBuyer = async (req, res, next) => {
-  console.log('olaaa')
   const {
     idBusiness
   } = req.params
