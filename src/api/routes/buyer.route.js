@@ -30,7 +30,8 @@ import {
   updateBusinessFromBuyer,
   getBusinessLogFromBuyer,
   updateBusinessLogFromBuyer,
-  finaliseBusinessLogFromBuyer
+  finaliseBusinessLogFromBuyer,
+  sendBuyerInformationToCtcBusiness
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 // import models from '../../config/sequelize'
@@ -113,5 +114,7 @@ router.route('/send-ca').post(validate(validation.sendCA), sendCA)
 router.route('/send-im').post(validate(validation.sendIM), sendIM)
 
 router.route('/received-ca').post(validate(validation.receivedCA), receivedCA)
+
+router.route('/send-buyer-informations-ctc-business').post(sendBuyerInformationToCtcBusiness)
 
 export default router

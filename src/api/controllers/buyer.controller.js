@@ -2130,3 +2130,76 @@ export const finaliseBusinessLogFromBuyer = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const sendBuyerInformationToCtcBusiness = async (req, res, next) => {
+  const {
+    buyer,
+    business
+  } = req.body
+
+  try {
+    // Verify exists template
+    const template = await models.EmailTemplate.findOne({
+      where: {
+        title: 'Send Buyer Informations to CTC Business'
+      }
+    })
+
+    if (!template) {
+      throw new APIError({
+        message: 'Email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      owner_full_name: `${business.firstNameV} ${business.lastNameV}`,
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      buyer_phone: buyer.telephone1,
+      buyer_email: buyer.email
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: business.vendorEmail,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      replyTo: 'team@xcllusive.com.au',
+      subject: template.subject,
+      html: templateCompiled(context)
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // update buyer to CTC Buyer
+    const modifyBuyer = {
+      ctcBuyer: true
+    }
+    await models.Buyer.update(modifyBuyer, {
+      where: {
+        id: buyer.id
+      }
+    })
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: 'Buyer Informations Sent',
+      followUpStatus: 'Done',
+      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+      business_id: business.id,
+      buyer_id: buyer.id,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
+    })
+
+    return res.status(201).json({
+      data: responseMailer,
+      message: 'Informations to Buyer Sent'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

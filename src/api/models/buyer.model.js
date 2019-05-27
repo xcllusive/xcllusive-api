@@ -145,6 +145,16 @@ export default (sequelize, DataTypes) => {
       telephone1Number: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      xcllusiveBuyer: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      ctcBuyer: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     }, {
       createdAt: 'dateTimeCreated',

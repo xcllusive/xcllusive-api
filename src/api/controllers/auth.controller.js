@@ -76,7 +76,8 @@ export const loginWithToken = async (req, res, next) => {
     user: {
       id: req.user.id,
       email: req.user.email,
-      roles: req.user.roles
+      roles: req.user.roles,
+      listingAgent: req.user.listingAgent
     }
   })
 }
