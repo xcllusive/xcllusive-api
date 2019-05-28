@@ -331,6 +331,17 @@ aws-sign2@~0.7.0:
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
   integrity sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
 
+aws-sns-publish@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/aws-sns-publish/-/aws-sns-publish-3.3.0.tgz#c7bd4d265c7b12bc21294751091e8882c6ebfca9"
+  integrity sha512-NHxcHRvAnO9qXmLWU5tsbTvxMi3XE9C3PqTUVssivvfmryHqp4Q7gtCz6S64t8a2kXs/FRHpPQIgiygNTZ9HqQ==
+  dependencies:
+    is-aws-account-id "^1.0.0"
+    is-e164-phone-number "^1.0.0"
+    is-obj "^1.0.0"
+    is-sns-topic-arn "^1.0.0"
+    pify "^2.3.0"
+
 aws4@^1.2.1, aws4@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
@@ -3267,6 +3278,11 @@ is-arrayish@^0.2.1:
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
   integrity sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=
 
+is-aws-account-id@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-aws-account-id/-/is-aws-account-id-1.0.0.tgz#3ad0955b6c3972fac1f14cec8c2d8fdff03c425a"
+  integrity sha1-OtCVW2w5cvrB8UzsjC2P3/A8Qlo=
+
 is-binary-path@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-1.0.1.tgz#75f16642b480f187a711c814161fd3a4a7655898"
@@ -3334,6 +3350,11 @@ is-dotfile@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/is-dotfile/-/is-dotfile-1.0.3.tgz#a6a2f32ffd2dfb04f5ca25ecd0f6b83cf798a1e1"
   integrity sha1-pqLzL/0t+wT1yiXs0Pa4PPeYoeE=
+
+is-e164-phone-number@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-e164-phone-number/-/is-e164-phone-number-1.0.0.tgz#7c9dc9af514ae52354958fc6e08ca91255007cd6"
+  integrity sha1-fJ3Jr1FK5SNUlY/G4IypElUAfNY=
 
 is-equal-shallow@^0.1.3:
   version "0.1.3"
@@ -3498,6 +3519,11 @@ is-retry-allowed@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-retry-allowed/-/is-retry-allowed-1.1.0.tgz#11a060568b67339444033d0125a61a20d564fb34"
   integrity sha1-EaBgVotnM5REAz0BJaYaINVk+zQ=
+
+is-sns-topic-arn@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-sns-topic-arn/-/is-sns-topic-arn-1.0.0.tgz#539a71aa48f0f90d713e1532b3932a278902fb52"
+  integrity sha1-U5pxqkjw+Q1xPhUys5MqJ4kC+1I=
 
 is-stream@^1.0.0, is-stream@^1.1.0:
   version "1.1.0"
@@ -4963,7 +4989,7 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-pify@^2.0.0, pify@^2.2.0:
+pify@^2.0.0, pify@^2.2.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha1-7RQaasBDqEnqWISY59yosVMw6Qw=
