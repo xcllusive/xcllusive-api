@@ -25,7 +25,9 @@ import {
   uploadIM,
   verifyDuplicatedBusiness,
   getCtcAllPerUser,
-  getCtcQtdeBusinessStageUser
+  getCtcQtdeBusinessStageUser,
+  sendSms,
+  sendEmailToCtcBusiness
 } from '../controllers/business.controller'
 
 import {
@@ -99,5 +101,9 @@ router.route('/email-to-buyer').post(emailToBuyer)
 router.route('/send-enquiry-owner').post(sendEnquiryOwner)
 
 router.route('/send-group-email').post(sendGroupEmail)
+
+router.route('/send-email-ctc-business').post(sendEmailToCtcBusiness)
+
+router.route('/send-sms').post(sendSms)
 
 export default router

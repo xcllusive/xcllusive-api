@@ -4,16 +4,12 @@ import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 import {
-  uploadToS3,
-  SNS
+  uploadToS3
 } from '../modules/aws'
 import {
   transformQueryAndCleanNull
 } from '../utils/sharedFunctionsObject'
 import Sequelize from 'sequelize'
-import {
-  formatTelephoneToSendSMS
-} from '../utils/replaceStringFunctions'
 
 export const get = async (req, res, next) => {
   const {
@@ -2129,91 +2125,6 @@ export const finaliseBusinessLogFromBuyer = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Business log finalised'
-    })
-  } catch (error) {
-    return next(error)
-  }
-}
-
-export const sendBuyerInformationToCtcBusiness = async (req, res, next) => {
-  const {
-    buyer,
-    business
-  } = req.body
-
-  try {
-    // Verify exists template
-    const template = await models.EmailTemplate.findOne({
-      where: {
-        title: 'Send Buyer Informations to CTC Business'
-      }
-    })
-
-    if (!template) {
-      throw new APIError({
-        message: 'Email template not found',
-        status: 404,
-        isPublic: true
-      })
-    }
-
-    const businessObj = await models.Business.findOne({
-      where: {
-        id: business.id
-      }
-    })
-
-    // Compile the template to use variables
-    const templateCompiled = Handlebars.compile(template.body)
-    const context = {
-      owner_full_name: `${businessObj.firstNameV} ${businessObj.lastNameV}`,
-      buyer_name: `${buyer.firstName} ${buyer.surname}`,
-      buyer_phone: buyer.telephone1,
-      buyer_email: buyer.email
-    }
-
-    // Set email options
-    const mailOptions = {
-      to: businessObj.vendorEmail,
-      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
-      replyTo: 'enquiries@ctoc.com.au',
-      subject: template.subject,
-      html: templateCompiled(context)
-    }
-
-    // Send Email
-    const responseMailer = await mailer.sendMail(mailOptions)
-
-    // update buyer to CTC Buyer
-    const modifyBuyer = {
-      ctcBuyer: true
-    }
-    await models.Buyer.update(modifyBuyer, {
-      where: {
-        id: buyer.id
-      }
-    })
-
-    // Insert in log
-    await models.BuyerLog.create({
-      text: 'Buyer Informations Sent',
-      followUpStatus: 'Done',
-      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
-      business_id: businessObj.id,
-      buyer_id: buyer.id,
-      createdBy_id: req.user.id,
-      modifiedBy_id: req.user.id
-    })
-
-    // send SMS via aws SNS
-    const smsMessage = `\nPlease find below enquiry for your business: \n\nBuyer Name: ${buyer.firstName} ${buyer.surname} \nPhone: ${buyer.telephone1} \nEmail: ${buyer.email} \n\nRegards, \nTeam Xcllusive.`
-    // verify if telephone1 is a mobile number then will send sms
-    const phone = formatTelephoneToSendSMS(businessObj.vendorPhone1)
-    await SNS(buyer, phone, smsMessage)
-
-    return res.status(201).json({
-      data: responseMailer,
-      message: 'Informations to Buyer Sent'
     })
   } catch (error) {
     return next(error)

@@ -4,7 +4,8 @@ import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 import {
-  uploadToS3
+  uploadToS3,
+  SNS
 } from '../modules/aws'
 
 export const getBusiness = async (req, res, next) => {
@@ -200,7 +201,7 @@ export const list = async (req, res, next) => {
   }
 
   const options = {
-    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id'],
+    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id', 'vendorPhone1', 'vendorPhone2', 'vendorPhone3'],
     include: [
       models.BusinessStage, models.BusinessProduct
       // {
@@ -2209,6 +2210,131 @@ export const verifyDuplicatedBusiness = async (req, res, next) => {
     return res.status(201).json({
       data: duplicatedBusiness,
       message: ''
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const sendEmailToCtcBusiness = async (req, res, next) => {
+  const {
+    buyer,
+    business
+  } = req.body
+
+  try {
+    // Verify exists template
+    const template = await models.EmailTemplate.findOne({
+      where: {
+        title: 'Send Email to CTC Business'
+      }
+    })
+
+    if (!template) {
+      throw new APIError({
+        message: 'Email template not found',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const businessObj = await models.Business.findOne({
+      where: {
+        id: business.id
+      }
+    })
+
+    // Compile the template to use variables
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      owner_full_name: `${businessObj.firstNameV} ${businessObj.lastNameV}`,
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      buyer_phone: buyer.telephone1,
+      buyer_email: buyer.email
+    }
+
+    // Set email options
+    const mailOptions = {
+      to: businessObj.vendorEmail,
+      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+      replyTo: 'enquiries@ctoc.com.au',
+      subject: template.subject,
+      html: templateCompiled(context)
+    }
+
+    // Send Email
+    const responseMailer = await mailer.sendMail(mailOptions)
+
+    // update buyer to CTC Buyer
+    const modifyBuyer = {
+      ctcBuyer: true
+    }
+    await models.Buyer.update(modifyBuyer, {
+      where: {
+        id: buyer.id
+      }
+    })
+
+    // Insert in log
+    await models.BuyerLog.create({
+      text: 'Email to CTC Business Sent',
+      followUpStatus: 'Done',
+      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+      business_id: businessObj.id,
+      buyer_id: buyer.id,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id
+    })
+
+    return res.status(201).json({
+      data: responseMailer,
+      message: 'Email to CTC Business Sent'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const sendSms = async (req, res, next) => {
+  const {
+    buyer,
+    business,
+    phone,
+    message
+  } = req.body
+
+  try {
+    const businessObj = await models.Business.findOne({
+      where: {
+        id: business.id
+      }
+    })
+
+    // send SMS via aws SNS
+    const sentSms = await SNS(phone, message)
+
+    if (sentSms) {
+      // Insert in log
+      await models.BuyerLog.create({
+        text: 'Sms Sent to Onwer',
+        followUpStatus: 'Done',
+        followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+        business_id: businessObj.id,
+        buyer_id: buyer.id,
+        createdBy_id: req.user.id,
+        modifiedBy_id: req.user.id
+      })
+    } else {
+      throw new APIError({
+        message: 'Error sending sms',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    return res.status(201).json({
+      data: sentSms,
+      message: 'Sms Sent to Onwer'
     })
   } catch (error) {
     return next(error)
