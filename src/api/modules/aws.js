@@ -33,7 +33,7 @@ export const SNS = (phone, message) => {
   return new Promise((resolve, reject) => {
     sns.subscribe({
       Protocol: 'sms',
-      TopicArn: 1,
+      TopicArn: 'arn:aws:sns:ap-southeast-2:264038389685:MyTopic',
       Endpoint: phone // type mobile number to whom you want to send a message.
     }, (error, data) => {
       if (error) {

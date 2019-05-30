@@ -99,6 +99,36 @@ export const getMarketingReport = async (req, res, next) => {
       ]
     })
 
+    const ctcLeadsPerOfficeFromXcllusive = await models.Business.findAndCountAll({
+      raw: true,
+      attributes: ['company_id'],
+      as: 'Business',
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        },
+        company_id: 2
+      },
+      include: [{
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          }
+        }
+      }],
+      group: [
+        [{
+          model: models.User,
+          as: 'listingAgent'
+        }, 'dataRegion']
+      ]
+    })
+
+    const arrayCtcLeadsPerOfficeFromXcllusive = _.merge(ctcLeadsPerOfficeFromXcllusive.count, ctcLeadsPerOfficeFromXcllusive.rows)
+
     const mergeArray = _.merge(dateTimeCreated, dateTimeCreatedCount)
     let arrayFinal = dateTimeCreated
     if (mergeArray.length > 0) {
@@ -794,6 +824,30 @@ export const getMarketingReport = async (req, res, next) => {
       })
     }
 
+    //  CTC Business from Sydney Office
+    const ctcLeadsPerSourceFromSydneyCreated = await models.Business.count({
+      raw: true,
+      as: 'Business',
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        },
+        company_id: 2
+      },
+      include: [{
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: 'Sydney Office'
+        }
+      }]
+    })
+    console.log('ctcLeadsPerSourceFromSydneyCreated', ctcLeadsPerSourceFromSydneyCreated)
+
     // Queensland
     const leadsPerSourceQueenslandCreated = await models.Business.findAndCountAll({
       raw: true,
@@ -981,7 +1035,8 @@ export const getMarketingReport = async (req, res, next) => {
         arrayLeadsPerSourceMelbourne,
         arrayLeadsPerSourceSydney,
         arrayLeadsPerSourceQueensland,
-        arrayOffices
+        arrayOffices,
+        arrayCtcLeadsPerOfficeFromXcllusive
       }
     })
   } catch (error) {
