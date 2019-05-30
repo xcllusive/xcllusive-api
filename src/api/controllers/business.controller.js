@@ -315,6 +315,7 @@ export const create = async (req, res, next) => {
     } else {
       if (newBusiness.willReassign) newBusiness.listingAgent_id = listingAgentXcllusive
       newBusiness.listingAgentCtc_id = req.body.listingAgentCtc || req.user.id
+      newBusiness.ctcStageId = 2
     }
 
     const business = await models.Business.create(newBusiness)
@@ -561,6 +562,9 @@ export const updateListingAgent = async (req, res, next) => {
       }
       // set company to CTC
       data.company_id = 2
+
+      // set stage to new
+      data.ctcStageId = 2
 
       // Compile the template to use variables
       const templateCompiled = Handlebars.compile(template.body)

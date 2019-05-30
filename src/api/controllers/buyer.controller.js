@@ -960,7 +960,7 @@ export const listBusinessesFromBuyer = async (req, res, next) => {
 export const createLog = async (req, res, next) => {
   const newLog = {
     text: req.body.buyerLog_text ? req.body.buyerLog_text : '',
-    followUp: req.body.buyerLog_followUp ? req.body.buyerLog_followUp : '',
+    followUp: req.body.buyerLog_followUp ? moment(req.body.buyerLog_followUp).format('YYYY-MM-DD hh:mm:ss') : '',
     followUpStatus: 'Pending',
     business_id: req.body.business_id,
     buyer_id: req.body.buyer_id,
