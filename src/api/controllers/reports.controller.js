@@ -127,7 +127,14 @@ export const getMarketingReport = async (req, res, next) => {
       ]
     })
 
-    const arrayCtcLeadsPerOfficeFromXcllusive = _.merge(ctcLeadsPerOfficeFromXcllusive.count, ctcLeadsPerOfficeFromXcllusive.rows)
+    const arrayCtcLeadsPerOfficeFromXcllusive = _.merge(ctcLeadsPerOfficeFromXcllusive.rows, ctcLeadsPerOfficeFromXcllusive.count)
+
+    const arrayTotalPerOffice = arrayCtcLeadsPerOfficeFromXcllusive.map(({
+      count
+    }) => count)
+    const totalBusinessesCtc = arrayTotalPerOffice.reduce(function (a, b) {
+      return a + b
+    }, 0)
 
     const mergeArray = _.merge(dateTimeCreated, dateTimeCreatedCount)
     let arrayFinal = dateTimeCreated
@@ -824,30 +831,6 @@ export const getMarketingReport = async (req, res, next) => {
       })
     }
 
-    //  CTC Business from Sydney Office
-    const ctcLeadsPerSourceFromSydneyCreated = await models.Business.count({
-      raw: true,
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 2
-      },
-      include: [{
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Sydney Office'
-        }
-      }]
-    })
-    console.log('ctcLeadsPerSourceFromSydneyCreated', ctcLeadsPerSourceFromSydneyCreated)
-
     // Queensland
     const leadsPerSourceQueenslandCreated = await models.Business.findAndCountAll({
       raw: true,
@@ -1036,7 +1019,8 @@ export const getMarketingReport = async (req, res, next) => {
         arrayLeadsPerSourceSydney,
         arrayLeadsPerSourceQueensland,
         arrayOffices,
-        arrayCtcLeadsPerOfficeFromXcllusive
+        arrayCtcLeadsPerOfficeFromXcllusive,
+        totalBusinessesCtc
       }
     })
   } catch (error) {
@@ -1702,6 +1686,44 @@ export const getDailyTimeActivityReport = async (req, res, next) => {
       data: array,
       user,
       message: 'Get report succesfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getCtcBusinessesPerOffice = async (req, res, next) => {
+  const dataRegion = req.query.dataRegion
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  try {
+    const listBusinessesDateCreated = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        },
+        company_id: 2
+      },
+      include: [{
+        model: models.User,
+        attributes: ['dataRegion'],
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          dataRegion: dataRegion
+        }
+      }]
+    })
+
+    return res.status(201).json({
+      data: {
+        listBusinessesDateCreated
+      }
     })
   } catch (error) {
     return next(error)

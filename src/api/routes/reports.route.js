@@ -9,7 +9,8 @@ import {
   getEnquiryReport,
   activityRequestControlPerUser,
   getUsersPerRegion,
-  getDailyTimeActivityReport
+  getDailyTimeActivityReport,
+  getCtcBusinessesPerOffice
 } from '../controllers/reports.controller'
 import {
   authMiddleware,
@@ -50,5 +51,7 @@ router.route('/activity-request-per-user-report').get(activityRequestControlPerU
 router.route('/users-per-region').get(getUsersPerRegion)
 
 router.route('/daily-time-activity-report').get(getDailyTimeActivityReport)
+
+router.route('/ctc-businesses-list-office').get(getCtcBusinessesPerOffice)
 
 export default router
