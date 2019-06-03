@@ -1,7 +1,6 @@
 export default (sequelize, DataTypes) => {
   const BusinessLog = sequelize.define(
-    'BusinessLog',
-    {
+    'BusinessLog', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -19,17 +18,18 @@ export default (sequelize, DataTypes) => {
       followUpStatus: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      time: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
-    },
-    {
+    }, {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [
-        {
-          unique: true,
-          fields: ['id']
-        }
-      ]
+      indexes: [{
+        unique: true,
+        fields: ['id']
+      }]
     }
   )
 

@@ -104,6 +104,7 @@ export const save = async (req, res, next) => {
       createdBy_id: req.user.id,
       followUpStatus: 'Pending',
       followUp: newLog.businessLog_followUp,
+      time: newLog.businessLog_time,
       business_id: idBusiness
     })
     return res.status(200).json({
