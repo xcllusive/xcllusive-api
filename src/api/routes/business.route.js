@@ -27,7 +27,8 @@ import {
   getCtcAllPerUser,
   getCtcQtdeBusinessStageUser,
   sendSms,
-  sendEmailToCtcBusiness
+  sendEmailToCtcBusiness,
+  verifyBusinessFirstOpenByAgent
 } from '../controllers/business.controller'
 
 import {
@@ -105,5 +106,7 @@ router.route('/send-group-email').post(sendGroupEmail)
 router.route('/send-email-ctc-business').post(sendEmailToCtcBusiness)
 
 router.route('/send-sms').post(sendSms)
+
+router.route('/:idBusiness/verify-first-open-by-agent').put(verifyBusinessFirstOpenByAgent)
 
 export default router

@@ -203,6 +203,14 @@ export default (sequelize, DataTypes) => {
       addLeadNurtureList: {
         type: DataTypes.BOOLEAN,
         allowNull: true
+      },
+      dateTimeAssignToAgent: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+      dateTimeFirstOpenByAgent: {
+        type: DataTypes.DATE,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',

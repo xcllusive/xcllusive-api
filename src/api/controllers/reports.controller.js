@@ -1281,7 +1281,7 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
   try {
     const listBusinessesDateCreated = await models.Business.findAll({
       raw: true,
-      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent'],
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]

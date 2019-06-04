@@ -268,7 +268,8 @@ export const create = async (req, res, next) => {
     ctcSourceId: req.body.ctcSourceId,
     company_id: req.body.company,
     willReassign: req.body.willReassign,
-    ctcStageId: req.body.ctcStageId
+    ctcStageId: req.body.ctcStageId,
+    dateTimeAssignToAgent: moment().format('YYYY-MM-DD hh:mm:ss')
   }
 
   let template = null
@@ -562,9 +563,12 @@ export const updateListingAgent = async (req, res, next) => {
       }
       // set company to CTC
       data.company_id = 2
-
       // set stage to new
       data.ctcStageId = 2
+
+      /* save dateTime assign to agent to control first open by agent */
+      data.dateTimeAssignToAgent = moment().format('YYYY-MM-DD hh:mm:ss')
+      data.dateTimeFirstOpenByAgent = null
 
       // Compile the template to use variables
       const templateCompiled = Handlebars.compile(template.body)
@@ -2339,6 +2343,43 @@ export const sendSms = async (req, res, next) => {
     return res.status(201).json({
       data: sentSms,
       message: 'Sms Sent to Onwer'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const verifyBusinessFirstOpenByAgent = async (req, res, next) => {
+  const {
+    idBusiness
+  } = req.params
+
+  try {
+    const business = await models.Business.findOne({
+      where: {
+        id: idBusiness
+      }
+    })
+
+    if ((business.listingAgent_id === req.user.id && !business.dateTimeFirstOpenByAgent) || (business.listingAgentCtc_id === req.user.id && !business.dateTimeFirstOpenByAgent)) {
+      const updateBusiness = {
+        dateTimeFirstOpenByAgent: moment().format('YYYY-MM-DD hh:mm:ss')
+      }
+      await models.Business.update(updateBusiness, {
+        where: {
+          id: idBusiness
+        }
+      })
+    } else {
+      throw new APIError({
+        message: 'The user logged is not the listing agent',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(200).json({
+      message: `Business BS${idBusiness} updated with success`
     })
   } catch (error) {
     return next(error)
