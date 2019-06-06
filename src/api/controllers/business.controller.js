@@ -344,12 +344,10 @@ export const create = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [{
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
 
       // Send Email
@@ -539,12 +537,10 @@ export const updateListingAgent = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [{
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
       // Send Email
       await mailer.sendMail(mailOptions)
@@ -590,12 +586,10 @@ export const updateListingAgent = async (req, res, next) => {
         from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
         subject: template.subject,
         html: templateCompiled(context),
-        attachments: template.enableAttachment
-          ? [{
-            filename: `${template.title.trim()}.pdf`,
-            path: template.attachmentPath
-          }]
-          : []
+        attachments: template.enableAttachment ? [{
+          filename: `${template.title.trim()}.pdf`,
+          path: template.attachmentPath
+        }] : []
       }
       // Send Email
       await mailer.sendMail(mailOptionsCtc)
@@ -859,12 +853,10 @@ export const emailToBuyer = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: `${template.subject}`,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [{
-          filename: `${template.title.trim()}.pdf`,
-          path: template.attachmentPath
-        }]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -961,12 +953,10 @@ export const sendEnquiryOwner = async (req, res, next) => {
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       subject: template.subject,
       html: templateCompiled(context),
-      attachments: template.enableAttachment
-        ? [{
-          filename: `${template.title.trim()}.pdf`,
-          path: template.attachmentPath
-        }]
-        : []
+      attachments: template.enableAttachment ? [{
+        filename: `${template.title.trim()}.pdf`,
+        path: template.attachmentPath
+      }] : []
     }
 
     // Send Email
@@ -1189,12 +1179,10 @@ export const sendGroupEmail = async (req, res, next) => {
         <p>Xcllusive Business Sales</p>
         <p>www.xcllusive.com.au | (02) 9817 3331</p>
         `,
-        attachments: fileAttachment
-          ? [{
-            filename: fileAttachment.name,
-            content: fileAttachment.data
-          }]
-          : []
+        attachments: fileAttachment ? [{
+          filename: fileAttachment.name,
+          content: fileAttachment.data
+        }] : []
       }
       const resMailer = await mailer.sendMail(mailOptions)
       if (resMailer) sentTo.push(resMailer.envelope.to[0])
@@ -1683,36 +1671,45 @@ export const getAllPerUser = async (req, res, next) => {
         $eq: search
       }
     } else {
-      if (parseInt(search)) {
-        whereOptions.where.listedPrice = {
-          $lte: search * 1.1,
-          $gte: search * 0.9
-        }
-      } else {
-        if (req.user.listingAgentCtc) {
-          whereOptions.where.$or = []
-        }
-        whereOptions.where.$and = []
-        whereOptions.where.$and.push({
-          $or: {
-            businessName: {
-              $like: `%${search}%`
-            },
-            firstNameV: {
-              $like: `%${search}%`
-            },
-            lastNameV: {
-              $like: `%${search}%`
-            },
-            suburb: {
-              $like: `%${search}%`
-            },
-            searchNote: {
-              $like: `%${search}%`
-            }
-          }
-        })
+      // if (parseInt(search)) {
+      //   whereOptions.where.listedPrice = {
+      //     $lte: search * 1.1,
+      //     $gte: search * 0.9
+      //   }
+      // } else {
+      if (req.user.listingAgentCtc) {
+        whereOptions.where.$or = []
       }
+      whereOptions.where.$and = []
+      whereOptions.where.$and.push({
+        $or: {
+          businessName: {
+            $like: `%${search}%`
+          },
+          firstNameV: {
+            $like: `%${search}%`
+          },
+          lastNameV: {
+            $like: `%${search}%`
+          },
+          suburb: {
+            $like: `%${search}%`
+          },
+          searchNote: {
+            $like: `%${search}%`
+          },
+          vendorPhone1: {
+            $like: `%${search}%`
+          },
+          vendorPhone2: {
+            $like: `%${search}%`
+          },
+          vendorPhone3: {
+            $like: `%${search}%`
+          }
+        }
+      })
+      // }
     }
   }
 
@@ -1895,33 +1892,42 @@ export const getCtcAllPerUser = async (req, res, next) => {
         $eq: search
       }
     } else {
-      if (parseInt(search)) {
-        whereOptions.where.listedPrice = {
-          $lte: search * 1.1,
-          $gte: search * 0.9
-        }
-      } else {
-        whereOptions.where.$and = []
-        whereOptions.where.$and.push({
-          $or: {
-            businessName: {
-              $like: `%${search}%`
-            },
-            firstNameV: {
-              $like: `%${search}%`
-            },
-            lastNameV: {
-              $like: `%${search}%`
-            },
-            suburb: {
-              $like: `%${search}%`
-            },
-            searchNote: {
-              $like: `%${search}%`
-            }
+      // if (parseInt(search)) {
+      //   whereOptions.where.listedPrice = {
+      //     $lte: search * 1.1,
+      //     $gte: search * 0.9
+      //   }
+      // } else {
+      whereOptions.where.$and = []
+      whereOptions.where.$and.push({
+        $or: {
+          businessName: {
+            $like: `%${search}%`
+          },
+          firstNameV: {
+            $like: `%${search}%`
+          },
+          lastNameV: {
+            $like: `%${search}%`
+          },
+          suburb: {
+            $like: `%${search}%`
+          },
+          searchNote: {
+            $like: `%${search}%`
+          },
+          vendorPhone1: {
+            $like: `%${search}%`
+          },
+          vendorPhone2: {
+            $like: `%${search}%`
+          },
+          vendorPhone3: {
+            $like: `%${search}%`
           }
-        })
-      }
+        }
+      })
+      // }
     }
   }
 
@@ -1953,6 +1959,9 @@ export const getCtcAllPerUser = async (req, res, next) => {
           },
           order: [
             [{
+              model: models.BusinessLog,
+              as: 'BusinessLog'
+            }, 'time', 'desc'], [{
               model: models.BusinessLog,
               as: 'BusinessLog'
             }, 'followUp', 'DESC']
@@ -2161,7 +2170,6 @@ export const uploadIM = async (req, res, next) => {
       })
     }
 
-    // VERIFY WITH BRUNO
     // Upload file to aws s3
     const upload = await uploadToS3('xcllusive-im', file, `${business.businessName}_IM_${business.id}.pdf`)
 
@@ -2369,7 +2377,7 @@ export const verifyBusinessFirstOpenByAgent = async (req, res, next) => {
         id: idBusiness
       }
     })
-
+    let message = ''
     if ((business.listingAgent_id === req.user.id && !business.dateTimeFirstOpenByAgent) || (business.listingAgentCtc_id === req.user.id && !business.dateTimeFirstOpenByAgent)) {
       const updateBusiness = {
         dateTimeFirstOpenByAgent: moment().format('YYYY-MM-DD hh:mm:ss')
@@ -2379,16 +2387,13 @@ export const verifyBusinessFirstOpenByAgent = async (req, res, next) => {
           id: idBusiness
         }
       })
+      message = `Listing Agent has open Business ${idBusiness} for the first time`
     } else {
-      throw new APIError({
-        message: 'The user logged is not the listing agent',
-        status: 404,
-        isPublic: true
-      })
+      message = 'User Logged is not the Listing Agent'
     }
 
     return res.status(200).json({
-      message: `Business BS${idBusiness} updated with success`
+      message: message
     })
   } catch (error) {
     return next(error)
