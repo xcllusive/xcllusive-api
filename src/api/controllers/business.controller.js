@@ -268,8 +268,7 @@ export const create = async (req, res, next) => {
     ctcSourceId: req.body.ctcSourceId,
     company_id: req.body.company,
     willReassign: req.body.willReassign,
-    ctcStageId: req.body.ctcStageId,
-    dateTimeAssignToAgent: moment().format('YYYY-MM-DD hh:mm:ss')
+    ctcStageId: req.body.ctcStageId
   }
 
   let template = null
@@ -308,6 +307,8 @@ export const create = async (req, res, next) => {
           isPublic: true
         })
       }
+    } else {
+      newBusiness.dateTimeFirstOpenByAgent = moment(new Date()).format('YYYY-MM-DD hh:mm:ss')
     }
     if (req.body.company === 1) {
       newBusiness.listingAgent_id = req.body.listingAgent !== '' ? req.body.listingAgent : req.user.id

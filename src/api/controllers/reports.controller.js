@@ -1557,7 +1557,7 @@ export const activityRequestControlPerUser = async (req, res, next) => {
       return {
         userId_logged: item.userId_logged,
         activity: item.count,
-        dateCreated: moment(item.dateCreated).format('DD/MM/YYYY')
+        dateCreated: `${moment(item.dateCreated).format('DD/MM')} [${moment(item.dateCreated).format('dddd')}]`
       }
     })
 
