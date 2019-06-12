@@ -861,6 +861,7 @@ export const generatePdf = async (req, res, next) => {
       waitUntil: 'networkidle0'
     })
     await page.pdf(PDF_OPTIONS)
+    console.log(template)
     await browser.close()
 
     return res.download(destPdfGenerated, err => {
