@@ -1525,6 +1525,13 @@ export const getCtcQtdeBusinessStageUser = async (req, res, next) => {
     ctcStageId: 7
   }
 
+  const whereOptionsReferredToXcllusive = {
+    listingAgentCtc_id: {
+      $eq: req.user.id
+    },
+    ctcStageId: 8
+  }
+
   try {
     const businessNewFilter = await models.Business.count({
       where: whereOptionsNew,
@@ -1602,6 +1609,10 @@ export const getCtcQtdeBusinessStageUser = async (req, res, next) => {
       where: whereOptionsLost
     })
 
+    const businessReferredToXcllusive = await models.Business.count({
+      where: whereOptionsReferredToXcllusive
+    })
+
     return res.status(201).json({
       data: {
         businessNewFilter,
@@ -1611,7 +1622,8 @@ export const getCtcQtdeBusinessStageUser = async (req, res, next) => {
         businessPotential,
         businessHot,
         businessEngaged,
-        businessLost
+        businessLost,
+        businessReferredToXcllusive
       }
     })
   } catch (error) {
