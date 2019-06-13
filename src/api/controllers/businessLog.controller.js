@@ -22,7 +22,9 @@ export const get = async (req, res, next) => {
 export const list = async (req, res, next) => {
   const {
     businessId,
-    search
+    search,
+    orderByDefault,
+    descAsc
   } = req.query
   const whereOptions = {
     business_id: businessId
@@ -56,11 +58,18 @@ export const list = async (req, res, next) => {
       }]
     }
 
+    let orderBy = [
+      ['followUp', JSON.parse(descAsc) ? 'DESC' : 'ASC']
+    ]
+    if (!JSON.parse(orderByDefault)) {
+      orderBy = [
+        ['dateTimeCreated', JSON.parse(descAsc) ? 'DESC' : 'ASC']
+      ]
+    }
+
     const logs = await models.BusinessLog.findAll({
       where: whereOptions,
-      order: [
-        ['followUp', 'DESC']
-      ],
+      order: orderBy,
       include: [{
         model: models.Business,
         attributes: ['businessName']
@@ -76,8 +85,7 @@ export const list = async (req, res, next) => {
     return res.status(201).json({
       data: logs,
       message: logs.length === 0
-        ? 'Nothing business log found'
-        : 'Get business log with succesfully'
+        ? 'Nothing business log found' : 'Get business log with succesfully'
     })
   } catch (error) {
     return next(error)
