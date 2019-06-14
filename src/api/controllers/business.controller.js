@@ -268,7 +268,9 @@ export const create = async (req, res, next) => {
     ctcSourceId: req.body.ctcSourceId,
     company_id: req.body.company,
     willReassign: req.body.willReassign,
-    ctcStageId: req.body.ctcStageId
+    ctcStageId: req.body.ctcStageId,
+    dateTimeAssignToAgent: req.body.dateTimeAssignToAgent,
+    dateTimeFirstOpenByAgent: req.body.dateTimeFirstOpenByAgent
   }
 
   let template = null
