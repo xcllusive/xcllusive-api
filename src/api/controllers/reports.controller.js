@@ -1286,7 +1286,8 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
         },
-        listingAgent_id: analystId
+        listingAgent_id: analystId,
+        company_id: 1
       }
     })
 
@@ -1297,7 +1298,8 @@ export const getBusinessesPerAnalyst = async (req, res, next) => {
         dateChangedToSalesMemorandum: {
           $between: [dateFrom, dateTo]
         },
-        listingAgent_id: analystId
+        listingAgent_id: analystId,
+        company_id: 1
       }
     })
     return res.status(201).json({
