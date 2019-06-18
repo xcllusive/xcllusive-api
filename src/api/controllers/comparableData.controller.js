@@ -23,8 +23,8 @@ export const list = async (req, res, next) => {
   }
 
   if (type) {
-    whereOptionsBusinessType.label = {
-      $like: `%${type}%`
+    whereOptionsBusinessType.id = {
+      $eq: type
     }
   }
   if (priceRangeStart) {
