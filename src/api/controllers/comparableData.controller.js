@@ -6,9 +6,12 @@ export const list = async (req, res, next) => {
   const {
     limit,
     type,
+    industry,
     priceRangeStart,
     priceRangeEnd,
-    trend
+    trend,
+    pebitdaFrom,
+    pebitdaTo
   } = req.query
   const offset = req.skip
 
@@ -25,6 +28,11 @@ export const list = async (req, res, next) => {
   if (type) {
     whereOptionsBusinessType.id = {
       $eq: type
+    }
+  }
+  if (industry) {
+    whereOptions.industry = {
+      $like: `%${industry}%`
     }
   }
   if (priceRangeStart) {
@@ -74,6 +82,45 @@ export const list = async (req, res, next) => {
       limit,
       offset
     })
+
+    const test = await models.sequelize.query(`SELECT * FROM BusinessSolds s, BusinessTypes t 
+    where s.businessType = t.id
+    and s.businessType = ${type || 's.businessType'} 
+    and s.industry like :industry
+    and case when s.year4 > 0 then s.year4 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  
+    between :pebitdaFrom and :pebitdaTo
+        else 
+        case when s.year3 > 0 then 
+        s.year3 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
+        else
+        case when s.year2 > 0 then 
+        s.year2 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
+        else
+        case when s.year1 > 0 then 
+        s.year1 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
+        end 
+        end 
+        end
+    end`, {
+      raw: true,
+      replacements: {
+        // businessType: type || s.businessType,
+        industry: industry ? `%${industry}%` : '%%',
+        pebitdaFrom: pebitdaFrom,
+        pebitdaTo: pebitdaTo
+      },
+      model: models.BusinessSold,
+      mapToModel: true
+    })
+    // const test = await models.Sequelize.query('SELECT * FROM BusinessSold', {
+    //   model: models.BusinessSold,
+    //   mapToModel: true // pass true here if you have any mapped fields
+    // })
+    //   .then(projects => {
+    //     // Each record will now be an instance of Project
+    //   })
+
+    console.log(test)
 
     const response = {
       data: businessesSold,
