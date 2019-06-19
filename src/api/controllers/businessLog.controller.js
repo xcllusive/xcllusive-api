@@ -59,9 +59,9 @@ export const list = async (req, res, next) => {
     }
 
     let orderBy = [
-      ['followUp', JSON.parse(descAsc) ? 'DESC' : 'ASC']
+      ['followUp', JSON.parse(descAsc || true) ? 'DESC' : 'ASC']
     ]
-    if (!JSON.parse(orderByDefault)) {
+    if (orderByDefault !== undefined && !JSON.parse(orderByDefault)) {
       orderBy = [
         ['dateTimeCreated', JSON.parse(descAsc) ? 'DESC' : 'ASC']
       ]
