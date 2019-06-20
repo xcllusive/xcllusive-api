@@ -2,6 +2,30 @@ import _ from 'lodash'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
+const _ebitdaAvg = businessSold => {
+  let count = 0
+  let totalYear = 0
+
+  if (businessSold.year4 > 0) {
+    count = count + 1
+    totalYear = totalYear + businessSold.year4
+  }
+  if (businessSold.year3 > 0) {
+    count = count + 1
+    totalYear = totalYear + businessSold.year3
+  }
+  if (businessSold.year2 > 0) {
+    count = count + 1
+    totalYear = totalYear + businessSold.year2
+  }
+  if (businessSold.year1 > 0) {
+    totalYear = totalYear + businessSold.year1
+    count = count + 1
+  }
+
+  return totalYear / count - businessSold.agreedWageForWorkingOwners
+}
+
 export const list = async (req, res, next) => {
   const {
     limit,
@@ -10,123 +34,118 @@ export const list = async (req, res, next) => {
     priceRangeStart,
     priceRangeEnd,
     trend,
-    pebitdaFrom,
-    pebitdaTo
+    pebitdaLastYearOrAvg,
+    ebitdaLastYearOrAvg
   } = req.query
   const offset = req.skip
 
-  let whereOptions = {
-    sold: 1
-  }
-
-  let whereOptionsBusinessType = {
-    id: {
-      $col: 'BusinessSold.businessType'
-    }
-  }
-
-  if (type) {
-    whereOptionsBusinessType.id = {
-      $eq: type
-    }
-  }
-  if (industry) {
-    whereOptions.industry = {
-      $like: `%${industry}%`
-    }
-  }
-  if (priceRangeStart) {
-    whereOptions.soldPrice = {
-      $gte: priceRangeStart
-    }
-  }
-  if (priceRangeEnd) {
-    whereOptions.soldPrice = {
-      $lte: priceRangeEnd
-    }
-  }
-  if (priceRangeStart && priceRangeEnd) {
-    whereOptions.soldPrice = {
-      $and: {
-        $gte: priceRangeStart,
-        $lte: priceRangeEnd
-      }
-    }
-  }
-  if (trend) {
-    if (!JSON.parse(trend)) {
-      throw new APIError({
-        message: 'Trend is not array',
-        status: 404,
-        isPublic: true
-      })
-    }
-    whereOptions.trend = {
-      $or: JSON.parse(trend)
-    }
-  }
+  const pebitdaFrom = req.query.pebitdaFrom ? req.query.pebitdaFrom : 0
+  const pebitdaTo = req.query.pebitdaTo ? req.query.pebitdaTo : 9999999
+  const ebitdaFrom = req.query.ebitdaFrom ? req.query.ebitdaFrom : 0
+  const ebitdaTo = req.query.ebitdaTo ? req.query.ebitdaTo : 9999999
 
   try {
-    const businessesSold = await models.BusinessSold.findAndCountAll({
-      raw: true,
-      where: whereOptions,
-      include: [{
-        attributes: ['label'],
-        model: models.BusinessType,
-        as: 'BusinessType',
-        where: whereOptionsBusinessType
-      }],
-      order: [
-        ['soldDate', 'DESC']
-      ],
-      limit,
-      offset
-    })
-
-    const test = await models.sequelize.query(`SELECT * FROM BusinessSolds s, BusinessTypes t 
-    where s.businessType = t.id
-    and s.businessType = ${type || 's.businessType'} 
-    and s.industry like :industry
-    and case when s.year4 > 0 then s.year4 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  
+    const pebitdaLastYear = `and case when s.year4 > 0 then s.year4 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)    
     between :pebitdaFrom and :pebitdaTo
-        else 
-        case when s.year3 > 0 then 
-        s.year3 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
-        else
-        case when s.year2 > 0 then 
+    else
+      case when s.year3 > 0 then
+      s.year3 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
+      else
+        case when s.year2 > 0 then
         s.year2 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
         else
-        case when s.year1 > 0 then 
-        s.year1 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
-        end 
-        end 
+          case when s.year1 > 0 then
+          s.year1 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)  between :pebitdaFrom and :pebitdaTo
         end
-    end`, {
+      end
+    end
+    end`
+
+    const ebitdaLastYear = `and case when s.year4 > 0 then s.year4 - s.agreedWageForWorkingOwners 
+    between :ebitdaFrom and :ebitdaTo
+    else
+      case when s.year3 > 0 then
+      s.year3 - s.agreedWageForWorkingOwners between :ebitdaFrom and :ebitdaTo
+      else
+        case when s.year2 > 0 then
+        s.year2 - s.agreedWageForWorkingOwners between :ebitdaFrom and :ebitdaTo
+        else
+          case when s.year1 > 0 then
+          s.year1 - s.agreedWageForWorkingOwners between :ebitdaFrom and :ebitdaTo
+        end
+      end
+    end
+    end`
+
+    // -- and s.businessType = ${type || 's.businessType'}
+
+    const businessesSold = await models.sequelize.query(`SELECT s.*, t.label FROM BusinessSolds s, BusinessTypes t
+    where s.businessType = t.id
+    and s.sold = 1
+    ${type && type !== '99' ? 'and s.businessType = :type' : 'and s.businessType = s.businessType'}
+    and s.industry like :industry
+    and s.soldPrice between :priceRangeStart and :priceRangeEnd
+    and s.trend in (:trend)
+    ${pebitdaLastYearOrAvg ? pebitdaLastYear : ''}
+    ${ebitdaLastYearOrAvg ? ebitdaLastYear : ''}
+    order by 'soldDate', 'DESC'
+    limit :limit`, {
       raw: true,
       replacements: {
-        // businessType: type || s.businessType,
         industry: industry ? `%${industry}%` : '%%',
-        pebitdaFrom: pebitdaFrom,
-        pebitdaTo: pebitdaTo
+        type: type,
+        priceRangeStart: priceRangeStart || 0,
+        priceRangeEnd: priceRangeEnd || 9999999,
+        pebitdaFrom: pebitdaFrom || 0,
+        pebitdaTo: pebitdaTo || 9999999,
+        ebitdaFrom: ebitdaFrom || 0,
+        ebitdaTo: ebitdaTo || 9999999,
+        trend: trend ? JSON.parse(trend) : ['up', 'down', 'steady'],
+        limit: limit,
+        offset
       },
       model: models.BusinessSold,
       mapToModel: true
     })
-    // const test = await models.Sequelize.query('SELECT * FROM BusinessSold', {
-    //   model: models.BusinessSold,
-    //   mapToModel: true // pass true here if you have any mapped fields
-    // })
-    //   .then(projects => {
-    //     // Each record will now be an instance of Project
-    //   })
 
-    console.log(test)
-
+    let arrayPebitdaAndEbitdaAvg = []
+    let arrayEbitdaAvg = []
+    let arrayPebitdaAvg = []
+    let caseAvg = 0
+    if (!ebitdaLastYearOrAvg && !pebitdaLastYearOrAvg) {
+      caseAvg = 1
+      businessesSold.map(item => {
+        const ebitdaAvg = _ebitdaAvg(item)
+        const pebitdaAvg = _ebitdaAvg(item) + item.agreedWageForMainOwner
+        if ((ebitdaAvg >= ebitdaFrom && ebitdaAvg <= ebitdaTo) && (pebitdaAvg >= pebitdaFrom && pebitdaAvg <= pebitdaTo)) {
+          arrayPebitdaAndEbitdaAvg.push(item)
+        }
+      })
+    } else {
+      if (!ebitdaLastYearOrAvg) {
+        caseAvg = 2
+        businessesSold.map(item => {
+          const ebitdaAvg = _ebitdaAvg(item)
+          if (ebitdaAvg >= ebitdaFrom && ebitdaAvg <= ebitdaTo) {
+            arrayEbitdaAvg.push(item)
+          }
+        })
+      }
+      if (!pebitdaLastYearOrAvg) {
+        caseAvg = 3
+        businessesSold.map(item => {
+          const pebitdaAvg = _ebitdaAvg(item) + item.agreedWageForMainOwner
+          if (pebitdaAvg >= pebitdaFrom && pebitdaAvg <= pebitdaTo) {
+            arrayPebitdaAvg.push(item)
+          }
+        })
+      }
+    }
     const response = {
-      data: businessesSold,
-      pageCount: businessesSold.count,
-      itemCount: Math.ceil(businessesSold.count / req.query.limit),
-      message: 'Get businesses sold with sucessfuly'
+      data: caseAvg === 1 ? arrayPebitdaAndEbitdaAvg : caseAvg === 2 ? arrayEbitdaAvg : caseAvg === 3 ? arrayPebitdaAvg : businessesSold,
+      // pageCount: businessesSold.count,
+      // itemCount: Math.ceil(businessesSold.count / req.query.limit),
+      message: 'Get businesses sold with sucessfully'
     }
     return res.status(200).json(response)
   } catch (error) {
@@ -224,6 +243,41 @@ export const save = async (req, res, next) => {
     return res.status(200).json({
       data: null,
       message: 'Get Selected list'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getBusinessTypeAny = async (req, res, next) => {
+  const _mapValuesToArray = array => {
+    if (array.length > 0) {
+      if (array[0].firstName) {
+        return array.map((item, index) => ({
+          key: index,
+          text: `${item.firstName} ${item.lastName}`,
+          value: item.id
+        }))
+      }
+      return array.map((item, index) => ({
+        key: index,
+        text: item.label,
+        value: item.id
+      }))
+    }
+    return []
+  }
+  try {
+    const typeList = await models.BusinessType.findAll({
+      raw: true,
+      attributes: ['id', 'label'],
+      order: [
+        ['label', 'ASC']
+      ]
+    })
+    return res.status(200).json({
+      data: _mapValuesToArray(typeList),
+      message: 'Got Business Type List'
     })
   } catch (error) {
     return next(error)

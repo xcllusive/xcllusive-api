@@ -4,7 +4,8 @@ import validate from 'express-validation'
 import {
   list,
   save,
-  get
+  get,
+  getBusinessTypeAny
 } from '../controllers/comparableData.controller'
 
 import {
@@ -36,5 +37,7 @@ router.route('/').get(validate(listValidation), list)
 router.route('/save').post(save)
 
 router.route('/selected-list/:idAppraisal').get(get)
+
+router.route('/business-type-any').get(getBusinessTypeAny)
 
 export default router

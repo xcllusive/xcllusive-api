@@ -72,7 +72,15 @@ export const getBusiness = async (req, res, next) => {
     })
     const typeList = await models.BusinessType.findAll({
       raw: true,
-      attributes: ['id', 'label']
+      where: {
+        id: {
+          $ne: 99 /* ignore Any (only for comparable data in appraisal) */
+        }
+      },
+      attributes: ['id', 'label'],
+      order: [
+        ['label', 'ASC']
+      ]
     })
     const usersBroker = await models.User.findAll({
       raw: true,
