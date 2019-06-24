@@ -27,16 +27,7 @@ const _ebitdaAvg = businessSold => {
 }
 
 export const list = async (req, res, next) => {
-  const {
-    limit,
-    type,
-    industry,
-    priceRangeStart,
-    priceRangeEnd,
-    trend,
-    pebitdaLastYearOrAvg,
-    ebitdaLastYearOrAvg
-  } = req.query
+  const { limit, type, industry, priceRangeStart, priceRangeEnd, trend, pebitdaLastYearOrAvg, ebitdaLastYearOrAvg, stockValue } = req.query
   const offset = req.skip
 
   const pebitdaFrom = req.query.pebitdaFrom ? req.query.pebitdaFrom : 0
@@ -79,7 +70,8 @@ export const list = async (req, res, next) => {
 
     // -- and s.businessType = ${type || 's.businessType'}
 
-    const businessesSold = await models.sequelize.query(`SELECT s.*, t.label FROM BusinessSolds s, BusinessTypes t
+    const businessesSold = await models.sequelize.query(
+      `SELECT s.*, t.label FROM BusinessSolds s, BusinessTypes t
     where s.businessType = t.id
     and s.sold = 1
     ${type && type !== '99' ? 'and s.businessType = :type' : 'and s.businessType = s.businessType'}
@@ -88,25 +80,29 @@ export const list = async (req, res, next) => {
     and s.trend in (:trend)
     ${pebitdaLastYearOrAvg ? pebitdaLastYear : ''}
     ${ebitdaLastYearOrAvg ? ebitdaLastYear : ''}
+    and s.stockValue >= :stockValue
     order by 'soldDate', 'DESC'
-    limit :limit`, {
-      raw: true,
-      replacements: {
-        industry: industry ? `%${industry}%` : '%%',
-        type: type,
-        priceRangeStart: priceRangeStart || 0,
-        priceRangeEnd: priceRangeEnd || 9999999,
-        pebitdaFrom: pebitdaFrom || 0,
-        pebitdaTo: pebitdaTo || 9999999,
-        ebitdaFrom: ebitdaFrom || 0,
-        ebitdaTo: ebitdaTo || 9999999,
-        trend: trend ? JSON.parse(trend) : ['up', 'down', 'steady'],
-        limit: limit,
-        offset
-      },
-      model: models.BusinessSold,
-      mapToModel: true
-    })
+    limit :limit`,
+      {
+        raw: true,
+        replacements: {
+          industry: industry ? `%${industry}%` : '%%',
+          type: type,
+          priceRangeStart: priceRangeStart || 0,
+          priceRangeEnd: priceRangeEnd || 9999999,
+          pebitdaFrom: pebitdaFrom || 0,
+          pebitdaTo: pebitdaTo || 9999999,
+          ebitdaFrom: ebitdaFrom || 0,
+          ebitdaTo: ebitdaTo || 9999999,
+          trend: trend ? JSON.parse(trend) : ['up', 'down', 'steady'],
+          stockValue: stockValue || 0,
+          limit: limit,
+          offset
+        },
+        model: models.BusinessSold,
+        mapToModel: true
+      }
+    )
 
     let arrayPebitdaAndEbitdaAvg = []
     let arrayEbitdaAvg = []
@@ -117,7 +113,7 @@ export const list = async (req, res, next) => {
       businessesSold.map(item => {
         const ebitdaAvg = _ebitdaAvg(item)
         const pebitdaAvg = _ebitdaAvg(item) + item.agreedWageForMainOwner
-        if ((ebitdaAvg >= ebitdaFrom && ebitdaAvg <= ebitdaTo) && (pebitdaAvg >= pebitdaFrom && pebitdaAvg <= pebitdaTo)) {
+        if (ebitdaAvg >= ebitdaFrom && ebitdaAvg <= ebitdaTo && (pebitdaAvg >= pebitdaFrom && pebitdaAvg <= pebitdaTo)) {
           arrayPebitdaAndEbitdaAvg.push(item)
         }
       })
@@ -154,9 +150,7 @@ export const list = async (req, res, next) => {
 }
 
 export const get = async (req, res, next) => {
-  const {
-    idAppraisal
-  } = req.params
+  const { idAppraisal } = req.params
 
   try {
     const appraisal = await models.Appraisal.findOne({
@@ -173,10 +167,7 @@ export const get = async (req, res, next) => {
       })
     }
 
-    if (
-      !appraisal.comparableDataSelectedList ||
-      appraisal.comparableDataSelectedList === ''
-    ) {
+    if (!appraisal.comparableDataSelectedList || appraisal.comparableDataSelectedList === '') {
       throw new APIError({
         message: 'Appraisal selected list is empty',
         status: 400,
@@ -184,42 +175,37 @@ export const get = async (req, res, next) => {
       })
     }
 
-    const businessSoldselectedListOnlyId = JSON.parse(
-      appraisal.comparableDataSelectedList
-    )
+    const businessSoldselectedListOnlyId = JSON.parse(appraisal.comparableDataSelectedList)
 
     const comparableDataSelectedList = await models.BusinessSold.findAll({
       where: {
         id: Array.from(businessSoldselectedListOnlyId)
       },
-      include: [{
-        attributes: ['label'],
-        model: models.BusinessType,
-        as: 'BusinessType',
-        where: {
-          id: {
-            $col: 'BusinessSold.businessType'
+      include: [
+        {
+          attributes: ['label'],
+          model: models.BusinessType,
+          as: 'BusinessType',
+          where: {
+            id: {
+              $col: 'BusinessSold.businessType'
+            }
           }
         }
-      }]
+      ]
     })
 
-    return res
-      .status(200)
-      .json({
-        data: comparableDataSelectedList,
-        message: 'Get Selected list'
-      })
+    return res.status(200).json({
+      data: comparableDataSelectedList,
+      message: 'Get Selected list'
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const save = async (req, res, next) => {
-  const {
-    appraisalId,
-    selectedList
-  } = req.body
+  const { appraisalId, selectedList } = req.body
 
   // if (selectedList.isArray()) {
   //   throw new APIError({
@@ -232,13 +218,16 @@ export const save = async (req, res, next) => {
   const selectedListOnlyId = _.map(selectedList, 'id')
 
   try {
-    await models.Appraisal.update({
-      comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
-    }, {
-      where: {
-        id: appraisalId
+    await models.Appraisal.update(
+      {
+        comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
+      },
+      {
+        where: {
+          id: appraisalId
+        }
       }
-    })
+    )
 
     return res.status(200).json({
       data: null,
@@ -271,9 +260,7 @@ export const getBusinessTypeAny = async (req, res, next) => {
     const typeList = await models.BusinessType.findAll({
       raw: true,
       attributes: ['id', 'label'],
-      order: [
-        ['label', 'ASC']
-      ]
+      order: [['label', 'ASC']]
     })
     return res.status(200).json({
       data: _mapValuesToArray(typeList),
