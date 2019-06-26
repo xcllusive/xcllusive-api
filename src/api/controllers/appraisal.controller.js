@@ -886,3 +886,41 @@ export const generatePdf = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const moveFinancialYear = async (req, res, next) => {
+  const updateAppraisal = req.body
+
+  // updateAppraisal.year1 = updateAppraisal.year1 + 1
+  // updateAppraisal.year2 = updateAppraisal.year2 + 1
+  // updateAppraisal.year3 = updateAppraisal.year3 + 1
+  // updateAppraisal.year4 = updateAppraisal.year4 + 1
+  // updateAppraisal.year5 = updateAppraisal.year5 + 1
+  // updateAppraisal.year6 = updateAppraisal.year6 + 1
+  updateAppraisal.year2 = updateAppraisal.year3
+  updateAppraisal.sales1 = updateAppraisal.sales2
+  updateAppraisal.cogs1 = updateAppraisal.cogs2
+  updateAppraisal.calcGrossMargin1 = updateAppraisal.calcGrossMargin2
+  updateAppraisal.calcGrossMarginPerc1 = updateAppraisal.calcGrossMarginPerc2
+  updateAppraisal.otherIncome1 = updateAppraisal.otherIncome2
+  updateAppraisal.calcGrossProfit1 = updateAppraisal.calcGrossProfit2
+  updateAppraisal.expenses1 = updateAppraisal.expenses2
+  updateAppraisal.calcOperatingProfit1 = updateAppraisal.calcOperatingProfit2
+  updateAppraisal.calcOperatingProfitPerc1 = updateAppraisal.calcOperatingProfitPerc2
+
+  moveFinancialYear.sales1 = updateAppraisal.sales2
+
+  console.log(updateAppraisal.sales1)
+
+  try {
+    await models.Appraisal.update(updateAppraisal, {
+      where: {
+        id: updateAppraisal.id
+      }
+    })
+    return res.status(200).json({
+      message: 'Financial Year Moved successfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

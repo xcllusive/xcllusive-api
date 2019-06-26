@@ -6,7 +6,8 @@ import {
   create,
   update,
   remove,
-  generatePdf
+  generatePdf,
+  moveFinancialYear
 } from '../controllers/appraisal.controller'
 
 import {
@@ -41,5 +42,7 @@ router
   .delete(remove)
 
 router.route('/:appraisalId/generate').post(generatePdf)
+
+router.route('/:appraisalId/move-financial-year').put(moveFinancialYear)
 
 export default router
