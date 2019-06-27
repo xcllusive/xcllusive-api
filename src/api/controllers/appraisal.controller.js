@@ -273,8 +273,6 @@ export const generatePdf = async (req, res, next) => {
       financialInformationArray: []
     }
 
-    // console.log(businessType)
-
     const context = Object.assign(
       appraisal.get({
         plain: true
@@ -890,26 +888,36 @@ export const generatePdf = async (req, res, next) => {
 export const moveFinancialYear = async (req, res, next) => {
   const updateAppraisal = req.body
 
-  // updateAppraisal.year1 = updateAppraisal.year1 + 1
-  // updateAppraisal.year2 = updateAppraisal.year2 + 1
-  // updateAppraisal.year3 = updateAppraisal.year3 + 1
-  // updateAppraisal.year4 = updateAppraisal.year4 + 1
-  // updateAppraisal.year5 = updateAppraisal.year5 + 1
-  // updateAppraisal.year6 = updateAppraisal.year6 + 1
-  updateAppraisal.year2 = updateAppraisal.year3
-  updateAppraisal.sales1 = updateAppraisal.sales2
-  updateAppraisal.cogs1 = updateAppraisal.cogs2
-  updateAppraisal.calcGrossMargin1 = updateAppraisal.calcGrossMargin2
-  updateAppraisal.calcGrossMarginPerc1 = updateAppraisal.calcGrossMarginPerc2
-  updateAppraisal.otherIncome1 = updateAppraisal.otherIncome2
-  updateAppraisal.calcGrossProfit1 = updateAppraisal.calcGrossProfit2
-  updateAppraisal.expenses1 = updateAppraisal.expenses2
-  updateAppraisal.calcOperatingProfit1 = updateAppraisal.calcOperatingProfit2
-  updateAppraisal.calcOperatingProfitPerc1 = updateAppraisal.calcOperatingProfitPerc2
+  for (let i = 1; i < 6; i++) {
+    updateAppraisal[`year${i}`] = updateAppraisal[`year${i + 1}`]
+    updateAppraisal[`sales${i}`] = updateAppraisal[`sales${i + 1}`]
+    updateAppraisal[`cogs${i}`] = updateAppraisal[`cogs${i + 1}`]
+    updateAppraisal[`calcGrossMargin${i}`] = updateAppraisal[`calcGrossMargin${i + 1}`]
+    updateAppraisal[`calcGrossMarginPerc${i}`] = updateAppraisal[`calcGrossMarginPerc${i + 1}`]
+    updateAppraisal[`otherIncome${i}`] = updateAppraisal[`otherIncome${i + 1}`]
+    updateAppraisal[`calcGrossProfit${i}`] = updateAppraisal[`calcGrossProfit${i + 1}`]
+    updateAppraisal[`expenses${i}`] = updateAppraisal[`expenses${i + 1}`]
+    updateAppraisal[`calcOperatingProfit${i}`] = updateAppraisal[`calcOperatingProfit${i + 1}`]
+    updateAppraisal[`calcOperatingProfitPerc${i}`] = updateAppraisal[`calcOperatingProfitPerc${i + 1}`]
+  }
+  updateAppraisal.year6 = updateAppraisal.year5 + 1
+  updateAppraisal.sales6 = 0
+  updateAppraisal.cogs6 = 0
+  updateAppraisal.calcGrossMargin6 = 0
+  updateAppraisal.calcGrossMarginPerc6 = 0
+  updateAppraisal.otherIncome6 = 0
+  updateAppraisal.calcGrossProfit6 = 0
+  updateAppraisal.expenses6 = 0
+  updateAppraisal.calcOperatingProfit6 = 0
+  updateAppraisal.calcOperatingProfitPerc6 = 0
 
-  moveFinancialYear.sales1 = updateAppraisal.sales2
-
-  console.log(updateAppraisal.sales1)
+  /* Moving Addbacks and Adjustments */
+  for (let l = 1; l < 6; l++) {
+    for (let i = 1; i < 31; i++) {
+      updateAppraisal[`aaRow${i}Year${l}`] = updateAppraisal[`aaRow${i}Year${l + 1}`]
+      if (l === 5) updateAppraisal[`aaRow${i}Year${6}`] = 0
+    }
+  }
 
   try {
     await models.Appraisal.update(updateAppraisal, {
