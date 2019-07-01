@@ -635,6 +635,7 @@ export const updateStageLost = async (req, res, next) => {
   updateBusiness.addLeadNurtureList = updateBusiness.addLeadNurtureList === 'Yes'
   updateBusiness.stageNotSignedId = !updateBusiness.recoveryStageNotSigned ? 1 : updateBusiness.recoveryStageNotSigned
   updateBusiness.stageNotWantId = !updateBusiness.recoveryStageNotWant ? 1 : updateBusiness.recoveryStageNotWant
+  if (updateBusiness.email !== '') updateBusiness.vendorEmail = updateBusiness.email
 
   try {
     // Verify exists business
@@ -704,11 +705,12 @@ Did we want this business? ${updateBusiness.saleNotesLostWant === true ? 'Yes' :
         html: `Please add to Lead Nurture List:
         </br></br>
         <b>Business Number:</b> ${business.id}
+        </br>
         <b>Business Name:</b> ${business.businessName}
         </br>
         <b>Owner:</b> ${business.firstNameV} ${business.lastNameV}
         </br>
-        <b>Email:</b> ${business.vendorEmail}
+        <b>Email:</b> ${business.vendorEmail || updateBusiness.vendorEmail}
         </br>
         <b>Analyst:</b> ${analyst.firstName} ${analyst.lastName}
         `
