@@ -23,7 +23,8 @@ export const getMarketingReport = async (req, res, next) => {
       {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        company_id: 1
       },
       include: [{
         model: models.User,
@@ -32,7 +33,8 @@ export const getMarketingReport = async (req, res, next) => {
         where: {
           id: {
             $col: 'Business.listingAgent_id'
-          }
+          },
+          listingAgent: 1
         }
       }],
       group: [
