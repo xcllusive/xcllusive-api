@@ -277,7 +277,7 @@ export const create = async (req, res, next) => {
     company_id: req.body.company,
     willReassign: req.body.willReassign,
     ctcStageId: req.body.ctcStageId,
-    dateTimeAssignToAgent: req.body.dateTimeAssignToAgent,
+    dateTimeAssignToAgent: moment().format('YYYY-MM-DD hh:mm:ss'),
     dateTimeFirstOpenByAgent: req.body.dateTimeFirstOpenByAgent
   }
 
