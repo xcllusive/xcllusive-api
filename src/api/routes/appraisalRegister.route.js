@@ -9,7 +9,8 @@ import {
 } from '../controllers/appraisalRegister.controller'
 
 import {
-  SYSTEM_SETTINGS_MENU
+  SYSTEM_SETTINGS_MENU,
+  BUSINESS_MENU
 } from '../constants/roles'
 
 import {
@@ -23,7 +24,7 @@ import {
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({
-  roles: [SYSTEM_SETTINGS_MENU]
+  roles: [SYSTEM_SETTINGS_MENU, BUSINESS_MENU]
 }))
 
 router.use(controlActivityUser('SystemSettings'))

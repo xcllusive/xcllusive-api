@@ -367,7 +367,7 @@ export const create = async (req, res, next) => {
 
     return res.status(200).json({
       data: business,
-      message: 'Business created sucessfully'
+      message: 'Business created successfully'
     })
   } catch (error) {
     return next(error)
@@ -532,6 +532,10 @@ export const updateListingAgent = async (req, res, next) => {
           isPublic: true
         })
       }
+
+      // set company to Xcllusive
+      data.company_id = 1
+
       // Compile the template to use variables
       const templateCompiled = Handlebars.compile(template.body)
       const context = {
@@ -1679,11 +1683,12 @@ export const getAllPerUser = async (req, res, next) => {
         listingAgent_id: {
           $eq: req.user.id
         },
-        $or: [{
-          listingAgentCtc_id: req.user.id
-        }, {
-          listingAgentCtc_id: null
-        }]
+        company_id: 1
+        // $or: [{
+        //   listingAgentCtc_id: req.user.id
+        // }, {
+        //   listingAgentCtc_id: null
+        // }]
       }
     }
   }

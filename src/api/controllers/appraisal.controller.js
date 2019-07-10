@@ -424,6 +424,14 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfitPerc7 = `${Math.round(appraisal.calcOperatingProfitPerc7)}%`
     // end Financial Information Table
 
+    const financialInfoSourceDesc = await models.AppraisalRegister.findOne({
+      where: {
+        id: appraisal.financialInfoSource,
+        type: 'financialInfoSource'
+      }
+    })
+    context.financialInfoSource = financialInfoSourceDesc.label
+
     // start salesGpPebitda chart
     context.year1ShowHide = appraisal.year1
     context.year2ShowHide = appraisal.year2
@@ -467,55 +475,63 @@ export const generatePdf = async (req, res, next) => {
     context.calcOperatingProfitPerc5GmProfit = numeral(appraisal.calcOperatingProfitPerc5).format('0,0.[0]')
     context.calcOperatingProfitPerc6GmProfit = numeral(appraisal.calcOperatingProfitPerc6).format('0,0.[0]')
 
+    context.renderPdfYear1 = appraisal.renderPdfYear1
+    context.renderPdfYear2 = appraisal.renderPdfYear2
+    context.renderPdfYear3 = appraisal.renderPdfYear3
+    context.renderPdfYear4 = appraisal.renderPdfYear4
+    context.renderPdfYear5 = appraisal.renderPdfYear5
+    context.renderPdfYear7 = appraisal.renderPdfYear7
+
     /* verifying if there's any Year unmark to show in the pdf  */
-    if (!appraisal.renderPdfYear1) {
-      context.year1ShowHide = ''
-      context.sales1GpPebitda = '-'
-      context.calcGrossProfit1SalesPebitda = '-'
-      context.calcOperatingProfit1SalesPebitda = '-'
-      context.calcGrossMarginPerc1GmProfit = '-'
-      context.calcOperatingProfitPerc1GmProfit = '-'
-    }
-    if (!appraisal.renderPdfYear2) {
-      context.year2ShowHide = ''
-      context.sales2GpPebitda = '-'
-      context.calcGrossProfit2SalesPebitda = '-'
-      context.calcOperatingProfit2SalesPebitda = '-'
-      context.calcGrossMarginPerc2GmProfit = '-'
-      context.calcOperatingProfitPerc2GmProfit = '-'
-    }
-    if (!appraisal.renderPdfYear3) {
-      context.year3ShowHide = ''
-      context.sales3GpPebitda = '-'
-      context.calcGrossProfit3SalesPebitda = '-'
-      context.calcOperatingProfit3SalesPebitda = '-'
-      context.calcGrossMarginPerc3GmProfit = '-'
-      context.calcOperatingProfitPerc3GmProfit = '-'
-    }
-    if (!appraisal.renderPdfYear4) {
-      context.year4ShowHide = ''
-      context.sales4GpPebitda = '-'
-      context.calcGrossProfit4SalesPebitda = '-'
-      context.calcOperatingProfit4SalesPebitda = '-'
-      context.calcGrossMarginPerc4GmProfit = '-'
-      context.calcOperatingProfitPerc4GmProfit = '-'
-    }
-    if (!appraisal.renderPdfYear5) {
-      context.year5ShowHide = ''
-      context.sales5GpPebitda = '-'
-      context.calcGrossProfit5SalesPebitda = '-'
-      context.calcOperatingProfit5SalesPebitda = '-'
-      context.calcGrossMarginPerc5GmProfit = '-'
-      context.calcOperatingProfitPerc5GmProfit = '-'
-    }
-    if (!appraisal.renderPdfYear6) {
-      context.year6ShowHide = ''
-      context.sales7GpPebitda = '-'
-      context.calcGrossProfit7SalesPebitda = '-'
-      context.calcOperatingProfit6SalesPebitda = '-'
-      context.calcGrossMarginPerc6GmProfit = '-'
-      context.calcOperatingProfitPerc6GmProfit = '-'
-    }
+    // if (!appraisal.renderPdfYear1) {
+    //   context.year1ShowHide = ''
+    //   context.sales1GpPebitda = '-'
+    //   context.calcGrossProfit1SalesPebitda = '-'
+    //   context.calcOperatingProfit1SalesPebitda = '-'
+    //   context.calcGrossMarginPerc1GmProfit = '-'
+    //   context.calcOperatingProfitPerc1GmProfit = '-'
+    // }
+    // if (!appraisal.renderPdfYear2) {
+    //   context.year2ShowHide = ''
+    //   context.sales2GpPebitda = '-'
+    //   context.calcGrossProfit2SalesPebitda = '-'
+    //   context.calcOperatingProfit2SalesPebitda = '-'
+    //   context.calcGrossMarginPerc2GmProfit = '-'
+    //   context.calcOperatingProfitPerc2GmProfit = '-'
+    // }
+    // if (!appraisal.renderPdfYear3) {
+    //   context.year3ShowHide = ''
+    //   context.sales3GpPebitda = '-'
+    //   context.calcGrossProfit3SalesPebitda = '-'
+    //   context.calcOperatingProfit3SalesPebitda = '-'
+    //   context.calcGrossMarginPerc3GmProfit = '-'
+    //   context.calcOperatingProfitPerc3GmProfit = '-'
+    // }
+    // if (!appraisal.renderPdfYear4) {
+    //   context.year4ShowHide = ''
+    //   context.sales4GpPebitda = '-'
+    //   context.calcGrossProfit4SalesPebitda = '-'
+    //   context.calcOperatingProfit4SalesPebitda = '-'
+    //   context.calcGrossMarginPerc4GmProfit = '-'
+    //   context.calcOperatingProfitPerc4GmProfit = '-'
+    // }
+    // if (!appraisal.renderPdfYear5) {
+    //   context.year5ShowHide = ''
+    //   context.sales5GpPebitda = '-'
+    //   context.calcGrossProfit5SalesPebitda = '-'
+    //   context.calcOperatingProfit5SalesPebitda = '-'
+    //   context.calcGrossMarginPerc5GmProfit = '-'
+    //   context.calcOperatingProfitPerc5GmProfit = '-'
+    // }
+    // if (!appraisal.renderPdfYear7) {
+    //   context.year6ShowHide = ''
+    //   context.sales7GpPebitda = '-'
+    //   context.calcGrossProfit7SalesPebitda = '-'
+    //   context.calcOperatingProfit6SalesPebitda = '-'
+    //   context.calcGrossMarginPerc6GmProfit = '-'
+    //   context.calcOperatingProfitPerc6GmProfit = '-'
+    // }
+
     /* end verifying if there's any Year unmarked to show in the pdf  */
 
     // end salesGpPebitda and gmProfit chart
@@ -692,15 +708,18 @@ export const generatePdf = async (req, res, next) => {
       if (appraisal[`aaRow${i}`] || appraisal[`aaRow${i}`] !== '') {
         context.financialInformationArray.push({
           aaRow: appraisal[`aaRow${i}`],
-          aaRowYear1: `$ ${numeral(appraisal[`aaRow${i}Year1`]).format('0,0')}`,
-          aaRowYear2: `$ ${numeral(appraisal[`aaRow${i}Year2`]).format('0,0')}`,
-          aaRowYear3: `$ ${numeral(appraisal[`aaRow${i}Year3`]).format('0,0')}`,
-          aaRowYear4: `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}`,
-          aaRowYear5: `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}`,
-          aaRowYear7: `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}`
+          aaRowYear1: appraisal[`aaRow${i}Year1`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year1`]).format('0,0')}` : null,
+          aaRowYear2: appraisal[`aaRow${i}Year2`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year2`]).format('0,0')}` : null,
+          aaRowYear3: appraisal[`aaRow${i}Year3`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year3`]).format('0,0')}` : null,
+          aaRowYear4: appraisal[`aaRow${i}Year4`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}` : null,
+          aaRowYear5: appraisal[`aaRow${i}Year5`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}` : null,
+          aaRowYear7: appraisal[`aaRow${i}Year7`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}` : null
         })
       }
     }
+    context.financialInformationArray = context.financialInformationArray.filter(item => {
+      return item.aaRowYear1 !== null || item.aaRowYear2 !== null || item.aaRowYear3 !== null || item.aaRowYear4 !== null || item.aaRowYear5 !== null || item.aaRowYear7 !== null
+    })
     // end table financial information
 
     // starts pricing chart
@@ -831,7 +850,7 @@ export const generatePdf = async (req, res, next) => {
       headerTemplate: ' ',
       footerTemplate: `
               <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:10px;text-align:center;color:#61bbff;font-family: Trebuchet MS">
-              <span style="float: left;">Sales Inspection Report and Business Appraisal for ${
+              <span style="float: left;">Opinion of the market value and Business Appraisal for ${
   appraisal.Business.businessName
 }</span>
               <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
@@ -846,7 +865,7 @@ export const generatePdf = async (req, res, next) => {
     // const browser = await puppeteer.launch({
     //   headless: false
     // })
-
+    /* end test pdf on chromium  */
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
@@ -854,10 +873,14 @@ export const generatePdf = async (req, res, next) => {
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
-    // await page.setContent(template)
-    // await page.goto(`data:text/html,${template}`, {
-    //   waitUntil: 'networkidle0'
-    // })
+
+    /* only works in AWS. Does not work local */
+    await page.setContent(template)
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle0'
+    })
+    /* end */
+
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
