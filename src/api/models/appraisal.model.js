@@ -2746,6 +2746,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: 1
+      },
+      sliderLowRange: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: -10
       }
     }, {
       createdAt: 'dateTimeCreated',

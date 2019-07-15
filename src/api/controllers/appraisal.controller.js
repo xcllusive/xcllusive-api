@@ -13,6 +13,11 @@ import {
   pebitdaLastYear,
   avgProfit
 } from '../utils/sharedFunctionsObject'
+import {
+  upGreenArrow,
+  downRedArrow,
+  steadyYellowArrow
+} from '../constants/icons'
 // import mailer from '../modules/mailer'
 
 export const list = async (req, res, next) => {
@@ -197,6 +202,12 @@ export const remove = async (req, res, next) => {
 // }
 
 export const generatePdf = async (req, res, next) => {
+  const _replaceDollarAndComma = replace => {
+    replace = replace.replace('$', ',')
+    replace = replace.replace(/,/g, '')
+    return replace
+  }
+
   const {
     appraisalId
   } = req.params
@@ -676,7 +687,9 @@ export const generatePdf = async (req, res, next) => {
         labelAskingPriceMultipler,
         askingPrice,
         avg,
-        lastYear
+        lastYear,
+        notesConcat: item.specialNotes || item.termsOfDeal ? `Notes: ${item.specialNotes} + ${item.termsOfDeal}` : false,
+        trendIcon: item.trend === 'up' ? upGreenArrow : item.trend === 'down' ? downRedArrow : steadyYellowArrow
       }
     })
 
@@ -713,7 +726,13 @@ export const generatePdf = async (req, res, next) => {
           aaRowYear3: appraisal[`aaRow${i}Year3`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year3`]).format('0,0')}` : null,
           aaRowYear4: appraisal[`aaRow${i}Year4`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}` : null,
           aaRowYear5: appraisal[`aaRow${i}Year5`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}` : null,
-          aaRowYear7: appraisal[`aaRow${i}Year7`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}` : null
+          aaRowYear7: appraisal[`aaRow${i}Year7`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}` : null,
+          sales1Validation: appraisal.sales1 !== 0,
+          sales2Validation: appraisal.sales2 !== 0,
+          sales3Validation: appraisal.sales3 !== 0,
+          sales4Validation: appraisal.sales4 !== 0,
+          sales5Validation: appraisal.sales5 !== 0,
+          sales7Validation: appraisal.calcAnnualised1 !== 0
         })
       }
     }
@@ -827,6 +846,17 @@ export const generatePdf = async (req, res, next) => {
 
     const totalBusinessesComparableSelectedList = JSON.parse(appraisal.comparableDataSelectedList).length
     context.totalBusinessesComparableSelectedList = totalBusinessesComparableSelectedList
+    context.notesConcat = appraisal.specialNotes + appraisal.termsOfDeal
+    context.opinionPrice = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) + ((parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) * appraisal.sliderLowRange) / 100)).format('$0,0')
+
+    /* financial information table */
+    context.sales1Validation = appraisal.sales1 !== 0
+    context.sales2Validation = appraisal.sales2 !== 0
+    context.sales3Validation = appraisal.sales3 !== 0
+    context.sales4Validation = appraisal.sales4 !== 0
+    context.sales5Validation = appraisal.sales5 !== 0
+    context.sales7Validation = appraisal.calcAnnualised1 !== 0
+    /* end */
 
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
@@ -873,18 +903,17 @@ export const generatePdf = async (req, res, next) => {
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
-
-    /* only works in AWS. Does not work local */
-    await page.setContent(template)
-    await page.goto(`data:text/html,${template}`, {
-      waitUntil: 'networkidle0'
-    })
+    /* only works local. Does not work in AWS */
+    // await page.setContent(template)
+    // await page.goto(`data:text/html,${template}`, {
+    //   waitUntil: 'networkidle0'
+    // })
     /* end */
 
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    return res.download(destPdfGenerated, err => {
+    return res.download(destPdfGenerated, async err => {
       fs.unlink(destPdfGenerated, err => {
         if (err) {
           throw new APIError({
@@ -901,6 +930,13 @@ export const generatePdf = async (req, res, next) => {
           isPublic: true
         })
       }
+      const downloaded = {}
+      downloaded.downloaded = true
+      await models.Appraisal.update(downloaded, {
+        where: {
+          id: appraisal.id
+        }
+      })
     })
   } catch (error) {
     console.log(error)
