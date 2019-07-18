@@ -85,7 +85,7 @@
 
     .last10Businesses th {
       font-family: Arial, sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: normal;
       padding: 5px 1px;
       border-style: solid;
@@ -211,11 +211,13 @@
     #salesGpPebitda {
       height: 230px !important;
       width: 500px !important;
+      margin-left: 50px;
     }
 
     #gmProfit {
       height: 230px !important;
       width: 500px !important;
+      margin-left: 50px;
     }
 
     .vertical-text {
@@ -1801,15 +1803,16 @@
       <div class="display: table;">
         <table style="width: 600px" class="profitsTable">
           <tr>
-            <th class="profitsTable-labelWhite">Last Year Profit</th>
-            <th style="text-align: right" class="profitsTable-valueWhite">{{lastYearProfit}}</th>
-            <th class="profitsTable-labelBlue" rowspan="2">Profit After Wages:</th>
-            <th style="text-align: right" class="profitsTable-valueWhite">{{lastYearProfitAfterWages}}</th>
+            <th class="profitsTable-labelWhite">Last Year Profit - EBITDA</th>
+            <th style="text-align: right" class="profitsTable-valueWhite">{{lastYearProfitEbitda}}</th>
+            <th class="profitsTable-labelWhite">Last Year Profit - PEBITDA</th>
+            <th style="text-align: right" class="profitsTable-valueWhite">{{lastYearProfitPebitda}}</th>
           </tr>
           <tr>
-            <td class="profitsTable-labelBlue">Average Profits</td>
-            <td style="text-align: right" class="profitsTable-valueBlue">{{avgProfits}}</td>
-            <td style="text-align: right" class="profitsTable-valueBlue">{{avgProfitsAfterWages}}</td>
+            <td class="profitsTable-labelBlue">Average Profits - EBITDA</td>
+            <td style="text-align: right" class="profitsTable-valueBlue">{{avgProfitsEbitda}}</td>
+            <th class="profitsTable-labelBlue">Average Profits - PEBITDA</th>
+            <td style="text-align: right" class="profitsTable-valueBlue">{{avgProfitsPebitda}}</td>
           </tr>
           <tr>
             <td class="profitsTable-labelWhite">Stock Value</td>
@@ -1922,7 +1925,7 @@
         <div class=""
           style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
           <p>Following is a list of {{totalBusinessesComparableSelectedList}} actual
-            businesses sold by xcllusive. With financial and business details as well
+            businesses sold by Xcllusive. With financial and business details as well
             as achieved prices with calculated multiplier based on appropriate and relevant data.</p>
         </div>
       </div>
@@ -1932,6 +1935,7 @@
         <table style="width: 600px" class="last10Businesses">
           <tr>
             <th class="last10Businesses-header">Business<br>Type</th>
+            <th class="last10Businesses-header">Industry</th>
             <th class="last10Businesses-header">T/O</th>
             <th class="last10Businesses-header">{{avgLabel}}</th>
             <th class="last10Businesses-header">{{lastYearLabel}}</th>
@@ -1939,11 +1943,14 @@
             <th class="last10Businesses-header">Stock <br>Value</th>
             <th class="last10Businesses-header">Assets<br>Value</th>
             <th class="last10Businesses-header">Price Inc.<br>Stock</th>
+            {{#if multiplierLabel}}
             <th class="last10Businesses-header">{{multiplierLabel}}</th>
+            {{/if}}
           </tr>
           {{#each last10BusinessArray}}
           <tr>
-            <td class="last10Businesses-businessType">{{businessType}}</td>
+            <td style="padding-left: 5px" class="last10Businesses-businessType">{{businessType}}</td>
+            <td style="padding-left: 5px" class="last10Businesses-rowWhite">{{industry}}</td>
             <td style="text-align: right; padding-right: 5px" class="last10Businesses-rowWhite">{{turnOver}}</td>
             <td style="text-align: right; padding-right: 5px" class="last10Businesses-rowWhite">{{avg}}</td>
             <td style="text-align: right; padding-right: 5px" class="last10Businesses-rowWhite">{{lastYear}}</td>
@@ -1952,7 +1959,9 @@
             <td style="text-align: right; padding-right: 5px" class="last10Businesses-rowWhite">{{stockValue}}</td>
             <td style="text-align: right; padding-right: 5px" class="last10Businesses-rowWhite">{{assetsValue}}</td>
             <td style="text-align: right; padding-right: 5px" class="last10Businesses-rowWhite">{{priceIncStock}}</td>
+            {{#if multiplier}}
             <td style="text-align: center; padding-right: 5px" class="last10Businesses-multipliers">{{multiplier}}</td>
+            {{/if}}
           </tr>
           {{#if notesConcat}}
           <tr>
@@ -1963,6 +1972,7 @@
           </tr>
           {{/if}}
           {{/each}}
+          {{#if avgMultiplier}}
           <tfoot>
             <tr>
               <td style="background-color: white; padding-top: 50px;" class="last10Business-footer" colspan="9"><span
@@ -1970,7 +1980,12 @@
                   MULTIPLIER</span><br>---------------------------------<br><span
                   style="font-weight:bold;color:rgb(37, 119, 156); font-size: 16px;">{{avgMultiplier}}</span></td>
             </tr>
+            <tr>
+              <td style="background-color: white; padding-top: 10px;" class="last10Business-footer" colspan="9"><span
+                  style="font-weight:bold; font-size: 12px;"> Calculation: {{footerComparableData}}</span></td>
+            </tr>
           </tfoot>
+          {{/if}}
         </table>
       </div>
     </div>
@@ -2010,11 +2025,11 @@
           Sales Asking Price</div>
       </div>
     </div>
-    <div style="position: absolute; top:1000px;left:239.04992125984px; z-index: 1346;">
+    <div style="position: absolute; top:1000px;left:{{leftProposedPrice}}; z-index: 1346;">
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 124px; height: 46.402487291339px; background-color: ; z-index: 1346; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          {{askingPriceLabel}}</div>
+          {{formulaAskingPrice}}</div>
       </div>
     </div>
     <div style="position: absolute; top:1000px;left:365px; z-index: 1355;">
@@ -2028,7 +2043,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 124px; height: 46.402487291339px; background-color: ; z-index: 1357; font-size: 20px; line-height: 23px; text-align: center; color: #0076ad; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          {{currentStockLevel}}</div>
+          {{showCurrentStockLevel}}</div>
       </div>
     </div>
     <div style="position: absolute; top:776.6262992126px;left:568.83968503937px; z-index: 1324;">
@@ -2092,12 +2107,11 @@
           {{formulaValuePricingMethod}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:771.66992125984px;left:247.8188976378px; z-index: 1324;">
+    <div style="position: absolute; top:{{topLabel}};left:247.8188976378px; z-index: 1324;">
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 68px; height: 48.03874015748px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          Price
-          Based on Comparable</div>
+          {{labelPriceBasedOnComparable}}</div>
       </div>
     </div>
     <div style="position: absolute; top:781.58267716535px;left:327.88346456693px; z-index: 1324;">
@@ -2116,9 +2130,9 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top:828.8588976378px;left:97.22125984252px; z-index: 1326;">
+    <div style="position: absolute; top:828px;left:{{leftCalcLine}}; z-index: 1326;">
       <div class=""
-        style="position: absolute; width: 607px; height: 1px; background-color: ; z-index: 1326; border-top: solid 1px #000000;">
+        style="position: absolute; width: {{widthCalcLine}}; height: 1px; background-color: ; z-index: 1326; border-top: solid 1px #000000;">
       </div>
     </div>
     <div style="position: absolute; top:831.90897637795px;left:252.77527559055px; z-index: 1329;">
@@ -2261,7 +2275,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 97px; height: 41.76225px; background-color: ; z-index: 1352; font-size: 20px; line-height: 21px; text-align: center; color: #0076ad; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          {{formulaAskingPrice}}</div>
+          {{opinionPrice2}}</div>
       </div>
     </div>
     <div style="position: absolute; top:911.21102362205px;left:430px; z-index: 1353;">
@@ -2466,7 +2480,7 @@
             text: '<br/>Unsustainable R.'
           }, {
             rule: '%v >= 20 && %v < 40',
-            text: '<br/>Challenge R.'
+            text: '<br/>Challenging'
           }, {
             rule: '%v >= 40 && %v < 60',
             text: '<br/>Manageable'
@@ -2502,8 +2516,9 @@
             offsetX: 15
           }]
         },
-        labels: ['<pre class="tab">Unsustainable</pre>', 'Challenge', '',
-          '<pre style="margin-left: -60px">Manageable</pre>',
+        labels: ['<pre class="tab">Unsustainable</pre>', 'Challenging',
+          '',
+          'Manageable',
           'Attractive',
           '<pre class="tab">Highly Attractive</pre>'
         ],

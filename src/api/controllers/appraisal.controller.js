@@ -28,9 +28,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-    business_id: businessId
-  }
-    : null
+      business_id: businessId
+    } :
+    null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -208,6 +208,10 @@ export const generatePdf = async (req, res, next) => {
     return replace
   }
 
+  const _calculatedPriceBetween = context => {
+    return parseInt(_replaceDollarAndComma(context.marketPremiumLabel))
+  }
+
   const {
     appraisalId
   } = req.params
@@ -312,27 +316,27 @@ export const generatePdf = async (req, res, next) => {
     // ends prepared by
 
     /* profits table */
-    if (appraisal.year6 > 0) {
-      context.lastYearProfit = numeral(appraisal.calcOperatingProfit6).format('$0,0')
-      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit6 - appraisal.totalAnnualWages).format('$0,0')
-    } else if (appraisal.year5 > 0) {
-      context.lastYearProfit = numeral(appraisal.calcOperatingProfit5).format('$0,0')
-      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit5 - appraisal.totalAnnualWages).format('$0,0')
-    } else if (appraisal.year4 > 0) {
-      context.lastYearProfit = numeral(appraisal.calcOperatingProfit4).format('$0,0')
-      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit4 - appraisal.totalAnnualWages).format('$0,0')
-    } else if (appraisal.year3 > 0) {
-      context.lastYearProfit = numeral(appraisal.calcOperatingProfit3).format('$0,0')
-      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit3 - appraisal.totalAnnualWages).format('$0,0')
-    } else if (appraisal.year2 > 0) {
-      context.lastYearProfit = numeral(appraisal.calcOperatingProfit2).format('$0,0')
-      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit2 - appraisal.totalAnnualWages).format('$0,0')
-    } else if (appraisal.year1 > 0) {
-      context.lastYearProfit = numeral(appraisal.calcOperatingProfit1).format('$0,0')
-      context.lastYearProfitAfterWages = numeral(appraisal.calcOperatingProfit1 - appraisal.totalAnnualWages).format('$0,0')
+    if (appraisal.year6 > 0 && appraisal.renderPdfYear7) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit7 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit7 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.year5 > 0 && appraisal.renderPdfYear5) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit5 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit5 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.year4 > 0 && appraisal.renderPdfYear4) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit4 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit4 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.year3 > 0 && appraisal.renderPdfYear3) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit3 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit3 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.year2 > 0 && appraisal.renderPdfYear2) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit2 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit2 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.year1 > 0 && appraisal.renderPdfYear1) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit1 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit1 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
     }
-    context.avgProfits = numeral(avgProfit(appraisal)).format('$0,0')
-    context.avgProfitsAfterWages = numeral(avgProfit(appraisal) - appraisal.totalAnnualWages).format('$0,0')
+    context.avgProfitsEbitda = numeral(avgProfit(appraisal) - appraisal.totalAnnualWages).format('$0,0')
+    context.avgProfitsPebitda = numeral((avgProfit(appraisal) - appraisal.totalAnnualWages) + appraisal.owner1AnnualWage).format('$0,0')
     context.currentStockLevel = numeral(appraisal.currentStockLevel).format('$0,0')
     context.stockNecessary = numeral(appraisal.stockNecessary).format('$0,0')
     context.physicalAssetValue = numeral(appraisal.physicalAssetValue).format('$0,0')
@@ -550,9 +554,9 @@ export const generatePdf = async (req, res, next) => {
     // start pricing chart
     let calcPricingMethod = numeral(appraisal.formulaValuePricingMethod)
     context.avgMultiplierLabel = numeral(calcPricingMethod.value() * appraisal.avgMultiplier).format('$0,0')
-    context.riskPremiumLabel = numeral(calcPricingMethod.value() * appraisal.riskPremium).format('$0,0')
-    context.marketPremiumLabel = numeral(calcPricingMethod.value() * appraisal.marketPremium).format('$0,0')
-    context.askingPriceLabel = numeral(calcPricingMethod.value() * appraisal.askingPrice).format('$0,0')
+    context.riskPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.avgMultiplierLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium))).format('$0,0')
+    context.marketPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.riskPremiumLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))).format('$0,0')
+    context.askingPriceLabel = context.formulaAskingPrice
     // end pricing chat
 
     // start Labels for formula pricing
@@ -561,7 +565,13 @@ export const generatePdf = async (req, res, next) => {
     context.fCalc1 = '*'
     context.fCalc2 = '='
     context.labelAskingPriceMultipler = 'Asking Price Multiplier'
+    context.labelPriceBasedOnComparable = 'Price Based on Comparable'
+    context.topLabel = '771px'
     // end Labels for formula pricing
+
+    /* Line Calc Style */
+    context.leftCalcLine = '97px'
+    context.widthCalcLine = '607px'
 
     /* table 10 last businesses */
     let totalMultiplier = 0
@@ -582,16 +592,19 @@ export const generatePdf = async (req, res, next) => {
         context.multiplierLabel = 'EBITDA Last Year'
         multiplier = numeral(item.soldPrice / ebitdaLastYear(item)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYear
+        context.footerComparableData = 'Sales Price / EBITDA Last Year'
       }
       if (appraisal.pricingMethod === 2) {
         context.multiplierLabel = 'EBITDA Avg'
         multiplier = numeral(item.soldPrice / ebitdaAvg(item)).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaAvg
+        context.footerComparableData = 'Sales Price / EBITDA Avg'
       }
       if (appraisal.pricingMethod === 3) {
         context.multiplierLabel = 'PEBITDA Last Year'
         multiplier = item.soldPrice / pebitdaLastYear(item)
         context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYear
+        context.footerComparableData = 'Sales Price / PEBITDA Last Year'
       }
       if (appraisal.pricingMethod === 4) {
         context.multiplierLabel = 'PEBITDA Avg'
@@ -599,6 +612,7 @@ export const generatePdf = async (req, res, next) => {
           item.soldPrice / (ebitdaAvg(item) + item.agreedWageForMainOwner)
         ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaAvg
+        context.footerComparableData = 'Sales Price / PEBITDA Avg'
       }
       if (appraisal.pricingMethod === 5) {
         context.multiplierLabel = 'EBITDA Last Year With Stock'
@@ -606,6 +620,7 @@ export const generatePdf = async (req, res, next) => {
           (item.soldPrice + item.stockValue) / ebitdaLastYear(item)
         ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMEbitdaLastYearWithStock
+        context.footerComparableData = 'Sales Price Including Stock / PEBITDA Last Year'
       }
       if (appraisal.pricingMethod === 6) {
         context.multiplierLabel = 'EBITDA Avg With Stock'
@@ -613,6 +628,7 @@ export const generatePdf = async (req, res, next) => {
           '0,0.[99]'
         )
         context.formulaComparableMultiplier = appraisal.sumMEbitdaAvgWithStock
+        context.footerComparableData = 'Sales Price Including Stock / EBITDA Avg'
       }
       if (appraisal.pricingMethod === 7) {
         context.multiplierLabel = 'PEBITDA Last Year With Stock'
@@ -620,6 +636,7 @@ export const generatePdf = async (req, res, next) => {
           item.soldPrice / (pebitdaLastYear(item) + item.stockValue)
         ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaLastYearWithStock
+        context.footerComparableData = 'Sales Price Including Stock / PEBITDA Last Year'
       }
       if (appraisal.pricingMethod === 8) {
         context.multiplierLabel = 'PEBITDA Avg With Stock'
@@ -628,21 +645,27 @@ export const generatePdf = async (req, res, next) => {
           (ebitdaAvg(item) + item.agreedWageForMainOwner + item.stockValue)
         ).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMPebitdaAvgWithStock
+        context.footerComparableData = 'Sales Price Including Stock / PEBITDA Avg'
       }
       if (appraisal.pricingMethod === 9) {
         context.multiplierLabel = 'T/O Multiplier'
         multiplier = numeral(item.soldPrice / item.latestFullYearTotalRevenue).format('0,0.[99]')
         context.formulaComparableMultiplier = appraisal.sumMTO
+        context.footerComparableData = 'Sales Price / T/O'
       }
       if (appraisal.pricingMethod === 10) {
         context.multiplierLabel = ''
         multiplier = ''
-        formulaValuePricingMethod = ''
-        labelComparableMultiplier = ''
-        fCalc1 = ''
-        fCalc2 = ''
+        context.formulaValuePricingMethod = ''
+        context.labelComparableMultiplier = ''
+        context.fCalc1 = ''
+        context.fCalc2 = ''
         labelAskingPriceMultipler = ''
         askingPrice = ''
+        context.labelPriceBasedOnComparable = 'Assets Value'
+        context.topLabel = '795px'
+        context.leftCalcLine = '240px'
+        context.widthCalcLine = '500px'
       }
 
       /* EBITDA */
@@ -668,15 +691,15 @@ export const generatePdf = async (req, res, next) => {
       }
 
       totalMultiplier = totalMultiplier + multiplier
-
       return {
         businessType: item.BusinessType.label,
+        industry: item.industry,
         turnOver: numeral(item.latestFullYearTotalRevenue).format('$0,0'),
         trend: item.trend,
         stockValue: numeral(item.stockValue).format('$0,0'),
         assetsValue: numeral(item.assetValue).format('$0,0'),
         priceIncStock: numeral(item.soldPrice + item.stockValue).format('$0,0'),
-        multiplier: numeral(multiplier).format('0,0.[99]'),
+        multiplier: multiplier ? numeral(multiplier).format('0,0.[99]') : null,
         specialNotes: item.specialNotes,
         termsOfDeal: item.termsOfDeal,
         formulaComparableMultiplier,
@@ -750,10 +773,12 @@ export const generatePdf = async (req, res, next) => {
     context.lessThan5PercChanceOfSelling = appraisal.lessThan5PercChanceOfSelling
     // end pricig chart
 
-    if (appraisal.inclStock) {
-      context.plusIncl = 'Incl. Stock of'
-    } else {
-      context.plusIncl = 'Plus Stock of'
+    /* Stock */
+    context.leftProposedPrice = '340px'
+    if (appraisal.stockNecessary > 0) {
+      context.plusIncl = appraisal.inclStock ? 'Incl. Stock of' : 'Plus Stock of'
+      context.showCurrentStockLevel = numeral(appraisal.currentStockLevel).format('$0,0')
+      context.leftProposedPrice = '239px'
     }
 
     // start notes and assumptions
@@ -847,7 +872,15 @@ export const generatePdf = async (req, res, next) => {
     const totalBusinessesComparableSelectedList = JSON.parse(appraisal.comparableDataSelectedList).length
     context.totalBusinessesComparableSelectedList = totalBusinessesComparableSelectedList
     context.notesConcat = appraisal.specialNotes + appraisal.termsOfDeal
-    context.opinionPrice = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) + ((parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) * appraisal.sliderLowRange) / 100)).format('$0,0')
+
+    if (appraisal.reducePriceForStockValue) {
+      context.opinionPrice = numeral(_calculatedPriceBetween(context) - appraisal.currentStockLevel + (_calculatedPriceBetween(context) - appraisal.currentStockLevel) * (appraisal.sliderLowRange / 100)).format('$0,0')
+      context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium)) - appraisal.currentStockLevel).format('$0,0')
+      context.formulaAskingPrice = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - appraisal.currentStockLevel).format('$0,0')
+    } else {
+      context.opinionPrice = numeral(_calculatedPriceBetween(context) + (_calculatedPriceBetween(context)) * (appraisal.sliderLowRange / 100)).format('$0,0')
+      context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium))).format('$0,0')
+    }
 
     /* financial information table */
     context.sales1Validation = appraisal.sales1 !== 0
@@ -880,7 +913,7 @@ export const generatePdf = async (req, res, next) => {
       headerTemplate: ' ',
       footerTemplate: `
               <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:10px;text-align:center;color:#61bbff;font-family: Trebuchet MS">
-              <span style="float: left;">Opinion of the market value and Business Appraisal for ${
+              <span style="float: left;">Opinion of the market value for ${
   appraisal.Business.businessName
 }</span>
               <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>

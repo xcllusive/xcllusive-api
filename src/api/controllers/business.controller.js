@@ -1676,7 +1676,8 @@ export const getAllPerUser = async (req, res, next) => {
   } else {
     whereStageLost = {
       stageId: 8,
-      listingAgent_id: req.user.id
+      listingAgent_id: req.user.id,
+      company_id: 1
     }
     whereOptions = {
       where: {

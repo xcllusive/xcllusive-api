@@ -27,13 +27,25 @@ const _ebitdaAvg = businessSold => {
 }
 
 export const list = async (req, res, next) => {
-  const { limit, type, industry, priceRangeStart, priceRangeEnd, trend, pebitdaLastYearOrAvg, ebitdaLastYearOrAvg, stockValue } = req.query
+  const {
+    limit,
+    type,
+    industry,
+    priceRangeStart,
+    priceRangeEnd,
+    trend,
+    pebitdaLastYearOrAvg,
+    ebitdaLastYearOrAvg,
+    stockValue
+  } = req.query
   const offset = req.skip
 
   const pebitdaFrom = req.query.pebitdaFrom ? req.query.pebitdaFrom : 0
   const pebitdaTo = req.query.pebitdaTo ? req.query.pebitdaTo : 9999999
   const ebitdaFrom = req.query.ebitdaFrom ? req.query.ebitdaFrom : 0
   const ebitdaTo = req.query.ebitdaTo ? req.query.ebitdaTo : 9999999
+
+  console.log(req.query.limit)
 
   try {
     const pebitdaLastYear = `and case when s.year4 > 0 then s.year4 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)    
@@ -82,8 +94,7 @@ export const list = async (req, res, next) => {
     ${ebitdaLastYearOrAvg ? ebitdaLastYear : ''}
     and s.stockValue >= :stockValue
     order by 'soldDate', 'DESC'
-    limit :limit`,
-      {
+    limit :limit`, {
         raw: true,
         replacements: {
           industry: industry ? `%${industry}%` : '%%',
@@ -150,7 +161,9 @@ export const list = async (req, res, next) => {
 }
 
 export const get = async (req, res, next) => {
-  const { idAppraisal } = req.params
+  const {
+    idAppraisal
+  } = req.params
 
   try {
     const appraisal = await models.Appraisal.findOne({
@@ -181,18 +194,16 @@ export const get = async (req, res, next) => {
       where: {
         id: Array.from(businessSoldselectedListOnlyId)
       },
-      include: [
-        {
-          attributes: ['label'],
-          model: models.BusinessType,
-          as: 'BusinessType',
-          where: {
-            id: {
-              $col: 'BusinessSold.businessType'
-            }
+      include: [{
+        attributes: ['label'],
+        model: models.BusinessType,
+        as: 'BusinessType',
+        where: {
+          id: {
+            $col: 'BusinessSold.businessType'
           }
         }
-      ]
+      }]
     })
 
     return res.status(200).json({
@@ -205,7 +216,10 @@ export const get = async (req, res, next) => {
 }
 
 export const save = async (req, res, next) => {
-  const { appraisalId, selectedList } = req.body
+  const {
+    appraisalId,
+    selectedList
+  } = req.body
 
   // if (selectedList.isArray()) {
   //   throw new APIError({
@@ -218,16 +232,13 @@ export const save = async (req, res, next) => {
   const selectedListOnlyId = _.map(selectedList, 'id')
 
   try {
-    await models.Appraisal.update(
-      {
-        comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
-      },
-      {
-        where: {
-          id: appraisalId
-        }
+    await models.Appraisal.update({
+      comparableDataSelectedList: JSON.stringify(selectedListOnlyId)
+    }, {
+      where: {
+        id: appraisalId
       }
-    )
+    })
 
     return res.status(200).json({
       data: null,
@@ -260,7 +271,9 @@ export const getBusinessTypeAny = async (req, res, next) => {
     const typeList = await models.BusinessType.findAll({
       raw: true,
       attributes: ['id', 'label'],
-      order: [['label', 'ASC']]
+      order: [
+        ['label', 'ASC']
+      ]
     })
     return res.status(200).json({
       data: _mapValuesToArray(typeList),

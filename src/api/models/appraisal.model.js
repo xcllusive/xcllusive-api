@@ -2751,6 +2751,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: -10
+      },
+      reducePriceForStockValue: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: 0
       }
     }, {
       createdAt: 'dateTimeCreated',
