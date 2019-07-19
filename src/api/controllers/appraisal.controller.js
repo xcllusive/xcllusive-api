@@ -28,9 +28,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-      business_id: businessId
-    } :
-    null
+    business_id: businessId
+  }
+    : null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -314,33 +314,6 @@ export const generatePdf = async (req, res, next) => {
 
     context.preparedBy = `Xcllusive Business Sales </br>${loggedUser['office.address']} </br>${loggedUser['office.phoneNumber']} </br>www.xcllusive.com.au </br>Lic: ${loggedUser['office.license']} </br>ABN: ${loggedUser['office.abn']}`
     // ends prepared by
-
-    /* profits table */
-    if (appraisal.year6 > 0 && appraisal.renderPdfYear7) {
-      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit7 - appraisal.totalAnnualWages).format('$0,0')
-      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit7 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
-    } else if (appraisal.year5 > 0 && appraisal.renderPdfYear5) {
-      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit5 - appraisal.totalAnnualWages).format('$0,0')
-      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit5 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
-    } else if (appraisal.year4 > 0 && appraisal.renderPdfYear4) {
-      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit4 - appraisal.totalAnnualWages).format('$0,0')
-      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit4 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
-    } else if (appraisal.year3 > 0 && appraisal.renderPdfYear3) {
-      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit3 - appraisal.totalAnnualWages).format('$0,0')
-      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit3 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
-    } else if (appraisal.year2 > 0 && appraisal.renderPdfYear2) {
-      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit2 - appraisal.totalAnnualWages).format('$0,0')
-      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit2 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
-    } else if (appraisal.year1 > 0 && appraisal.renderPdfYear1) {
-      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit1 - appraisal.totalAnnualWages).format('$0,0')
-      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit1 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
-    }
-    context.avgProfitsEbitda = numeral(avgProfit(appraisal) - appraisal.totalAnnualWages).format('$0,0')
-    context.avgProfitsPebitda = numeral((avgProfit(appraisal) - appraisal.totalAnnualWages) + appraisal.owner1AnnualWage).format('$0,0')
-    context.currentStockLevel = numeral(appraisal.currentStockLevel).format('$0,0')
-    context.stockNecessary = numeral(appraisal.stockNecessary).format('$0,0')
-    context.physicalAssetValue = numeral(appraisal.physicalAssetValue).format('$0,0')
-    /* end profits table */
 
     // start owners position table
     context.owner1Position = appraisal.owner1Position
@@ -750,12 +723,12 @@ export const generatePdf = async (req, res, next) => {
           aaRowYear4: appraisal[`aaRow${i}Year4`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}` : null,
           aaRowYear5: appraisal[`aaRow${i}Year5`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}` : null,
           aaRowYear7: appraisal[`aaRow${i}Year7`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}` : null,
-          sales1Validation: appraisal.sales1 !== 0,
-          sales2Validation: appraisal.sales2 !== 0,
-          sales3Validation: appraisal.sales3 !== 0,
-          sales4Validation: appraisal.sales4 !== 0,
-          sales5Validation: appraisal.sales5 !== 0,
-          sales7Validation: appraisal.calcAnnualised1 !== 0
+          sales1Validation: parseInt(appraisal.sales1) !== 0,
+          sales2Validation: parseInt(appraisal.sales2) !== 0,
+          sales3Validation: parseInt(appraisal.sales3) !== 0,
+          sales4Validation: parseInt(appraisal.sales4) !== 0,
+          sales5Validation: parseInt(appraisal.sales5) !== 0,
+          sales7Validation: parseInt(appraisal.calcAnnualised1) !== 0
         })
       }
     }
@@ -883,13 +856,40 @@ export const generatePdf = async (req, res, next) => {
     }
 
     /* financial information table */
-    context.sales1Validation = appraisal.sales1 !== 0
-    context.sales2Validation = appraisal.sales2 !== 0
-    context.sales3Validation = appraisal.sales3 !== 0
-    context.sales4Validation = appraisal.sales4 !== 0
-    context.sales5Validation = appraisal.sales5 !== 0
-    context.sales7Validation = appraisal.calcAnnualised1 !== 0
+    context.sales1Validation = parseInt(appraisal.sales1) !== 0
+    context.sales2Validation = parseInt(appraisal.sales2) !== 0
+    context.sales3Validation = parseInt(appraisal.sales3) !== 0
+    context.sales4Validation = parseInt(appraisal.sales4) !== 0
+    context.sales5Validation = parseInt(appraisal.sales5) !== 0
+    context.sales7Validation = parseInt(appraisal.calcAnnualised1) !== 0
     /* end */
+
+    /* profits table */
+    if (appraisal.renderPdfYear7 && parseInt(appraisal.calcAnnualised1) !== 0) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit7 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit7 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.renderPdfYear5 && parseInt(appraisal.sales5) !== 0) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit5 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit5 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.renderPdfYear4 && parseInt(appraisal.sales4) !== 0) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit4 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit4 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.renderPdfYear3 && parseInt(appraisal.sales3) !== 0) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit3 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit3 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.renderPdfYear2 && parseInt(appraisal.sales2) !== 0) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit2 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit2 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    } else if (appraisal.renderPdfYear1 && parseInt(appraisal.sales1) !== 0) {
+      context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit1 - appraisal.totalAnnualWages).format('$0,0')
+      context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit1 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
+    }
+    context.avgProfitsEbitda = numeral(avgProfit(appraisal) - appraisal.totalAnnualWages).format('$0,0')
+    context.avgProfitsPebitda = numeral((avgProfit(appraisal) - appraisal.totalAnnualWages) + appraisal.owner1AnnualWage).format('$0,0')
+    context.currentStockLevel = numeral(appraisal.currentStockLevel).format('$0,0')
+    context.stockNecessary = numeral(appraisal.stockNecessary).format('$0,0')
+    context.physicalAssetValue = numeral(appraisal.physicalAssetValue).format('$0,0')
+    /* end profits table */
 
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
@@ -937,10 +937,10 @@ export const generatePdf = async (req, res, next) => {
     await page.emulateMedia('screen')
     await page.setContent(template)
     /* only works local. Does not work in AWS */
-    // await page.setContent(template)
-    // await page.goto(`data:text/html,${template}`, {
-    //   waitUntil: 'networkidle0'
-    // })
+    await page.setContent(template)
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle0'
+    })
     /* end */
 
     await page.pdf(PDF_OPTIONS)

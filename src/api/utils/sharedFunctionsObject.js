@@ -80,32 +80,32 @@ export const pebitdaLastYear = businessSold => {
 export const avgProfit = appraisal => {
   let count = 0
   let totalYear = 0
-  if (appraisal.year6 > 0 && appraisal.renderPdfYear7) {
+  if (appraisal.renderPdfYear7 && parseInt(appraisal.calcAnnualised1) !== 0) {
     count = count + 1
     totalYear =
       totalYear + appraisal.totalAdjustedProfit7 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year5 > 0 && appraisal.renderPdfYear5) {
+  if (appraisal.renderPdfYear5 && parseInt(appraisal.sales5) !== 0) {
     count = count + 1
     totalYear =
       totalYear + appraisal.totalAdjustedProfit5 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year4 > 0 && appraisal.renderPdfYear4) {
+  if (appraisal.renderPdfYear4 && parseInt(appraisal.sales4) !== 0) {
     count = count + 1
     totalYear =
       totalYear + appraisal.totalAdjustedProfit4 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year3 > 0 && appraisal.renderPdfYear3) {
+  if (appraisal.renderPdfYear3 && parseInt(appraisal.sales3) !== 0) {
     count = count + 1
     totalYear =
       totalYear + appraisal.totalAdjustedProfit3 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year2 > 0 && appraisal.renderPdfYear2) {
+  if (appraisal.renderPdfYear2 && parseInt(appraisal.sales2) !== 0) {
     count = count + 1
     totalYear =
       totalYear + appraisal.totalAdjustedProfit2 /* change for the field Total Adjusted Profit INCL. Owners Wages */
   }
-  if (appraisal.year1 > 0 && appraisal.renderPdfYear1) {
+  if (appraisal.renderPdfYear1 && parseInt(appraisal.sales1) !== 0) {
     count = count + 1
     totalYear =
       totalYear + appraisal.totalAdjustedProfit1 /* change for the field Total Adjusted Profit INCL. Owners Wages */

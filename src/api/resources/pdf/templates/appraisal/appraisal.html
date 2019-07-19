@@ -2419,37 +2419,37 @@
         }
       }
     });
-    if (JSON.parse('{{renderPdfYear1}}')) {
+    if (JSON.parse('{{renderPdfYear1}}') && JSON.parse('{{sales1Validation}}')) {
       myChart.data.labels.push('{{year1}}');
       myChart.data.datasets[0].data.push('{{sales1GpPebitda}}');
       myChart.data.datasets[1].data.push('{{calcGrossProfit1SalesPebitda}}');
       myChart.data.datasets[2].data.push('{{calcOperatingProfit1SalesPebitda}}');
     }
-    if (JSON.parse('{{renderPdfYear2}}')) {
+    if (JSON.parse('{{renderPdfYear2}}') && JSON.parse('{{sales2Validation}}')) {
       myChart.data.labels.push('{{year2}}');
       myChart.data.datasets[0].data.push('{{sales2GpPebitda}}');
       myChart.data.datasets[1].data.push('{{calcGrossProfit2SalesPebitda}}');
       myChart.data.datasets[2].data.push('{{calcOperatingProfit2SalesPebitda}}');
     }
-    if (JSON.parse('{{renderPdfYear3}}')) {
+    if (JSON.parse('{{renderPdfYear3}}') && JSON.parse('{{sales3Validation}}')) {
       myChart.data.labels.push('{{year3}}');
       myChart.data.datasets[0].data.push('{{sales3GpPebitda}}');
       myChart.data.datasets[1].data.push('{{calcGrossProfit3SalesPebitda}}');
       myChart.data.datasets[2].data.push('{{calcOperatingProfit3SalesPebitda}}');
     }
-    if (JSON.parse('{{renderPdfYear4}}')) {
+    if (JSON.parse('{{renderPdfYear4}}') && JSON.parse('{{sales4Validation}}')) {
       myChart.data.labels.push('{{year4}}');
       myChart.data.datasets[0].data.push('{{sales4GpPebitda}}');
       myChart.data.datasets[1].data.push('{{calcGrossProfit4SalesPebitda}}');
       myChart.data.datasets[2].data.push('{{calcOperatingProfit4SalesPebitda}}');
     }
-    if (JSON.parse('{{renderPdfYear5}}')) {
+    if (JSON.parse('{{renderPdfYear5}}') && JSON.parse('{{sales5Validation}}')) {
       myChart.data.labels.push('{{year5}}');
       myChart.data.datasets[0].data.push('{{sales5GpPebitda}}');
       myChart.data.datasets[1].data.push('{{calcGrossProfit5SalesPebitda}}');
       myChart.data.datasets[2].data.push('{{calcOperatingProfit5SalesPebitda}}');
     }
-    if (JSON.parse('{{renderPdfYear7}}')) {
+    if (JSON.parse('{{renderPdfYear7}}') && JSON.parse('{{sales7Validation}}')) {
       myChart.data.labels.push('{{year6}}');
       myChart.data.datasets[0].data.push('{{sales7GpPebitda}}');
       myChart.data.datasets[1].data.push('{{calcGrossProfit7SalesPebitda}}');
@@ -2623,33 +2623,32 @@
         }
       }
     })
-
-    if (JSON.parse('{{renderPdfYear1}}')) {
+    if (JSON.parse('{{renderPdfYear1}}') && JSON.parse('{{sales1Validation}}')) {
       myChart1.data.labels.push('{{year1}}');
       myChart1.data.datasets[0].data.push('{{calcGrossMarginPerc1GmProfit}}');
       myChart1.data.datasets[1].data.push('{{calcOperatingProfitPerc1GmProfit}}');
     }
-    if (JSON.parse('{{renderPdfYear2}}')) {
+    if (JSON.parse('{{renderPdfYear2}}') && JSON.parse('{{sales2Validation}}')) {
       myChart1.data.labels.push('{{year2}}');
       myChart1.data.datasets[0].data.push('{{calcGrossMarginPerc2GmProfit}}');
       myChart1.data.datasets[1].data.push('{{calcOperatingProfitPerc2GmProfit}}');
     }
-    if (JSON.parse('{{renderPdfYear3}}')) {
+    if (JSON.parse('{{renderPdfYear3}}') && JSON.parse('{{sales3Validation}}')) {
       myChart1.data.labels.push('{{year3}}');
       myChart1.data.datasets[0].data.push('{{calcGrossMarginPerc3GmProfit}}');
       myChart1.data.datasets[1].data.push('{{calcOperatingProfitPerc3GmProfit}}');
     }
-    if (JSON.parse('{{renderPdfYear4}}')) {
+    if (JSON.parse('{{renderPdfYear4}}') && JSON.parse('{{sales4Validation}}')) {
       myChart1.data.labels.push('{{year4}}');
       myChart1.data.datasets[0].data.push('{{calcGrossMarginPerc4GmProfit}}');
       myChart1.data.datasets[1].data.push('{{calcOperatingProfitPerc4GmProfit}}');
     }
-    if (JSON.parse('{{renderPdfYear5}}')) {
+    if (JSON.parse('{{renderPdfYear5}}') && JSON.parse('{{sales5Validation}}')) {
       myChart1.data.labels.push('{{year5}}');
       myChart1.data.datasets[0].data.push('{{calcGrossMarginPerc5GmProfit}}');
       myChart1.data.datasets[1].data.push('{{calcOperatingProfitPerc5GmProfit}}');
     }
-    if (JSON.parse('{{renderPdfYear7}}')) {
+    if (JSON.parse('{{renderPdfYear7}}') && JSON.parse('{{sales7Validation}}')) {
       myChart1.data.labels.push('{{year6}}');
       myChart1.data.datasets[0].data.push('{{calcGrossMarginPerc6GmProfit}}');
       myChart1.data.datasets[1].data.push('{{calcOperatingProfitPerc6GmProfit}}');
