@@ -442,12 +442,12 @@ export const generatePdf = async (req, res, next) => {
     context.calcGrossProfit5SalesPebitda = appraisal.calcGrossProfit5
     context.calcGrossProfit7SalesPebitda = appraisal.calcGrossProfit7
 
-    context.calcOperatingProfit1SalesPebitda = appraisal.calcOperatingProfit1
-    context.calcOperatingProfit2SalesPebitda = appraisal.calcOperatingProfit2
-    context.calcOperatingProfit3SalesPebitda = appraisal.calcOperatingProfit3
-    context.calcOperatingProfit4SalesPebitda = appraisal.calcOperatingProfit4
-    context.calcOperatingProfit5SalesPebitda = appraisal.calcOperatingProfit5
-    context.calcOperatingProfit6SalesPebitda = appraisal.calcOperatingProfit6
+    context.calcOperatingProfit1SalesPebitda = context.totalAdjustedProfit1
+    context.calcOperatingProfit2SalesPebitda = context.totalAdjustedProfit2
+    context.calcOperatingProfit3SalesPebitda = context.totalAdjustedProfit3
+    context.calcOperatingProfit4SalesPebitda = context.totalAdjustedProfit4
+    context.calcOperatingProfit5SalesPebitda = context.totalAdjustedProfit5
+    context.calcOperatingProfit6SalesPebitda = context.totalAdjustedProfit7
 
     context.calcGrossMarginPerc1GmProfit = numeral(appraisal.calcGrossMarginPerc1).format('0,0.[0]')
     context.calcGrossMarginPerc2GmProfit = numeral(appraisal.calcGrossMarginPerc2).format('0,0.[0]')
@@ -456,12 +456,12 @@ export const generatePdf = async (req, res, next) => {
     context.calcGrossMarginPerc5GmProfit = numeral(appraisal.calcGrossMarginPerc5).format('0,0.[0]')
     context.calcGrossMarginPerc6GmProfit = numeral(appraisal.calcGrossMarginPerc6).format('0,0.[0]')
 
-    context.calcOperatingProfitPerc1GmProfit = numeral(appraisal.calcOperatingProfitPerc1).format('0,0.[0]')
-    context.calcOperatingProfitPerc2GmProfit = numeral(appraisal.calcOperatingProfitPerc2).format('0,0.[0]')
-    context.calcOperatingProfitPerc3GmProfit = numeral(appraisal.calcOperatingProfitPerc3).format('0,0.[0]')
-    context.calcOperatingProfitPerc4GmProfit = numeral(appraisal.calcOperatingProfitPerc4).format('0,0.[0]')
-    context.calcOperatingProfitPerc5GmProfit = numeral(appraisal.calcOperatingProfitPerc5).format('0,0.[0]')
-    context.calcOperatingProfitPerc6GmProfit = numeral(appraisal.calcOperatingProfitPerc6).format('0,0.[0]')
+    context.calcOperatingProfitPerc1GmProfit = parseInt(context.adjustedProfitPerc1)
+    context.calcOperatingProfitPerc2GmProfit = parseInt(context.adjustedProfitPerc2)
+    context.calcOperatingProfitPerc3GmProfit = parseInt(context.adjustedProfitPerc3)
+    context.calcOperatingProfitPerc4GmProfit = parseInt(context.adjustedProfitPerc4)
+    context.calcOperatingProfitPerc5GmProfit = parseInt(context.adjustedProfitPerc5)
+    context.calcOperatingProfitPerc6GmProfit = parseInt(context.adjustedProfitPerc7)
 
     context.renderPdfYear1 = appraisal.renderPdfYear1
     context.renderPdfYear2 = appraisal.renderPdfYear2
@@ -470,66 +470,14 @@ export const generatePdf = async (req, res, next) => {
     context.renderPdfYear5 = appraisal.renderPdfYear5
     context.renderPdfYear7 = appraisal.renderPdfYear7
 
-    /* verifying if there's any Year unmark to show in the pdf  */
-    // if (!appraisal.renderPdfYear1) {
-    //   context.year1ShowHide = ''
-    //   context.sales1GpPebitda = '-'
-    //   context.calcGrossProfit1SalesPebitda = '-'
-    //   context.calcOperatingProfit1SalesPebitda = '-'
-    //   context.calcGrossMarginPerc1GmProfit = '-'
-    //   context.calcOperatingProfitPerc1GmProfit = '-'
-    // }
-    // if (!appraisal.renderPdfYear2) {
-    //   context.year2ShowHide = ''
-    //   context.sales2GpPebitda = '-'
-    //   context.calcGrossProfit2SalesPebitda = '-'
-    //   context.calcOperatingProfit2SalesPebitda = '-'
-    //   context.calcGrossMarginPerc2GmProfit = '-'
-    //   context.calcOperatingProfitPerc2GmProfit = '-'
-    // }
-    // if (!appraisal.renderPdfYear3) {
-    //   context.year3ShowHide = ''
-    //   context.sales3GpPebitda = '-'
-    //   context.calcGrossProfit3SalesPebitda = '-'
-    //   context.calcOperatingProfit3SalesPebitda = '-'
-    //   context.calcGrossMarginPerc3GmProfit = '-'
-    //   context.calcOperatingProfitPerc3GmProfit = '-'
-    // }
-    // if (!appraisal.renderPdfYear4) {
-    //   context.year4ShowHide = ''
-    //   context.sales4GpPebitda = '-'
-    //   context.calcGrossProfit4SalesPebitda = '-'
-    //   context.calcOperatingProfit4SalesPebitda = '-'
-    //   context.calcGrossMarginPerc4GmProfit = '-'
-    //   context.calcOperatingProfitPerc4GmProfit = '-'
-    // }
-    // if (!appraisal.renderPdfYear5) {
-    //   context.year5ShowHide = ''
-    //   context.sales5GpPebitda = '-'
-    //   context.calcGrossProfit5SalesPebitda = '-'
-    //   context.calcOperatingProfit5SalesPebitda = '-'
-    //   context.calcGrossMarginPerc5GmProfit = '-'
-    //   context.calcOperatingProfitPerc5GmProfit = '-'
-    // }
-    // if (!appraisal.renderPdfYear7) {
-    //   context.year6ShowHide = ''
-    //   context.sales7GpPebitda = '-'
-    //   context.calcGrossProfit7SalesPebitda = '-'
-    //   context.calcOperatingProfit6SalesPebitda = '-'
-    //   context.calcGrossMarginPerc6GmProfit = '-'
-    //   context.calcOperatingProfitPerc6GmProfit = '-'
-    // }
-
-    /* end verifying if there's any Year unmarked to show in the pdf  */
-
     // end salesGpPebitda and gmProfit chart
 
     // start pricing chart
     let calcPricingMethod = numeral(appraisal.formulaValuePricingMethod)
     context.avgMultiplierLabel = numeral(calcPricingMethod.value() * appraisal.avgMultiplier).format('$0,0')
-    context.riskPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.avgMultiplierLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium))).format('$0,0')
-    context.marketPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.riskPremiumLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))).format('$0,0')
-    context.askingPriceLabel = context.formulaAskingPrice
+    context.riskPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.avgMultiplierLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium))).format('$0,0') + ' '
+    context.marketPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.riskPremiumLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))).format('$0,0') + '  '
+    context.askingPriceLabel = context.formulaAskingPrice + '   '
     // end pricing chat
 
     // start Labels for formula pricing
@@ -861,11 +809,11 @@ export const generatePdf = async (req, res, next) => {
     context.sales3Validation = parseInt(appraisal.sales3) !== 0
     context.sales4Validation = parseInt(appraisal.sales4) !== 0
     context.sales5Validation = parseInt(appraisal.sales5) !== 0
-    context.sales7Validation = parseInt(appraisal.calcAnnualised1) !== 0
+    context.sales7Validation = !!(parseInt(appraisal.calcAnnualised1) !== 0 && appraisal.calcAnnualised1)
     /* end */
 
     /* profits table */
-    if (appraisal.renderPdfYear7 && parseInt(appraisal.calcAnnualised1) !== 0) {
+    if (appraisal.renderPdfYear7 && !!(parseInt(appraisal.calcAnnualised1) !== 0 && appraisal.calcAnnualised1)) {
       context.lastYearProfitEbitda = numeral(appraisal.totalAdjustedProfit7 - appraisal.totalAnnualWages).format('$0,0')
       context.lastYearProfitPebitda = numeral(appraisal.totalAdjustedProfit7 - (appraisal.totalAnnualWages - appraisal.owner1AnnualWage)).format('$0,0')
     } else if (appraisal.renderPdfYear5 && parseInt(appraisal.sales5) !== 0) {
@@ -890,6 +838,17 @@ export const generatePdf = async (req, res, next) => {
     context.stockNecessary = numeral(appraisal.stockNecessary).format('$0,0')
     context.physicalAssetValue = numeral(appraisal.physicalAssetValue).format('$0,0')
     /* end profits table */
+
+    /* col span financial information */
+    let colSpanFI = 0
+    for (let i = 1; i < 8; i++) {
+      if (i !== 6) {
+        if (context[`renderPdfYear${i}`] && context[`sales${i}Validation`]) {
+          colSpanFI = colSpanFI + 1
+        }
+      }
+    }
+    context.colSpanFI = colSpanFI + 1
 
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
@@ -937,10 +896,9 @@ export const generatePdf = async (req, res, next) => {
     await page.emulateMedia('screen')
     await page.setContent(template)
     /* only works local. Does not work in AWS */
-    // await page.setContent(template)
-    // await page.goto(`data:text/html,${template}`, {
-    //   waitUntil: 'networkidle0'
-    // })
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle0'
+    })
     /* end */
 
     await page.pdf(PDF_OPTIONS)

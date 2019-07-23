@@ -45,8 +45,6 @@ export const list = async (req, res, next) => {
   const ebitdaFrom = req.query.ebitdaFrom ? req.query.ebitdaFrom : 0
   const ebitdaTo = req.query.ebitdaTo ? req.query.ebitdaTo : 9999999
 
-  console.log(req.query.limit)
-
   try {
     const pebitdaLastYear = `and case when s.year4 > 0 then s.year4 - (s.agreedWageForWorkingOwners - s.agreedWageForMainOwner)    
     between :pebitdaFrom and :pebitdaTo
@@ -107,7 +105,7 @@ export const list = async (req, res, next) => {
           ebitdaTo: ebitdaTo || 9999999,
           trend: trend ? JSON.parse(trend) : ['up', 'down', 'steady'],
           stockValue: stockValue || 0,
-          limit: limit,
+          limit: limit === 49 ? 50000 : limit,
           offset
         },
         model: models.BusinessSold,

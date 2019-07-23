@@ -1561,7 +1561,8 @@ export const activityRequestControlPerUser = async (req, res, next) => {
       return {
         userId_logged: item.userId_logged,
         activity: item.count,
-        dateCreated: `${moment(item.dateCreated).format('DD/MM')} [${moment(item.dateCreated).format('dddd')}]`
+        dateCreated: `${moment(item.dateCreated).format('DD/MM')} [${moment(item.dateCreated).format('dddd')}]`,
+        dateRaw: moment(item.dateCreated).format('YYYY-MM-DD')
       }
     })
 
@@ -1653,17 +1654,12 @@ export const getDailyTimeActivityReport = async (req, res, next) => {
   const id = req.query.id
   const date = req.query.date
 
-  var dateString = date
-  dateString = dateString.substr(3, 2) + '-' + dateString.substr(0, 2) + '-' + dateString.substr(6, 4)
-  // const dateStart = moment(dateString).format('YYYY-MM-DD 00:00:00')
-  // const dateEnd = moment(dateString).format('YYYY-MM-DD 23:59:59')
-
   try {
     let dailyTime = 0
     let array = []
     for (let i = 0; i < 24; i++) {
-      let dateTimeBegin = moment(dateString).format(`YYYY-MM-DD ${i}:00:00`)
-      let dateTimeEnd = moment(dateString).format(`YYYY-MM-DD ${i}:59:59`)
+      let dateTimeBegin = moment(date).format(`YYYY-MM-DD ${i}:00:00`)
+      let dateTimeEnd = moment(date).format(`YYYY-MM-DD ${i}:59:59`)
       dailyTime = await models.ControlActivity.count({
         raw: true,
         attributes: ['dateTimeCreated'],
@@ -1674,7 +1670,6 @@ export const getDailyTimeActivityReport = async (req, res, next) => {
           }
         }
       })
-
       array.push({
         time: i <= 9 ? `0${i}:00:00` : `${i}:00:00`,
         activity: dailyTime
