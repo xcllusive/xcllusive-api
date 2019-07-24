@@ -3,6 +3,21 @@ import APIError from '../utils/APIError'
 import _ from 'lodash'
 import moment from 'moment'
 
+export const getMarketingReportTest = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  try {
+    const offices = await models.OfficeRegister.findAll({
+      raw: true,
+      attributes: ['id']
+    })
+    console.log('test', offices)
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const getMarketingReport = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
