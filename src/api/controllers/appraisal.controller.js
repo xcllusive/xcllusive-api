@@ -850,6 +850,11 @@ export const generatePdf = async (req, res, next) => {
     }
     context.colSpanFI = colSpanFI + 1
 
+    /* signals final price */
+    context.signalRiskPremium = parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium)) >= 0 ? '+' : ''
+    context.signalMarketPremium = parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium)) >= 0 ? '+' : ''
+    context.signalNegotiationPremium = parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium)) >= 0 ? '+' : ''
+
     handlebars.registerHelper('each', (context, options) => {
       var ret = ''
       for (var i = 0, j = context.length; i < j; i++) {
@@ -896,9 +901,9 @@ export const generatePdf = async (req, res, next) => {
     await page.emulateMedia('screen')
     await page.setContent(template)
     /* only works local. Does not work in AWS */
-    await page.goto(`data:text/html,${template}`, {
-      waitUntil: 'networkidle0'
-    })
+    // await page.goto(`data:text/html,${template}`, {
+    //   waitUntil: 'networkidle0'
+    // })
     /* end */
 
     await page.pdf(PDF_OPTIONS)
