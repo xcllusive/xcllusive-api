@@ -10,9 +10,141 @@ export const getMarketingReportTest = async (req, res, next) => {
   try {
     const offices = await models.OfficeRegister.findAll({
       raw: true,
-      attributes: ['id']
+      attributes: ['id'],
+      where: {
+        id: {
+          $ne: 3
+        }
+      }
     })
-    console.log('test', offices)
+    const itemOffices = await Promise.all(
+      offices.map(async item => {
+        const totalLeads = await models.Business.findAndCountAll({
+          raw: true,
+          attributes: ['listingAgent_id'],
+          where:
+      {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        },
+        company_id: 1
+      },
+          include: [{
+            model: models.User,
+            attributes: ['firstName', 'lastName', 'dataRegion'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id,
+              listingAgent: 1,
+              active: 1
+            }
+          }],
+          group: [
+            [{
+              model: models.User,
+              as: 'listingAgent'
+            }, 'id']
+          ]
+        })
+
+        const totalLeadsMerged = _.merge(totalLeads.rows, totalLeads.count)
+
+        const signedUp = await models.Business.count({
+          raw: true,
+          attributes: ['listingAgent_id'],
+          where: {
+            dateChangedToSalesMemorandum: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 1
+          },
+          include: [{
+            model: models.User,
+            attributes: ['firstName', 'lastName', 'dataRegion'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id,
+              listingAgent: 1,
+              active: 1
+            }
+          }],
+          group: [
+            [{
+              model: models.User,
+              as: 'listingAgent'
+            }, 'id']
+          ]
+        })
+
+        let addLeadsSignedUp = totalLeads.rows
+        if (totalLeadsMerged.length > 0) {
+          const signedUpImStage = signedUp.map(item => {
+            return {
+              listingAgent_id: item.listingAgent_id,
+              countImStage: item.count
+            }
+          })
+          signedUpImStage.forEach(signedUp => {
+            totalLeadsMerged.forEach(leads => {
+              if (signedUp.listingAgent_id === leads.listingAgent_id) {
+                const mergeToArray = _.merge(leads, signedUp)
+                addLeadsSignedUp = _.merge(totalLeadsMerged, mergeToArray)
+              }
+            })
+          })
+        }
+        const arrayOffices = _.uniq(addLeadsSignedUp, 'listingAgent_id')
+
+        const ctcLeadsPerOffice = await models.Business.count({
+          raw: true,
+          attributes: ['company_id'],
+          as: 'Business',
+          where: {
+            dateTimeCreated: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 2
+          },
+          include: [{
+            model: models.User,
+            attributes: ['dataRegion'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id,
+              listingAgent: 1,
+              active: 1
+            }
+          }],
+          group: [
+            [{
+              model: models.User,
+              as: 'listingAgent'
+            }, 'dataRegion']
+          ]
+        })
+        const ctcLeadsPerOfficeCount = ctcLeadsPerOffice.map(item => {
+          return {countCtc: item.count }
+        })
+
+        // arrayOffices.forEach(offices=>{
+
+        // })
+
+        return arrayOffices
+      })
+    )
+    return res.status(200).json({
+      data: itemOffices
+    })
   } catch (error) {
     return next(error)
   }
@@ -28,13 +160,6 @@ export const getMarketingReport = async (req, res, next) => {
       raw: true,
       attributes: ['listingAgent_id'],
       where:
-      // Sequelize.where(
-      //   Sequelize.fn('date', Sequelize.col('dateTimeCreated')), 'between', dateFrom,
-      //   Sequelize.and(
-      //     Sequelize.fn('date', Sequelize.col('dateTimeCreated')), '<=', dateTo
-      //   )
-      // ),
-
       {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
