@@ -632,7 +632,7 @@ export const generatePdf = async (req, res, next) => {
         askingPrice,
         avg,
         lastYear,
-        notesConcat: item.specialNotes || item.termsOfDeal ? `Notes: ${item.specialNotes} + ${item.termsOfDeal}` : false,
+        notesConcat: item.specialNotes || item.termsOfDeal ? `${item.specialNotes} + ${item.termsOfDeal}` : false,
         trendIcon: item.trend === 'up' ? upGreenArrow : item.trend === 'down' ? downRedArrow : steadyYellowArrow
       }
     })
@@ -781,15 +781,6 @@ export const generatePdf = async (req, res, next) => {
     context.totalAdjustedProfit5 = numeral(context.totalAdjustedProfit5).format('0,0')
     context.totalAdjustedProfit7 = numeral(context.totalAdjustedProfit7).format('0,0')
 
-    let totalYearsUsed = 0
-    if (appraisal.renderPdfYear6) totalYearsUsed = totalYearsUsed + 1
-    if (appraisal.renderPdfYear5) totalYearsUsed = totalYearsUsed + 1
-    if (appraisal.renderPdfYear4) totalYearsUsed = totalYearsUsed + 1
-    if (appraisal.renderPdfYear3) totalYearsUsed = totalYearsUsed + 1
-    if (appraisal.renderPdfYear2) totalYearsUsed = totalYearsUsed + 1
-    if (appraisal.renderPdfYear1) totalYearsUsed = totalYearsUsed + 1
-    context.totalYearsUsed = totalYearsUsed
-
     const totalBusinessesComparableSelectedList = JSON.parse(appraisal.comparableDataSelectedList).length
     context.totalBusinessesComparableSelectedList = totalBusinessesComparableSelectedList
     context.notesConcat = appraisal.specialNotes + appraisal.termsOfDeal
@@ -849,6 +840,7 @@ export const generatePdf = async (req, res, next) => {
       }
     }
     context.colSpanFI = colSpanFI + 1
+    context.totalYearsUsed = colSpanFI
 
     /* signals final price */
     context.signalRiskPremium = parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium)) >= 0 ? '+' : ''
