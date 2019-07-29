@@ -134,16 +134,159 @@ export const getMarketingReportTest = async (req, res, next) => {
         const ctcLeadsPerOfficeCount = ctcLeadsPerOffice.map(item => {
           return {countCtc: item.count }
         })
+        const mergeWithCtcLeads = _.merge(arrayOffices, ctcLeadsPerOfficeCount)
 
-        // arrayOffices.forEach(offices=>{
+        let arrayFinal = []
+        mergeWithCtcLeads.forEach(item => {
+          arrayFinal.push({
+            listingAgent_id: item.listingAgent_id,
+            firstName: item['listingAgent.firstName'],
+            lastName: item['listingAgent.lastName'],
+            dataRegion: item['listingAgent.dataRegion'],
+            totalLeads: item.count,
+            signed: item.countImStage ? item.countImStage : 0,
+            convertionRate: item.countImStage > 0 ? `${Math.trunc((item.countImStage / item.count) * 100)}%` : 0,
+            countCtc: item.countCtc > 0 ? item.countCtc : null
+          })
+        })
 
-        // })
+        const leadsPerSource = await models.Business.findAndCountAll({
+          raw: true,
+          attributes: ['sourceId'],
+          as: 'Business',
+          where: {
+            dateTimeCreated: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 1
+          },
+          include: [{
+            model: models.BusinessSource,
+            attributes: ['label'],
+            as: 'source',
+            where: {
+              id: {
+                $col: 'Business.sourceId'
+              }
+            }
+          }, {
+            model: models.User,
+            attributes: ['dataRegion'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id
+            }
+          }],
+          group: ['Business.sourceId']
+        })
+        const mergeLeadsPerSource = _.merge(leadsPerSource.rows, leadsPerSource.count)
 
-        return arrayOffices
+        const leadsPerSourceSignedUp = await models.Business.findAndCountAll({
+          raw: true,
+          attributes: ['sourceId'],
+          as: 'Business',
+          where: {
+            dateChangedToSalesMemorandum: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 1
+          },
+          include: [{
+            model: models.BusinessSource,
+            attributes: ['label'],
+            as: 'source',
+            where: {
+              id: {
+                $col: 'Business.sourceId'
+              }
+            }
+          }, {
+            model: models.User,
+            attributes: ['dataRegion'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id
+            }
+          }],
+          group: ['Business.sourceId']
+        })
+        const mergeLeadsPerSourceSignedUp = _.merge(leadsPerSourceSignedUp.rows, leadsPerSourceSignedUp.count)
+        let arrayLeadsPerSourceOffices = mergeLeadsPerSource
+        if (mergeLeadsPerSourceSignedUp.length > 0) {
+          const changeArrayName = mergeLeadsPerSourceSignedUp.map(item => {
+            return {
+              sourceId: item.sourceId,
+              'source.label': item['source.label'],
+              'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+              countSignedUp: item.count
+            }
+          })
+          mergeLeadsPerSource.forEach(items => {
+            changeArrayName.forEach(items2 => {
+              if (items.sourceId === items2.sourceId) {
+                const mergeToArray = _.merge(items2, items)
+                arrayLeadsPerSourceOffices = _.merge(changeArrayName, mergeToArray)
+              } else {
+                arrayLeadsPerSourceOffices = _.merge(changeArrayName, mergeLeadsPerSource)
+              }
+            })
+          })
+        }
+
+        console.log(arrayLeadsPerSourceOffices)
+
+        return arrayFinal
       })
     )
+    const totalLeads = await models.Business.count({
+      as: 'Business',
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [{
+        model: models.User,
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          listingAgent: 1,
+          active: 1
+        }
+      }]
+    })
+    const totalSignedUp = await models.Business.count({
+      as: 'Business',
+      where: {
+        dateChangedToSalesMemorandum: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [{
+        model: models.User,
+        as: 'listingAgent',
+        where: {
+          id: {
+            $col: 'Business.listingAgent_id'
+          },
+          listingAgent: 1,
+          active: 1
+        }
+      }]
+    })
     return res.status(200).json({
-      data: itemOffices
+      data: itemOffices,
+      totalLeads,
+      totalSignedUp,
+      totalConvertionRate: Math.trunc((totalSignedUp / totalLeads) * 100)
     })
   } catch (error) {
     return next(error)
