@@ -1607,32 +1607,32 @@
           <tr>
             <td class="cell-title">{{aaRow}}</td>
             {{#if ../renderPdfYear1}}
-            {{#if sales1Validation}}
+            {{#if ../sales1Validation}}
             <td class="cell-value-normal">{{aaRowYear1}}</td>
             {{/if}}
             {{/if}}
             {{#if ../renderPdfYear2}}
-            {{#if sales2Validation}}
+            {{#if ../sales2Validation}}
             <td class="cell-value-normal">{{aaRowYear2}}</td>
             {{/if}}
             {{/if}}
             {{#if ../renderPdfYear3}}
-            {{#if sales3Validation}}
+            {{#if ../sales3Validation}}
             <td class="cell-value-normal">{{aaRowYear3}}</td>
             {{/if}}
             {{/if}}
             {{#if ../renderPdfYear4}}
-            {{#if sales4Validation}}
+            {{#if ../sales4Validation}}
             <td class="cell-value-normal">{{aaRowYear4}}</td>
             {{/if}}
             {{/if}}
             {{#if ../renderPdfYear5}}
-            {{#if sales5Validation}}
+            {{#if ../sales5Validation}}
             <td class="cell-value-normal">{{aaRowYear5}}</td>
             {{/if}}
             {{/if}}
             {{#if ../renderPdfYear7}}
-            {{#if sales7Validation}}
+            {{#if ../sales7Validation}}
             <td class="cell-value-normal">{{aaRowYear7}}</td>
             {{/if}}
             {{/if}}
@@ -2028,7 +2028,7 @@
           {{formulaAskingPrice}}</div>
       </div>
     </div>
-    <div style="position: absolute; top:1000px;left:365px; z-index: 1355;">
+    <div style="position: absolute; top:1000px;left:358px; z-index: 1355;">
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 150px; height: 28.213228346457px; background-color: ; z-index: 1355; font-size: 20px; line-height: 23px; text-align: left; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
@@ -2046,8 +2046,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 47px; height: 36.21968503937px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          Asking
-          Price</div>
+          {{labelAskingPriceInTheFormula}}</div>
       </div>
     </div>
     <div style="position: absolute; top:771.66992125984px;left:638.99149606299px; z-index: 1324;">
@@ -2135,7 +2134,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 53px; height: 51.042762708661px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
-          {{formulaPriceBasedOnComparable}}</div>
+          {{formulaAskingPrice}}</div>
       </div>
     </div>
     <div style="position: absolute; top:831.90897637795px;left:177.66708661417px; z-index: 1329;">
@@ -2219,7 +2218,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 53px; height: 38.282072031496px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
-          {{formulaAskingPrice}}</div>
+          {{askingPriceInTheFormula}}</div>
       </div>
     </div>
     <div style="position: absolute; top:830.76519685039px;left:555.8768503937px; z-index: 1329;">
@@ -2349,7 +2348,7 @@
             data: [],
             backgroundColor: 'red',
             borderColor: 'red',
-            borderWidth: 1,
+            borderWidth: 3,
             fill: false,
             yAdjust: 40,
             xAdjust: 60
@@ -2359,7 +2358,7 @@
             data: [],
             backgroundColor: 'blue',
             borderColor: 'blue',
-            borderWidth: 1,
+            borderWidth: 3,
             fill: false
           },
           {
@@ -2367,7 +2366,7 @@
             data: [],
             backgroundColor: 'green',
             borderColor: 'green',
-            borderWidth: 1,
+            borderWidth: 3,
             fill: false
           }
         ]
@@ -2575,7 +2574,7 @@
             data: [],
             backgroundColor: 'orange',
             borderColor: 'orange',
-            borderWidth: 1,
+            borderWidth: 3,
             fill: false
           },
           {
@@ -2583,7 +2582,7 @@
             data: [],
             backgroundColor: 'purple',
             borderColor: 'purple',
-            borderWidth: 1,
+            borderWidth: 3,
             fill: false
           }
         ]

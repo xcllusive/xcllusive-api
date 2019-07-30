@@ -696,12 +696,11 @@ export const generatePdf = async (req, res, next) => {
 
     /* Stock */
     context.leftProposedPrice = '340px'
-    if (appraisal.stockNecessary > 0) {
+    if ((appraisal.stockNecessary > 0 || appraisal.currentStockLevel > 0) && parseInt(appraisal.stockValuationOption) !== 1) {
       context.plusIncl = appraisal.inclStock ? 'Incl. Stock of' : 'Plus Stock of'
-      context.showCurrentStockLevel = numeral(appraisal.currentStockLevel).format('$0,0')
+      context.showCurrentStockLevel = parseInt(appraisal.stockValuationOption) === 2 ? numeral(appraisal.currentStockLevel).format('$0,0') : numeral(appraisal.stockNecessary).format('$0,0')
       context.leftProposedPrice = '239px'
     }
-
     // start notes and assumptions
     const arrayNotesAssumptions = []
     if (appraisal.notesAndAssumptions1YesNo) {
@@ -842,6 +841,10 @@ export const generatePdf = async (req, res, next) => {
     context.colSpanFI = colSpanFI + 1
     context.totalYearsUsed = colSpanFI
 
+    /* askingprice in the formula */
+    context.askingPriceInTheFormula = appraisal.formulaAskingPrice
+    context.labelAskingPriceInTheFormula = appraisal.reducePriceForStockValue ? 'Asking Price Inc. Stock' : 'Asking Price'
+
     /* signals final price */
     context.signalRiskPremium = parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium)) >= 0 ? '+' : ''
     context.signalMarketPremium = parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium)) >= 0 ? '+' : ''
@@ -881,21 +884,21 @@ export const generatePdf = async (req, res, next) => {
     const template = handlebarsCompiled(context)
 
     /* test pdf on chromium  */
-    // const browser = await puppeteer.launch({
-    //   headless: false
-    // })
-    /* end test pdf on chromium  */
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      headless: false
     })
+    /* end test pdf on chromium  */
+    // const browser = await puppeteer.launch({
+    //   args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // })
 
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
     /* only works local. Does not work in AWS */
-    // await page.goto(`data:text/html,${template}`, {
-    //   waitUntil: 'networkidle0'
-    // })
+    await page.goto(`data:text/html,${template}`, {
+      waitUntil: 'networkidle0'
+    })
     /* end */
 
     await page.pdf(PDF_OPTIONS)

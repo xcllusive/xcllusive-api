@@ -2135,6 +2135,11 @@ export const updateStageMemo = async (req, res, next) => {
 
     updateMemo.dateChangedToSalesMemorandum = moment().toDate()
     updateMemo.currentPrice = updateMemo.listedPrice
+    updateMemo.industry = updateMemo.industry
+    updateMemo.commissionPerc = parseFloat(updateMemo.commissionPerc)
+    updateMemo.productId = updateMemo.businessProduct
+
+    console.log(updateMemo)
 
     await models.Business.update(updateMemo, {
       where: {
