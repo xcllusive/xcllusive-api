@@ -896,9 +896,9 @@ export const generatePdf = async (req, res, next) => {
     await page.emulateMedia('screen')
     await page.setContent(template)
     /* only works local. Does not work in AWS */
-    await page.goto(`data:text/html,${template}`, {
-      waitUntil: 'networkidle0'
-    })
+    // await page.goto(`data:text/html,${template}`, {
+    //   waitUntil: 'networkidle0'
+    // })
     /* end */
 
     await page.pdf(PDF_OPTIONS)
