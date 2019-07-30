@@ -884,13 +884,13 @@ export const generatePdf = async (req, res, next) => {
     const template = handlebarsCompiled(context)
 
     /* test pdf on chromium  */
-    const browser = await puppeteer.launch({
-      headless: false
-    })
-    /* end test pdf on chromium  */
     // const browser = await puppeteer.launch({
-    //   args: ['--no-sandbox', '--disable-setuid-sandbox']
+    //   headless: false
     // })
+    /* end test pdf on chromium  */
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
 
     const page = await browser.newPage()
     await page.emulateMedia('screen')
