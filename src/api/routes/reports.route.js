@@ -10,8 +10,7 @@ import {
   activityRequestControlPerUser,
   getUsersPerRegion,
   getDailyTimeActivityReport,
-  getCtcBusinessesPerOffice,
-  getMarketingReportTest
+  getCtcBusinessesPerOffice
 } from '../controllers/reports.controller'
 import {
   authMiddleware,
@@ -38,7 +37,6 @@ router.use(controlActivityUser('Management'))
 router.route('/analyst-report').get(getAnalystReport)
 
 router.route('/marketing-report').get(getMarketingReport)
-router.route('/marketing-report-test').get(getMarketingReportTest)
 
 router.route('/enquiry-report').get(getEnquiryReport)
 

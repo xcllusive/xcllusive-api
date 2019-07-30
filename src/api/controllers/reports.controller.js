@@ -3,7 +3,7 @@ import APIError from '../utils/APIError'
 import _ from 'lodash'
 import moment from 'moment'
 
-export const getMarketingReportTest = async (req, res, next) => {
+export const getMarketingReport = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
 
@@ -15,10 +15,14 @@ export const getMarketingReportTest = async (req, res, next) => {
         id: {
           $ne: 3
         }
-      }
+      },
+      order: [
+        ['id', 'ASC']
+      ]
     })
-    const itemOffices = await Promise.all(
+    const leadsPerAnalyst = await Promise.all(
       offices.map(async item => {
+        /* LEADS PER ANALYST */
         const totalLeads = await models.Business.findAndCountAll({
           raw: true,
           attributes: ['listingAgent_id'],
@@ -49,7 +53,6 @@ export const getMarketingReportTest = async (req, res, next) => {
             }, 'id']
           ]
         })
-
         const totalLeadsMerged = _.merge(totalLeads.rows, totalLeads.count)
 
         const signedUp = await models.Business.count({
@@ -81,7 +84,6 @@ export const getMarketingReportTest = async (req, res, next) => {
             }, 'id']
           ]
         })
-
         let addLeadsSignedUp = totalLeads.rows
         if (totalLeadsMerged.length > 0) {
           const signedUpImStage = signedUp.map(item => {
@@ -149,98 +151,6 @@ export const getMarketingReportTest = async (req, res, next) => {
             countCtc: item.countCtc > 0 ? item.countCtc : null
           })
         })
-
-        const leadsPerSource = await models.Business.findAndCountAll({
-          raw: true,
-          attributes: ['sourceId'],
-          as: 'Business',
-          where: {
-            dateTimeCreated: {
-              $between: [dateFrom, dateTo]
-            },
-            company_id: 1
-          },
-          include: [{
-            model: models.BusinessSource,
-            attributes: ['label'],
-            as: 'source',
-            where: {
-              id: {
-                $col: 'Business.sourceId'
-              }
-            }
-          }, {
-            model: models.User,
-            attributes: ['dataRegion'],
-            as: 'listingAgent',
-            where: {
-              id: {
-                $col: 'Business.listingAgent_id'
-              },
-              officeId: item.id
-            }
-          }],
-          group: ['Business.sourceId']
-        })
-        const mergeLeadsPerSource = _.merge(leadsPerSource.rows, leadsPerSource.count)
-
-        const leadsPerSourceSignedUp = await models.Business.findAndCountAll({
-          raw: true,
-          attributes: ['sourceId'],
-          as: 'Business',
-          where: {
-            dateChangedToSalesMemorandum: {
-              $between: [dateFrom, dateTo]
-            },
-            company_id: 1
-          },
-          include: [{
-            model: models.BusinessSource,
-            attributes: ['label'],
-            as: 'source',
-            where: {
-              id: {
-                $col: 'Business.sourceId'
-              }
-            }
-          }, {
-            model: models.User,
-            attributes: ['dataRegion'],
-            as: 'listingAgent',
-            where: {
-              id: {
-                $col: 'Business.listingAgent_id'
-              },
-              officeId: item.id
-            }
-          }],
-          group: ['Business.sourceId']
-        })
-        const mergeLeadsPerSourceSignedUp = _.merge(leadsPerSourceSignedUp.rows, leadsPerSourceSignedUp.count)
-        let arrayLeadsPerSourceOffices = mergeLeadsPerSource
-        if (mergeLeadsPerSourceSignedUp.length > 0) {
-          const changeArrayName = mergeLeadsPerSourceSignedUp.map(item => {
-            return {
-              sourceId: item.sourceId,
-              'source.label': item['source.label'],
-              'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-              countSignedUp: item.count
-            }
-          })
-          mergeLeadsPerSource.forEach(items => {
-            changeArrayName.forEach(items2 => {
-              if (items.sourceId === items2.sourceId) {
-                const mergeToArray = _.merge(items2, items)
-                arrayLeadsPerSourceOffices = _.merge(changeArrayName, mergeToArray)
-              } else {
-                arrayLeadsPerSourceOffices = _.merge(changeArrayName, mergeLeadsPerSource)
-              }
-            })
-          })
-        }
-
-        console.log(arrayLeadsPerSourceOffices)
-
         return arrayFinal
       })
     )
@@ -282,965 +192,117 @@ export const getMarketingReportTest = async (req, res, next) => {
         }
       }]
     })
-    return res.status(200).json({
-      data: itemOffices,
-      totalLeads,
-      totalSignedUp,
-      totalConvertionRate: Math.trunc((totalSignedUp / totalLeads) * 100)
-    })
-  } catch (error) {
-    return next(error)
-  }
-}
 
-export const getMarketingReport = async (req, res, next) => {
-  const dateFrom = req.query.dateFrom
-  const dateTo = req.query.dateTo
-
-  try {
-    /* starts Leads per Analyst */
-    const dateTimeCreated = await models.Business.findAll({
-      raw: true,
-      attributes: ['listingAgent_id'],
-      where:
-      {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.User,
-        attributes: ['firstName', 'lastName', 'dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
+    /* LEADS PER SOURCE */
+    const leadsPerSource = await Promise.all(
+      offices.map(async item => {
+        const leadsPerSourceCreated = await models.Business.findAndCountAll({
+          raw: true,
+          attributes: ['sourceId'],
+          as: 'Business',
+          where: {
+            dateTimeCreated: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 1
           },
-          listingAgent: 1
-        }
-      }],
-      group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'id']
-      ]
-    })
-
-    const dateTimeCreatedCount = await models.Business.count({
-      raw: true,
-      attributes: ['listingAgent_id'],
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.User,
-        attributes: ['firstName', 'lastName', 'dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          listingAgent: 1
-        }
-      }],
-      group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'id']
-      ]
-    })
-
-    const dateChangedToSalesMemorandum = await models.Business.count({
-      raw: true,
-      attributes: ['listingAgent_id'],
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.User,
-        attributes: ['firstName', 'lastName', 'dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          listingAgent: 1
-        }
-      }],
-      group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'id']
-      ]
-    })
-
-    const ctcLeadsPerOfficeFromXcllusive = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['company_id'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 2
-      },
-      include: [{
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          }
-        }
-      }],
-      group: [
-        [{
-          model: models.User,
-          as: 'listingAgent'
-        }, 'dataRegion']
-      ]
-    })
-
-    const arrayCtcLeadsPerOfficeFromXcllusive = _.merge(ctcLeadsPerOfficeFromXcllusive.rows, ctcLeadsPerOfficeFromXcllusive.count)
-
-    const arrayTotalPerOffice = arrayCtcLeadsPerOfficeFromXcllusive.map(({
-      count
-    }) => count)
-    const totalBusinessesCtc = arrayTotalPerOffice.reduce(function (a, b) {
-      return a + b
-    }, 0)
-
-    const mergeArray = _.merge(dateTimeCreated, dateTimeCreatedCount)
-    let arrayFinal = dateTimeCreated
-    if (mergeArray.length > 0) {
-      const changedArrayName = dateChangedToSalesMemorandum.map(item => {
-        return {
-          listingAgent_id: item.listingAgent_id,
-          countImStage: item.count
-        }
-      })
-      changedArrayName.forEach(items => {
-        mergeArray.forEach(items2 => {
-          if (items.listingAgent_id === items2.listingAgent_id) {
-            const mergeToArray = _.merge(items2, items)
-            arrayFinal = _.merge(mergeArray, mergeToArray)
-          }
+          include: [{
+            model: models.BusinessSource,
+            attributes: ['label'],
+            as: 'source',
+            where: {
+              id: {
+                $col: 'Business.sourceId'
+              }
+            }
+          }, {
+            model: models.User,
+            attributes: ['dataRegion', 'officeId'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id
+            }
+          }],
+          group: ['Business.sourceId']
         })
-      })
-    }
+        const mergeLeadsPerSource = _.merge(leadsPerSourceCreated.rows, leadsPerSourceCreated.count)
 
-    let sumLeadsAdelaide = 0
-    let sumImAdelaide = 0
-    let indexAdelaide = 0
-    let sumConvertionRateAdelaide = 0
-    let sumLeadsCamberra = 0
-    let sumImCamberra = 0
-    let indexCamberra = 0
-    let sumConvertionRateCamberra = 0
-    let sumLeadsCowra = 0
-    let sumImCowra = 0
-    let indexCowra = 0
-    let sumConvertionRateCowra = 0
-    let sumLeadsGosford = 0
-    let sumImGosford = 0
-    let indexGosford = 0
-    let sumConvertionRateGosford = 0
-    let sumLeadsMelbourne = 0
-    let sumImMelbourne = 0
-    let indexMelbourne = 0
-    let sumConvertionRateMelbourne = 0
-    let sumLeadsSydney = 0
-    let sumImSydney = 0
-    let indexSydney = 0
-    let sumConvertionRateSydney = 0
-    let sumLeadsQueensland = 0
-    let sumImQueensland = 0
-    let indexQueensland = 0
-    let sumConvertionRateQueensland = 0
-    arrayFinal.forEach(items => {
-      if (!items.countImStage) {
-        items.countImStage = 0
-      }
-      if (items['listingAgent.dataRegion'] === 'Adelaide Office') {
-        sumLeadsAdelaide = sumLeadsAdelaide + items.count
-        sumImAdelaide = sumImAdelaide + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateAdelaide = sumConvertionRateAdelaide + (items.count / items.countImStage) * 100
-        indexAdelaide++
-      }
-      if (items['listingAgent.dataRegion'] === 'Camberra Office') {
-        sumLeadsCamberra = sumLeadsCamberra + items.count
-        sumImCamberra = sumImCamberra + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateCamberra = sumConvertionRateCamberra + (items.count / items.countImStage) * 100
-        indexCamberra++
-      }
-      if (items['listingAgent.dataRegion'] === 'Cowra Office') {
-        sumLeadsCowra = sumLeadsCowra + items.count
-        sumImCowra = sumImCowra + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateCowra = sumConvertionRateCowra + (items.count / items.countImStage) * 100
-        indexCowra++
-      }
-      if (items['listingAgent.dataRegion'] === 'Gosford Office') {
-        sumLeadsGosford = sumLeadsGosford + items.count
-        sumImGosford = sumImGosford + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateGosford = sumConvertionRateGosford + (items.count / items.countImStage) * 100
-        indexGosford++
-      }
-      if (items['listingAgent.dataRegion'] === 'Melbourne Office') {
-        sumLeadsMelbourne = sumLeadsMelbourne + items.count
-        sumImMelbourne = sumImMelbourne + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateMelbourne = sumConvertionRateMelbourne + (items.count / items.countImStage) * 100
-        indexMelbourne++
-      }
-      if (items['listingAgent.dataRegion'] === 'Sydney Office') {
-        sumLeadsSydney = sumLeadsSydney + items.count
-        sumImSydney = sumImSydney + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateSydney = sumConvertionRateSydney + (items.count / items.countImStage) * 100
-        indexSydney++
-      }
-      if (items['listingAgent.dataRegion'] === 'Queensland Office') {
-        sumLeadsQueensland = sumLeadsQueensland + items.count
-        sumImQueensland = sumImQueensland + items.countImStage
-        if (items.count > 0 && items.countImStage) sumConvertionRateQueensland = sumConvertionRateQueensland + (items.count / items.countImStage) * 100
-        indexQueensland++
-      }
-    })
-    let arrayAdelaide = []
-    arrayAdelaide.push({
-      sumLeadsAdelaide,
-      sumImAdelaide,
-      indexAdelaide,
-      sumConvertionRateAdelaide
-    })
-    let arrayCamberra = []
-    arrayCamberra.push({
-      sumLeadsCamberra,
-      sumImCamberra,
-      indexCamberra,
-      sumConvertionRateCamberra
-    })
-    let arrayCowra = []
-    arrayCowra.push({
-      sumLeadsCowra,
-      sumImCowra,
-      indexCowra,
-      sumConvertionRateCowra
-    })
-    let arrayGosford = []
-    arrayGosford.push({
-      sumLeadsGosford,
-      sumImGosford,
-      indexGosford,
-      sumConvertionRateGosford
-    })
-    let arrayMelbourne = []
-    arrayMelbourne.push({
-      sumLeadsMelbourne,
-      sumImMelbourne,
-      indexMelbourne,
-      sumConvertionRateMelbourne
-    })
-    let arraySydney = []
-    arraySydney.push({
-      sumLeadsSydney,
-      sumImSydney,
-      indexSydney,
-      sumConvertionRateSydney
-    })
-    let arrayQueensland = []
-    arrayQueensland.push({
-      sumLeadsQueensland,
-      sumImQueensland,
-      indexQueensland,
-      sumConvertionRateQueensland
-    })
-    let arrayOffices = []
-    arrayOffices.push({
-      arrayAdelaide,
-      arrayCamberra,
-      arrayCowra,
-      arrayGosford,
-      arrayMelbourne,
-      arraySydney,
-      arrayQueensland
-    })
-    /* ends Leads per Analyst */
-
-    /* starts Leads per Source */
-    // Adelaide
-    const leadsPerSourceAdelaideCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
+        const leadsPerSourceSignedUp = await models.Business.findAndCountAll({
+          raw: true,
+          attributes: ['sourceId'],
+          as: 'Business',
+          where: {
+            dateChangedToSalesMemorandum: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 1
           },
-          dataRegion: 'Adelaide Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceAdelaideCreated = _.merge(leadsPerSourceAdelaideCreated.rows, leadsPerSourceAdelaideCreated.count)
-
-    const leadsPerSourceAdelaideIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Adelaide Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceAdelaideIMMerge = _.merge(leadsPerSourceAdelaideIM.rows, leadsPerSourceAdelaideIM.count)
-    let arrayLeadsPerSourceAdelaide = arrayLeadsPerSourceAdelaideCreated
-    if (arrayLeadsPerSourceAdelaideIMMerge.length > 0) {
-      const changedArrayAdelaideName = arrayLeadsPerSourceAdelaideIMMerge.map(item => {
-        return {
-          sourceId: item.sourceId,
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageAdelaide: item.count
-        }
-      })
-      arrayLeadsPerSourceAdelaideCreated.forEach(items => {
-        changedArrayAdelaideName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceAdelaide = _.merge(changedArrayAdelaideName, arrayLeadsPerSourceAdelaideCreated)
-          }
+          include: [{
+            model: models.BusinessSource,
+            attributes: ['label'],
+            as: 'source',
+            where: {
+              id: {
+                $col: 'Business.sourceId'
+              }
+            }
+          }, {
+            model: models.User,
+            attributes: ['dataRegion', 'officeId'],
+            as: 'listingAgent',
+            where: {
+              id: {
+                $col: 'Business.listingAgent_id'
+              },
+              officeId: item.id
+            }
+          }],
+          group: ['Business.sourceId']
         })
-      })
-    }
 
-    // Camberra
-    const leadsPerSourceCamberraCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
+        const mergeLeadsPerSourceSignedUp = _.merge(leadsPerSourceSignedUp.rows, leadsPerSourceSignedUp.count)
+        let arrayLeadsPerSourceOffices = mergeLeadsPerSource
+        if (mergeLeadsPerSourceSignedUp.length > 0) {
+          const changeArrayName = mergeLeadsPerSourceSignedUp.map(item => {
+            return {
+              sourceId: item.sourceId,
+              'source.label': item['source.label'],
+              'listingAgent.dataRegion': item['listingAgent.dataRegion'],
+              'listingAgent.officeId': item['listingAgent.officeId'],
+              countSignedUp: item.count
+            }
+          })
+          mergeLeadsPerSource.forEach(items => {
+            changeArrayName.forEach(items2 => {
+              if (items.sourceId === items2.sourceId) {
+                const mergeToArray = _.merge(items2, items)
+                arrayLeadsPerSourceOffices = _.merge(changeArrayName, mergeToArray)
+              } else {
+                arrayLeadsPerSourceOffices = _.merge(changeArrayName, mergeLeadsPerSource)
+              }
+            })
+          })
         }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Camberra Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceCamberraCreated = _.merge(leadsPerSourceCamberraCreated.rows, leadsPerSourceCamberraCreated.count)
 
-    const leadsPerSourceCamberraIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Camberra Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceCamberraIMMerge = _.merge(leadsPerSourceCamberraIM.rows, leadsPerSourceCamberraIM.count)
-    let arrayLeadsPerSourceCamberra = arrayLeadsPerSourceCamberraCreated
-    if (arrayLeadsPerSourceCamberraIMMerge.length > 0) {
-      const changedArrayCamberraName = arrayLeadsPerSourceCamberraIMMerge.map(item => {
-        return {
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageCamberra: item.count
-        }
-      })
-      arrayLeadsPerSourceCamberraCreated.forEach(items => {
-        changedArrayCamberraName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceCamberra = _.merge(changedArrayCamberraName, arrayLeadsPerSourceCamberraCreated)
-          }
+        let arrayFinalLeadsPerSource = []
+        arrayLeadsPerSourceOffices.map(item => {
+          arrayFinalLeadsPerSource.push({
+            sourceId: item.sourceId,
+            sourceLabel: item['source.label'],
+            dataRegion: item['listingAgent.dataRegion'],
+            officeId: item['listingAgent.officeId'],
+            totalLeads: item.count,
+            totalSignedUp: item.countSignedUp ? item.countSignedUp : 0,
+            convertionRate: item.countSignedUp > 0 ? `${Math.trunc((item.countSignedUp / item.count) * 100)}%` : 0
+          })
         })
+        return arrayFinalLeadsPerSource
       })
-    }
+    )
 
-    // Cowra
-    const leadsPerSourceCowraCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Cowra Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceCowraCreated = _.merge(leadsPerSourceCowraCreated.rows, leadsPerSourceCowraCreated.count)
-
-    const leadsPerSourceCowraIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Cowra Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceCowraIMMerge = _.merge(leadsPerSourceCowraIM.rows, leadsPerSourceCowraIM.count)
-    let arrayLeadsPerSourceCowra = arrayLeadsPerSourceCowraCreated
-    if (arrayLeadsPerSourceCowraIMMerge.length > 0) {
-      const changedArrayCowraName = arrayLeadsPerSourceCowraIMMerge.map(item => {
-        return {
-          sourceId: item.sourceId,
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageCowra: item.count
-        }
-      })
-      arrayLeadsPerSourceCowraCreated.forEach(items => {
-        changedArrayCowraName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceCowra = _.merge(changedArrayCowraName, arrayLeadsPerSourceCowraCreated)
-          }
-        })
-      })
-    }
-
-    // Gosford
-    const leadsPerSourceGosfordCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Gosford Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceGosfordCreated = _.merge(leadsPerSourceGosfordCreated.rows, leadsPerSourceGosfordCreated.count)
-
-    const leadsPerSourceGosfordIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Gosford Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceGosfordIMMerge = _.merge(leadsPerSourceGosfordIM.rows, leadsPerSourceGosfordIM.count)
-    let arrayLeadsPerSourceGosford = arrayLeadsPerSourceGosfordCreated
-    if (arrayLeadsPerSourceGosfordIMMerge.length > 0) {
-      const changedArrayGosfordName = arrayLeadsPerSourceGosfordIMMerge.map(item => {
-        return {
-          sourceId: item.sourceId,
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageGosford: item.count
-        }
-      })
-      arrayLeadsPerSourceGosfordCreated.forEach(items => {
-        changedArrayGosfordName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceGosford = _.merge(changedArrayGosfordName, arrayLeadsPerSourceGosfordCreated)
-          }
-        })
-      })
-    }
-
-    // Melbourne
-    const leadsPerSourceMelbourneCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Melbourne Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceMelbourneCreated = _.merge(leadsPerSourceMelbourneCreated.rows, leadsPerSourceMelbourneCreated.count)
-
-    const leadsPerSourceMelbourneIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Melbourne Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceMelbourneIMMerge = _.merge(leadsPerSourceMelbourneIM.rows, leadsPerSourceMelbourneIM.count)
-    let arrayLeadsPerSourceMelbourne = arrayLeadsPerSourceMelbourneCreated
-    if (arrayLeadsPerSourceMelbourneIMMerge.length > 0) {
-      const changedArrayMelbourneName = arrayLeadsPerSourceMelbourneIMMerge.map(item => {
-        return {
-          sourceId: item.sourceId,
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageMelbourne: item.count
-        }
-      })
-      arrayLeadsPerSourceMelbourneCreated.forEach(items => {
-        changedArrayMelbourneName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceMelbourne = _.merge(changedArrayMelbourneName, arrayLeadsPerSourceMelbourneCreated)
-          }
-        })
-      })
-    }
-
-    // Sydney
-    const leadsPerSourceSydneyCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Sydney Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceSydneyCreated = _.merge(leadsPerSourceSydneyCreated.rows, leadsPerSourceSydneyCreated.count)
-
-    const leadsPerSourceSydneyIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Sydney Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceSydneyIMMerge = _.merge(leadsPerSourceSydneyIM.rows, leadsPerSourceSydneyIM.count)
-    let arrayLeadsPerSourceSydney = arrayLeadsPerSourceSydneyCreated
-    if (arrayLeadsPerSourceSydneyIMMerge.length > 0) {
-      const changedArraySydneyName = arrayLeadsPerSourceSydneyIMMerge.map(item => {
-        return {
-          sourceId: item.sourceId,
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageSydney: item.count
-        }
-      })
-      arrayLeadsPerSourceMelbourneCreated.forEach(items => {
-        changedArraySydneyName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceSydney = _.merge(changedArraySydneyName, arrayLeadsPerSourceSydneyCreated)
-          }
-        })
-      })
-    }
-
-    // Queensland
-    const leadsPerSourceQueenslandCreated = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Queensland Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceQueenslandCreated = _.merge(leadsPerSourceQueenslandCreated.rows, leadsPerSourceQueenslandCreated.count)
-
-    const leadsPerSourceQueenslandIM = await models.Business.findAndCountAll({
-      raw: true,
-      attributes: ['sourceId'],
-      as: 'Business',
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
-      include: [{
-        model: models.BusinessSource,
-        attributes: ['label'],
-        as: 'source',
-        where: {
-          id: {
-            $col: 'Business.sourceId'
-          }
-        }
-      }, {
-        model: models.User,
-        attributes: ['dataRegion'],
-        as: 'listingAgent',
-        where: {
-          id: {
-            $col: 'Business.listingAgent_id'
-          },
-          dataRegion: 'Queensland Office'
-        }
-      }],
-      group: ['Business.sourceId']
-    })
-    const arrayLeadsPerSourceQueenslandIMMerge = _.merge(leadsPerSourceQueenslandIM.rows, leadsPerSourceQueenslandIM.count)
-    let arrayLeadsPerSourceQueensland = arrayLeadsPerSourceQueenslandCreated
-    if (arrayLeadsPerSourceQueenslandIMMerge.length > 0) {
-      const changedArrayQueenslandName = arrayLeadsPerSourceQueenslandIMMerge.map(item => {
-        return {
-          sourceId: item.sourceId,
-          'source.label': item['source.label'],
-          'listingAgent.dataRegion': item['listingAgent.dataRegion'],
-          countSourceImStageQueensland: item.count
-        }
-      })
-      arrayLeadsPerSourceQueenslandCreated.forEach(items => {
-        changedArrayQueenslandName.forEach(items2 => {
-          if (items.sourceId === items2.sourceId) {
-            const mergeToArray = _.merge(items2, items)
-            arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, mergeToArray)
-          } else {
-            arrayLeadsPerSourceQueensland = _.merge(changedArrayQueenslandName, arrayLeadsPerSourceQueenslandCreated)
-          }
-        })
-      })
-    }
-
-    // STARTS TOTAL LEADS PER SOURCE
-    // const totalLeadsPerSourceIM = await models.Business.count({
-    //   raw: true,
-    //   attributes: ['sourceId'],
-    //   as: 'Business',
-    //   where: {
-    //     dateChangedToSalesMemorandum: {
-    //       $between: [dateFrom, dateTo]
-    //     }
-    //   },
-    //   include: [{
-    //     model: models.BusinessSource,
-    //     attributes: ['label'],
-    //     as: 'source',
-    //     where: {
-    //       id: {
-    //         $col: 'Business.sourceId'
-    //       }
-    //     }
-    //   }, {
-    //     model: models.User,
-    //     attributes: ['dataRegion'],
-    //     as: 'listingAgent',
-    //     where: {
-    //       id: {
-    //         $col: 'Business.listingAgent_id'
-    //       }
-    //     }
-    //   }]
-    // })
-    // FINISHS TOTAL LEADS PER SOURCE
-
-    /* ends Leads per Source */
-
-    /* starts Total per Source */
     const totalPerSource = await models.Business.findAndCountAll({
       raw: true,
       attributes: ['sourceId'],
@@ -1289,24 +351,15 @@ export const getMarketingReport = async (req, res, next) => {
         }
       }]
     })
-    /* ends Total per Source */
 
-    return res.status(201).json({
-      data: {
-        arrayFinal,
-        arrayTotalPerSource,
-        totalGeralPerSource,
-        arrayLeadsPerSourceAdelaide,
-        arrayLeadsPerSourceCamberra,
-        arrayLeadsPerSourceCowra,
-        arrayLeadsPerSourceGosford,
-        arrayLeadsPerSourceMelbourne,
-        arrayLeadsPerSourceSydney,
-        arrayLeadsPerSourceQueensland,
-        arrayOffices,
-        arrayCtcLeadsPerOfficeFromXcllusive,
-        totalBusinessesCtc
-      }
+    return res.status(200).json({
+      leadsPerAnalyst,
+      leadsPerSource,
+      totalLeads,
+      totalSignedUp,
+      totalConvertionRate: Math.trunc((totalSignedUp / totalLeads) * 100),
+      arrayTotalPerSource,
+      totalGeralPerSource
     })
   } catch (error) {
     return next(error)
