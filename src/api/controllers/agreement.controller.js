@@ -350,7 +350,7 @@ export const sendEmail = async (req, res, next) => {
         broker.postCode
       }`
     }
-
+    console.log(destPdfGeneratedAgreement)
     attachments.push({
       filename: mail.attachmentAgreement,
       path: destPdfGeneratedAgreement

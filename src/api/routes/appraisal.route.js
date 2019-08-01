@@ -7,7 +7,9 @@ import {
   update,
   remove,
   generatePdf,
-  moveFinancialYear
+  moveFinancialYear,
+  sendEmail,
+  uploadAppraisalToS3
 } from '../controllers/appraisal.controller'
 
 import {
@@ -44,5 +46,7 @@ router
 router.route('/:appraisalId/generate').post(generatePdf)
 
 router.route('/:appraisalId/move-financial-year').put(moveFinancialYear)
+
+router.route('/send-email').post(sendEmail)
 
 export default router
