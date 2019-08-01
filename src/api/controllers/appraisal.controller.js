@@ -9,9 +9,6 @@ import APIError from '../utils/APIError'
 import numeral from 'numeral'
 import mailer from '../modules/mailer'
 import {
-  uploadToS3
-} from '../modules/aws'
-import {
   ebitdaAvg,
   ebitdaLastYear,
   pebitdaLastYear,
@@ -880,9 +877,9 @@ const generateAppraisal = async (req, res, next, appraisalId, templatePath, dest
   await page.emulateMedia('screen')
   await page.setContent(template)
   /* only works local. Does not work in AWS */
-  await page.goto(`data:text/html,${template}`, {
-    waitUntil: 'networkidle0'
-  })
+  // await page.goto(`data:text/html,${template}`, {
+  //   waitUntil: 'networkidle0'
+  // })
   /* end */
 
   await page.pdf(PDF_OPTIONS)
