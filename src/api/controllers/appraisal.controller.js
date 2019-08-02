@@ -178,7 +178,7 @@ export const remove = async (req, res, next) => {
   }
 }
 
-const generateAppraisal = async (req, res, next, appraisalId, templatePath, destPdfGenerated, readFile) => {
+const generateAppraisal = async (req, res, next, appraisalId, draft, templatePath, destPdfGenerated, readFile) => {
   const _replaceDollarAndComma = replace => {
     replace = replace.replace('$', ',')
     replace = replace.replace(/,/g, '')
@@ -902,7 +902,7 @@ export const generatePdf = async (req, res, next) => {
   const readFile = util.promisify(fs.readFile)
 
   try {
-    await generateAppraisal(req, res, next, appraisalId, templatePath, destPdfGenerated, readFile)
+    await generateAppraisal(req, res, next, appraisalId, draft, templatePath, destPdfGenerated, readFile)
     // Upload file to aws s3
     // const upload = await uploadToS3('xcllusive-helpdesk-attachment', bosta, 'testAppraisal.pdf')
     // console.log('upload', upload)
@@ -940,35 +940,49 @@ export const generatePdf = async (req, res, next) => {
 
 export const sendEmail = async (req, res, next) => {
   const {
-    appraisalId
+    appraisalId, businessId, body, subject, to, attachmentName
   } = req.body
-
-  const {
-    draft
-  } = req.body
-
-  // appraisalId = 6
-  // const file = req.files.file
 
   try {
-    // sending email...
-
-    const templatePath = path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'appraisal', draft ? 'appraisalDraft.html' : 'appraisal.html')
+    const templatePath = path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'appraisal', 'appraisal.html')
 
     const destPdfGenerated = path.resolve('src', 'api', 'resources', 'pdf', 'generated', 'appraisal', `${Date.now()}.pdf`)
 
     const readFile = util.promisify(fs.readFile)
 
-    await generateAppraisal(req, res, next, 6, templatePath, destPdfGenerated, readFile)
+    await generateAppraisal(req, res, next, appraisalId, null, templatePath, destPdfGenerated, readFile)
+
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
+
+    const broker = await models.User.findOne({
+      where: {
+        id: business.brokerAccountName
+      }
+    })
+
+    const text = `<html>
+    <style>
+    * {
+     line-height: 0.5
+    }
+    </style>
+    <body>
+    ${body}
+    </body>
+    </html>`
 
     const mailOptions = {
-      to: 'bayesrox@gmail.com',
-      from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
-      subject: 'test appraisal',
-      html: 'test',
-      // replyTo: broker.email,
+      to: to,
+      from: `${broker.firstName} ${broker.lastName} <businessinfo@xcllusive.com.au>`,
+      subject: subject,
+      html: text,
+      replyTo: broker.email,
       attachments: [{
-        filename: 'pdf_test.pdf',
+        filename: attachmentName,
         path: destPdfGenerated
       }]
     }
@@ -1048,6 +1062,56 @@ export const moveFinancialYear = async (req, res, next) => {
     })
     return res.status(200).json({
       message: 'Financial Year Moved successfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getEmailTemplateAppraisal = async (req, res, next) => {
+  const { templateId, businessId
+  } = req.query
+  try {
+    const template = await models.EmailTemplate.findOne({
+      raw: true,
+      where: {
+        id: templateId
+      }
+    })
+    if (JSON.parse(template.handlebars)) {
+      template.handlebars = JSON.parse(template.handlebars)
+    }
+    // Compile the template to use variables
+    const templateCompiled = handlebars.compile(template.body)
+    const business = await models.Business.findOne({
+      raw: true,
+      where: {
+        id: businessId
+      }
+    })
+    const broker = await models.User.findOne({
+      where: {
+        id: business.brokerAccountName
+      }
+    })
+    const officeRegister = await models.OfficeRegister.findOne({
+      where: {
+        id: broker.officeId
+      }
+    })
+    const context = {
+      owners_name: `${business.firstNameV} ${business.lastNameV}`,
+      business_name: business.businessName,
+      broker_full_name: `${broker.firstName} ${broker.lastName}`,
+      broker_phone: broker.phoneMobile,
+      office_address: officeRegister.address,
+      office_number: officeRegister.phoneNumber
+    }
+
+    template.body = templateCompiled(context)
+
+    return res.status(201).json({
+      data: template
     })
   } catch (error) {
     return next(error)

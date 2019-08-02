@@ -2756,10 +2756,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: 0
-      },
-      appraisalUrl: {
-        type: DataTypes.STRING,
-        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',
