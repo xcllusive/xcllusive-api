@@ -9,7 +9,8 @@ import {
   generatePdf,
   moveFinancialYear,
   sendEmail,
-  getEmailTemplateAppraisal
+  getEmailTemplateAppraisal,
+  duplicate
 } from '../controllers/appraisal.controller'
 
 import {
@@ -33,6 +34,8 @@ router.use(authMiddleware).use(authorizeMiddleware({
 router.use(controlActivityUser('Business'))
 
 router.route('/email-template').get(getEmailTemplateAppraisal)
+
+router.route('/duplicate/:appraisalId').post(duplicate)
 
 router
   .route('/')

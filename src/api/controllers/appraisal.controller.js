@@ -37,7 +37,8 @@ export const list = async (req, res, next) => {
     const response = await models.Appraisal.findAndCountAll({
       where,
       limit,
-      offset
+      offset,
+      order: [['dateTimeCreated', 'desc']]
     })
     return res.status(201).json({
       data: response,
@@ -707,6 +708,9 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, templatePat
     arrayNotesAssumptions.push(appraisal.notesAndAssumptions14)
   }
   if (appraisal.notesAndAssumptions15YesNo) {
+    arrayNotesAssumptions.push(appraisal.notesAndAssumptions15)
+  }
+  if (appraisal.notesAndAssumptions16YesNo) {
     arrayNotesAssumptions.push(appraisal.notesAndAssumptions16)
   }
   if (appraisal.notesAndAssumptions17YesNo) {
@@ -884,6 +888,14 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, templatePat
 
   await page.pdf(PDF_OPTIONS)
   await browser.close()
+
+  const updateBusiness = {
+    businessId: appraisal.business_id,
+    appraisalLow: _replaceDollarAndComma(context.opinionPrice),
+    appraisalHigh: _replaceDollarAndComma(context.opinionPrice2)
+  }
+
+  return updateBusiness
 }
 
 export const generatePdf = async (req, res, next) => {
@@ -902,10 +914,7 @@ export const generatePdf = async (req, res, next) => {
   const readFile = util.promisify(fs.readFile)
 
   try {
-    await generateAppraisal(req, res, next, appraisalId, draft, templatePath, destPdfGenerated, readFile)
-    // Upload file to aws s3
-    // const upload = await uploadToS3('xcllusive-helpdesk-attachment', bosta, 'testAppraisal.pdf')
-    // console.log('upload', upload)
+    const updateBusiness = await generateAppraisal(req, res, next, appraisalId, draft, templatePath, destPdfGenerated, readFile)
 
     return res.download(destPdfGenerated, async err => {
       fs.unlink(destPdfGenerated, err => {
@@ -925,7 +934,15 @@ export const generatePdf = async (req, res, next) => {
         })
       }
       const downloaded = {}
-      downloaded.downloaded = true
+      if (draft) downloaded.downloadedDraft = true
+      else {
+        await models.Business.update(updateBusiness, {
+          where: {
+            id: updateBusiness.businessId
+          }
+        })
+        downloaded.downloaded = true
+      }
       await models.Appraisal.update(downloaded, {
         where: {
           id: appraisalId
@@ -950,7 +967,7 @@ export const sendEmail = async (req, res, next) => {
 
     const readFile = util.promisify(fs.readFile)
 
-    await generateAppraisal(req, res, next, appraisalId, null, templatePath, destPdfGenerated, readFile)
+    const updateBusiness = await generateAppraisal(req, res, next, appraisalId, null, templatePath, destPdfGenerated, readFile)
 
     const business = await models.Business.findOne({
       where: {
@@ -964,14 +981,16 @@ export const sendEmail = async (req, res, next) => {
       }
     })
 
+    const changeBody = body.replace(/<p>/g, '').replace(/<\/p><br>/g, '<br><br>').replace(/<\/p>/g, '<br>').replace(/<br><br><br>/g, '<br><br>')
+
     const text = `<html>
     <style>
     * {
-     line-height: 0.5
+     line-height: normal
     }
     </style>
     <body>
-    ${body}
+    ${changeBody}
     </body>
     </html>`
 
@@ -999,7 +1018,7 @@ export const sendEmail = async (req, res, next) => {
         })
       }
     })
-    await fs.unlink(destPdfGenerated, err => {
+    await fs.unlink(destPdfGenerated, async err => {
       if (err) {
         throw new APIError({
           message: 'Error on send email',
@@ -1007,6 +1026,18 @@ export const sendEmail = async (req, res, next) => {
           isPublic: true
         })
       }
+      const downloaded = {}
+      downloaded.downloaded = true
+      await models.Business.update(updateBusiness, {
+        where: {
+          id: updateBusiness.businessId
+        }
+      })
+      await models.Appraisal.update(downloaded, {
+        where: {
+          id: appraisalId
+        }
+      })
     })
 
     // return res.sendFile(destPdfGenerated)
@@ -1112,6 +1143,48 @@ export const getEmailTemplateAppraisal = async (req, res, next) => {
 
     return res.status(201).json({
       data: template
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const duplicate = async (req, res, next) => {
+  const {
+    appraisalId
+  } = req.params
+
+  try {
+    const appraisal = await models.Appraisal.findOne({
+      raw: true,
+      where: {
+        id: appraisalId
+      }
+    })
+
+    appraisal.id = null
+    appraisal.dateTimeCreated = moment().toDate()
+    appraisal.downloadedDraft = false
+    appraisal.downloaded = false
+    appraisal.createdBy_id = req.user.id
+    appraisal.confirmBusinessDetail = false
+    appraisal.confirmAbout = false
+    appraisal.confirmCustomersSuppliers = false
+    appraisal.confirmPremisesEnployees = false
+    appraisal.confirmOwnershipFinalNotes = false
+    appraisal.confirmBusinessAnalysis = false
+    appraisal.confirmFinancialAnalysis = false
+    appraisal.confirmComparableData = false
+    appraisal.confirmPricing = false
+    appraisal.confirmNotesAndAssumptions = false
+    appraisal.completed = 0
+
+    // console.log('test 1', appraisal.createdBy_id)
+
+    await models.Appraisal.create(appraisal)
+
+    return res.status(200).json({
+      message: 'Appraisal duplicated successfully'
     })
   } catch (error) {
     return next(error)
