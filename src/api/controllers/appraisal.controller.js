@@ -21,6 +21,24 @@ import {
 } from '../constants/icons'
 // import mailer from '../modules/mailer'
 
+const _createBusinessLog = async (req, businessId, message) => {
+  await models.BusinessLog.update({
+    followUpStatus: 'Done'
+  }, {
+    where: {
+      business_id: businessId
+    }
+  })
+
+  await models.BusinessLog.create({
+    text: message,
+    createdBy_id: req.user.id,
+    followUpStatus: 'Pending',
+    followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+    business_id: businessId
+  })
+}
+
 export const list = async (req, res, next) => {
   const {
     businessId
@@ -36,6 +54,9 @@ export const list = async (req, res, next) => {
   try {
     const response = await models.Appraisal.findAndCountAll({
       where,
+      include: [{
+        model: models.Business
+      }],
       limit,
       offset,
       order: [['dateTimeCreated', 'desc']]
@@ -108,6 +129,8 @@ export const create = async (req, res, next) => {
 
     const appraisal = await models.Appraisal.create(newAppraisal)
 
+    _createBusinessLog(req, appraisal.business_id, 'Appraisal Commenced')
+
     return res.status(200).json({
       data: appraisal,
       message: `Appraisal ${appraisal.id} created`
@@ -151,6 +174,7 @@ export const update = async (req, res, next) => {
         id: appraisalId
       }
     })
+
     return res.status(200).json({
       message: `Appraisal ${appraisalId} updated`
     })
@@ -179,7 +203,7 @@ export const remove = async (req, res, next) => {
   }
 }
 
-const generateAppraisal = async (req, res, next, appraisalId, draft, templatePath, destPdfGenerated, readFile) => {
+const generateAppraisal = async (req, res, next, appraisalId, draft, fromAppraisalList, templatePath, destPdfGenerated, readFile) => {
   const _replaceDollarAndComma = replace => {
     replace = replace.replace('$', ',')
     replace = replace.replace(/,/g, '')
@@ -233,7 +257,7 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, templatePat
   })
 
   const variables = {
-    dateTimeCreated: moment().format('DD/MM/YYYY'),
+    dateTimeCreated: fromAppraisalList ? moment(appraisal.sentDate).format('DD/MM/YYYY') : moment().format('DD/MM/YYYY'),
     currentYear: moment().get('year'),
     businessName: appraisal.Business.businessName,
     businessABN: appraisal.Business.businessABN,
@@ -904,7 +928,8 @@ export const generatePdf = async (req, res, next) => {
   } = req.params
 
   const {
-    draft
+    draft,
+    fromAppraisalList
   } = req.body
 
   const templatePath = path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'appraisal', draft ? 'appraisalDraft.html' : 'appraisal.html')
@@ -914,7 +939,7 @@ export const generatePdf = async (req, res, next) => {
   const readFile = util.promisify(fs.readFile)
 
   try {
-    const updateBusiness = await generateAppraisal(req, res, next, appraisalId, draft, templatePath, destPdfGenerated, readFile)
+    const updateBusiness = await generateAppraisal(req, res, next, appraisalId, draft, fromAppraisalList, templatePath, destPdfGenerated, readFile)
 
     return res.download(destPdfGenerated, async err => {
       fs.unlink(destPdfGenerated, err => {
@@ -942,6 +967,8 @@ export const generatePdf = async (req, res, next) => {
           }
         })
         downloaded.downloaded = true
+        downloaded.sentDate = moment().format('DD/MM/YYYY')
+        _createBusinessLog(req, updateBusiness.businessId, 'Appraisal Completed and Downloaded')
       }
       await models.Appraisal.update(downloaded, {
         where: {
@@ -967,7 +994,7 @@ export const sendEmail = async (req, res, next) => {
 
     const readFile = util.promisify(fs.readFile)
 
-    const updateBusiness = await generateAppraisal(req, res, next, appraisalId, null, templatePath, destPdfGenerated, readFile)
+    const updateBusiness = await generateAppraisal(req, res, next, appraisalId, null, false, templatePath, destPdfGenerated, readFile)
 
     const business = await models.Business.findOne({
       where: {
@@ -1028,6 +1055,7 @@ export const sendEmail = async (req, res, next) => {
       }
       const downloaded = {}
       downloaded.downloaded = true
+      downloaded.sentDate = moment().format('DD/MM/YYYY')
       await models.Business.update(updateBusiness, {
         where: {
           id: updateBusiness.businessId
@@ -1038,6 +1066,7 @@ export const sendEmail = async (req, res, next) => {
           id: appraisalId
         }
       })
+      _createBusinessLog(req, updateBusiness.businessId, 'Appraisal Completed and Emailed')
     })
 
     // return res.sendFile(destPdfGenerated)
@@ -1164,6 +1193,7 @@ export const duplicate = async (req, res, next) => {
 
     appraisal.id = null
     appraisal.dateTimeCreated = moment().toDate()
+    appraisal.sentDate = null
     appraisal.downloadedDraft = false
     appraisal.downloaded = false
     appraisal.createdBy_id = req.user.id
@@ -1181,9 +1211,12 @@ export const duplicate = async (req, res, next) => {
 
     // console.log('test 1', appraisal.createdBy_id)
 
-    await models.Appraisal.create(appraisal)
+    const newAppraisal = await models.Appraisal.create(appraisal)
+
+    _createBusinessLog(req, appraisal.business_id, 'New Appraisal Commenced')
 
     return res.status(200).json({
+      data: newAppraisal,
       message: 'Appraisal duplicated successfully'
     })
   } catch (error) {
