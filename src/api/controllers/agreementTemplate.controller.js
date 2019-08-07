@@ -121,6 +121,9 @@ export const update = async (req, res, next) => {
 
   editAgreementTemplate.modifiedBy_id = req.user.id
 
+  /* update description type */
+  editAgreementTemplate.typeDescription = editAgreementTemplate.type === 0 ? 'Business' : 'Property'
+
   try {
     const template = await models.AgreementTemplate.findOne({ where: { id } })
 

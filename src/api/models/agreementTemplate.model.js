@@ -76,6 +76,16 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 15000
+      },
+      type: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      typeDescription: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 'Business'
       }
     },
     {
