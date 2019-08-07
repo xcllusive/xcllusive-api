@@ -10,7 +10,7 @@ export const getMarketingReport = async (req, res, next) => {
   try {
     const offices = await models.OfficeRegister.findAll({
       raw: true,
-      attributes: ['id'],
+      attributes: ['id', 'label'],
       where: {
         id: {
           $ne: 3
@@ -41,9 +41,7 @@ export const getMarketingReport = async (req, res, next) => {
               id: {
                 $col: 'Business.listingAgent_id'
               },
-              officeId: item.id,
-              listingAgent: 1,
-              active: 1
+              officeId: item.id
             }
           }],
           group: [
@@ -72,9 +70,7 @@ export const getMarketingReport = async (req, res, next) => {
               id: {
                 $col: 'Business.listingAgent_id'
               },
-              officeId: item.id,
-              listingAgent: 1,
-              active: 1
+              officeId: item.id
             }
           }],
           group: [
@@ -121,9 +117,7 @@ export const getMarketingReport = async (req, res, next) => {
               id: {
                 $col: 'Business.listingAgent_id'
               },
-              officeId: item.id,
-              listingAgent: 1,
-              active: 1
+              officeId: item.id
             }
           }],
           group: [
@@ -136,21 +130,30 @@ export const getMarketingReport = async (req, res, next) => {
         const ctcLeadsPerOfficeCount = ctcLeadsPerOffice.map(item => {
           return {countCtc: item.count }
         })
-        const mergeWithCtcLeads = _.merge(arrayOffices, ctcLeadsPerOfficeCount)
-
         let arrayFinal = []
-        mergeWithCtcLeads.forEach(item => {
-          arrayFinal.push({
-            listingAgent_id: item.listingAgent_id,
-            firstName: item['listingAgent.firstName'],
-            lastName: item['listingAgent.lastName'],
-            dataRegion: item['listingAgent.dataRegion'],
-            totalLeads: item.count,
-            signed: item.countImStage ? item.countImStage : 0,
-            convertionRate: item.countImStage > 0 ? `${Math.trunc((item.countImStage / item.count) * 100)}%` : 0,
-            countCtc: item.countCtc > 0 ? item.countCtc : null
+        if (arrayOffices.length !== 0) {
+          const mergeWithCtcLeads = _.merge(arrayOffices, ctcLeadsPerOfficeCount)
+
+          mergeWithCtcLeads.forEach(item => {
+            arrayFinal.push({
+              listingAgent_id: item.listingAgent_id,
+              firstName: item['listingAgent.firstName'],
+              lastName: item['listingAgent.lastName'],
+              dataRegion: item['listingAgent.dataRegion'],
+              totalLeads: item.count,
+              signed: item.countImStage ? item.countImStage : 0,
+              convertionRate: item.countImStage > 0 ? `${Math.trunc((item.countImStage / item.count) * 100)}%` : 0,
+              countCtc: item.countCtc > 0 ? item.countCtc : null
+            })
           })
-        })
+        } else {
+          ctcLeadsPerOfficeCount.forEach(ctcLeads => {
+            arrayFinal.push({
+              dataRegion: item.label,
+              countCtc: ctcLeads.countCtc > 0 ? ctcLeads.countCtc : null
+            })
+          })
+        }
         return arrayFinal
       })
     )
@@ -168,8 +171,9 @@ export const getMarketingReport = async (req, res, next) => {
           id: {
             $col: 'Business.listingAgent_id'
           },
-          listingAgent: 1,
-          active: 1
+          officeId: {
+            $ne: 3
+          }
         }
       }]
     })
@@ -188,7 +192,10 @@ export const getMarketingReport = async (req, res, next) => {
             $col: 'Business.listingAgent_id'
           },
           listingAgent: 1,
-          active: 1
+          active: 1,
+          officeId: {
+            $ne: 3
+          }
         }
       }]
     })
@@ -338,8 +345,7 @@ export const getMarketingReport = async (req, res, next) => {
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        },
-        company_id: 1
+        }
       },
       include: [{
         model: models.BusinessSource,
