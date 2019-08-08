@@ -211,6 +211,11 @@ export default (sequelize, DataTypes) => {
       dateTimeFirstOpenByAgent: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      agreementProperty_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
       }
     }, {
       createdAt: 'dateTimeCreated',

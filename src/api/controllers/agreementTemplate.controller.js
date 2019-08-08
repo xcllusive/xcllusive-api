@@ -72,7 +72,7 @@ export const preview = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { perPage, state } = req.query
+  const { perPage, state, typeAgreement } = req.query
 
   const options = {
     attributes: ['id', 'title', 'state'],
@@ -81,7 +81,8 @@ export const list = async (req, res, next) => {
 
   if (state) {
     options.where = {
-      state
+      state,
+      type: typeAgreement === 'businessAgreement' ? 0 : 1
     }
   }
 

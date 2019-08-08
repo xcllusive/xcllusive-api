@@ -25,10 +25,17 @@ export const get = async (req, res, next) => {
 }
 
 export const generate = async (req, res, next) => {
-  const { body, businessId } = req.body
+  const { body, businessId, values, typeAgreement, title } = req.body
   const newAgreement = {
     createdBy_id: req.user.id,
     body
+  }
+  if (values) {
+    newAgreement.type = typeAgreement === 'businessAgreement' ? 0 : 1
+    newAgreement.askingPriceOrPropertyValue = typeAgreement === 'businessAgreement' ? values.listedPrice : values.priceProperty
+    newAgreement.commission = typeAgreement === 'businessAgreement' ? values.commissionPerc : values.commissionProperty
+    newAgreement.engagementFee = values.engagementFee
+    newAgreement.title = title
   }
 
   try {
@@ -83,17 +90,20 @@ export const generate = async (req, res, next) => {
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
-    if (getBusiness.agreement_id) {
+    if ((getBusiness.agreement_id && typeAgreement === 'businessAgreement') || (getBusiness.agreementProperty_id && typeAgreement === 'propertyAgreement')) {
       await models.Agreement.update(newAgreement, {
         where: {
-          id: getBusiness.agreement_id
+          id: typeAgreement === 'businessAgreement' ? getBusiness.agreement_id : getBusiness.agreementProperty_id
         }
       })
     } else {
       const agreement = await models.Agreement.create(newAgreement)
+      let updateAgreement = {}
+      if (typeAgreement === 'businessAgreement') updateAgreement.agreement_id = agreement.id
+      else updateAgreement.agreementProperty_id = agreement.id
 
       await models.Business.update(
-        { agreement_id: agreement.id },
+        updateAgreement,
         {
           where: {
             id: businessId
@@ -350,7 +360,6 @@ export const sendEmail = async (req, res, next) => {
         broker.postCode
       }`
     }
-    console.log(destPdfGeneratedAgreement)
     attachments.push({
       filename: mail.attachmentAgreement,
       path: destPdfGeneratedAgreement

@@ -12,6 +12,31 @@ export default (sequelize, DataTypes) => {
       body: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      type: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      askingPriceOrPropertyValue: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: '0'
+      },
+      commission: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
+      engagementFee: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: '0'
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
       }
     },
     {
