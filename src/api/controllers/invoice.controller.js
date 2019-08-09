@@ -101,6 +101,18 @@ export const create = async (req, res, next) => {
 
     const invoiceCreated = await models.Invoice.create(invoice)
 
+    const updateInvoice = {
+      lastInvoice_id: invoiceCreated.id
+    }
+    await models.Business.update(
+      updateInvoice,
+      {
+        where: {
+          id: businessId
+        }
+      }
+    )
+
     return res.status(201).json({
       data: invoiceCreated,
       message: 'Invoice created with success'
@@ -289,15 +301,15 @@ export const sendEmail = async (req, res, next) => {
     `${Date.now()}.pdf`
   )
 
-  const destPdfGeneratedAgreement = path.resolve(
-    'src',
-    'api',
-    'resources',
-    'pdf',
-    'generated',
-    'agreement',
-    `${Date.now()}.pdf`
-  )
+  // const destPdfGeneratedAgreement = path.resolve(
+  //   'src',
+  //   'api',
+  //   'resources',
+  //   'pdf',
+  //   'generated',
+  //   'agreement',
+  //   `${Date.now()}.pdf`
+  // )
 
   const readFile = util.promisify(fs.readFile)
 
@@ -321,45 +333,45 @@ export const sendEmail = async (req, res, next) => {
     })
 
     // Agreement
-    if (mail.attachAgreement) {
-      const agreement = await models.Agreement.findOne({
-        where: { id: invoice.Business.agreement_id }
-      })
+    // if (mail.attachAgreement) {
+    //   const agreement = await models.Agreement.findOne({
+    //     where: { id: invoice.Business.agreement_id }
+    //   })
 
-      const PDF_OPTIONS = {
-        path: destPdfGeneratedAgreement,
-        format: 'A4',
-        printBackground: true,
-        margin: {
-          top: '15mm',
-          left: '15mm',
-          right: '15mm',
-          bottom: '15mm'
-        },
-        displayHeaderFooter: true,
-        headerTemplate: ' ',
-        footerTemplate: `
-        <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-        <span style="float: left;"></span>
-        <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
-        </div>`
-      }
+    //   const PDF_OPTIONS = {
+    //     path: destPdfGeneratedAgreement,
+    //     format: 'A4',
+    //     printBackground: true,
+    //     margin: {
+    //       top: '15mm',
+    //       left: '15mm',
+    //       right: '15mm',
+    //       bottom: '15mm'
+    //     },
+    //     displayHeaderFooter: true,
+    //     headerTemplate: ' ',
+    //     footerTemplate: `
+    //     <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+    //     <span style="float: left;"></span>
+    //     <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+    //     </div>`
+    //   }
 
-      const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-      })
-      const page = await browser.newPage()
-      await page.emulateMedia('screen')
-      await page.goto(`data:text/html,${agreement.body}`)
+    //   const browser = await puppeteer.launch({
+    //     args: ['--no-sandbox', '--disable-setuid-sandbox']
+    //   })
+    //   const page = await browser.newPage()
+    //   await page.emulateMedia('screen')
+    //   await page.goto(`data:text/html,${agreement.body}`)
 
-      await page.pdf(PDF_OPTIONS)
-      await browser.close()
+    //   await page.pdf(PDF_OPTIONS)
+    //   await browser.close()
 
-      attachments.push({
-        filename: mail.attachmentAgreement,
-        path: destPdfGeneratedAgreement
-      })
-    }
+    //   attachments.push({
+    //     filename: mail.attachmentAgreement,
+    //     path: destPdfGeneratedAgreement
+    //   })
+    // }
     // End Agreement
 
     const context = {
@@ -433,8 +445,15 @@ export const sendEmail = async (req, res, next) => {
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // remove pdf temp
-    await fs.unlink(destPdfGenerated)
-    await fs.unlink(destPdfGeneratedAgreement)
+    await fs.unlink(destPdfGenerated, err => {
+      if (err) {
+        throw new APIError({
+          message: 'Error on send email',
+          status: 500,
+          isPublic: true
+        })
+      }
+    })
 
     // Update Date sent
     await models.Invoice.update(

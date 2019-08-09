@@ -10,13 +10,19 @@ import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 
 export const get = async (req, res, next) => {
-  const { idAgreement: id } = req.params
+  const { businessId } = req.params
 
   try {
-    const agreement = await models.Agreement.findOne({ where: { id } })
+    const business = await models.Business.findOne({ where: { id: businessId } })
+
+    let businessAgreement = null
+    let propertyAgreement = null
+    if (business.agreement_id) businessAgreement = await models.Agreement.findOne({ where: { id: business.agreement_id } })
+    if (business.agreementProperty_id) propertyAgreement = await models.Agreement.findOne({ where: { id: business.agreementProperty_id } })
 
     return res.status(201).json({
-      data: agreement,
+      data: businessAgreement,
+      propertyAgreement,
       message: 'Template get with success'
     })
   } catch (error) {
@@ -113,7 +119,15 @@ export const generate = async (req, res, next) => {
     }
 
     return res.download(destPdfGeneratedAgreement, err => {
-      // fs.unlink(destPdfGeneratedAgreement)
+      fs.unlink(destPdfGeneratedAgreement, err => {
+        if (err) {
+          throw new APIError({
+            message: 'Error on send pdf',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
       if (err) {
         throw new APIError({
           message: 'Error on send pdf',
@@ -162,6 +176,8 @@ export const sendEmail = async (req, res, next) => {
   const { body, businessId } = req.body
   const attachment = req.files.attachment
   const mail = JSON.parse(req.body.mail)
+
+  console.log(mail)
 
   const attachments = []
 
@@ -235,6 +251,25 @@ export const sendEmail = async (req, res, next) => {
 
       await models.Business.update(
         { agreement_id: agreement.id },
+        {
+          where: {
+            id: businessId
+          }
+        }
+      )
+    }
+
+    if (getBusiness.agreementProperty_id) {
+      await models.Agreement.update(newAgreement, {
+        where: {
+          id: getBusiness.agreementProperty_id
+        }
+      })
+    } else {
+      const agreement = await models.Agreement.create(newAgreement)
+
+      await models.Business.update(
+        { agreementProperty_id: agreement.id },
         {
           where: {
             id: businessId
@@ -338,7 +373,7 @@ export const sendEmail = async (req, res, next) => {
     })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
-    await page.goto(`data:text/html,${newAgreement.body}`)
+    await page.setContent(newAgreement.body)
 
     await page.pdf(PDF_OPTIONS)
     await browser.close()
@@ -394,17 +429,17 @@ export const sendEmail = async (req, res, next) => {
         })
       }
     })
-    await fs.unlink(destPdfGeneratedInvoice, err => {
-      if (err) {
-        throw new APIError({
-          message: 'Error on send email',
-          status: 500,
-          isPublic: true
-        })
-      }
-    })
 
     if (mail.attachInvoice) {
+      await fs.unlink(destPdfGeneratedInvoice, err => {
+        if (err) {
+          throw new APIError({
+            message: 'Error on send email',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
       // Update Date sent
       await models.Invoice.update(
         { dateSent: moment() },

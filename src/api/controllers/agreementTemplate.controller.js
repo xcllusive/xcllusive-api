@@ -38,8 +38,6 @@ export const preview = async (req, res, next) => {
 
     const bodyHandlebars = handlebars.compile(body)
 
-    console.log(values.engagementFee)
-
     const context = {
       owner_first_name: values ? values.firstNameV : '',
       owner_last_name: values ? values.lastNameV : '',

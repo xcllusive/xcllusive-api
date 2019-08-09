@@ -32,7 +32,7 @@ router
   .post(validate(validation.generate), generate)
 
 router
-  .route('/:idAgreement')
+  .route('/:businessId')
   .get(validate(validation.get), get)
   .put(validate(validation.update), update)
 

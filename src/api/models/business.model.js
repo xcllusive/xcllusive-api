@@ -216,6 +216,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null
+      },
+      lastInvoice_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
       }
     }, {
       createdAt: 'dateTimeCreated',
@@ -280,6 +285,10 @@ export default (sequelize, DataTypes) => {
     models.Business.belongsTo(models.Agreement, {
       foreignKey: 'agreement_id',
       as: 'Agreement'
+    })
+    models.Business.belongsTo(models.Agreement, {
+      foreignKey: 'agreementProperty_id',
+      as: 'AgreementProperty'
     })
     models.Business.hasMany(models.Appraisal, {
       foreignKey: 'business_id'

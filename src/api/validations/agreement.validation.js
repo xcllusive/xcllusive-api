@@ -3,7 +3,7 @@ import Joi from 'joi'
 export default {
   get: {
     params: {
-      idAgreement: Joi.number()
+      businessId: Joi.number()
         .min(1)
         .required()
     }
