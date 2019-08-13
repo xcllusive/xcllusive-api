@@ -77,10 +77,15 @@ export const list = async (req, res, next) => {
     limit: perPage || 50
   }
 
+  if (typeAgreement) {
+    options.where = {
+      type: typeAgreement === 'businessAgreement' ? 0 : 1
+    }
+  }
+
   if (state) {
     options.where = {
-      state,
-      type: typeAgreement === 'businessAgreement' ? 0 : 1
+      state
     }
   }
 

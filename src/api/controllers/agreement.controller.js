@@ -91,7 +91,8 @@ export const generate = async (req, res, next) => {
     })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
-    await page.goto(`data:text/html,${newAgreement.body}`)
+    // await page.goto(`data:text/html,${newAgreement.body}`)
+    await page.setContent(newAgreement.body)
 
     await page.pdf(PDF_OPTIONS)
     await browser.close()
@@ -177,8 +178,6 @@ export const sendEmail = async (req, res, next) => {
   const attachment = req.files.attachment
   const mail = JSON.parse(req.body.mail)
 
-  console.log(mail)
-
   const attachments = []
 
   const destPdfGeneratedAgreement = path.resolve(
@@ -188,6 +187,17 @@ export const sendEmail = async (req, res, next) => {
     'pdf',
     'generated',
     'agreement',
+    `${Date.now()}.pdf`
+  )
+
+  const destPdfGeneratedPropertyAgreement = path.resolve(
+    'src',
+    'api',
+    'resources',
+    'pdf',
+    'generated',
+    'agreement',
+    'property',
     `${Date.now()}.pdf`
   )
 
@@ -238,44 +248,6 @@ export const sendEmail = async (req, res, next) => {
         status: 400,
         isPublic: true
       })
-    }
-
-    if (getBusiness.agreement_id) {
-      await models.Agreement.update(newAgreement, {
-        where: {
-          id: getBusiness.agreement_id
-        }
-      })
-    } else {
-      const agreement = await models.Agreement.create(newAgreement)
-
-      await models.Business.update(
-        { agreement_id: agreement.id },
-        {
-          where: {
-            id: businessId
-          }
-        }
-      )
-    }
-
-    if (getBusiness.agreementProperty_id) {
-      await models.Agreement.update(newAgreement, {
-        where: {
-          id: getBusiness.agreementProperty_id
-        }
-      })
-    } else {
-      const agreement = await models.Agreement.create(newAgreement)
-
-      await models.Business.update(
-        { agreementProperty_id: agreement.id },
-        {
-          where: {
-            id: businessId
-          }
-        }
-      )
     }
 
     if (mail.attachInvoice) {
@@ -338,7 +310,8 @@ export const sendEmail = async (req, res, next) => {
       })
       const page = await browser.newPage()
       await page.emulateMedia('screen')
-      await page.goto(`data:text/html,${template}`)
+      // await page.goto(`data:text/html,${template}`)
+      await page.setContent(template)
 
       await page.pdf(PDF_OPTIONS)
       await browser.close()
@@ -349,34 +322,131 @@ export const sendEmail = async (req, res, next) => {
       })
     }
 
-    const PDF_OPTIONS = {
-      path: destPdfGeneratedAgreement,
-      format: 'A4',
-      printBackground: true,
-      margin: {
-        top: '15mm',
-        left: '15mm',
-        right: '15mm',
-        bottom: '15mm'
-      },
-      displayHeaderFooter: true,
-      headerTemplate: ' ',
-      footerTemplate: `
-      <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-      <span style="float: left;"></span>
-      <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
-      </div>`
+    if (mail.attachPropertyAgreement) {
+      const propertyAgreement = await models.Agreement.findOne({
+        where: { id: getBusiness.agreementProperty_id }
+      })
+
+      const PDF_OPTIONS = {
+        path: destPdfGeneratedPropertyAgreement,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '15mm',
+          left: '15mm',
+          right: '15mm',
+          bottom: '15mm'
+        },
+        displayHeaderFooter: true,
+        headerTemplate: ' ',
+        footerTemplate: `
+        <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+        <span style="float: left;"></span>
+        <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+        </div>`
+      }
+
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
+      const page = await browser.newPage()
+      await page.emulateMedia('screen')
+      await page.setContent(propertyAgreement.body)
+
+      await page.pdf(PDF_OPTIONS)
+      await browser.close()
+
+      attachments.push({
+        filename: mail.attachmentPropertyAgreement,
+        path: destPdfGeneratedPropertyAgreement
+      })
+      newAgreement.body = propertyAgreement.body
     }
 
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-    const page = await browser.newPage()
-    await page.emulateMedia('screen')
-    await page.setContent(newAgreement.body)
+    if (getBusiness.agreementProperty_id) {
+      if (mail.attachPropertyAgreement) {
+        await models.Agreement.update(newAgreement, {
+          where: {
+            id: getBusiness.agreementProperty_id
+          }
+        })
+      }
+    } else {
+      if (mail.attachPropertyAgreement) {
+        const agreement = await models.Agreement.create(newAgreement)
 
-    await page.pdf(PDF_OPTIONS)
-    await browser.close()
+        await models.Business.update(
+          { agreementProperty_id: agreement.id },
+          {
+            where: {
+              id: businessId
+            }
+          }
+        )
+      }
+    }
+
+    if (getBusiness.agreement_id) {
+      if (mail.attachAgreement) {
+        const buinessAgreement = await models.Agreement.findOne({
+          where: { id: getBusiness.agreement_id }
+        })
+        newAgreement.body = buinessAgreement.body
+
+        await models.Agreement.update(newAgreement, {
+          where: {
+            id: getBusiness.agreement_id
+          }
+        })
+      }
+    } else {
+      const agreement = await models.Agreement.create(newAgreement)
+
+      await models.Business.update(
+        { agreement_id: agreement.id },
+        {
+          where: {
+            id: businessId
+          }
+        }
+      )
+    }
+
+    if (mail.attachAgreement) {
+      const PDF_OPTIONS = {
+        path: destPdfGeneratedAgreement,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '15mm',
+          left: '15mm',
+          right: '15mm',
+          bottom: '15mm'
+        },
+        displayHeaderFooter: true,
+        headerTemplate: ' ',
+        footerTemplate: `
+        <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
+        <span style="float: left;"></span>
+        <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+        </div>`
+      }
+
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
+      const page = await browser.newPage()
+      await page.emulateMedia('screen')
+      await page.setContent(newAgreement.body)
+
+      await page.pdf(PDF_OPTIONS)
+      await browser.close()
+
+      attachments.push({
+        filename: mail.attachmentAgreement,
+        path: destPdfGeneratedAgreement
+      })
+    }
 
     const broker = await models.User.findOne({
       where: { id: getBusiness.listingAgent_id }
@@ -395,10 +465,6 @@ export const sendEmail = async (req, res, next) => {
         broker.postCode
       }`
     }
-    attachments.push({
-      filename: mail.attachmentAgreement,
-      path: destPdfGeneratedAgreement
-    })
 
     if (attachment) {
       attachments.push({
@@ -420,15 +486,29 @@ export const sendEmail = async (req, res, next) => {
     const responseMailer = await mailer.sendMail(mailOptions)
 
     // remove pdf temp
-    await fs.unlink(destPdfGeneratedAgreement, err => {
-      if (err) {
-        throw new APIError({
-          message: 'Error on send email',
-          status: 500,
-          isPublic: true
-        })
-      }
-    })
+    if (mail.attachAgreement) {
+      await fs.unlink(destPdfGeneratedAgreement, err => {
+        if (err) {
+          throw new APIError({
+            message: 'Error on send email',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
+    }
+
+    if (mail.attachPropertyAgreement) {
+      await fs.unlink(destPdfGeneratedPropertyAgreement, err => {
+        if (err) {
+          throw new APIError({
+            message: 'Error on send email',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
+    }
 
     if (mail.attachInvoice) {
       await fs.unlink(destPdfGeneratedInvoice, err => {
@@ -451,7 +531,7 @@ export const sendEmail = async (req, res, next) => {
 
     return res.status(201).json({
       data: responseMailer,
-      message: 'Send email successfully'
+      message: 'Sent email successfully'
     })
   } catch (error) {
     return next(error)
