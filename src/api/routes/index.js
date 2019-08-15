@@ -20,6 +20,8 @@ import appraisalRouter from './appraisal.route'
 import comparableDataRoutes from './comparableData.route'
 import reportsRoutes from './reports.route'
 import officeRegisterRoutes from './officeRegister.route'
+import resourceRoutes from './resource.route'
+import contactRoutes from './contact.route'
 
 import ctcReportsRoutes from './CTC/reports.route'
 
@@ -46,6 +48,8 @@ router.use('/appraisal', appraisalRouter)
 router.use('/comparable-data', comparableDataRoutes)
 router.use('/reports', reportsRoutes)
 router.use('/office-register', officeRegisterRoutes)
+router.use('/resource', resourceRoutes)
+router.use('/contact', contactRoutes)
 
 /* CTC Routes */
 router.use('/ctc-reports', ctcReportsRoutes)

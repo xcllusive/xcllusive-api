@@ -47,7 +47,6 @@ export const SNS = (phone, message) => {
         Message: message, // type your message
         Subject: 'Xcllusive Business Sales' // type your subject
       }
-
       // publish a message.
       sns.publish(params, (err, data) => {
         if (err) {

@@ -59,7 +59,9 @@ export const list = async (req, res, next) => {
       }],
       limit,
       offset,
-      order: [['dateTimeCreated', 'desc']]
+      order: [
+        ['dateTimeCreated', 'desc']
+      ]
     })
     return res.status(201).json({
       data: response,
@@ -210,9 +212,10 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
     return replace
   }
 
-  const _calculatedPriceBetween = context => {
-    return parseInt(_replaceDollarAndComma(context.marketPremiumLabel))
+  const _calculatedPrice = (appraisal, context) => {
+    return parseInt(_replaceDollarAndComma(appraisal.formulaValuePricingMethod)) * context.formulaComparableMultiplier + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))
   }
+
   // Verify exists appraisal
   const appraisal = await models.Appraisal.findOne({
     where: {
@@ -776,27 +779,26 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
   if (appraisal.reducePriceForStockValue) {
     if (appraisal.stockValuationOption === 2) {
       context.formulaAskingPrice = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - appraisal.currentStockLevel).format('$0,0')
-      // context.opinionPrice = numeral(_calculatedPriceBetween(context) - appraisal.currentStockLevel + (_calculatedPriceBetween(context) - appraisal.currentStockLevel) * (appraisal.sliderLowRange / 100)).format('$0,0')
-      // context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium)) - appraisal.currentStockLevel).format('$0,0')
-      context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma((appraisal.formulaValuePricingMethod)) * context.formulaComparableMultiplier) + parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium)) - appraisal.currentStockLevel).format('$0,0')
-      const percSlider = parseInt(_replaceDollarAndComma(context.opinionPrice2)) * (appraisal.sliderLowRange / 100)
-      context.opinionPrice = numeral(parseInt(_replaceDollarAndComma(context.opinionPrice2)) + percSlider).format('$0,0')
+
+      context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.currentStockLevel + (_calculatedPrice(appraisal, context) - appraisal.currentStockLevel) * (appraisal.sliderLowRange / 100))).format('$0,0')
+      context.opinionPrice2 = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.currentStockLevel)).format('$0,0')
     }
     if (appraisal.stockValuationOption === 3) {
       context.formulaAskingPrice = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - appraisal.stockNecessary).format('$0,0')
-      // context.opinionPrice = numeral(_calculatedPriceBetween(context) - appraisal.stockNecessary + (_calculatedPriceBetween(context) - appraisal.stockNecessary) * (appraisal.sliderLowRange / 100)).format('$0,0')
-      // context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium)) - appraisal.stockNecessary).format('$0,0')
-      context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma((appraisal.formulaValuePricingMethod)) * context.formulaComparableMultiplier) + parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium)) - appraisal.stockNecessary).format('$0,0')
-      const percSlider = parseInt(_replaceDollarAndComma(context.opinionPrice2)) * (appraisal.sliderLowRange / 100)
-      context.opinionPrice = numeral(parseInt(_replaceDollarAndComma(context.opinionPrice2)) + percSlider).format('$0,0')
+
+      context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.currentStockLevel + (_calculatedPrice(appraisal, context) - appraisal.stockNecessary) * (appraisal.sliderLowRange / 100))).format('$0,0')
+      context.opinionPrice2 = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.stockNecessary)).format('$0,0')
     }
     context.plusInclOpinion = 'Plus Stock'
   } else {
     if (appraisal.stockValuationOption !== 1) {
       context.plusInclOpinion = appraisal.inclStock ? 'Incl. Stock' : 'Plus Stock'
     }
-    context.opinionPrice = numeral(_calculatedPriceBetween(context) + (_calculatedPriceBetween(context)) * (appraisal.sliderLowRange / 100)).format('$0,0')
-    context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium))).format('$0,0')
+    // context.opinionPrice = numeral(_calculatedPriceBetween(context) + (_calculatedPriceBetween(context)) * (appraisal.sliderLowRange / 100)).format('$0,0')
+    // context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium))).format('$0,0')
+
+    context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.currentStockLevel + (_calculatedPrice(appraisal, context)) * (appraisal.sliderLowRange / 100))).format('$0,0')
+    context.opinionPrice2 = numeral(Math.trunc(_calculatedPrice(appraisal, context))).format('$0,0')
   }
 
   /* financial information table */
@@ -984,7 +986,12 @@ export const generatePdf = async (req, res, next) => {
 
 export const sendEmail = async (req, res, next) => {
   const {
-    appraisalId, businessId, body, subject, to, attachmentName
+    appraisalId,
+    businessId,
+    body,
+    subject,
+    to,
+    attachmentName
   } = req.body
 
   try {
@@ -1129,7 +1136,9 @@ export const moveFinancialYear = async (req, res, next) => {
 }
 
 export const getEmailTemplateAppraisal = async (req, res, next) => {
-  const { templateId, businessId
+  const {
+    templateId,
+    businessId
   } = req.query
   try {
     const template = await models.EmailTemplate.findOne({

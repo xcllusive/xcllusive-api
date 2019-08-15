@@ -84,7 +84,7 @@ export const list = async (req, res, next) => {
       order: [
         [
           'active', 'DESC'
-        ], ['id', 'ASC']
+        ], ['firstName', 'ASC']
       ]
     }
     const users = await models.User.findAll(Object.assign(options, whereOptions))

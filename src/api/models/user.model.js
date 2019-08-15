@@ -104,6 +104,10 @@ export default (sequelize, DataTypes) => {
       active: {
         type: DataTypes.BOOLEAN,
         allowNull: true
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',
