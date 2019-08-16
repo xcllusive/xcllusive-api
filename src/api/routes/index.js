@@ -22,6 +22,7 @@ import reportsRoutes from './reports.route'
 import officeRegisterRoutes from './officeRegister.route'
 import resourceRoutes from './resource.route'
 import contactRoutes from './contact.route'
+import documentRoutes from './document.route'
 
 import ctcReportsRoutes from './CTC/reports.route'
 
@@ -50,6 +51,7 @@ router.use('/reports', reportsRoutes)
 router.use('/office-register', officeRegisterRoutes)
 router.use('/resource', resourceRoutes)
 router.use('/contact', contactRoutes)
+router.use('/document', documentRoutes)
 
 /* CTC Routes */
 router.use('/ctc-reports', ctcReportsRoutes)
