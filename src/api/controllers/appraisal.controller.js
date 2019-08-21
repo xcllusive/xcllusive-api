@@ -213,6 +213,9 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
   }
 
   const _calculatedPrice = (appraisal, context) => {
+    if (appraisal.pricingMethod === 10) {
+      return appraisal.physicalAssetValue + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))
+    }
     return parseInt(_replaceDollarAndComma(appraisal.formulaValuePricingMethod)) * context.formulaComparableMultiplier + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))
   }
 
@@ -463,7 +466,8 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
 
   // start pricing chart
   let calcPricingMethod = numeral(appraisal.formulaValuePricingMethod)
-  context.avgMultiplierLabel = numeral(calcPricingMethod.value() * appraisal.avgMultiplier).format('$0,0')
+  if (appraisal.pricingMethod === 10) context.avgMultiplierLabel = numeral(appraisal.physicalAssetValue).format('$0,0')
+  else context.avgMultiplierLabel = numeral(calcPricingMethod.value() * appraisal.avgMultiplier).format('$0,0')
   context.riskPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.avgMultiplierLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaRiskPremium))).format('$0,0') + ' '
   context.marketPremiumLabel = numeral(parseInt(_replaceDollarAndComma(context.riskPremiumLabel)) + parseInt(_replaceDollarAndComma(appraisal.formulaMarketPremium))).format('$0,0') + '  '
   context.askingPriceLabel = context.formulaAskingPrice + '   '
@@ -575,7 +579,8 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
       context.labelPriceBasedOnComparable = 'Assets Value'
       context.topLabel = '795px'
       context.leftCalcLine = '240px'
-      context.widthCalcLine = '500px'
+      context.widthCalcLine = '400px'
+      context.footerComparableData = 'Sales Price / PEBITDA Last Year'
     }
 
     /* EBITDA */
@@ -625,7 +630,7 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
       trendIcon: item.trend === 'up' ? upGreenArrow : item.trend === 'down' ? downRedArrow : steadyYellowArrow
     }
   })
-
+  context.avgMultiplierComparableData = appraisal.avgMultiplier
   /* end table 10 last businesses */
   context.avgMultiplier = numeral(totalMultiplier / comparableDataSelectedList.length).format('0,0.[99]')
 
@@ -681,6 +686,14 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
   context.marketPremium = appraisal.marketPremium
   context.askingPrice = appraisal.askingPrice
   context.lessThan5PercChanceOfSelling = appraisal.lessThan5PercChanceOfSelling
+  context.pricingLabelString = 'Multiplier'
+  if (appraisal.pricingMethod === 10) {
+    context.avgMultiplier = parseInt(_replaceDollarAndComma(context.avgMultiplierLabel) / 1000)
+    context.riskPremium = _replaceDollarAndComma(context.riskPremiumLabel) / 1000
+    context.marketPremium = _replaceDollarAndComma(context.marketPremiumLabel) / 1000
+    context.askingPrice = _replaceDollarAndComma(context.askingPriceLabel) / 1000
+    context.pricingLabelString = 'Value ($) x 1000'
+  }
   // end pricig chart
 
   /* Stock */
@@ -786,7 +799,7 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
     if (appraisal.stockValuationOption === 3) {
       context.formulaAskingPrice = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - appraisal.stockNecessary).format('$0,0')
 
-      context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.currentStockLevel + (_calculatedPrice(appraisal, context) - appraisal.stockNecessary) * (appraisal.sliderLowRange / 100))).format('$0,0')
+      context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.stockNecessary + (_calculatedPrice(appraisal, context) - appraisal.stockNecessary) * (appraisal.sliderLowRange / 100))).format('$0,0')
       context.opinionPrice2 = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.stockNecessary)).format('$0,0')
     }
     context.plusInclOpinion = 'Plus Stock'
@@ -797,7 +810,7 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
     // context.opinionPrice = numeral(_calculatedPriceBetween(context) + (_calculatedPriceBetween(context)) * (appraisal.sliderLowRange / 100)).format('$0,0')
     // context.opinionPrice2 = numeral(parseInt(_replaceDollarAndComma(context.formulaAskingPrice)) - parseInt(_replaceDollarAndComma(appraisal.formulaNegotiationPremium))).format('$0,0')
 
-    context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) - appraisal.currentStockLevel + (_calculatedPrice(appraisal, context)) * (appraisal.sliderLowRange / 100))).format('$0,0')
+    context.opinionPrice = numeral(Math.trunc(_calculatedPrice(appraisal, context) + (_calculatedPrice(appraisal, context)) * (appraisal.sliderLowRange / 100))).format('$0,0')
     context.opinionPrice2 = numeral(Math.trunc(_calculatedPrice(appraisal, context))).format('$0,0')
   }
 
@@ -838,7 +851,21 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
   /* end profits table */
 
   /* price based on comparable */
-  context.priceBaseOnComparable = numeral(Math.trunc(parseInt(_replaceDollarAndComma(appraisal.formulaValuePricingMethod)) * context.formulaComparableMultiplier)).format('$0,0')
+  if (appraisal.pricingMethod === 10) context.priceBaseOnComparable = numeral(appraisal.physicalAssetValue).format('$0,0')
+  else context.priceBaseOnComparable = numeral(Math.trunc(parseInt(_replaceDollarAndComma(appraisal.formulaValuePricingMethod)) * context.formulaComparableMultiplier)).format('$0,0')
+
+  /* asking price */
+  if (appraisal.pricingMethod === 10) {
+    context.askingPriceDynamic = ''
+    context.askingPriceLabelDynamic = ''
+    context.askingPriceMessage = 'The proposed asking price calculation starts with the assets value, which is then adjusted for risk and market premium. A negotiation premium may also be added.'
+    context.heightDynamic = ''
+  } else {
+    context.askingPriceDynamic = appraisal.askingPrice
+    context.askingPriceLabelDynamic = 'Asking Price Multipler'
+    context.askingPriceMessage = 'The proposed asking price calculation starts with the price based on a comparable multiplier, which is then adjusted for risk and market premium. A negotiation premium may also be added.'
+    context.heightDynamic = '25px'
+  }
 
   /* col span financial information */
   let colSpanFI = 0

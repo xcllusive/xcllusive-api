@@ -2003,13 +2003,14 @@
           </tr>
           {{/if}}
           {{/each}}
-          {{#if avgMultiplier}}
+          {{#if avgMultiplierComparableData}}
           <tfoot>
             <tr>
               <td style="background-color: white; padding-top: 50px;" class="last10Business-footer" colspan="9"><span
                   style="font-weight:bold; font-size: 14px;">AVERAGE
                   MULTIPLIER</span><br>---------------------------------<br><span
-                  style="font-weight:bold;color:rgb(37, 119, 156); font-size: 16px;">{{avgMultiplier}}</span></td>
+                  style="font-weight:bold;color:rgb(37, 119, 156); font-size: 16px;">{{avgMultiplierComparableData}}</span>
+              </td>
             </tr>
             <tr>
               <td style="background-color: white; padding-top: 10px;" class="last10Business-footer" colspan="9"><span
@@ -2089,8 +2090,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 51px; height: 51.042762708661px; background-color: ; z-index: 1324; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; font-weight: bold; text-decoration: none; display: table-cell; vertical-align: top;">
-          Asking
-          Price Multipler</div>
+          {{askingPriceLabelDynamic}}</div>
       </div>
     </div>
     <div style="position: absolute; top:781.58267716535px;left:488.39385826772px; z-index: 1324;">
@@ -2191,7 +2191,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 53px; height: 32.025826771654px; background-color: ; z-index: 1329; font-size: 11px; line-height: 13px; text-align: center; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
-          {{askingPrice}}</div>
+          {{askingPriceDynamic}}</div>
       </div>
     </div>
     <div style="position: absolute; top:830.76519685039px;left:164.7042519685px; z-index: 1329;">
@@ -2266,7 +2266,7 @@
     </div>
     <div style="position: absolute; top:831.90897637795px;left:634.03511811024px; z-index: 1332;">
       <div class=""
-        style="position: absolute; width: 1px; height: 25px; background-color: ; z-index: 1332; border-left: solid 1px #000000;">
+        style="position: absolute; width: 1px; height: {{heightDynamic}}; background-color: ; z-index: 1332; border-left: solid 1px #000000;">
       </div>
     </div>
     <div style="position: absolute; top:350px;left:96.45874015748px; z-index: 1322;">
@@ -2327,8 +2327,7 @@
       <div class="display: table;">
         <div class=""
           style="position: relative; width: 608px; height: 69.389291338583px; background-color: ; z-index: 1186; font-size: 12px; line-height: 14px; text-align: left; color: #000000; font-family: sans-serif; margin: 0px; padding: 0px; text-decoration: none; display: table-cell; vertical-align: top;">
-          The proposed asking price calculation starts with the price based on a comparable multiplier, which is then
-          adjusted for risk and market premium. A negotiation premium may also be added.</div>
+          {{askingPriceMessage}}</div>
       </div>
     </div>
     <div style="position: absolute; top:974.50015748032px;left:364.1031496063px; z-index: 1355;">
@@ -2858,7 +2857,7 @@
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Multiplier',
+              labelString: "{{pricingLabelString}}",
               fontSize: 16
             },
             ticks: {
