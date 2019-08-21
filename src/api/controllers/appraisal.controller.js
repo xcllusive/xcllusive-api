@@ -659,12 +659,12 @@ const generateAppraisal = async (req, res, next, appraisalId, draft, fromApprais
     if (appraisal[`aaRow${i}`] || appraisal[`aaRow${i}`] !== '') {
       context.financialInformationArray.push({
         aaRow: appraisal[`aaRow${i}`],
-        aaRowYear1: appraisal[`aaRow${i}Year1`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year1`]).format('0,0')}` : null,
-        aaRowYear2: appraisal[`aaRow${i}Year2`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year2`]).format('0,0')}` : null,
-        aaRowYear3: appraisal[`aaRow${i}Year3`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year3`]).format('0,0')}` : null,
-        aaRowYear4: appraisal[`aaRow${i}Year4`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}` : null,
-        aaRowYear5: appraisal[`aaRow${i}Year5`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}` : null,
-        aaRowYear7: appraisal[`aaRow${i}Year7`] > 0 ? `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}` : null,
+        aaRowYear1: appraisal[`aaRow${i}Year1`] !== 0 ? `$ ${numeral(appraisal[`aaRow${i}Year1`]).format('0,0')}` : null,
+        aaRowYear2: appraisal[`aaRow${i}Year2`] !== 0 ? `$ ${numeral(appraisal[`aaRow${i}Year2`]).format('0,0')}` : null,
+        aaRowYear3: appraisal[`aaRow${i}Year3`] !== 0 ? `$ ${numeral(appraisal[`aaRow${i}Year3`]).format('0,0')}` : null,
+        aaRowYear4: appraisal[`aaRow${i}Year4`] !== 0 ? `$ ${numeral(appraisal[`aaRow${i}Year4`]).format('0,0')}` : null,
+        aaRowYear5: appraisal[`aaRow${i}Year5`] !== 0 ? `$ ${numeral(appraisal[`aaRow${i}Year5`]).format('0,0')}` : null,
+        aaRowYear7: appraisal[`aaRow${i}Year7`] !== 0 ? `$ ${numeral(appraisal[`aaRow${i}Year7`]).format('0,0')}` : null,
         sales1Validation: parseInt(appraisal.sales1) !== 0,
         sales2Validation: parseInt(appraisal.sales2) !== 0,
         sales3Validation: parseInt(appraisal.sales3) !== 0,

@@ -5,7 +5,8 @@ import {
   generate,
   update,
   sendEmail,
-  getEmailTemplate
+  getEmailTemplate,
+  save
 } from '../controllers/agreement.controller'
 import {
   authMiddleware,
@@ -34,7 +35,7 @@ router
 router
   .route('/:businessId')
   .get(validate(validation.get), get)
-  .put(validate(validation.update), update)
+  .put(validate(validation.update), update).post(save)
 
 router.route('/template-compiled/:idEmailTemplate')
   .get(validate(validation.getEmailTemplate), getEmailTemplate)

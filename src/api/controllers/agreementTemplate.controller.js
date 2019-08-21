@@ -3,10 +3,16 @@ import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 
 export const get = async (req, res, next) => {
-  const { idAgreementTemplate: id } = req.params
+  const {
+    idAgreementTemplate: id
+  } = req.params
 
   try {
-    const template = await models.AgreementTemplate.findOne({ where: { id } })
+    const template = await models.AgreementTemplate.findOne({
+      where: {
+        id
+      }
+    })
 
     if (JSON.parse(template.handlebars)) {
       template.handlebars = JSON.parse(template.handlebars)
@@ -22,11 +28,19 @@ export const get = async (req, res, next) => {
 }
 
 export const preview = async (req, res, next) => {
-  const { idAgreementTemplate: id } = req.params
-  const { values } = req.body
+  const {
+    idAgreementTemplate: id
+  } = req.params
+  const {
+    values
+  } = req.body
 
   try {
-    const template = await models.AgreementTemplate.findOne({ where: { id } })
+    const template = await models.AgreementTemplate.findOne({
+      where: {
+        id
+      }
+    })
 
     const body = `
     ${template.header}
@@ -70,22 +84,27 @@ export const preview = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { perPage, state, typeAgreement } = req.query
+  const {
+    perPage,
+    state,
+    typeAgreement
+  } = req.query
 
   const options = {
     attributes: ['id', 'title', 'state'],
     limit: perPage || 50
   }
 
+  options.where = {}
   if (typeAgreement) {
-    options.where = {
-      type: typeAgreement === 'businessAgreement' ? 0 : 1
+    options.where.type = {
+      $eq: typeAgreement === 'businessAgreement' ? 0 : 1
     }
   }
 
   if (state) {
-    options.where = {
-      state
+    options.where.state = {
+      $eq: state
     }
   }
 
@@ -120,7 +139,9 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idAgreementTemplate: id } = req.params
+  const {
+    idAgreementTemplate: id
+  } = req.params
   const editAgreementTemplate = req.body
 
   editAgreementTemplate.modifiedBy_id = req.user.id
@@ -129,7 +150,11 @@ export const update = async (req, res, next) => {
   editAgreementTemplate.typeDescription = editAgreementTemplate.type === 0 ? 'Business' : 'Property'
 
   try {
-    const template = await models.AgreementTemplate.findOne({ where: { id } })
+    const template = await models.AgreementTemplate.findOne({
+      where: {
+        id
+      }
+    })
 
     if (!template) {
       throw new APIError({
@@ -140,7 +165,9 @@ export const update = async (req, res, next) => {
     }
 
     const updatedTemplate = await models.AgreementTemplate.update(editAgreementTemplate, {
-      where: { id }
+      where: {
+        id
+      }
     })
 
     return res.status(201).json({

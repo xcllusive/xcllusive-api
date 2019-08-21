@@ -1,11 +1,26 @@
 import express from 'express'
 
-import { get, list, create, update, remove } from '../controllers/document.controller'
+import {
+  get,
+  list,
+  create,
+  update,
+  remove,
+  listFolders,
+  uploadFile
+} from '../controllers/document.controller'
 
-import { RESOURCES_MENU } from '../constants/roles'
+import {
+  RESOURCES_MENU
+} from '../constants/roles'
 
-import { authMiddleware, authorizeMiddleware } from '../middlewares/auth'
-import { controlActivityUser } from '../middlewares/controlActivity'
+import {
+  authMiddleware,
+  authorizeMiddleware
+} from '../middlewares/auth'
+import {
+  controlActivityUser
+} from '../middlewares/controlActivity'
 
 const router = express.Router()
 
@@ -27,5 +42,11 @@ router
   .get(get)
   .put(update)
   .delete(remove)
+
+router
+  .route('/listFolders/:officeId')
+  .get(listFolders)
+
+router.route('/upload-file').post(uploadFile)
 
 export default router

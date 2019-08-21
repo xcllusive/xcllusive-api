@@ -31,46 +31,48 @@ export const SNS = (phone, message) => {
   var sns = new aws.SNS()
 
   return new Promise((resolve, reject) => {
-    sns.subscribe(
-      {
-        Protocol: 'sms',
-        TopicArn: 'arn:aws:sns:ap-southeast-2:264038389685:MyTopic',
-        Endpoint: phone // type mobile number to whom you want to send a message.
-      },
-      (error, data) => {
-        if (error) {
-          // console.log('error when subscribe', error)
-          reject(error)
-        }
-        // console.log('subscribe data', data)
-        var SubscriptionArn = data.SubscriptionArn
-        var params = {
-          TargetArn: 'arn:aws:sns:ap-southeast-2:264038389685:MyTopic',
-          Message: message, // type your message
-          Subject: 'Xcllusive Business Sales' // type your subject
-        }
-        // publish a message.
-        sns.publish(params, (err, data) => {
-          if (err) {
-            // console.log('Error sending a message', err)
-            reject(err)
-          } else {
-            // console.log('Sent message:', data.MessageId)
-            resolve(data)
-          }
-          var params = {
-            SubscriptionArn: SubscriptionArn
-          }
-
-          // unsubscribing the topic
-          sns.unsubscribe(params, (err, data) => {
-            if (err) {
-              reject(err)
-              // console.log('err when unsubscribe', err)
-            }
-          })
-        })
+    console.log('phone', phone)
+    sns.subscribe({
+      Protocol: 'sms',
+      TopicArn: 'arn:aws:sns:ap-southeast-2:264038389685:MyTopic',
+      Endpoint: phone // type mobile number to whom you want to send a message.
+    },
+    (error, data) => {
+      if (error) {
+        // console.log('error when subscribe', error)
+        reject(error)
       }
+      // console.log('subscribe data', data)
+      var SubscriptionArn = data.SubscriptionArn
+      var params = {
+        TargetArn: 'arn:aws:sns:ap-southeast-2:264038389685:MyTopic',
+        Message: message, // type your message
+        Subject: 'Xcllusive Business Sales' // type your subject
+      }
+      // publish a message.
+      sns.publish(params, (err, data) => {
+        console.log('err 1', err)
+        if (err) {
+          // console.log('Error sending a message', err)
+          reject(err)
+        } else {
+          // console.log('Sent message:', data.MessageId)
+          resolve(data)
+        }
+        var params = {
+          SubscriptionArn: SubscriptionArn
+        }
+
+        // unsubscribing the topic
+        sns.unsubscribe(params, (err, data) => {
+          console.log('err 2', err)
+          if (err) {
+            reject(err)
+            // console.log('err when unsubscribe', err)
+          }
+        })
+      })
+    }
     )
   })
 }

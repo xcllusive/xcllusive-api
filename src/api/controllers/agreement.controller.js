@@ -10,15 +10,33 @@ import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 
 export const get = async (req, res, next) => {
-  const { businessId } = req.params
+  const {
+    businessId
+  } = req.params
 
   try {
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     let businessAgreement = null
     let propertyAgreement = null
-    if (business.agreement_id) businessAgreement = await models.Agreement.findOne({ where: { id: business.agreement_id } })
-    if (business.agreementProperty_id) propertyAgreement = await models.Agreement.findOne({ where: { id: business.agreementProperty_id } })
+    if (business.agreement_id) {
+      businessAgreement = await models.Agreement.findOne({
+        where: {
+          id: business.agreement_id
+        }
+      })
+    }
+    if (business.agreementProperty_id) {
+      propertyAgreement = await models.Agreement.findOne({
+        where: {
+          id: business.agreementProperty_id
+        }
+      })
+    }
 
     return res.status(201).json({
       data: businessAgreement,
@@ -30,8 +48,14 @@ export const get = async (req, res, next) => {
   }
 }
 
-export const generate = async (req, res, next) => {
-  const { body, businessId, values, typeAgreement, title } = req.body
+export const save = async (req, res, next) => {
+  const {
+    body,
+    businessId,
+    values,
+    typeAgreement,
+    title
+  } = req.body
   const newAgreement = {
     createdBy_id: req.user.id,
     body
@@ -46,7 +70,73 @@ export const generate = async (req, res, next) => {
 
   try {
     const getBusiness = await models.Business.findOne({
-      where: { id: businessId }
+      where: {
+        id: businessId
+      }
+    })
+
+    if (!getBusiness) {
+      throw new APIError({
+        message: 'Business not found',
+        status: 400,
+        isPublic: true
+      })
+    }
+
+    if ((getBusiness.agreement_id && typeAgreement === 'businessAgreement') || (getBusiness.agreementProperty_id && typeAgreement === 'propertyAgreement')) {
+      await models.Agreement.update(newAgreement, {
+        where: {
+          id: typeAgreement === 'businessAgreement' ? getBusiness.agreement_id : getBusiness.agreementProperty_id
+        }
+      })
+    } else {
+      const agreement = await models.Agreement.create(newAgreement)
+      let updateAgreement = {}
+      if (typeAgreement === 'businessAgreement') updateAgreement.agreement_id = agreement.id
+      else updateAgreement.agreementProperty_id = agreement.id
+
+      await models.Business.update(
+        updateAgreement, {
+          where: {
+            id: businessId
+          }
+        }
+      )
+    }
+    return res.status(201).json({
+      message: 'Agreement has been saved'
+    })
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
+}
+
+export const generate = async (req, res, next) => {
+  const {
+    body,
+    businessId,
+    values,
+    typeAgreement,
+    title
+  } = req.body
+  const newAgreement = {
+    createdBy_id: req.user.id,
+    body
+  }
+  if (values) {
+    newAgreement.type = typeAgreement === 'businessAgreement' ? 0 : 1
+    newAgreement.askingPriceOrPropertyValue = typeAgreement === 'businessAgreement' ? values.listedPrice : values.priceProperty
+    newAgreement.commission = typeAgreement === 'businessAgreement' ? values.commissionPerc : values.commissionProperty
+    newAgreement.engagementFee = values.engagementFee
+    newAgreement.title = title
+  }
+
+  try {
+    const getBusiness = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
     })
 
     if (!getBusiness) {
@@ -110,8 +200,7 @@ export const generate = async (req, res, next) => {
       else updateAgreement.agreementProperty_id = agreement.id
 
       await models.Business.update(
-        updateAgreement,
-        {
+        updateAgreement, {
           where: {
             id: businessId
           }
@@ -144,13 +233,19 @@ export const generate = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idAgreement: id } = req.params
+  const {
+    idAgreement: id
+  } = req.params
   const editAgreement = req.body
 
   editAgreement.modifiedBy_id = req.user.id
 
   try {
-    const agreement = await models.Agreement.findOne({ where: { id } })
+    const agreement = await models.Agreement.findOne({
+      where: {
+        id
+      }
+    })
 
     if (!agreement) {
       throw new APIError({
@@ -161,7 +256,9 @@ export const update = async (req, res, next) => {
     }
 
     const updatedAgreement = await models.Agreement.update(editAgreement, {
-      where: { id }
+      where: {
+        id
+      }
     })
 
     return res.status(201).json({
@@ -174,7 +271,10 @@ export const update = async (req, res, next) => {
 }
 
 export const sendEmail = async (req, res, next) => {
-  const { body, businessId } = req.body
+  const {
+    body,
+    businessId
+  } = req.body
   const attachment = req.files.attachment
   const mail = JSON.parse(req.body.mail)
 
@@ -239,7 +339,9 @@ export const sendEmail = async (req, res, next) => {
 
   try {
     const getBusiness = await models.Business.findOne({
-      where: { id: businessId }
+      where: {
+        id: businessId
+      }
     })
 
     if (!getBusiness) {
@@ -258,7 +360,9 @@ export const sendEmail = async (req, res, next) => {
         where: {
           business_id: businessId
         },
-        order: [['dateTimeCreated', 'DESC']]
+        order: [
+          ['dateTimeCreated', 'DESC']
+        ]
       })
 
       if (!invoice) {
@@ -324,7 +428,9 @@ export const sendEmail = async (req, res, next) => {
 
     if (mail.attachPropertyAgreement) {
       const propertyAgreement = await models.Agreement.findOne({
-        where: { id: getBusiness.agreementProperty_id }
+        where: {
+          id: getBusiness.agreementProperty_id
+        }
       })
 
       const PDF_OPTIONS = {
@@ -375,21 +481,22 @@ export const sendEmail = async (req, res, next) => {
       if (mail.attachPropertyAgreement) {
         const agreement = await models.Agreement.create(newAgreement)
 
-        await models.Business.update(
-          { agreementProperty_id: agreement.id },
-          {
-            where: {
-              id: businessId
-            }
+        await models.Business.update({
+          agreementProperty_id: agreement.id
+        }, {
+          where: {
+            id: businessId
           }
-        )
+        })
       }
     }
 
     if (getBusiness.agreement_id) {
       if (mail.attachAgreement) {
         const buinessAgreement = await models.Agreement.findOne({
-          where: { id: getBusiness.agreement_id }
+          where: {
+            id: getBusiness.agreement_id
+          }
         })
         newAgreement.body = buinessAgreement.body
 
@@ -402,14 +509,13 @@ export const sendEmail = async (req, res, next) => {
     } else {
       const agreement = await models.Agreement.create(newAgreement)
 
-      await models.Business.update(
-        { agreement_id: agreement.id },
-        {
-          where: {
-            id: businessId
-          }
+      await models.Business.update({
+        agreement_id: agreement.id
+      }, {
+        where: {
+          id: businessId
         }
-      )
+      })
     }
 
     if (mail.attachAgreement) {
@@ -449,7 +555,9 @@ export const sendEmail = async (req, res, next) => {
     }
 
     const broker = await models.User.findOne({
-      where: { id: getBusiness.listingAgent_id }
+      where: {
+        id: getBusiness.listingAgent_id
+      }
     })
 
     // Compile the template to use variables
@@ -521,12 +629,13 @@ export const sendEmail = async (req, res, next) => {
         }
       })
       // Update Date sent
-      await models.Invoice.update(
-        { dateSent: moment() },
-        {
-          where: { id: invoice.id }
+      await models.Invoice.update({
+        dateSent: moment()
+      }, {
+        where: {
+          id: invoice.id
         }
-      )
+      })
     }
 
     return res.status(201).json({
@@ -539,12 +648,18 @@ export const sendEmail = async (req, res, next) => {
 }
 
 export const getEmailTemplate = async (req, res, next) => {
-  const { idEmailTemplate: id } = req.params
-  const { businessId } = req.query
+  const {
+    idEmailTemplate: id
+  } = req.params
+  const {
+    businessId
+  } = req.query
 
   try {
     const getBusiness = await models.Business.findOne({
-      where: { id: businessId }
+      where: {
+        id: businessId
+      }
     })
 
     if (!getBusiness) {
@@ -555,10 +670,16 @@ export const getEmailTemplate = async (req, res, next) => {
       })
     }
 
-    const template = await models.EmailTemplate.findOne({ where: { id } })
+    const template = await models.EmailTemplate.findOne({
+      where: {
+        id
+      }
+    })
 
     const broker = await models.User.findOne({
-      where: { id: getBusiness.listingAgent_id }
+      where: {
+        id: getBusiness.listingAgent_id
+      }
     })
 
     // Compile the template to use variables
