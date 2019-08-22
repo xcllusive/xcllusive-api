@@ -13,9 +13,64 @@ import {
 
 export const list = async (req, res, next) => {
   try {
-    const folder = await models.DocumentFolder.findAll({})
+    const user = await models.User.findOne({
+      raw: true,
+      where: {
+        id: req.user.id
+      }
+    })
+
+    const offices = await models.OfficeRegister.findAll({
+      raw: true,
+      attributes: ['id', 'label'],
+      where: {
+        id: {
+          $ne: 3
+        }
+      },
+      order: [
+        ['id', 'ASC']
+      ]
+    })
+
+    const folderPerOffice = await Promise.all(
+      offices.map(async item => {
+        const folder = await models.DocumentFolder.findAll({
+          raw: true,
+          attributes: ['name', 'roles'],
+          where: {
+            officeId: item.id,
+            accessListingAgentXcllusive: user.listingAgent,
+            accessListingAgentCTC: user.listingAgentCtc,
+            accessLevelOfInfo: user.levelOfInfoAccess
+          },
+          include: [{
+            model: models.OfficeRegister,
+            attributes: ['label'],
+            as: 'office_id',
+            where: {
+              id: {
+                $col: 'DocumentFolder.officeId'
+              }
+            }
+          }]
+        })
+        const folderWithAccess = folder.map(item => {
+          let findRole = false
+          JSON.parse(user.roles).forEach(roles => {
+            if (JSON.parse(item.roles).includes(roles)) {
+              findRole = true
+            }
+          })
+          return findRole ? item : null
+        })
+
+        return folderWithAccess.length > 0 ? folderWithAccess : null
+      })
+    )
+
     return res.status(201).json({
-      data: folder
+      data: folderPerOffice
     })
   } catch (error) {
     return next(error)
@@ -161,36 +216,41 @@ export const uploadFile = async (req, res, next) => {
       })
     }
 
-    // Verify file is pdf
-    if (!/\/pdf$/.test(file.mimetype)) {
-      throw new APIError({
-        message: 'Expect pdf file',
-        status: 400,
-        isPublic: true
-      })
-    }
-
-    const folder = await models.DocumentFolder.findAll({
+    const folder = await models.DocumentFolder.findOne({
+      raw: true,
       where: {
         id: folderId
       }
     })
 
-    console.log(file.mimetype)
+    const office = await models.OfficeRegister.findOne({
+      raw: true,
+      where: {
+        id: folder.officeId
+      }
+    })
+
+    const sizeString = file.mimetype.length
+    const sizeFormat = file.mimetype.indexOf('/')
+    const format = file.mimetype.substr(sizeFormat + 1, sizeString)
+    const fileNameAWS = `${office.label.replace(' ', '')}_${folder.name.replace(' ', '')}_${fileName.replace(' ', '')}`
 
     // Upload file to aws s3
-    const upload = await uploadToS3('xcllusive-im', file, `${folder.name}_${fileName}`)
-
-    // // set url in documentFile table
-    // await models.DocumentFile.update({
-    //   url: upload.Location
-    // }, {
-    //   where: {
-    //     folder_id: folderId
-    //   }
-    // })
+    const upload = await uploadToS3('xcllusive-documents', file, `${fileNameAWS}.${format}`)
+    // set url in documentFile table
+    await models.DocumentFile.create({
+      url: upload.Location,
+      name: fileName,
+      createdBy_id: req.user.id,
+      modifiedBy_id: req.user.id,
+      folder_id: folderId
+    }, {
+      where: {
+        folder_id: folderId
+      }
+    })
     return res.status(200).json({
-      // message: `IM on business BS${business.id} uploaded successfully`
+      message: `${fileName} uploaded successfully`
     })
   } catch (error) {
     return next(error)
