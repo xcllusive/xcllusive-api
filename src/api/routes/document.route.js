@@ -7,7 +7,8 @@ import {
   update,
   remove,
   listFolders,
-  uploadFile
+  uploadFile,
+  listFiles
 } from '../controllers/document.controller'
 
 import {
@@ -48,5 +49,9 @@ router
   .get(listFolders)
 
 router.route('/upload-file').post(uploadFile)
+
+router
+  .route('/listFiles/:folderId')
+  .get(listFiles)
 
 export default router

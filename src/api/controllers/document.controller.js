@@ -37,7 +37,7 @@ export const list = async (req, res, next) => {
       offices.map(async item => {
         const folder = await models.DocumentFolder.findAll({
           raw: true,
-          attributes: ['name', 'roles'],
+          attributes: ['id', 'name', 'roles'],
           where: {
             officeId: item.id,
             accessListingAgentXcllusive: user.listingAgent,
@@ -69,8 +69,29 @@ export const list = async (req, res, next) => {
       })
     )
 
+    const folderAllOffices = await models.DocumentFolder.findAll({
+      raw: true,
+      attributes: ['id', 'name', 'roles'],
+      where: {
+        allOffices: true,
+        accessListingAgentXcllusive: user.listingAgent,
+        accessListingAgentCTC: user.listingAgentCtc,
+        accessLevelOfInfo: user.levelOfInfoAccess
+      }
+    })
+    const folderAllOfficesWithAccess = folderAllOffices.map(item => {
+      let findRole = false
+      JSON.parse(user.roles).forEach(roles => {
+        if (JSON.parse(item.roles).includes(roles)) {
+          findRole = true
+        }
+      })
+      return findRole ? item : null
+    })
+
     return res.status(201).json({
-      data: folderPerOffice
+      data: folderPerOffice,
+      folderAllOfficesWithAccess
     })
   } catch (error) {
     return next(error)
@@ -185,11 +206,20 @@ export const listFolders = async (req, res, next) => {
   const {
     officeId
   } = req.params
+
+  let whereOptions = {
+    officeId: officeId
+  }
+
+  if (!JSON.parse(officeId)) {
+    whereOptions = {
+      allOffices: true
+    }
+  }
+
   try {
     const folders = await models.DocumentFolder.findAll({
-      where: {
-        officeId: officeId
-      }
+      where: whereOptions
     })
     return res.status(201).json({
       data: folders
@@ -223,13 +253,18 @@ export const uploadFile = async (req, res, next) => {
       }
     })
 
-    const office = await models.OfficeRegister.findOne({
-      raw: true,
-      where: {
-        id: folder.officeId
-      }
-    })
+    let office = {}
+    if (folder.officeId) {
 
+      office = await models.OfficeRegister.findOne({
+        raw: true,
+        where: {
+          id: folder.officeId
+        }
+      })
+    } else {
+      office.label = 'All Offices'
+    }
     const sizeString = file.mimetype.length
     const sizeFormat = file.mimetype.indexOf('/')
     const format = file.mimetype.substr(sizeFormat + 1, sizeString)
@@ -251,6 +286,25 @@ export const uploadFile = async (req, res, next) => {
     })
     return res.status(200).json({
       message: `${fileName} uploaded successfully`
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const listFiles = async (req, res, next) => {
+  const {
+    folderId
+  } = req.params
+  try {
+    const files = await models.DocumentFile.findAll({
+      raw: true,
+      where: {
+        folder_id: folderId
+      }
+    })
+    return res.status(201).json({
+      data: files
     })
   } catch (error) {
     return next(error)

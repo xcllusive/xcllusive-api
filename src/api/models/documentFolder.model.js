@@ -1,7 +1,6 @@
 export default (sequelize, DataTypes) => {
   const DocumentFolder = sequelize.define(
-    'DocumentFolder',
-    {
+    'DocumentFolder', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -31,17 +30,19 @@ export default (sequelize, DataTypes) => {
       roles: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      allOffices: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       }
-    },
-    {
+    }, {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [
-        {
-          unique: true,
-          fields: ['id']
-        }
-      ]
+      indexes: [{
+        unique: true,
+        fields: ['id']
+      }]
     }
   )
 
