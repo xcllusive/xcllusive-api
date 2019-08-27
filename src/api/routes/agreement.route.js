@@ -32,6 +32,8 @@ router
   .route('/generate')
   .post(validate(validation.generate), generate)
 
+router.route('/send-email').post(validate(validation.sendEmail), sendEmail)
+
 router
   .route('/:businessId')
   .get(validate(validation.get), get)
@@ -39,7 +41,5 @@ router
 
 router.route('/template-compiled/:idEmailTemplate')
   .get(validate(validation.getEmailTemplate), getEmailTemplate)
-
-router.route('/send-email').post(validate(validation.sendEmail), sendEmail)
 
 export default router

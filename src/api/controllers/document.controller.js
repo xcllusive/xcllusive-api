@@ -8,7 +8,8 @@ import {
 } from '../constants/roles'
 import APIError from '../utils/APIError'
 import {
-  uploadToS3
+  uploadToS3,
+  deleteObjectS3
 } from '../modules/aws'
 
 export const list = async (req, res, next) => {
@@ -37,7 +38,7 @@ export const list = async (req, res, next) => {
       offices.map(async item => {
         const folder = await models.DocumentFolder.findAll({
           raw: true,
-          attributes: ['id', 'name', 'roles'],
+          attributes: ['id', 'name', 'roles', 'accessListingAgentXcllusive', 'accessListingAgentCtc', 'accessLevelOfInfo', 'allOffices'],
           where: {
             officeId: item.id,
             accessListingAgentXcllusive: user.listingAgent,
@@ -71,7 +72,7 @@ export const list = async (req, res, next) => {
 
     const folderAllOffices = await models.DocumentFolder.findAll({
       raw: true,
-      attributes: ['id', 'name', 'roles'],
+      attributes: ['id', 'name', 'roles', 'accessListingAgentXcllusive', 'accessListingAgentCtc', 'accessLevelOfInfo', 'allOffices'],
       where: {
         allOffices: true,
         accessListingAgentXcllusive: user.listingAgent,
@@ -184,18 +185,32 @@ export const update = async (req, res, next) => {
 
 export const remove = async (req, res, next) => {
   const {
-    resourceId
+    documentFolderId
   } = req.params
 
   try {
-    await models.Resource.destroy({
+    const folder = await models.DocumentFile.findOne({
       where: {
-        id: resourceId
+        folder_id: documentFolderId
       }
     })
 
+    if (!folder) {
+      await models.DocumentFolder.destroy({
+        where: {
+          id: documentFolderId
+        }
+      })
+    } else {
+      throw new APIError({
+        message: 'This folder can not be deleted because it has files inside.',
+        status: 400,
+        isPublic: true
+      })
+    }
+
     return res.status(200).json({
-      message: `Office register ${resourceId} removed with success`
+      message: `Folder ${documentFolderId} removed with success`
     })
   } catch (error) {
     return next(error)
@@ -255,7 +270,6 @@ export const uploadFile = async (req, res, next) => {
 
     let office = {}
     if (folder.officeId) {
-
       office = await models.OfficeRegister.findOne({
         raw: true,
         where: {
@@ -276,6 +290,7 @@ export const uploadFile = async (req, res, next) => {
     await models.DocumentFile.create({
       url: upload.Location,
       name: fileName,
+      key: `${fileNameAWS}.${format}`,
       createdBy_id: req.user.id,
       modifiedBy_id: req.user.id,
       folder_id: folderId
@@ -305,6 +320,34 @@ export const listFiles = async (req, res, next) => {
     })
     return res.status(201).json({
       data: files
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const removeFile = async (req, res, next) => {
+  const {
+    documentFileId
+  } = req.params
+
+  try {
+    const file = await models.DocumentFile.findOne({
+      where: {
+        id: documentFileId
+      }
+    })
+
+    await deleteObjectS3('xcllusive-documents', file.key)
+
+    await models.DocumentFile.destroy({
+      where: {
+        id: documentFileId
+      }
+    })
+
+    return res.status(200).json({
+      message: `File ${documentFileId} removed with success`
     })
   } catch (error) {
     return next(error)

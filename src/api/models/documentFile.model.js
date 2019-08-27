@@ -14,6 +14,10 @@ export default (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      key: {
+        type: DataTypes.TEXT,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',

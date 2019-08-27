@@ -27,6 +27,20 @@ export const uploadToS3 = (bucketName, file, fileName) => {
   })
 }
 
+export const deleteObjectS3 = (bucketName, key) => {
+  /* eslint-disable no-new */
+  const s3bucket = new aws.S3()
+  const params = {
+    Bucket: bucketName,
+    Key: key
+  }
+  s3bucket.deleteObject(params, function (err, data) {
+    if (err) {
+      console.log(err, err.stack) // an error occurred
+    } else console.log(data) // successful response
+  })
+}
+
 export const SNS = (phone, message) => {
   var sns = new aws.SNS()
 

@@ -8,7 +8,8 @@ import {
   remove,
   listFolders,
   uploadFile,
-  listFiles
+  listFiles,
+  removeFile
 } from '../controllers/document.controller'
 
 import {
@@ -53,5 +54,9 @@ router.route('/upload-file').post(uploadFile)
 router
   .route('/listFiles/:folderId')
   .get(listFiles)
+
+router
+  .route('/documentFile/:documentFileId')
+  .delete(removeFile)
 
 export default router
