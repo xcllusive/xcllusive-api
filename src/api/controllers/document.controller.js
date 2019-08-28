@@ -4,6 +4,8 @@ import {
   BUSINESS_MENU,
   PRESALE_MENU,
   CLIENT_MANAGER_MENU,
+  MANAGEMENT_MENU,
+  CTC_MENU,
   SYSTEM_SETTINGS_MENU
 } from '../constants/roles'
 import APIError from '../utils/APIError'
@@ -38,12 +40,9 @@ export const list = async (req, res, next) => {
       offices.map(async item => {
         const folder = await models.DocumentFolder.findAll({
           raw: true,
-          attributes: ['id', 'name', 'roles', 'accessListingAgentXcllusive', 'accessListingAgentCtc', 'accessLevelOfInfo', 'allOffices'],
+          attributes: ['id', 'name', 'roles', 'allOffices'],
           where: {
-            officeId: item.id,
-            accessListingAgentXcllusive: user.listingAgent,
-            accessListingAgentCTC: user.listingAgentCtc,
-            accessLevelOfInfo: user.levelOfInfoAccess
+            officeId: item.id
           },
           include: [{
             model: models.OfficeRegister,
@@ -72,12 +71,9 @@ export const list = async (req, res, next) => {
 
     const folderAllOffices = await models.DocumentFolder.findAll({
       raw: true,
-      attributes: ['id', 'name', 'roles', 'accessListingAgentXcllusive', 'accessListingAgentCtc', 'accessLevelOfInfo', 'allOffices'],
+      attributes: ['id', 'name', 'roles', 'allOffices'],
       where: {
-        allOffices: true,
-        accessListingAgentXcllusive: user.listingAgent,
-        accessListingAgentCTC: user.listingAgentCtc,
-        accessLevelOfInfo: user.levelOfInfoAccess
+        allOffices: true
       }
     })
     const folderAllOfficesWithAccess = folderAllOffices.map(item => {
@@ -124,7 +120,9 @@ export const create = async (req, res, next) => {
     businessMenu,
     preSaleMenu,
     clientManagerMenu,
-    systemSettingsMenu
+    managementMenu,
+    systemSettingsMenu,
+    ctcMenu
   } = req.body
 
   const roles = []
@@ -132,10 +130,12 @@ export const create = async (req, res, next) => {
   if (businessMenu) roles.push(BUSINESS_MENU)
   if (preSaleMenu) roles.push(PRESALE_MENU)
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
+  if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
+  if (ctcMenu) roles.push(CTC_MENU)
 
   req.body.roles = JSON.stringify(roles)
-  req.body.createBy = req.user.id
+  req.body.createdBy_id = req.user.id
 
   try {
     const folder = await models.DocumentFolder.create(req.body)
@@ -154,7 +154,8 @@ export const update = async (req, res, next) => {
     businessMenu,
     preSaleMenu,
     clientManagerMenu,
-    systemSettingsMenu
+    systemSettingsMenu,
+    ctcMenu
   } = req.body
 
   const {
@@ -167,6 +168,10 @@ export const update = async (req, res, next) => {
   if (preSaleMenu) roles.push(PRESALE_MENU)
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
+  if (ctcMenu) roles.push(CTC_MENU)
+
+  req.body.roles = JSON.stringify(roles)
+  req.body.modifiedBy_id = req.user.id
 
   try {
     await models.DocumentFolder.update(req.body, {
@@ -316,7 +321,10 @@ export const listFiles = async (req, res, next) => {
       raw: true,
       where: {
         folder_id: folderId
-      }
+      },
+      order: [
+        ['name', 'asc']
+      ]
     })
     return res.status(201).json({
       data: files

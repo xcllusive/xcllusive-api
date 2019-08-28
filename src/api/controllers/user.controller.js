@@ -7,7 +7,8 @@ import {
   RESOURCES_MENU,
   CLIENT_MANAGER_MENU,
   MANAGEMENT_MENU,
-  SYSTEM_SETTINGS_MENU
+  SYSTEM_SETTINGS_MENU,
+  CTC_MENU
 } from '../constants/roles'
 
 export const getLogged = async (req, res, next) => {
@@ -103,7 +104,8 @@ export const create = async (req, res, next) => {
     resourcesMenu,
     clientManagerMenu,
     managementMenu,
-    systemSettingsMenu
+    systemSettingsMenu,
+    ctcMenu
   } = req.body
 
   const roles = []
@@ -117,6 +119,7 @@ export const create = async (req, res, next) => {
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
   if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
+  if (ctcMenu) roles.push(CTC_MENU)
 
   req.body.roles = JSON.stringify(roles)
   req.body.createBy = req.user.id
@@ -171,7 +174,8 @@ export const update = async (req, res, next) => {
     resourcesMenu,
     clientManagerMenu,
     managementMenu,
-    systemSettingsMenu
+    systemSettingsMenu,
+    ctcMenu
   } = req.body
 
   const roles = []
@@ -187,6 +191,7 @@ export const update = async (req, res, next) => {
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
   if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
+  if (ctcMenu) roles.push(CTC_MENU)
 
   req.body.roles = JSON.stringify(roles)
   req.body.createBy = req.user.id

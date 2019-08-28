@@ -12,21 +12,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      accessListingAgentXcllusive: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      accessListingAgentCtc: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      accessLevelOfInfo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
       roles: {
         type: DataTypes.STRING,
         allowNull: false
@@ -45,11 +30,18 @@ export default (sequelize, DataTypes) => {
       }]
     }
   )
-
   DocumentFolder.associate = models => {
     models.DocumentFolder.belongsTo(models.OfficeRegister, {
       foreignKey: 'officeId',
       as: 'office_id'
+    })
+    models.DocumentFolder.belongsTo(models.User, {
+      foreignKey: 'createdBy_id',
+      as: 'CreatedBy'
+    })
+    models.DocumentFolder.belongsTo(models.User, {
+      foreignKey: 'modifiedBy_id',
+      as: 'ModifiedBy'
     })
   }
 
