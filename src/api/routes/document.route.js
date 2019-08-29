@@ -13,7 +13,7 @@ import {
 } from '../controllers/document.controller'
 
 import {
-  RESOURCES_MENU
+  TOOLS_AND_DOCS_MENU
 } from '../constants/roles'
 
 import {
@@ -28,7 +28,7 @@ const router = express.Router()
 
 router.use(authMiddleware).use(
   authorizeMiddleware({
-    roles: [RESOURCES_MENU]
+    roles: [TOOLS_AND_DOCS_MENU]
   })
 )
 

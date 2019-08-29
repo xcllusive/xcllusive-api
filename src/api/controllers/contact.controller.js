@@ -16,7 +16,6 @@ export const sendSmsUsers = async (req, res, next) => {
       if (user.phoneMobile) {
         const mobile = parseInt(user.phoneMobile.replace(/[^0-9]/g, ''), 10)
         if (mobile.toString().substr(0, 1) === '4' && mobile.toString().length === 9) {
-          // console.log(mobile)
           // send SMS via aws SNS
           const sentSms = await SNS(`+61${mobile.toString()}`, message)
           if (!sentSms) {

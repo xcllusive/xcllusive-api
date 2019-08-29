@@ -45,7 +45,6 @@ export const SNS = (phone, message) => {
   var sns = new aws.SNS()
 
   return new Promise((resolve, reject) => {
-    console.log('phone', phone)
     sns.subscribe({
       Protocol: 'sms',
       TopicArn: 'arn:aws:sns:ap-southeast-2:264038389685:MyTopic',
@@ -65,7 +64,6 @@ export const SNS = (phone, message) => {
       }
       // publish a message.
       sns.publish(params, (err, data) => {
-        console.log('err 1', err)
         if (err) {
           // console.log('Error sending a message', err)
           reject(err)
@@ -79,7 +77,6 @@ export const SNS = (phone, message) => {
 
         // unsubscribing the topic
         sns.unsubscribe(params, (err, data) => {
-          console.log('err 2', err)
           if (err) {
             reject(err)
             // console.log('err when unsubscribe', err)

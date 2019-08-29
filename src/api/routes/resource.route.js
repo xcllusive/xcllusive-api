@@ -9,7 +9,7 @@ import {
 } from '../controllers/resource.controller'
 
 import {
-  RESOURCES_MENU
+  TOOLS_AND_DOCS_MENU
 } from '../constants/roles'
 
 import {
@@ -23,7 +23,7 @@ import {
 const router = express.Router()
 
 router.use(authMiddleware).use(authorizeMiddleware({
-  roles: [RESOURCES_MENU]
+  roles: [TOOLS_AND_DOCS_MENU]
 }))
 
 router.use(controlActivityUser('ToolsAndDocs'))

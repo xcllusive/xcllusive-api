@@ -47,9 +47,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-    business_id: businessId
-  }
-    : null
+      business_id: businessId
+    } :
+    null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -207,9 +207,11 @@ export const remove = async (req, res, next) => {
 
 const generateAppraisal = async (req, res, next, appraisalId, draft, fromAppraisalList, templatePath, destPdfGenerated, readFile) => {
   const _replaceDollarAndComma = replace => {
-    replace = replace.replace('$', ',')
-    replace = replace.replace(/,/g, '')
-    return replace
+    if (replace) {
+      replace = replace.toString().replace('$', ',')
+      replace = replace.toString().replace(/,/g, '')
+      return replace
+    }
   }
 
   const _calculatedPrice = (appraisal, context) => {

@@ -1,4 +1,5 @@
 import models from '../../config/sequelize'
+import _ from 'lodash'
 import {
   BUYER_MENU,
   BUSINESS_MENU,
@@ -15,6 +16,9 @@ import {
 } from '../modules/aws'
 
 export const list = async (req, res, next) => {
+  const {
+    editMode
+  } = req.query
   try {
     const user = await models.User.findOne({
       raw: true,
@@ -64,10 +68,19 @@ export const list = async (req, res, next) => {
           })
           return findRole ? item : null
         })
-
-        return folderWithAccess.length > 0 ? folderWithAccess : null
+        if (!JSON.parse(editMode)) return folderWithAccess.length > 0 ? folderWithAccess : null
+        return folder.length > 0 ? folder : null
       })
     )
+
+    const totalFiles = await models.DocumentFile.findAndCountAll({
+      attributes: ['folder_id'],
+      raw: true,
+      group: [
+        ['folder_id']
+      ]
+    })
+    const totalFilesPerFolder = _.merge(totalFiles.rows, totalFiles.count)
 
     const folderAllOffices = await models.DocumentFolder.findAll({
       raw: true,
@@ -85,10 +98,10 @@ export const list = async (req, res, next) => {
       })
       return findRole ? item : null
     })
-
     return res.status(201).json({
       data: folderPerOffice,
-      folderAllOfficesWithAccess
+      folderAllOfficesWithAccess: !JSON.parse(editMode) ? folderAllOfficesWithAccess : folderAllOffices,
+      totalFilesPerFolder
     })
   } catch (error) {
     return next(error)

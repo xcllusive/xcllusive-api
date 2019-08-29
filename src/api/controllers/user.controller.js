@@ -4,7 +4,7 @@ import {
   BUYER_MENU,
   BUSINESS_MENU,
   PRESALE_MENU,
-  RESOURCES_MENU,
+  TOOLS_AND_DOCS_MENU,
   CLIENT_MANAGER_MENU,
   MANAGEMENT_MENU,
   SYSTEM_SETTINGS_MENU,
@@ -101,7 +101,7 @@ export const create = async (req, res, next) => {
     buyerMenu,
     businessMenu,
     preSaleMenu,
-    resourcesMenu,
+    toolsAndDocsMenu,
     clientManagerMenu,
     managementMenu,
     systemSettingsMenu,
@@ -115,7 +115,7 @@ export const create = async (req, res, next) => {
   if (buyerMenu) roles.push(BUYER_MENU)
   if (businessMenu) roles.push(BUSINESS_MENU)
   if (preSaleMenu) roles.push(PRESALE_MENU)
-  if (resourcesMenu) roles.push(RESOURCES_MENU)
+  if (toolsAndDocsMenu) roles.push(TOOLS_AND_DOCS_MENU)
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
   if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
@@ -171,7 +171,7 @@ export const update = async (req, res, next) => {
     levelOfInfoAccess,
     businessMenu,
     preSaleMenu,
-    resourcesMenu,
+    toolsAndDocsMenu,
     clientManagerMenu,
     managementMenu,
     systemSettingsMenu,
@@ -187,7 +187,7 @@ export const update = async (req, res, next) => {
   if (buyerMenu) roles.push(BUYER_MENU)
   if (businessMenu) roles.push(BUSINESS_MENU)
   if (preSaleMenu) roles.push(PRESALE_MENU)
-  if (resourcesMenu) roles.push(RESOURCES_MENU)
+  if (toolsAndDocsMenu) roles.push(TOOLS_AND_DOCS_MENU)
   if (clientManagerMenu) roles.push(CLIENT_MANAGER_MENU)
   if (managementMenu) roles.push(MANAGEMENT_MENU)
   if (systemSettingsMenu) roles.push(SYSTEM_SETTINGS_MENU)
