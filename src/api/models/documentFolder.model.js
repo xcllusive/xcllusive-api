@@ -20,6 +20,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
+      },
+      subFolder: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null
       }
     }, {
       createdAt: 'dateTimeCreated',

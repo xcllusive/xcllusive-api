@@ -84,10 +84,13 @@ export const list = async (req, res, next) => {
 
     const folderAllOffices = await models.DocumentFolder.findAll({
       raw: true,
-      attributes: ['id', 'name', 'roles', 'allOffices'],
+      attributes: ['id', 'name', 'roles', 'allOffices', 'subFolder'],
       where: {
         allOffices: true
-      }
+      },
+      group: [
+        'subFolder'
+      ]
     })
     const folderAllOfficesWithAccess = folderAllOffices.map(item => {
       let findRole = false
@@ -300,6 +303,7 @@ export const uploadFile = async (req, res, next) => {
     const sizeString = file.mimetype.length
     const sizeFormat = file.mimetype.indexOf('/')
     const format = file.mimetype.substr(sizeFormat + 1, sizeString)
+    console.log(format)
     const fileNameAWS = `${office.label.replace(' ', '')}_${folder.name.replace(' ', '')}_${fileName.replace(' ', '')}`
 
     // Upload file to aws s3
@@ -309,6 +313,7 @@ export const uploadFile = async (req, res, next) => {
       url: upload.Location,
       name: fileName,
       key: `${fileNameAWS}.${format}`,
+      format,
       createdBy_id: req.user.id,
       modifiedBy_id: req.user.id,
       folder_id: folderId
