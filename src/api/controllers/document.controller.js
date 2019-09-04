@@ -87,10 +87,7 @@ export const list = async (req, res, next) => {
       attributes: ['id', 'name', 'roles', 'allOffices', 'subFolder'],
       where: {
         allOffices: true
-      },
-      group: [
-        'subFolder'
-      ]
+      }
     })
     const folderAllOfficesWithAccess = folderAllOffices.map(item => {
       let findRole = false
@@ -101,9 +98,24 @@ export const list = async (req, res, next) => {
       })
       return findRole ? item : null
     })
+
+    const folderAnalystsWithAccess = _.filter(folderAllOfficesWithAccess,
+      obj => obj !== null && obj.subFolder === 'Analysts'
+
+    )
+    const folderBrokersWithAccess = _.filter(!JSON.parse(editMode) ? folderAllOfficesWithAccess : folderAllOffices,
+      obj => obj !== null && obj.subFolder === 'Brokers'
+    )
+    const folderGeneralWithAccess = _.filter(!JSON.parse(editMode) ? folderAllOfficesWithAccess : folderAllOffices,
+      obj => obj !== null && obj.subFolder === 'General'
+    )
+
     return res.status(201).json({
       data: folderPerOffice,
       folderAllOfficesWithAccess: !JSON.parse(editMode) ? folderAllOfficesWithAccess : folderAllOffices,
+      folderAnalystsWithAccess,
+      folderBrokersWithAccess,
+      folderGeneralWithAccess,
       totalFilesPerFolder
     })
   } catch (error) {
@@ -302,8 +314,10 @@ export const uploadFile = async (req, res, next) => {
     }
     const sizeString = file.mimetype.length
     const sizeFormat = file.mimetype.indexOf('/')
-    const format = file.mimetype.substr(sizeFormat + 1, sizeString)
-    console.log(format)
+    let format = file.mimetype.substr(sizeFormat + 1, sizeString)
+    if (format === 'vnd.openxmlformats-officedocument.wordprocess' || format === 'vnd.openxmlformats-officedocument.wordprocessingml.document') format = 'docx'
+    if (format === 'vnd.openxmlformats-officedocument.spreadsheet') format = 'xlsx'
+    if (format === 'vnd.openxmlformats-officedocument.presentationml.presentation') format = 'pptx'
     const fileNameAWS = `${office.label.replace(' ', '')}_${folder.name.replace(' ', '')}_${fileName.replace(' ', '')}`
 
     // Upload file to aws s3

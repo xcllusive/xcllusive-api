@@ -82,7 +82,7 @@ export const list = async (req, res, next) => {
 
   const options = {
     attributes: [
-      'id', 'firstName', 'surname', 'email', 'streetName', 'telephone1Number', 'telephone1', 'telephone2', 'caSent', 'caReceived', 'suburb', 'state', 'source_id', 'postCode', 'priceFrom', 'priceTo', 'emailOptional', 'attachmentUrl', 'scanfilePath'
+      'id', 'firstName', 'surname', 'email', 'streetName', 'telephone1Number', 'telephone1', 'telephone2', 'caSent', 'caReceived', 'suburb', 'state', 'source_id', 'postCode', 'priceFrom', 'priceTo', 'emailOptional', 'attachmentUrl', 'scanfilePath', 'xcllusiveBuyer'
     ],
     limit: perPage
   }

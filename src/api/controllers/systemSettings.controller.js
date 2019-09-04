@@ -127,27 +127,89 @@ export const exportBuyers = async (req, res, next) => {
 
 export const executeJavaScript = async (req, res, next) => {
   try {
-    const buyersCtc = await models.BuyersCtcTest.findAll({
-      raw: true
+    const buyers = await models.testImportBuyer.findAll({
+      raw: true,
+      where: {
+        id: {
+          $between: [6001, 6600]
+        }
+      }
     })
-
+    let count = 0
     const response = await Promise.all(
-      buyersCtc.map(async (buyer) => {
-        if (buyer.email) {
-          const findBuyer = await models.ExportBuyerCtcTest.findOne({
-            raw: true,
-            where: {
-              email: buyer.email
-            }
-          })
-          if (!findBuyer) {
-            models.ExportBuyerCtcTest.create(buyer)
-            console.log('will create buyer')
+      buyers.map(async (buyer) => {
+        const existBuyer = await models.Buyer.findOne({
+          where: {
+            email: buyer.email
           }
+        })
+        if (!existBuyer) {
+          const onlyNumbers = buyer.telephone1 !== '' ? buyer.telephone1 : buyer.telephone2
+          let replaced = onlyNumbers.replace(/-/gi, '')
+          replaced = replaced.replace(/ /gi, '')
+          replaced = replaced.replace(/;/gi, '')
+          replaced = replaced.replace(/<[^>]+>/gi, '')
+          replaced = replaced.replace(/<[^>]>/gi, '')
+          replaced = replaced.replace(/[.*+?^${}()|[\]\\]/g, '')
+          const toString = parseInt(replaced)
+
+          buyer.id = null
+          buyer.xcllusiveBuyer = 0
+          buyer.ctcBuyer = 1
+          buyer.telephone1Number = toString.toString()
+          buyer.createdBy_id = 1
+          buyer.modifiedBy_id = 1
+          buyer.caReceived = 0
+          buyer.caSent = 0
+          buyer.smSent = 0
+          models.Buyer.create(buyer)
+        } else {
+          count = count + 1
+          console.log('this buyer, already exists', count)
         }
       })
-
     )
+    // const businesses = await models.testImportBusiness.findAll({
+    //   raw: true
+    // })
+
+    // const response = await Promise.all(
+    //   businesses.map(async (business) => {
+    //     const existBusiness = await models.Business.findOne({
+    //       where: {
+    //         vendorEmail: business.vendorEmail
+    //       }
+    //     })
+    //     if (!existBusiness) {
+    //       business.id = null
+    //       business.data120DayGuarantee = 0
+    //       business.dateChangedToForSale = moment().format('YYYY-MM-DD hh:mm:ss')
+
+    //       const separeName = business.name.indexOf(' ')
+    //       const firstNameV = business.name.substr(0, separeName)
+    //       const lastNameV = business.name.slice(separeName + 1, business.name.length).trim()
+    //       business.firstNameV = firstNameV
+    //       business.lastNameV = lastNameV
+
+    //       const separeAddress = business.businessAddress.indexOf(',')
+    //       const streetName = business.businessAddress.substr(0, separeAddress)
+    //       const separeSuburb = business.businessAddress.indexOf(',', separeAddress + 1)
+    //       const suburb = business.businessAddress.slice(separeAddress + 1, separeSuburb).trim()
+    //       const separeState = business.businessAddress.indexOf(',', separeSuburb + 1)
+    //       const state = business.businessAddress.slice(separeSuburb + 1, separeState).trim()
+    //       // const separePostCode = business.businessAddress.indexOf(',', separeState + 1)
+    //       const postCode = business.businessAddress.slice(separeState + 1, business.businessAddress.length).trim()
+    //       business.address1 = streetName
+    //       business.suburb = suburb
+    //       business.state = state
+    //       business.postCode = postCode
+    //       business.dateTimeCreated = moment().format('YYYY-MM-DD hh:mm:ss')
+    //       business.dateTimeModified = moment().format('YYYY-MM-DD hh:mm:ss')
+    //       models.Business.create(business)
+    //     }
+    //   })
+    // )
+
     return res.status(201).json({
       data: response,
       message: 'JavaScript executed successfully'
@@ -156,56 +218,3 @@ export const executeJavaScript = async (req, res, next) => {
     return next(error)
   }
 }
-
-// export const executeJavaScript = async (req, res, next) => {
-//   try {
-//     const allDuplicatedPending = await models.BuyerLog.findAndCountAll({
-//       raw: true,
-//       attributes: ['id', 'buyer_id', 'followUpStatus', 'dateTimeCreated'],
-//       where: {
-//         followUpStatus: 'Pending'
-//       },
-//       group: ['buyer_id']
-//     })
-
-//     const mergedArray = _.merge(allDuplicatedPending.count, allDuplicatedPending.rows)
-
-//     mergedArray.forEach(async item => {
-//       if (item.count > 1) {
-//         const listDuplicatedPerBuyer = await models.BuyerLog.findAll({
-//           raw: true,
-//           attributes: ['id'],
-//           where: {
-//             buyer_id: item.buyer_id,
-//             followUpStatus: 'Pending'
-//           }
-//         })
-//         const arrayDuplicates = await Promise.all(
-//           listDuplicatedPerBuyer.map(dupl => {
-//             return dupl.id
-//           })
-//         )
-//         var maxArray = Math.max.apply(null, arrayDuplicates)
-//         const listToRemove = _.remove(arrayDuplicates, item => {
-//           return item !== maxArray
-//         })
-
-//         await models.BuyerLog.update({
-//           followUpStatus: 'Done'
-//         }, {
-//           where: {
-//             id: {
-//               $in: listToRemove
-//             }
-//           }
-//         })
-//       }
-//     })
-//     return res.status(201).json({
-//       data: allDuplicatedPending,
-//       message: 'JavaScript executed successfully'
-//     })
-//   } catch (error) {
-//     return next(error)
-//   }
-// }

@@ -2,7 +2,11 @@ import models from '../../config/sequelize'
 
 export const list = async (req, res, next) => {
   try {
-    const resources = await models.Resource.findAll({})
+    const resources = await models.Resource.findAll({
+      order: [
+        ['title', 'ASC']
+      ]
+    })
     return res.status(201).json({
       data: resources
     })
