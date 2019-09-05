@@ -14,6 +14,10 @@ export default (sequelize, DataTypes) => {
       body: {
         type: DataTypes.TEXT,
         allowNull: false
+      },
+      subject: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     }, {
       createdAt: 'dateTimeCreated',
