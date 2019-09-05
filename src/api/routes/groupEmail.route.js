@@ -3,8 +3,12 @@ import express from 'express'
 import {
   list,
   create,
+  update,
+  remove,
   listEmailTemplates,
-  createEmailTemplate
+  createEmailTemplate,
+  updateEmailTemplate,
+  removeEmailTemplate
 } from '../controllers/groupEmail.controller'
 
 import {
@@ -33,10 +37,14 @@ router
   .route('/folder')
   .post(create)
   .get(list)
+  .put(update)
+  .delete(remove)
 
 router
   .route('/template/:folderId')
   .post(createEmailTemplate)
   .get(listEmailTemplates)
+  .put(updateEmailTemplate)
+  .delete(removeEmailTemplate)
 
 export default router

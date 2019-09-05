@@ -47,16 +47,12 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const {
-    documentFolderId
-  } = req.params
-
   req.body.modifiedBy_id = req.user.id
 
   try {
-    await models.DocumentFolder.update(req.body, {
+    await models.GroupEmailFolder.update(req.body, {
       where: {
-        id: documentFolderId
+        id: req.body.id
       }
     })
 
@@ -70,20 +66,21 @@ export const update = async (req, res, next) => {
 
 export const remove = async (req, res, next) => {
   const {
-    documentFolderId
-  } = req.params
+    id,
+    name
+  } = req.body
 
   try {
-    const folder = await models.DocumentFile.findOne({
+    const folder = await models.GroupEmailTemplate.findOne({
       where: {
-        folder_id: documentFolderId
+        folder_id: id
       }
     })
 
     if (!folder) {
-      await models.DocumentFolder.destroy({
+      await models.GroupEmailFolder.destroy({
         where: {
-          id: documentFolderId
+          id: id
         }
       })
     } else {
@@ -95,7 +92,7 @@ export const remove = async (req, res, next) => {
     }
 
     return res.status(200).json({
-      message: `Folder ${documentFolderId} removed with success`
+      message: `Folder ${name} removed with success`
     })
   } catch (error) {
     return next(error)
@@ -143,6 +140,45 @@ export const listEmailTemplates = async (req, res, next) => {
     })
     return res.status(201).json({
       data: templates
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const updateEmailTemplate = async (req, res, next) => {
+  req.body.modifiedBy_id = req.user.id
+
+  try {
+    await models.GroupEmailTemplate.update(req.body, {
+      where: {
+        id: req.body.id
+      }
+    })
+
+    return res.status(200).json({
+      message: `${req.body.name} updated`
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const removeEmailTemplate = async (req, res, next) => {
+  const {
+    id,
+    name
+  } = req.body
+
+  try {
+    await models.GroupEmailTemplate.destroy({
+      where: {
+        id: id
+      }
+    })
+
+    return res.status(200).json({
+      message: `Template ${name} removed with success`
     })
   } catch (error) {
     return next(error)
