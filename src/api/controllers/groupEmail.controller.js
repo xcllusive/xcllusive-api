@@ -1,31 +1,27 @@
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
+import _ from 'lodash'
 
 export const list = async (req, res, next) => {
   try {
     const folders = await models.GroupEmailFolder.findAll({})
 
-    return res.status(201).json({
-      data: folders
-    })
-  } catch (error) {
-    return next(error)
-  }
-}
+    const folderAnalysts = _.filter(folders,
+      obj => obj !== null && obj.subFolder === 'Analysts'
 
-export const get = async (req, res, next) => {
-  const {
-    officeRegisterId
-  } = req.params
+    )
+    const folderBrokers = _.filter(folders,
+      obj => obj !== null && obj.subFolder === 'Brokers'
+    )
+    const folderGeneral = _.filter(folders,
+      obj => obj !== null && obj.subFolder === 'General'
+    )
 
-  try {
-    const office = await models.OfficeRegister.findOne({
-      where: {
-        id: officeRegisterId
-      }
-    })
     return res.status(201).json({
-      data: office
+      data: folders,
+      folderAnalysts,
+      folderBrokers,
+      folderGeneral
     })
   } catch (error) {
     return next(error)
@@ -103,13 +99,15 @@ export const createEmailTemplate = async (req, res, next) => {
   const {
     folderId,
     name,
-    body
+    body,
+    subject
   } = req.body
 
   const template = {
     name,
     body,
     createdBy_id: req.user.id,
+    subject,
     folder_id: folderId
   }
 

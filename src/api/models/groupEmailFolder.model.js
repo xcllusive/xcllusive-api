@@ -11,6 +11,10 @@ export default (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      subFolder: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     }, {
       createdAt: 'dateTimeCreated',
