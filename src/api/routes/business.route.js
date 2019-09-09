@@ -28,7 +28,8 @@ import {
   getCtcQtdeBusinessStageUser,
   sendSms,
   sendEmailToCtcBusiness,
-  verifyBusinessFirstOpenByAgent
+  verifyBusinessFirstOpenByAgent,
+  getAllEnquiries
 } from '../controllers/business.controller'
 
 import {
@@ -52,6 +53,8 @@ router.use(authMiddleware).use(authorizeMiddleware({
 }))
 
 router.use(controlActivityUser('Business'))
+
+router.route('/show-enquiries').get(getAllEnquiries)
 
 router.route('/upload-im').post(validate(validation.uploadedIM), uploadIM)
 

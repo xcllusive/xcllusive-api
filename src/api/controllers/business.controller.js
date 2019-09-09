@@ -209,7 +209,7 @@ export const list = async (req, res, next) => {
   }
 
   const options = {
-    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id', 'vendorPhone1', 'vendorPhone2', 'vendorPhone3'],
+    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id', 'vendorPhone1', 'vendorPhone2', 'vendorPhone3', 'ctcStageId'],
     include: [
       models.BusinessStage, models.BusinessProduct
       // {
@@ -456,7 +456,8 @@ export const remove = async (req, res, next) => {
 export const updateListingAgent = async (req, res, next) => {
   const {
     listingAgentId,
-    listingAgentCtcId
+    listingAgentCtcId,
+    company
   } = req.body
 
   const {
@@ -518,7 +519,7 @@ export const updateListingAgent = async (req, res, next) => {
     let mailOptionsCtc = {}
 
     // Verify exists listingAgent
-    if (listingAgentId > 0 && business.listingAgent_id !== listingAgentId) {
+    if (listingAgentId > 0 && company === 'Xcllusive') {
       const listingAgent = await models.User.findOne({
         where: {
           id: listingAgentId
@@ -557,12 +558,21 @@ export const updateListingAgent = async (req, res, next) => {
           path: template.attachmentPath
         }] : []
       }
+      console.log(mailOptions)
       // Send Email
       await mailer.sendMail(mailOptions)
+
+      await models.BusinessLog.create({
+        text: `Business Reassigned to ${listingAgent.firstName} ${listingAgent.lastName} by ${user.firstName} ${user.lastName}`,
+        createdBy_id: req.user.id,
+        followUpStatus: 'Done',
+        followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+        business_id: idBusiness
+      })
     }
 
     // Verify exists listingAgent
-    if (listingAgentCtcId > 0 && business.listingAgentCtc_id !== listingAgentCtcId) {
+    if (listingAgentCtcId > 0 && company === 'CTC') {
       const listingAgentCtc = await models.User.findOne({
         where: {
           id: listingAgentCtcId
@@ -608,6 +618,14 @@ export const updateListingAgent = async (req, res, next) => {
       }
       // Send Email
       await mailer.sendMail(mailOptionsCtc)
+
+      await models.BusinessLog.create({
+        text: `Business Reassigned to ${listingAgentCtc.firstName} ${listingAgentCtc.lastName} by ${user.firstName} ${user.lastName}`,
+        createdBy_id: req.user.id,
+        followUpStatus: 'Done',
+        followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+        business_id: idBusiness
+      })
     }
   } catch (error) {
     return next(error)
@@ -620,7 +638,7 @@ export const updateListingAgent = async (req, res, next) => {
       }
     })
     return res.status(200).json({
-      message: `Agent list on business BS${idBusiness} updated with success`
+      message: 'Business reassigned successfully'
     })
   } catch (error) {
     return next(error)
@@ -2484,5 +2502,41 @@ export const verifyBusinessFirstOpenByAgent = async (req, res, next) => {
     })
   } catch (error) {
     return next(error)
+  }
+}
+
+export const getAllEnquiries = async (req, res, next) => {
+  const businessId = req.query.businessId
+
+  try {
+    const enquiries = await models.EnquiryBusinessBuyer.findAndCountAll({
+      attributes: ['id', 'dateTimeCreated'],
+      where: {
+        business_id: businessId
+      },
+      include: [{
+        attributes: ['firstName', 'surname', 'email', 'telephone1', 'caReceived', 'smSent'],
+        model: models.Buyer,
+        as: 'Buyer'
+      }],
+      order: [
+        ['dateTimeCreated', 'desc']
+      ]
+    })
+    if (!enquiries) {
+      throw new APIError({
+        message: 'Business does not have enquiry',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    return res.status(200).json({
+      data: enquiries.rows,
+      totalEnquiries: enquiries.count,
+      message: 'Get enquiries succesfully.'
+    })
+  } catch (err) {
+    return next(err)
   }
 }
