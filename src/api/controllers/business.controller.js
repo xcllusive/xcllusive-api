@@ -2347,26 +2347,12 @@ export const verifyDuplicatedBusiness = async (req, res, next) => {
 
 export const sendEmailToCtcBusiness = async (req, res, next) => {
   const {
+    values,
     buyer,
     business
   } = req.body
 
   try {
-    // Verify exists template
-    const template = await models.EmailTemplate.findOne({
-      where: {
-        title: 'Send Email to CTC Business'
-      }
-    })
-
-    if (!template) {
-      throw new APIError({
-        message: 'Email template not found',
-        status: 404,
-        isPublic: true
-      })
-    }
-
     const businessObj = await models.Business.findOne({
       where: {
         id: business.id
@@ -2374,7 +2360,7 @@ export const sendEmailToCtcBusiness = async (req, res, next) => {
     })
 
     // Compile the template to use variables
-    const templateCompiled = Handlebars.compile(template.body)
+    const templateCompiled = Handlebars.compile(values.body)
     const context = {
       owner_full_name: `${businessObj.firstNameV} ${businessObj.lastNameV}`,
       buyer_name: `${buyer.firstName} ${buyer.surname}`,
@@ -2384,10 +2370,10 @@ export const sendEmailToCtcBusiness = async (req, res, next) => {
 
     // Set email options
     const mailOptions = {
-      to: businessObj.vendorEmail,
+      to: values.to,
       from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
       replyTo: 'enquiries@ctoc.com.au',
-      subject: template.subject,
+      subject: values.subject,
       html: templateCompiled(context)
     }
 
@@ -2406,7 +2392,7 @@ export const sendEmailToCtcBusiness = async (req, res, next) => {
 
     // Insert in log
     await models.BuyerLog.create({
-      text: 'Email to CTC Business Sent',
+      text: 'Enquiry Email to CTC Business Sent',
       followUpStatus: 'Done',
       followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
       business_id: businessObj.id,
@@ -2428,8 +2414,8 @@ export const sendSms = async (req, res, next) => {
   const {
     buyer,
     business,
-    phone,
-    message
+    phone
+    // message
   } = req.body
 
   try {
@@ -2440,13 +2426,27 @@ export const sendSms = async (req, res, next) => {
     })
 
     // send SMS via aws SNS
-    console.log(phone)
-    const sentSms = await SNS(phone, message)
+    // cayo
+    const template = await models.EmailTemplate.findOne({
+      where: {
+        title: 'Score Email'
+      }
+    })
+
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      owners_name: 'Cayo Bayestorff'
+    }
+    let message = templateCompiled(context)
+    message = message.replace(/<p>/gi, '\n')
+    message = message.replace(/<\/p>/gi, '\n')
+    console.log(message)
+    // const sentSms = await SNS(phone, message)
 
     if (sentSms) {
       // Insert in log
       await models.BuyerLog.create({
-        text: 'Sms Sent to Onwer',
+        text: 'Enquiry SMS to CTC Business Sent',
         followUpStatus: 'Done',
         followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
         business_id: businessObj.id,
