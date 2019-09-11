@@ -2390,6 +2390,24 @@ export const sendEmailToCtcBusiness = async (req, res, next) => {
       }
     })
 
+    // Verify business attach to buyer
+    const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
+      where: {
+        $and: {
+          business_id: businessObj.id,
+          buyer_id: buyer.id
+        }
+      }
+    })
+
+    if (!enquiryBusinessBuyer) {
+      // Set on Enquiry table
+      await models.EnquiryBusinessBuyer.create({
+        buyer_id: buyer.id,
+        business_id: businessObj.id
+      })
+    }
+
     // Insert in log
     await models.BuyerLog.create({
       text: 'Enquiry Email to CTC Business Sent',
@@ -2447,6 +2465,23 @@ export const sendSms = async (req, res, next) => {
     const sentSms = await SNS(phone, message)
 
     if (sentSms) {
+      // Verify business attach to buyer
+      const enquiryBusinessBuyer = await models.EnquiryBusinessBuyer.findOne({
+        where: {
+          $and: {
+            business_id: businessObj.id,
+            buyer_id: buyer.id
+          }
+        }
+      })
+
+      if (!enquiryBusinessBuyer) {
+        // Set on Enquiry table
+        await models.EnquiryBusinessBuyer.create({
+          buyer_id: buyer.id,
+          business_id: businessObj.id
+        })
+      }
       // Insert in log
       await models.BuyerLog.create({
         text: 'Enquiry SMS to CTC Business Sent',
