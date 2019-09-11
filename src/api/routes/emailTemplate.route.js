@@ -6,7 +6,8 @@ import {
   create,
   update,
   sendEmail,
-  sendEmailTest
+  sendEmailTest,
+  getCompiled
 } from '../controllers/emailTemplate.controller'
 import {
   authMiddleware,
@@ -34,6 +35,10 @@ router.use(authMiddleware).use(authorizeMiddleware({
 }))
 
 router.use(controlActivityUser('SystemSettings'))
+
+router
+  .route('/compiled')
+  .get(getCompiled)
 
 router
   .route('/')

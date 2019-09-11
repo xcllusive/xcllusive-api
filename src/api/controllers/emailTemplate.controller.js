@@ -13,6 +13,7 @@ export const get = async (req, res, next) => {
 
   try {
     const template = await models.EmailTemplate.findOne({
+      raw: true,
       where: {
         id
       }
@@ -235,6 +236,53 @@ export const sendEmailTest = async (req, res, next) => {
     return res.status(201).json({
       data: resMailer,
       message: 'Send email successfully'
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getCompiled = async (req, res, next) => {
+  const {
+    id,
+    businessId,
+    buyerId
+  } = req.query
+
+  try {
+    const template = await models.EmailTemplate.findOne({
+      raw: true,
+      where: {
+        id
+      }
+    })
+
+    const business = await models.Business.findOne({
+      raw: true,
+      where: {
+        id: businessId
+      }
+    })
+
+    const buyer = await models.Buyer.findOne({
+      raw: true,
+      where: {
+        id: buyerId
+      }
+    })
+
+    const templateCompiled = Handlebars.compile(template.body)
+    const context = {
+      owner_full_name: `${business.firstNameV} ${business.lastNameV}`,
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      buyer_phone: buyer.telephone1,
+      buyer_email: buyer.email
+    }
+    template.body = templateCompiled(context)
+
+    return res.status(201).json({
+      data: template,
+      message: 'Template get with success'
     })
   } catch (error) {
     return next(error)
