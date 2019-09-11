@@ -59,7 +59,7 @@ export const list = async (req, res, next) => {
 
   try {
     const whereOptions =
-      search && search.length > 1 ? {
+      search && search.length > 1 ? ({
         where: {
           $or: [{
             firstName: {
@@ -69,11 +69,14 @@ export const list = async (req, res, next) => {
             lastName: {
               $like: `%${search}%`
             }
+          }, {
+            role: {
+              $like: `%${search}%`
+            }
           }],
           userType: arrayType
         }
-      }
-      : null
+      }) : null
 
     const options = {
       attributes: {
