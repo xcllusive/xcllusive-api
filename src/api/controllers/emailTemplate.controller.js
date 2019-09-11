@@ -2,13 +2,21 @@ import Handlebars from 'handlebars'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
-import { uploadToS3 } from '../modules/aws'
+import {
+  uploadToS3
+} from '../modules/aws'
 
 export const get = async (req, res, next) => {
-  const { idEmailTemplate: id } = req.params
+  const {
+    idEmailTemplate: id
+  } = req.params
 
   try {
-    const template = await models.EmailTemplate.findOne({ where: { id } })
+    const template = await models.EmailTemplate.findOne({
+      where: {
+        id
+      }
+    })
 
     if (JSON.parse(template.handlebars)) {
       template.handlebars = JSON.parse(template.handlebars)
@@ -24,7 +32,11 @@ export const get = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { perPage, brokersEmail } = req.query
+  const {
+    perPage,
+    brokersEmail,
+    smsTemplate
+  } = req.query
   const options = {
     attributes: ['id', 'title'],
     limit: perPage
@@ -33,6 +45,11 @@ export const list = async (req, res, next) => {
   if (JSON.parse(brokersEmail)) {
     options.where = {
       brokersEmail: true
+    }
+  }
+  if (JSON.parse(smsTemplate)) {
+    options.where = {
+      smsTemplate: true
     }
   }
 
@@ -87,14 +104,20 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idEmailTemplate: id } = req.params
+  const {
+    idEmailTemplate: id
+  } = req.params
   const editTemplateEmail = req.body
   const file = req.files.attachment
 
   editTemplateEmail.modifiedBy_id = req.user.id
 
   try {
-    const template = await models.EmailTemplate.findOne({ where: { id } })
+    const template = await models.EmailTemplate.findOne({
+      where: {
+        id
+      }
+    })
 
     if (!template) {
       throw new APIError({
@@ -118,7 +141,9 @@ export const update = async (req, res, next) => {
     }
 
     const updatedTemplate = await models.EmailTemplate.update(editTemplateEmail, {
-      where: { id }
+      where: {
+        id
+      }
     })
 
     return res.status(201).json({
@@ -135,7 +160,11 @@ export const sendEmail = async (req, res, next) => {
 
   try {
     // Verify exists buyer
-    const buyer = await models.Buyer.findOne({ where: { id: newEmail.buyerId } })
+    const buyer = await models.Buyer.findOne({
+      where: {
+        id: newEmail.buyerId
+      }
+    })
 
     if (!buyer) {
       throw new APIError({
@@ -174,7 +203,9 @@ export const sendEmailTest = async (req, res, next) => {
 
   try {
     const template = await models.EmailTemplate.findOne({
-      where: { title: newEmail.template }
+      where: {
+        title: newEmail.template
+      }
     })
 
     if (!template) {

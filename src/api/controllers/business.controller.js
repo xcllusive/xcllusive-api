@@ -2429,19 +2429,22 @@ export const sendSms = async (req, res, next) => {
     // cayo
     const template = await models.EmailTemplate.findOne({
       where: {
-        title: 'Score Email'
+        title: 'Enquiry SMS CTC'
       }
     })
 
     const templateCompiled = Handlebars.compile(template.body)
     const context = {
-      owners_name: 'Cayo Bayestorff'
+      buyer_name: `${buyer.firstName} ${buyer.surname}`,
+      buyer_phone: buyer.telephone1,
+      buyer_email: buyer.email
     }
     let message = templateCompiled(context)
+    message = message.replace(/<p><br>/gi, '\n')
     message = message.replace(/<p>/gi, '\n')
-    message = message.replace(/<\/p>/gi, '\n')
-    console.log(message)
-    // const sentSms = await SNS(phone, message)
+    message = message.replace(/<\/p>/gi, '')
+
+    const sentSms = await SNS(phone, message)
 
     if (sentSms) {
       // Insert in log
