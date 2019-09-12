@@ -5,7 +5,8 @@ import {
   getBusinessesPerAnalyst,
   getAllAnalysts,
   getQtdeBusinessesStagePerUser,
-  getAnalystReport
+  getAnalystReport,
+  getEnquiryReport
 } from '../../controllers/CTC/reports.controller'
 import {
   authMiddleware,
@@ -38,5 +39,7 @@ router.route('/all-analysts').get(getAllAnalysts)
 router.route('/qtde-businesses-stage-per-user').get(getQtdeBusinessesStagePerUser)
 
 router.route('/analyst-report').get(getAnalystReport)
+
+router.route('/enquiry-report').get(getEnquiryReport)
 
 export default router

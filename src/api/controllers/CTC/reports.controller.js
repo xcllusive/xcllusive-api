@@ -610,3 +610,174 @@ export const getAnalystReport = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getEnquiryReport = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+  const listOfIdOfAnalysts = req.query.listOfIdOfAnalysts
+  let hasAnalystsSelected = true
+  if (listOfIdOfAnalysts === 'false') hasAnalystsSelected = false
+
+  let include = []
+  if (hasAnalystsSelected) {
+    include = [{
+      model: models.EnquiryBusinessBuyer,
+      as: 'EnquiryBusinessBuyer',
+      attributes: ['dateTimeCreated'],
+      where: {
+        buyer_id: {
+          $col: 'Buyer.id'
+        }
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business',
+        attributes: ['listingAgent_id'],
+        where: {
+          id: {
+            $col: 'EnquiryBusinessBuyer.business_id'
+          },
+          listingAgentCtc_id: {
+            $in: listOfIdOfAnalysts
+          },
+          company_id: 2
+        }
+      }]
+    }, {
+      model: models.BuyerSource,
+      as: 'BuyerSource',
+      attributes: ['label'],
+      where: {
+        id: {
+          $col: 'Buyer.source_id'
+        }
+      }
+    }]
+  } else {
+    include = [{
+      model: models.EnquiryBusinessBuyer,
+      as: 'EnquiryBusinessBuyer',
+      attributes: ['dateTimeCreated'],
+      where: {
+        buyer_id: {
+          $col: 'Buyer.id'
+        }
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business',
+        where: {
+          id: {
+            $col: 'EnquiryBusinessBuyer.business_id'
+          },
+          company_id: 2
+        }
+      }]
+    }, {
+      model: models.BuyerSource,
+      as: 'BuyerSource',
+      attributes: ['label'],
+      where: {
+        id: {
+          $col: 'Buyer.source_id'
+        }
+      }
+    }]
+  }
+
+  try {
+    const newEnquiries = await models.Buyer.findAndCountAll({
+      raw: true,
+      attributes: ['source_id', 'dateTimeCreated'],
+      where: {
+        dateTimeCreated: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: include,
+      group: [
+        [{
+          model: models.BuyerSource,
+          as: 'BuyerSource'
+        }, 'id']
+      ],
+      order: [
+        [{
+          model: models.BuyerSource,
+          as: 'BuyerSource'
+        }, 'id', 'ASC']
+      ]
+    })
+
+    if (newEnquiries.count.length === 0) {
+      throw new APIError({
+        message: 'There`s no data in the period information',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const arrayNewEnquiries = _.merge(newEnquiries.count, newEnquiries.rows)
+    const arrayNewEnquiriesOrderByBigger = arrayNewEnquiries.sort(function (a, b) {
+      return b.count - a.count
+    })
+    const countNewEnquiries = newEnquiries.count.map(item => {
+      return item.count
+    })
+    const totalNewEnquiries = countNewEnquiries.reduce((a, b) => a + b)
+    let totalEnquiries = 0
+    if (hasAnalystsSelected) {
+      totalEnquiries = await models.EnquiryBusinessBuyer.count({
+        raw: true,
+        where: {
+          dateTimeCreated: {
+            $between: [dateFrom, dateTo]
+          }
+        },
+        include: [{
+          model: models.Business,
+          as: 'Business',
+          attributes: ['listingAgent_id'],
+          where: {
+            id: {
+              $col: 'EnquiryBusinessBuyer.business_id'
+            },
+            listingAgentCtc_id: {
+              $in: listOfIdOfAnalysts
+            },
+            company_id: 2
+          }
+        }]
+      })
+    } else {
+      totalEnquiries = await models.EnquiryBusinessBuyer.count({
+        raw: true,
+        where: {
+          dateTimeCreated: {
+            $between: [dateFrom, dateTo]
+          }
+        },
+        include: [{
+          model: models.Business,
+          as: 'Business',
+          where: {
+            id: {
+              $col: 'EnquiryBusinessBuyer.business_id'
+            },
+            company_id: 2
+          }
+        }]
+      })
+    }
+
+    return res.status(201).json({
+      data: {
+        arrayNewEnquiriesOrderByBigger,
+        totalNewEnquiries,
+        totalEnquiries
+      }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

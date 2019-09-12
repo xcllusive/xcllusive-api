@@ -26,13 +26,12 @@ export const getMarketingReport = async (req, res, next) => {
         const totalLeads = await models.Business.findAndCountAll({
           raw: true,
           attributes: ['listingAgent_id'],
-          where:
-      {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        company_id: 1
-      },
+          where: {
+            dateTimeCreated: {
+              $between: [dateFrom, dateTo]
+            },
+            company_id: 1
+          },
           include: [{
             model: models.User,
             attributes: ['firstName', 'lastName', 'dataRegion'],
@@ -128,7 +127,9 @@ export const getMarketingReport = async (req, res, next) => {
           ]
         })
         const ctcLeadsPerOfficeCount = ctcLeadsPerOffice.map(item => {
-          return {countCtc: item.count }
+          return {
+            countCtc: item.count
+          }
         })
         let arrayFinal = []
         if (arrayOffices.length !== 0) {
@@ -373,6 +374,9 @@ export const getMarketingReport = async (req, res, next) => {
 }
 
 export const getAllAnalysts = async (req, res, next) => {
+  const {
+    companyId
+  } = req.query
   const _mapValuesToArray = array => {
     if (array.length > 0) {
       if (array[0].firstName) {
@@ -391,13 +395,25 @@ export const getAllAnalysts = async (req, res, next) => {
     return []
   }
 
+  console.log('cayo', companyId)
+
+  let whereOptions = {}
+  if (parseInt(companyId) === 1) {
+    whereOptions = {
+      listingAgent: true,
+      active: 1
+    }
+  } else {
+    whereOptions = {
+      listingAgentCtc: true,
+      active: 1
+    }
+  }
+
   try {
     const allAnalysts = await models.User.findAll({
       raw: true,
-      where: {
-        listingAgent: true,
-        active: 1
-      },
+      where: whereOptions,
       order: [
         ['firstName', 'ASC']
       ]
@@ -685,7 +701,8 @@ export const getEnquiryReport = async (req, res, next) => {
           },
           listingAgent_id: {
             $in: listOfIdOfAnalysts
-          }
+          },
+          company_id: 1
         }
       }]
     }, {
@@ -707,7 +724,17 @@ export const getEnquiryReport = async (req, res, next) => {
         buyer_id: {
           $col: 'Buyer.id'
         }
-      }
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business',
+        where: {
+          id: {
+            $col: 'EnquiryBusinessBuyer.business_id'
+          },
+          company_id: 1
+        }
+      }]
     }, {
       model: models.BuyerSource,
       as: 'BuyerSource',
@@ -779,7 +806,8 @@ export const getEnquiryReport = async (req, res, next) => {
             },
             listingAgent_id: {
               $in: listOfIdOfAnalysts
-            }
+            },
+            company_id: 1
           }
         }]
       })
@@ -790,7 +818,17 @@ export const getEnquiryReport = async (req, res, next) => {
           dateTimeCreated: {
             $between: [dateFrom, dateTo]
           }
-        }
+        },
+        include: [{
+          model: models.Business,
+          as: 'Business',
+          where: {
+            id: {
+              $col: 'EnquiryBusinessBuyer.business_id'
+            },
+            company_id: 1
+          }
+        }]
       })
     }
 
