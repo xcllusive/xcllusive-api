@@ -2578,3 +2578,33 @@ export const getAllEnquiries = async (req, res, next) => {
     return next(err)
   }
 }
+
+export const addIssueToBusiness = async (req, res, next) => {
+  const {
+    issueId,
+    business
+  } = req.body
+
+  try {
+    const arrayIssues = []
+    if (business.listIssues_id) {
+      const array = JSON.parse(business.listIssues_id)
+      array.map(item => {
+        arrayIssues.push(item)
+      })
+    }
+    arrayIssues.push(issueId.toString())
+    await models.Business.update({
+      listIssues_id: JSON.stringify(arrayIssues)
+    }, {
+      where: {
+        id: business.id
+      }
+    })
+    return res.status(200).json({
+      message: 'Issue has been added to the business'
+    })
+  } catch (err) {
+    return next(err)
+  }
+}

@@ -29,7 +29,8 @@ import {
   sendSms,
   sendEmailToCtcBusiness,
   verifyBusinessFirstOpenByAgent,
-  getAllEnquiries
+  getAllEnquiries,
+  addIssueToBusiness
 } from '../controllers/business.controller'
 
 import {
@@ -53,6 +54,8 @@ router.use(authMiddleware).use(authorizeMiddleware({
 }))
 
 router.use(controlActivityUser('Business'))
+
+router.route('/add-issue').put(addIssueToBusiness)
 
 router.route('/show-enquiries').get(getAllEnquiries)
 

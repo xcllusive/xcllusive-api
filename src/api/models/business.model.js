@@ -221,6 +221,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null
+      },
+      listIssues_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null
       }
     }, {
       createdAt: 'dateTimeCreated',
