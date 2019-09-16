@@ -191,6 +191,31 @@ export const remove = async (req, res, next) => {
   } = req.params
 
   try {
+
+    const user = await models.User.findOne({
+      raw: true,
+      where: {
+        id: req.user.id
+      }
+    })
+
+    const appraisal = await models.Appraisal.findOne({
+      raw: true,
+      where: {
+        id: appraisalId
+      }
+    })
+
+    console.log(appraisal)
+
+    await models.BusinessLog.create({
+      text: `Appraisal deleted by ${user.firstName} ${user.lastName}`,
+      createdBy_id: user.id,
+      followUpStatus: 'Done',
+      followUp: moment().format('YYYY-MM-DD hh:mm:ss'),
+      business_id: appraisal.business_id
+    })
+
     await models.Appraisal.destroy({
       where: {
         id: appraisalId
