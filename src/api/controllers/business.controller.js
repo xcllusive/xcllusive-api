@@ -34,6 +34,7 @@ export const getBusiness = async (req, res, next) => {
 
   try {
     const business = await models.Business.findOne({
+      raw: true,
       where: {
         id: idBusiness
       },
@@ -126,7 +127,7 @@ export const getBusiness = async (req, res, next) => {
       attributes: ['id', 'label']
     })
     let issueList = []
-    if (business.company_id === 2) {
+    if (business.company_id === 2 && business.listIssues_id) {
       issueList = await models.Issue.findAll({
         raw: true,
         attributes: ['id', 'label', 'closed'],
@@ -225,7 +226,7 @@ export const list = async (req, res, next) => {
   const options = {
     attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id', 'vendorPhone1', 'vendorPhone2', 'vendorPhone3', 'ctcStageId'],
     include: [
-      models.BusinessStage, models.BusinessProduct
+      models.BusinessStage, models.BusinessProduct, models.CtcBusinessStage
       // {
       //   model: models.BusinessIndustry,
       //   where: { label: { $like: `%${search}%` } }
@@ -667,6 +668,7 @@ export const updateStageLost = async (req, res, next) => {
 
   updateBusiness.modifiedBy_id = req.user.id
   updateBusiness.stageId = 8
+  updateBusiness.ratingId = updateBusiness.businessRating
   updateBusiness.lostDate = moment().toDate()
   updateBusiness.addLeadNurtureList = updateBusiness.addLeadNurtureList === 'Yes'
   updateBusiness.stageNotSignedId = !updateBusiness.recoveryStageNotSigned ? 1 : updateBusiness.recoveryStageNotSigned
@@ -2050,7 +2052,8 @@ export const getCtcAllPerUser = async (req, res, next) => {
             [{
               model: models.BusinessLog,
               as: 'BusinessLog'
-            }, 'time', 'desc'], [{
+            }, 'time', 'desc'],
+            [{
               model: models.BusinessLog,
               as: 'BusinessLog'
             }, 'followUp', 'DESC']
@@ -2341,10 +2344,10 @@ export const verifyDuplicatedBusiness = async (req, res, next) => {
       if (
         (item.vendorPhone1 &&
           item.vendorPhone1
-            .split(' ')
-            .join('')
-            .split('-')
-            .join('') === telephoneRaw) ||
+          .split(' ')
+          .join('')
+          .split('-')
+          .join('') === telephoneRaw) ||
         (item.vendorEmail && item.vendorEmail === vendorEmail)
       ) {
         duplicatedBusiness = item
