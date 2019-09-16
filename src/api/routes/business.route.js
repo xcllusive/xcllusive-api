@@ -30,7 +30,8 @@ import {
   sendEmailToCtcBusiness,
   verifyBusinessFirstOpenByAgent,
   getAllEnquiries,
-  addIssueToBusiness
+  addIssueToBusiness,
+  removeIssueFromBusiness
 } from '../controllers/business.controller'
 
 import {
@@ -55,7 +56,7 @@ router.use(authMiddleware).use(authorizeMiddleware({
 
 router.use(controlActivityUser('Business'))
 
-router.route('/add-issue').put(addIssueToBusiness)
+router.route('/issue').put(addIssueToBusiness).delete(removeIssueFromBusiness)
 
 router.route('/show-enquiries').get(getAllEnquiries)
 

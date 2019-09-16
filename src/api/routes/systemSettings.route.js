@@ -5,7 +5,8 @@ import {
   getAllSettings,
   update,
   executeJavaScript,
-  exportBuyers
+  exportBuyers,
+  exportIssue
 } from '../controllers/systemSettings.controller'
 import {
   authMiddleware,
@@ -35,5 +36,8 @@ router.route('/export-buyers')
 
 router.route('/execute-javascript')
   .get(executeJavaScript)
+
+router.route('/export-issue')
+  .post(exportIssue)
 
 export default router

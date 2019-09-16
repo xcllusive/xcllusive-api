@@ -1,4 +1,5 @@
 import models from '../../config/sequelize'
+import APIError from '../utils/APIError'
 
 export const list = async (req, res, next) => {
   const _mapValuesToArray = array => {
@@ -19,7 +20,7 @@ export const list = async (req, res, next) => {
   const offset = req.skip
 
   try {
-    if (!listIssue) {
+    if (!JSON.parse(listIssue)) {
       const issue = await models.Issue.findAndCountAll({
         limit,
         offset
@@ -99,137 +100,36 @@ export const update = async (req, res, next) => {
 
 export const remove = async (req, res, next) => {
   const {
-    registerType
-  } = req.body
-
-  const {
-    businessRegister: id
+    issueId
   } = req.params
 
   try {
-    if (registerType === 1) {
-      const existsRegisterType = await models.Business.findAll({
-        raw: true,
-        attributes: ['id', 'sourceId'],
-        where: {
-          sourceId: id
+    const usingIssue = await models.Business.findOne({
+      raw: true,
+      where: {
+        listIssues_id: {
+          $like: `%${issueId}%`
         }
-      })
-      if (existsRegisterType.length > 0) {
-        return res.status(406).json({
-          error: `You can NOT delete that! Business register ${id} has been using in one or more businesses`
-        })
       }
+    })
+    if (usingIssue) {
+      throw new APIError({
+        message: 'You can NOT delete this issue! It has been using in one or more businesses',
+        status: 404,
+        isPublic: true
+      })
     }
 
-    if (registerType === 6) {
-      const existsRegisterType = await models.Business.findAll({
-        raw: true,
-        attributes: ['id', 'sourceId'],
-        where: {
-          ctcSourceId: id
-        }
-      })
-      if (existsRegisterType.length > 0) {
-        return res.status(406).json({
-          error: `You can NOT delete that! Business register ${id} has been using in one or more businesses`
-        })
+    await models.Issue.destroy({
+      where: {
+        id: issueId
       }
-    }
-
-    if (registerType === 10) {
-      const existsRegisterType = await models.Business.findAll({
-        raw: true,
-        attributes: ['id', 'sourceId'],
-        where: {
-          ctcStageId: id
-        }
-      })
-      if (existsRegisterType.length > 0) {
-        return res.status(406).json({
-          error: `You can NOT delete that! Business register ${id} has been using in one or more businesses`
-        })
-      }
-    }
-
-    if (registerType === 1) {
-      await models.BusinessSource.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 2) {
-      await models.BusinessRating.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 3) {
-      await models.BusinessProduct.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 4) {
-      await models.BusinessIndustry.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 5) {
-      await models.BusinessType.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 6) {
-      await models.CtcBusinessSource.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 7) {
-      await models.BusinessStage.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 8) {
-      await models.BusinessStageNotSigned.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 9) {
-      await models.BusinessStageNotWant.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (registerType === 10) {
-      await models.CtcBusinessStage.destroy({
-        where: {
-          id
-        }
-      })
-    }
-    if (!registerType) {
-      throw new Error(`Business register ${registerType} does not exist`)
-    }
+    })
 
     return res
       .status(200)
       .json({
-        message: `Business register ${id} removed with success`
+        message: `${issueId} removed with success`
       })
   } catch (error) {
     return next(error)

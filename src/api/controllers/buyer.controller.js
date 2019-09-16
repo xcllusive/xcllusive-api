@@ -1294,6 +1294,18 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
+    let issueList = []
+    if (business.company_id === 2) {
+      issueList = await models.Issue.findAll({
+        raw: true,
+        attributes: ['id', 'label', 'closed'],
+        where: {
+          id: {
+            $in: JSON.parse(business.listIssues_id)
+          }
+        }
+      })
+    }
 
     const response = {
       business,
@@ -1308,7 +1320,8 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       usersBroker: _mapValuesToArray(usersBroker),
       stageNotSignedList: _mapValuesToArray(stageNotSignedList),
       stageNotWantList: _mapValuesToArray(stageNotWantList),
-      ctcSourceOptions: _mapValuesToArray(ctcSourceList)
+      ctcSourceOptions: _mapValuesToArray(ctcSourceList),
+      issueList
     }
     return res.status(200).json(response)
   } catch (err) {

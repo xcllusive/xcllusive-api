@@ -3,6 +3,7 @@ import moment from 'moment'
 import APIError from '../utils/APIError'
 import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
+import _ from 'lodash'
 import {
   uploadToS3,
   SNS
@@ -124,6 +125,18 @@ export const getBusiness = async (req, res, next) => {
       },
       attributes: ['id', 'label']
     })
+    let issueList = []
+    if (business.company_id === 2) {
+      issueList = await models.Issue.findAll({
+        raw: true,
+        attributes: ['id', 'label', 'closed'],
+        where: {
+          id: {
+            $in: JSON.parse(business.listIssues_id)
+          }
+        }
+      })
+    }
 
     const response = {
       business,
@@ -139,7 +152,8 @@ export const getBusiness = async (req, res, next) => {
       stageNotSignedList: _mapValuesToArray(stageNotSignedList),
       stageNotWantList: _mapValuesToArray(stageNotWantList),
       ctcSourceList: _mapValuesToArray(ctcSourceList),
-      ctcStageList: _mapValuesToArray(ctcStageList)
+      ctcStageList: _mapValuesToArray(ctcStageList),
+      issueList
     }
     return res.status(200).json(response)
   } catch (err) {
@@ -2603,6 +2617,40 @@ export const addIssueToBusiness = async (req, res, next) => {
     })
     return res.status(200).json({
       message: 'Issue has been added to the business'
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+
+export const removeIssueFromBusiness = async (req, res, next) => {
+  const {
+    issueId,
+    businessId
+  } = req.body
+
+  try {
+    const business = await models.Business.findOne({
+      raw: true,
+      where: {
+        id: businessId
+      }
+    })
+
+    const newList = _.filter(JSON.parse(business.listIssues_id), item => {
+      return parseInt(item) !== parseInt(issueId)
+    })
+
+    await models.Business.update({
+      listIssues_id: JSON.stringify(newList)
+    }, {
+      where: {
+        id: businessId
+      }
+    })
+
+    return res.status(200).json({
+      message: 'Issue has been removed from the business'
     })
   } catch (err) {
     return next(err)

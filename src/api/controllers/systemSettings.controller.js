@@ -218,3 +218,72 @@ export const executeJavaScript = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const exportIssue = async (req, res, next) => {
+  const issueId = req.body.issueId
+
+  try {
+    const business = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'vendorEmail'],
+      where: {
+        listIssues_id: {
+          $like: `%${issueId}%`
+        }
+      },
+      order: [
+        ['dateTimeCreated', 'ASC']
+      ]
+    })
+
+    if (!business) {
+      throw new APIError({
+        message: 'There is none business in the issue',
+        status: 404,
+        isPublic: true
+      })
+    }
+
+    const xlsx = require('xlsx')
+    var newWb = xlsx.utils.book_new()
+    var newWs = xlsx.utils.json_to_sheet(business)
+    xlsx.utils.book_append_sheet(newWb, newWs, 'New Data')
+    const destXlsxGenerated = path.resolve(
+      'src',
+      'api',
+      'resources',
+      'xls',
+      'exports',
+      `issue${moment().format('DD_MM_YYYY_hh_mm_ss')}.xlsx`
+    )
+    xlsx.writeFile(newWb, destXlsxGenerated)
+
+    return res.download(destXlsxGenerated, async err => {
+      fs.unlink(destXlsxGenerated, error => {
+        if (error) {
+          throw new APIError({
+            message: 'Error on send xlsx',
+            status: 500,
+            isPublic: true
+          })
+        }
+      })
+      if (err) {
+        throw new APIError({
+          message: 'Error on send xlsx',
+          status: 500,
+          isPublic: true
+        })
+      } else {
+        const exportLog = {}
+        // exportLog.exportedPeriodFrom = req.body.dateFrom
+        // exportLog.exportedPeriodTo = req.body.dateTo
+        exportLog.type = `Issue ${issueId}`
+        exportLog.createdBy_id = req.user.id
+        await models.ExportLog.create(exportLog)
+      }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
