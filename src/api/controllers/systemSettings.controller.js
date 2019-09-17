@@ -225,7 +225,7 @@ export const exportIssue = async (req, res, next) => {
   try {
     const business = await models.Business.findAll({
       raw: true,
-      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'vendorEmail'],
+      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'vendorEmail', 'address1', 'suburb', 'state', 'postCode'],
       where: {
         listIssues_id: {
           $like: `%${issueId}%`

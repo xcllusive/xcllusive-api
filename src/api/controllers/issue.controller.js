@@ -1,5 +1,6 @@
 import models from '../../config/sequelize'
 import APIError from '../utils/APIError'
+import _ from 'lodash'
 
 export const list = async (req, res, next) => {
   const _mapValuesToArray = array => {
@@ -25,10 +26,9 @@ export const list = async (req, res, next) => {
         limit,
         offset
       })
-
       return res.status(201).json({
         data: issue,
-        issuesAvailable: _mapValuesToArray(issue.rows),
+        issuesAvailable: _mapValuesToArray(_.filter(issue.rows, array => !array.closed)),
         pageCount: issue.count,
         itemCount: Math.ceil(issue.count / req.query.limit)
       })
@@ -40,9 +40,8 @@ export const list = async (req, res, next) => {
           }
         }
       })
-
       return res.status(201).json({
-        issuesAvailable: _mapValuesToArray(issuesAvailable)
+        issuesAvailable: _mapValuesToArray(_.filter(issuesAvailable, array => !array.closed))
       })
     }
   } catch (error) {

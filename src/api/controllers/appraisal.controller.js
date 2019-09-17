@@ -206,8 +206,6 @@ export const remove = async (req, res, next) => {
       }
     })
 
-    console.log(appraisal)
-
     await models.BusinessLog.create({
       text: `Appraisal deleted by ${user.firstName} ${user.lastName}`,
       createdBy_id: user.id,
