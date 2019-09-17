@@ -16,16 +16,19 @@ export const list = async (req, res, next) => {
 
   const {
     limit,
-    listIssue
+    listIssue,
+    businessId
   } = req.query
   const offset = req.skip
 
   try {
-    if (!JSON.parse(listIssue)) {
+    if (listIssue && !JSON.parse(listIssue)) {
       const issue = await models.Issue.findAndCountAll({
+        raw: true,
         limit,
         offset
       })
+
       return res.status(201).json({
         data: issue,
         issuesAvailable: _mapValuesToArray(_.filter(issue.rows, array => !array.closed)),
@@ -33,10 +36,17 @@ export const list = async (req, res, next) => {
         itemCount: Math.ceil(issue.count / req.query.limit)
       })
     } else {
+      const business = await models.Business.findOne({
+        raw: true,
+        where: {
+          id: businessId
+        }
+      })
       const issuesAvailable = await models.Issue.findAll({
+        raw: true,
         where: {
           id: {
-            $notIn: listIssue
+            $notIn: JSON.parse(business.listIssues_id)
           }
         }
       })

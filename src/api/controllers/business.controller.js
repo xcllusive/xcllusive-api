@@ -34,7 +34,6 @@ export const getBusiness = async (req, res, next) => {
 
   try {
     const business = await models.Business.findOne({
-      raw: true,
       where: {
         id: idBusiness
       },
