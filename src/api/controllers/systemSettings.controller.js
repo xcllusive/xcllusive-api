@@ -58,6 +58,8 @@ export const update = async (req, res, next) => {
 export const exportBuyers = async (req, res, next) => {
   const dateFrom = req.body.dateFrom
   const dateTo = req.body.dateTo
+  const xcllusiveBuyer = !!req.body.company
+  const ctcBuyer = req.body.company === false
 
   try {
     const buyer = await models.Buyer.findAll({
@@ -66,16 +68,18 @@ export const exportBuyers = async (req, res, next) => {
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]
-        }
+        },
+        xcllusiveBuyer: xcllusiveBuyer,
+        ctcBuyer: ctcBuyer
       },
       order: [
         ['dateTimeCreated', 'ASC']
       ]
     })
 
-    if (!buyer) {
+    if (!buyer || buyer.length === 0) {
       throw new APIError({
-        message: 'There is none buyer in the period informed',
+        message: 'No buyer in the period informed',
         status: 404,
         isPublic: true
       })
@@ -85,14 +89,7 @@ export const exportBuyers = async (req, res, next) => {
     var newWb = xlsx.utils.book_new()
     var newWs = xlsx.utils.json_to_sheet(buyer)
     xlsx.utils.book_append_sheet(newWb, newWs, 'New Data')
-    const destXlsxGenerated = path.resolve(
-      'src',
-      'api',
-      'resources',
-      'xls',
-      'exports',
-      `buyers${moment().format('DD_MM_YYYY_hh_mm_ss')}.xlsx`
-    )
+    const destXlsxGenerated = path.resolve('src', 'api', 'resources', 'xls', 'exports', `buyers${moment().format('DD_MM_YYYY_hh_mm_ss')}.xlsx`)
     xlsx.writeFile(newWb, destXlsxGenerated)
 
     return res.download(destXlsxGenerated, async err => {
@@ -137,7 +134,7 @@ export const executeJavaScript = async (req, res, next) => {
     })
     let count = 0
     const response = await Promise.all(
-      buyers.map(async (buyer) => {
+      buyers.map(async buyer => {
         const existBuyer = await models.Buyer.findOne({
           where: {
             email: buyer.email
@@ -248,14 +245,7 @@ export const exportIssue = async (req, res, next) => {
     var newWb = xlsx.utils.book_new()
     var newWs = xlsx.utils.json_to_sheet(business)
     xlsx.utils.book_append_sheet(newWb, newWs, 'New Data')
-    const destXlsxGenerated = path.resolve(
-      'src',
-      'api',
-      'resources',
-      'xls',
-      'exports',
-      `issue${moment().format('DD_MM_YYYY_hh_mm_ss')}.xlsx`
-    )
+    const destXlsxGenerated = path.resolve('src', 'api', 'resources', 'xls', 'exports', `issue${moment().format('DD_MM_YYYY_hh_mm_ss')}.xlsx`)
     xlsx.writeFile(newWb, destXlsxGenerated)
 
     return res.download(destXlsxGenerated, async err => {

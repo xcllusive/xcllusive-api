@@ -164,6 +164,7 @@ export const getBusiness = async (req, res, next) => {
 export const list = async (req, res, next) => {
   let search = req.query.search
   let stageId = req.query.stageId
+  let ctcStageId = req.query.ctcStageId
   let filterLog = req.query.filterLog
   let whereOptions = {
     where: {}
@@ -176,9 +177,12 @@ export const list = async (req, res, next) => {
       }
     } else {
       const arrayStageId = JSON.parse(stageId)
-      whereOptions.where.stageId = {
-        $or: arrayStageId
-      }
+      whereOptions.where.$and = []
+      whereOptions.where.$and.push({
+        stageId: {
+          $or: arrayStageId
+        }
+      })
     }
   }
 
@@ -237,6 +241,7 @@ export const list = async (req, res, next) => {
       data: [],
       message: 'Get Businesses with sucessfuly'
     }
+    console.log(whereOptions)
 
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
