@@ -395,8 +395,6 @@ export const getAllAnalysts = async (req, res, next) => {
     return []
   }
 
-  console.log('cayo', companyId)
-
   let whereOptions = {}
   if (parseInt(companyId) === 1) {
     whereOptions = {
@@ -633,39 +631,97 @@ export const getQtdeBusinessesStagePerUser = async (req, res, next) => {
   }
 }
 
-export const getBusinessesPerAnalyst = async (req, res, next) => {
-  const analystId = req.query.analystId
+export const getBusinessesPerAnalystSource = async (req, res, next) => {
+  const analystSourceId = req.query.analystSourceId
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
+  const type = req.query.type
+
+  let whereOptions = {}
+  let whereOptionIM = {}
+  if (type === 'analyst') {
+    whereOptions = {
+      dateTimeCreated: {
+        $between: [dateFrom, dateTo]
+      },
+      listingAgent_id: analystSourceId,
+      company_id: 1
+    }
+    whereOptionIM = {
+      dateChangedToSalesMemorandum: {
+        $between: [dateFrom, dateTo]
+      },
+      listingAgent_id: analystSourceId,
+      company_id: 1
+    }
+  }
+  if (type === 'sourceSold') {
+    whereOptions = {
+      dateChangedToSalesMemorandum: {
+        $between: [dateFrom, dateTo]
+      },
+      sourceId: analystSourceId,
+      company_id: 1
+    }
+    whereOptionIM = {
+      dateChangedToSalesMemorandum: {
+        $between: [dateFrom, dateTo]
+      },
+      sourceId: analystSourceId,
+      company_id: 1
+    }
+  }
 
   try {
     const listBusinessesDateCreated = await models.Business.findAll({
       raw: true,
       attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent'],
-      where: {
-        dateTimeCreated: {
-          $between: [dateFrom, dateTo]
-        },
-        listingAgent_id: analystId,
-        company_id: 1
-      }
+      where: whereOptions
     })
+    let listBusinessesSalesMemorandum = []
+    let businessSold = []
+    if (type === 'analyst') {
+      listBusinessesSalesMemorandum = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+        where: whereOptionIM
+      })
+    }
+    if (type === 'sourceSold') {
+      const sold = await models.BusinessSold.findAll({
+        raw: true,
+        attributes: ['soldPrice'],
+        where: {
+          sold: true,
+          dateTimeCreated: {
+            $between: [dateFrom, dateTo]
+          }
+        },
+        include: [{
+          model: models.Business,
+          attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+          where: {
+            id: {
+              $col: 'BusinessSold.business_id'
+            },
+            sourceId: analystSourceId
+          }
+        }]
+      })
 
-    const listBusinessesSalesMemorandum = await models.Business.findAll({
-      raw: true,
-      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
-      where: {
-        dateChangedToSalesMemorandum: {
-          $between: [dateFrom, dateTo]
-        },
-        listingAgent_id: analystId,
-        company_id: 1
-      }
-    })
+      sold.map(item => {
+        businessSold.push({
+          id: item['Business.id'],
+          businessName: item['Business.businessName'],
+          firstNameV: item['Business.firstNameV'],
+          lastNameV: item['Business.lastNameV']
+        })
+      })
+    }
     return res.status(201).json({
       data: {
         listBusinessesDateCreated,
-        listBusinessesSalesMemorandum
+        listBusinessIMSold: type === 'analyst' ? listBusinessesSalesMemorandum : businessSold
       }
     })
   } catch (error) {
@@ -1103,6 +1159,104 @@ export const getCtcBusinessesPerOffice = async (req, res, next) => {
       data: {
         listBusinessesDateCreated
       }
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getSoldBySource = async (req, res, next) => {
+  const dateFrom = req.query.dateFrom
+  const dateTo = req.query.dateTo
+
+  try {
+    const sourceBusinesses = await models.Business.findAndCountAll({
+      raw: true,
+      attributes: ['id'],
+      where: {
+        dateChangedToSalesMemorandum: {
+          $between: [dateFrom, dateTo]
+        }
+      },
+      include: [{
+        model: models.BusinessSource,
+        attributes: ['label', 'id'],
+        as: 'source',
+        where: {
+          id: {
+            $col: 'Business.sourceId'
+          }
+        }
+      }],
+      group: ['Business.sourceId']
+    })
+    const countBusinessSource = _.merge(sourceBusinesses.rows, sourceBusinesses.count)
+
+    let totalEngaged = 0
+    let totalSold = 0
+    let totalSoldPrice = 0
+    const arraySoldPriceBySource = await Promise.all(
+      countBusinessSource.map(async item => {
+        let totalSoldPricePerSource = 0
+        const soldPrice = await models.BusinessSold.findAndCountAll({
+          raw: true,
+          attributes: ['soldPrice'],
+          where: {
+            sold: true,
+            dateTimeCreated: {
+              $between: [dateFrom, dateTo]
+            }
+          },
+          include: [{
+            model: models.Business,
+            attributes: ['id'],
+            where: {
+              id: {
+                $col: 'BusinessSold.business_id'
+              },
+              sourceId: item['source.id']
+            },
+            include: [{
+              model: models.BusinessSource,
+              attributes: ['label'],
+              as: 'source',
+              where: {
+                id: {
+                  $col: 'Business.sourceId'
+                }
+              }
+            }]
+          }]
+        })
+        const businessSold = _.merge(soldPrice.rows, soldPrice.count)
+        if (businessSold.length > 0) {
+          businessSold.map(sold => {
+            if (item['source.id'] === sold['Business.source.id']) {
+              totalSoldPricePerSource = totalSoldPricePerSource + sold.soldPrice
+            }
+            totalSoldPrice = totalSoldPrice + sold.soldPrice
+          })
+        }
+        totalEngaged = totalEngaged + item.count
+        totalSold = totalSold + soldPrice.count
+
+        console.log(totalSoldPrice)
+
+        return {
+          sourceId: item['source.id'],
+          sourceLabel: item['source.label'],
+          totalPerSource: item.count,
+          countBusinessSold: soldPrice.count,
+          totalSoldPricePerSource: totalSoldPricePerSource
+        }
+      })
+    )
+
+    return res.status(201).json({
+      data: arraySoldPriceBySource,
+      totalEngaged,
+      totalSold,
+      message: 'Analysts got successfully'
     })
   } catch (error) {
     return next(error)

@@ -5,12 +5,13 @@ import {
   getAllAnalysts,
   getAnalystReport,
   getQtdeBusinessesStagePerUser,
-  getBusinessesPerAnalyst,
+  getBusinessesPerAnalystSource,
   getEnquiryReport,
   activityRequestControlPerUser,
   getUsersPerRegion,
   getDailyTimeActivityReport,
-  getCtcBusinessesPerOffice
+  getCtcBusinessesPerOffice,
+  getSoldBySource
 } from '../controllers/reports.controller'
 import {
   authMiddleware,
@@ -44,7 +45,7 @@ router.route('/all-analysts').get(getAllAnalysts)
 
 router.route('/qtde-businesses-stage-per-user').get(getQtdeBusinessesStagePerUser)
 
-router.route('/businesses-list-analyst').get(getBusinessesPerAnalyst)
+router.route('/businesses-list-analyst-source').get(getBusinessesPerAnalystSource)
 
 router.route('/activity-request-per-user-report').get(activityRequestControlPerUser)
 
@@ -53,5 +54,7 @@ router.route('/users-per-region').get(getUsersPerRegion)
 router.route('/daily-time-activity-report').get(getDailyTimeActivityReport)
 
 router.route('/ctc-businesses-list-office').get(getCtcBusinessesPerOffice)
+
+router.route('/sold-by-source').get(getSoldBySource)
 
 export default router
