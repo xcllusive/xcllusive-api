@@ -2056,8 +2056,7 @@ export const getCtcAllPerUser = async (req, res, next) => {
             [{
               model: models.BusinessLog,
               as: 'BusinessLog'
-            }, 'time', 'desc'],
-            [{
+            }, 'time', 'desc'], [{
               model: models.BusinessLog,
               as: 'BusinessLog'
             }, 'followUp', 'DESC']
@@ -2348,10 +2347,10 @@ export const verifyDuplicatedBusiness = async (req, res, next) => {
       if (
         (item.vendorPhone1 &&
           item.vendorPhone1
-          .split(' ')
-          .join('')
-          .split('-')
-          .join('') === telephoneRaw) ||
+            .split(' ')
+            .join('')
+            .split('-')
+            .join('') === telephoneRaw) ||
         (item.vendorEmail && item.vendorEmail === vendorEmail)
       ) {
         duplicatedBusiness = item
@@ -2574,7 +2573,7 @@ export const getAllEnquiries = async (req, res, next) => {
         business_id: businessId
       },
       include: [{
-        attributes: ['firstName', 'surname', 'email', 'telephone1', 'caReceived', 'smSent'],
+        attributes: ['id', 'firstName', 'surname', 'email', 'telephone1', 'caReceived', 'smSent'],
         model: models.Buyer,
         as: 'Buyer'
       }],

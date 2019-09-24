@@ -636,6 +636,7 @@ export const getBusinessesPerAnalystSource = async (req, res, next) => {
   const dateFrom = req.query.dateFrom
   const dateTo = req.query.dateTo
   const type = req.query.type
+  const officeId = req.query.officeId
 
   let whereOptions = {}
   let whereOptionIM = {}
@@ -652,6 +653,22 @@ export const getBusinessesPerAnalystSource = async (req, res, next) => {
         $between: [dateFrom, dateTo]
       },
       listingAgent_id: analystSourceId,
+      company_id: 1
+    }
+  }
+  if (type === 'source' || type === 'totalSource') {
+    whereOptions = {
+      dateTimeCreated: {
+        $between: [dateFrom, dateTo]
+      },
+      sourceId: analystSourceId,
+      company_id: 1
+    }
+    whereOptionIM = {
+      dateChangedToSalesMemorandum: {
+        $between: [dateFrom, dateTo]
+      },
+      sourceId: analystSourceId,
       company_id: 1
     }
   }
@@ -673,14 +690,65 @@ export const getBusinessesPerAnalystSource = async (req, res, next) => {
   }
 
   try {
-    const listBusinessesDateCreated = await models.Business.findAll({
-      raw: true,
-      attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent'],
-      where: whereOptions
-    })
+    let listBusinessesDateCreated = []
     let listBusinessesSalesMemorandum = []
     let businessSold = []
     if (type === 'analyst') {
+      listBusinessesDateCreated = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent'],
+        where: whereOptions
+      })
+
+      listBusinessesSalesMemorandum = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+        where: whereOptionIM
+      })
+    }
+    // cayo
+    if (type === 'source') {
+      listBusinessesDateCreated = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent', 'listingAgent_id'],
+        where: whereOptions,
+        include: [{
+          model: models.User,
+          as: 'listingAgent',
+          attributes: ['id'],
+          where: {
+            id: {
+              $col: 'Business.listingAgent_id'
+            },
+            officeId: officeId
+          }
+        }]
+      })
+
+      listBusinessesSalesMemorandum = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
+        where: whereOptionIM,
+        include: [{
+          model: models.User,
+          as: 'listingAgent',
+          attributes: ['id'],
+          where: {
+            id: {
+              $col: 'Business.listingAgent_id'
+            },
+            officeId: officeId
+          }
+        }]
+      })
+    }
+    if (type === 'totalSource') {
+      listBusinessesDateCreated = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent', 'listingAgent_id'],
+        where: whereOptions
+      })
+
       listBusinessesSalesMemorandum = await models.Business.findAll({
         raw: true,
         attributes: ['id', 'businessName', 'firstNameV', 'lastNameV'],
@@ -688,6 +756,12 @@ export const getBusinessesPerAnalystSource = async (req, res, next) => {
       })
     }
     if (type === 'sourceSold') {
+      listBusinessesDateCreated = await models.Business.findAll({
+        raw: true,
+        attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'dateTimeAssignToAgent', 'dateTimeFirstOpenByAgent'],
+        where: whereOptions
+      })
+
       const sold = await models.BusinessSold.findAll({
         raw: true,
         attributes: ['soldPrice'],
@@ -721,7 +795,7 @@ export const getBusinessesPerAnalystSource = async (req, res, next) => {
     return res.status(201).json({
       data: {
         listBusinessesDateCreated,
-        listBusinessIMSold: type === 'analyst' ? listBusinessesSalesMemorandum : businessSold
+        listBusinessIMSold: type === 'analyst' || type === 'source' ? listBusinessesSalesMemorandum : businessSold
       }
     })
   } catch (error) {
@@ -1240,8 +1314,6 @@ export const getSoldBySource = async (req, res, next) => {
         totalEngaged = totalEngaged + item.count
         totalSold = totalSold + soldPrice.count
 
-        console.log(totalSoldPrice)
-
         return {
           sourceId: item['source.id'],
           sourceLabel: item['source.label'],
@@ -1256,6 +1328,7 @@ export const getSoldBySource = async (req, res, next) => {
       data: arraySoldPriceBySource,
       totalEngaged,
       totalSold,
+      totalSoldPrice,
       message: 'Analysts got successfully'
     })
   } catch (error) {

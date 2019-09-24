@@ -1294,8 +1294,9 @@ export const getBusinessFromBuyer = async (req, res, next) => {
       raw: true,
       attributes: ['id', 'label']
     })
+
     let issueList = []
-    if (business.company_id === 2) {
+    if (business.company_id === 2 && JSON.parse(business.listIssues_id)) {
       issueList = await models.Issue.findAll({
         raw: true,
         attributes: ['id', 'label', 'closed'],
