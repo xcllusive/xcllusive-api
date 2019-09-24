@@ -25,7 +25,8 @@ export const list = async (req, res, next) => {
   const offset = req.skip
   const where = business ? {
     business_id: business
-  } : null
+  }
+    : null
   const include = [{
     model: models.ScoreRegister,
     as: 'currentInterest'
@@ -107,8 +108,7 @@ export const create = async (req, res, next) => {
         ['dateTimeCreated', 'DESC']
       ]
     })
-    newScore.version =
-      lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 1
+    newScore.version = lastVersion && lastVersion.version > 0 ? lastVersion.version + 1 : 1
     const score = await models.Score.create(newScore)
 
     return res.status(200).json({
@@ -216,25 +216,9 @@ export const makePdf = async (req, res, next) => {
     scoreId
   } = req.params
 
-  const templatePath = Path.resolve(
-    'src',
-    'api',
-    'resources',
-    'pdf',
-    'templates',
-    'score',
-    'score.html'
-  )
+  const templatePath = Path.resolve('src', 'api', 'resources', 'pdf', 'templates', 'score', 'score.html')
 
-  const destPdfGenerated = Path.resolve(
-    'src',
-    'api',
-    'resources',
-    'pdf',
-    'generated',
-    'score',
-    `${Date.now()}.pdf`
-  )
+  const destPdfGenerated = Path.resolve('src', 'api', 'resources', 'pdf', 'generated', 'score', `${Date.now()}.pdf`)
 
   try {
     // Verify exists score
@@ -426,63 +410,43 @@ export const makePdf = async (req, res, next) => {
       count = count + 1
 
       if (count === 1) {
-        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_1 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_1 = progress.total
       }
       if (count === 2) {
-        chartScoreProgress.label_column_2 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_2 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_2 = progress.total
       }
       if (count === 3) {
-        chartScoreProgress.label_column_3 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_3 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_3 = progress.total
       }
       if (count === 4) {
-        chartScoreProgress.label_column_4 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_4 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_4 = progress.total
       }
       if (count === 5) {
-        chartScoreProgress.label_column_5 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_5 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_5 = progress.total
       }
       if (count === 6) {
-        chartScoreProgress.label_column_6 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_6 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_6 = progress.total
       }
       if (count === 7) {
-        chartScoreProgress.label_column_7 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_7 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_7 = progress.total
       }
       if (count === 8) {
-        chartScoreProgress.label_column_8 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_8 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_8 = progress.total
       }
       if (count === 9) {
-        chartScoreProgress.label_column_9 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_9 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_9 = progress.total
       }
       if (count === 10) {
-        chartScoreProgress.label_column_10 = moment(progress.dateTimeCreated).format(
-          'DD/MM/YYYY'
-        )
+        chartScoreProgress.label_column_10 = moment(progress.dateTimeCreated).format('DD/MM/YYYY')
         chartScoreProgress.column_10 = progress.total
       }
     })
@@ -512,221 +476,163 @@ export const makePdf = async (req, res, next) => {
       business.Scores.forEach(score => {
         if (score.dateSent) {
           if (score.total <= 20) {
-            chartNumberOfBusinessSold.column_10_20 =
-              chartNumberOfBusinessSold.column_10_20 + 1
+            chartNumberOfBusinessSold.column_10_20 = chartNumberOfBusinessSold.column_10_20 + 1
 
-            chartDaysOnTheMarket.column_10_20 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_10_20) /
-              chartNumberOfBusinessSold.column_10_20
-            )
+            chartDaysOnTheMarket.column_10_20 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_10_20) / chartNumberOfBusinessSold.column_10_20)
 
-            percBusinessSold.column_10_20 =
-              (percBusinessSold.column_10_20 * 100) / last20BusinessSold.length
+            percBusinessSold.column_10_20 = (percBusinessSold.column_10_20 * 100) / last20BusinessSold.length
 
             if (chartNumberOfBusinessSold.column_10_20 === 1) {
               columnListedPrice.previous_10_20 = business.listedPrice
               columnListedPrice.total_10_20 = columnListedPrice.previous_10_20
             }
             if (chartNumberOfBusinessSold.column_10_20 > 1) {
-              columnListedPrice.total_10_20 =
-                columnListedPrice.previous_10_20 + business.listedPrice
+              columnListedPrice.total_10_20 = columnListedPrice.previous_10_20 + business.listedPrice
               columnListedPrice.previous_10_20 = columnListedPrice.total_10_20
             }
-            averageValue.column_10_20 =
-              columnListedPrice.total_10_20 / chartNumberOfBusinessSold.column_10_20
+            averageValue.column_10_20 = columnListedPrice.total_10_20 / chartNumberOfBusinessSold.column_10_20
             averageValue.column_10_20 = numeral(averageValue.column_10_20).format('0.0a')
 
             valueRangeArray.column_10_20.push(business.listedPrice)
           }
           if (score.total > 20 && score.total < 31) {
-            chartNumberOfBusinessSold.column_21_30 =
-              chartNumberOfBusinessSold.column_21_30 + 1
+            chartNumberOfBusinessSold.column_21_30 = chartNumberOfBusinessSold.column_21_30 + 1
 
-            chartDaysOnTheMarket.column_21_30 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_21_30) /
-              chartNumberOfBusinessSold.column_21_30
-            )
+            chartDaysOnTheMarket.column_21_30 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_21_30) / chartNumberOfBusinessSold.column_21_30)
 
-            percBusinessSold.column_21_30 =
-              (percBusinessSold.column_21_30 * 100) / last20BusinessSold.length
+            percBusinessSold.column_21_30 = (percBusinessSold.column_21_30 * 100) / last20BusinessSold.length
 
-            averageValue.column_21_30 =
-              business.listedPrice / chartNumberOfBusinessSold.column_21_30
+            averageValue.column_21_30 = business.listedPrice / chartNumberOfBusinessSold.column_21_30
 
             if (chartNumberOfBusinessSold.column_21_30 === 1) {
               columnListedPrice.previous_21_30 = business.listedPrice
               columnListedPrice.total_21_30 = columnListedPrice.previous_21_30
             }
             if (chartNumberOfBusinessSold.column_21_30 > 1) {
-              columnListedPrice.total_21_30 =
-                columnListedPrice.previous_21_30 + business.listedPrice
+              columnListedPrice.total_21_30 = columnListedPrice.previous_21_30 + business.listedPrice
               columnListedPrice.previous_21_30 = columnListedPrice.total_21_30
             }
-            averageValue.column_21_30 =
-              columnListedPrice.total_21_30 / chartNumberOfBusinessSold.column_21_30
+            averageValue.column_21_30 = columnListedPrice.total_21_30 / chartNumberOfBusinessSold.column_21_30
             averageValue.column_21_30 = numeral(averageValue.column_21_30).format('0.0a')
 
             valueRangeArray.column_21_30.push(business.listedPrice)
           }
           if (score.total > 30 && score.total < 41) {
-            chartNumberOfBusinessSold.column_31_40 =
-              chartNumberOfBusinessSold.column_31_40 + 1
+            chartNumberOfBusinessSold.column_31_40 = chartNumberOfBusinessSold.column_31_40 + 1
 
-            chartDaysOnTheMarket.column_31_40 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_31_40) /
-              chartNumberOfBusinessSold.column_31_40
-            )
+            chartDaysOnTheMarket.column_31_40 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_31_40) / chartNumberOfBusinessSold.column_31_40)
 
-            percBusinessSold.column_31_40 =
-              (percBusinessSold.column_31_40 * 100) / last20BusinessSold.length
+            percBusinessSold.column_31_40 = (percBusinessSold.column_31_40 * 100) / last20BusinessSold.length
 
             if (chartNumberOfBusinessSold.column_31_40 === 1) {
               columnListedPrice.previous_31_40 = business.listedPrice
               columnListedPrice.total_31_40 = columnListedPrice.previous_31_40
             }
             if (chartNumberOfBusinessSold.column_31_40 > 1) {
-              columnListedPrice.total_31_40 =
-                columnListedPrice.previous_31_40 + business.listedPrice
+              columnListedPrice.total_31_40 = columnListedPrice.previous_31_40 + business.listedPrice
               columnListedPrice.previous_31_40 = columnListedPrice.total_31_40
             }
-            averageValue.column_31_40 =
-              columnListedPrice.total_31_40 / chartNumberOfBusinessSold.column_31_40
+            averageValue.column_31_40 = columnListedPrice.total_31_40 / chartNumberOfBusinessSold.column_31_40
             averageValue.column_31_40 = numeral(averageValue.column_31_40).format('0.0a')
 
             valueRangeArray.column_31_40.push(business.listedPrice)
           }
           if (score.total > 40 && score.total < 51) {
-            chartNumberOfBusinessSold.column_41_50 =
-              chartNumberOfBusinessSold.column_41_50 + 1
+            chartNumberOfBusinessSold.column_41_50 = chartNumberOfBusinessSold.column_41_50 + 1
 
-            chartDaysOnTheMarket.column_41_50 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_41_50) /
-              chartNumberOfBusinessSold.column_41_50
-            )
+            chartDaysOnTheMarket.column_41_50 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_41_50) / chartNumberOfBusinessSold.column_41_50)
 
-            percBusinessSold.column_41_50 =
-              (chartNumberOfBusinessSold.column_41_50 * 100) / last20BusinessSold.length
+            percBusinessSold.column_41_50 = (chartNumberOfBusinessSold.column_41_50 * 100) / last20BusinessSold.length
 
             if (chartNumberOfBusinessSold.column_41_50 === 1) {
               columnListedPrice.previous_41_50 = business.listedPrice
               columnListedPrice.total_41_50 = columnListedPrice.previous_41_50
             }
             if (chartNumberOfBusinessSold.column_41_50 > 1) {
-              columnListedPrice.total_41_50 =
-                columnListedPrice.previous_41_50 + business.listedPrice
+              columnListedPrice.total_41_50 = columnListedPrice.previous_41_50 + business.listedPrice
               columnListedPrice.previous_41_50 = columnListedPrice.total_41_50
             }
-            averageValue.column_41_50 = Math.trunc(
-              columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50
-            )
+            averageValue.column_41_50 = Math.trunc(columnListedPrice.total_41_50 / chartNumberOfBusinessSold.column_41_50)
             averageValue.column_41_50 = numeral(averageValue.column_41_50).format('0.0a')
 
             valueRangeArray.column_41_50.push(business.listedPrice)
           }
           if (score.total > 50 && score.total < 61) {
-            chartNumberOfBusinessSold.column_51_60 =
-              chartNumberOfBusinessSold.column_51_60 + 1
+            chartNumberOfBusinessSold.column_51_60 = chartNumberOfBusinessSold.column_51_60 + 1
 
-            chartDaysOnTheMarket.column_51_60 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_51_60) /
-              chartNumberOfBusinessSold.column_51_60
-            )
+            chartDaysOnTheMarket.column_51_60 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_51_60) / chartNumberOfBusinessSold.column_51_60)
 
-            percBusinessSold.column_51_60 =
-              (percBusinessSold.column_51_60 * 100) / last20BusinessSold.length
+            percBusinessSold.column_51_60 = (percBusinessSold.column_51_60 * 100) / last20BusinessSold.length
 
             if (chartNumberOfBusinessSold.column_51_60 === 1) {
               columnListedPrice.previous_51_60 = business.listedPrice
               columnListedPrice.total_51_60 = columnListedPrice.previous_51_60
             }
             if (chartNumberOfBusinessSold.column_51_60 > 1) {
-              columnListedPrice.total_51_60 =
-                columnListedPrice.previous_51_60 + business.listedPrice
+              columnListedPrice.total_51_60 = columnListedPrice.previous_51_60 + business.listedPrice
               columnListedPrice.previous_51_60 = columnListedPrice.total_51_60
             }
-            averageValue.column_51_60 =
-              columnListedPrice.total_51_60 / chartNumberOfBusinessSold.column_51_60
+            averageValue.column_51_60 = columnListedPrice.total_51_60 / chartNumberOfBusinessSold.column_51_60
             averageValue.column_51_60 = numeral(averageValue.column_51_60).format('0.0a')
 
             valueRangeArray.column_51_60.push(business.listedPrice)
           }
           if (score.total > 60 && score.total < 71) {
-            chartNumberOfBusinessSold.column_61_70 =
-              chartNumberOfBusinessSold.column_61_70 + 1
+            chartNumberOfBusinessSold.column_61_70 = chartNumberOfBusinessSold.column_61_70 + 1
 
-            chartDaysOnTheMarket.column_61_70 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_61_70) /
-              chartNumberOfBusinessSold.column_61_70
-            )
+            chartDaysOnTheMarket.column_61_70 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_61_70) / chartNumberOfBusinessSold.column_61_70)
 
-            percBusinessSold.column_61_70 =
-              (percBusinessSold.column_61_70 * 100) / last20BusinessSold.length
+            percBusinessSold.column_61_70 = (percBusinessSold.column_61_70 * 100) / last20BusinessSold.length
 
             if (chartNumberOfBusinessSold.column_61_70 === 1) {
               columnListedPrice.previous_61_70 = business.listedPrice
               columnListedPrice.total_61_70 = columnListedPrice.previous_61_70
             }
             if (chartNumberOfBusinessSold.column_61_70 > 1) {
-              columnListedPrice.total_61_70 =
-                columnListedPrice.previous_61_70 + business.listedPrice
+              columnListedPrice.total_61_70 = columnListedPrice.previous_61_70 + business.listedPrice
               columnListedPrice.previous_61_70 = columnListedPrice.total_61_70
             }
-            averageValue.column_61_70 =
-              columnListedPrice.total_61_70 / chartNumberOfBusinessSold.column_61_70
+            averageValue.column_61_70 = columnListedPrice.total_61_70 / chartNumberOfBusinessSold.column_61_70
             averageValue.total_61_70 = numeral(averageValue.total_61_70).format('0.0a')
 
             valueRangeArray.column_61_70.push(business.listedPrice)
           }
           if (score.total > 70 && score.total < 81) {
-            chartNumberOfBusinessSold.column_71_80 =
-              chartNumberOfBusinessSold.column_71_80 + 1
+            chartNumberOfBusinessSold.column_71_80 = chartNumberOfBusinessSold.column_71_80 + 1
 
-            chartDaysOnTheMarket.column_71_80 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_71_80) /
-              chartNumberOfBusinessSold.column_71_80
-            )
+            chartDaysOnTheMarket.column_71_80 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_71_80) / chartNumberOfBusinessSold.column_71_80)
 
-            percBusinessSold.column_71_80 =
-              (percBusinessSold.column_71_80 * 100) / last20BusinessSold.length
+            percBusinessSold.column_71_80 = (percBusinessSold.column_71_80 * 100) / last20BusinessSold.length
 
             if (chartNumberOfBusinessSold.column_71_80 === 1) {
               columnListedPrice.previous_71_80 = business.listedPrice
               columnListedPrice.total_71_80 = columnListedPrice.previous_71_80
             }
             if (chartNumberOfBusinessSold.column_71_80 > 1) {
-              columnListedPrice.total_71_80 =
-                columnListedPrice.previous_71_80 + business.listedPrice
+              columnListedPrice.total_71_80 = columnListedPrice.previous_71_80 + business.listedPrice
               columnListedPrice.previous_71_80 = columnListedPrice.total_71_80
             }
-            averageValue.column_71_80 =
-              columnListedPrice.total_71_80 / chartNumberOfBusinessSold.column_71_80
+            averageValue.column_71_80 = columnListedPrice.total_71_80 / chartNumberOfBusinessSold.column_71_80
             averageValue.column_71_80 = numeral(averageValue.column_71_80).format('0.0a')
 
             valueRangeArray.column_71_80.push(business.listedPrice)
           }
           if (score.total > 80) {
-            chartNumberOfBusinessSold.column_81_90 =
-              chartNumberOfBusinessSold.column_81_90 + 1
+            chartNumberOfBusinessSold.column_81_90 = chartNumberOfBusinessSold.column_81_90 + 1
 
-            chartDaysOnTheMarket.column_81_90 = Math.trunc(
-              (daysOnTheMarket + chartDaysOnTheMarket.column_81_90) /
-              chartNumberOfBusinessSold.column_81_90
-            )
+            chartDaysOnTheMarket.column_81_90 = Math.trunc((daysOnTheMarket + chartDaysOnTheMarket.column_81_90) / chartNumberOfBusinessSold.column_81_90)
 
-            percBusinessSold.column_81_90 =
-              (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
+            percBusinessSold.column_81_90 = (percBusinessSold.column_81_90 * 100) / last20BusinessSold.lenght
 
             if (chartNumberOfBusinessSold.column_81_90 === 1) {
               columnListedPrice.previous_81_90 = business.listedPrice
               columnListedPrice.total_81_90 = columnListedPrice.previous_81_90
             }
             if (chartNumberOfBusinessSold.column_81_90 > 1) {
-              columnListedPrice.total_81_90 =
-                columnListedPrice.previous_81_90 + business.listedPrice
+              columnListedPrice.total_81_90 = columnListedPrice.previous_81_90 + business.listedPrice
               columnListedPrice.previous_81_90 = columnListedPrice.total_81_90
             }
-            averageValue.column_81_90 =
-              columnListedPrice.total_81_90 / chartNumberOfBusinessSold.column_81_90
+            averageValue.column_81_90 = columnListedPrice.total_81_90 / chartNumberOfBusinessSold.column_81_90
             averageValue.column_81_90 = numeral(averageValue.column_81_90).format('0.0a')
 
             valueRangeArray.column_81_90.push(business.listedPrice)
@@ -771,15 +677,19 @@ export const makePdf = async (req, res, next) => {
       return `$${numeral(min).format('0.0a')} - $${numeral(max).format('0.0a')}`
     }
 
+    const broker = await models.User.findOne({
+      where: {
+        id: score.Business.brokerAccountName
+      }
+    })
+
     const context = {
       business_name: score.Business.businessName,
       score_generated: moment(score.dateTimeCreated).format('DD/MM/YYYY'),
       score_version: score.version,
       total_enquiries: enquiriesBusiness.count,
       total_enquiries_last_four_weeks: enquiriesBusinessLastFourWeeks.count,
-      average_enquiries_last_four_weeks: (
-        enquiriesTotalLastFourWeeks.count / businessesForSale.count
-      ).toFixed(2),
+      average_enquiries_last_four_weeks: (enquiriesTotalLastFourWeeks.count / businessesForSale.count).toFixed(2),
       currentInterest: score.currentInterest,
       currentInterestNotes: score.notesInterest,
       infoTransMomen: score.infoTransMomen,
@@ -818,7 +728,9 @@ export const makePdf = async (req, res, next) => {
         column_61_70: renderValueRange(valueRangeArray.column_61_70),
         column_71_80: renderValueRange(valueRangeArray.column_71_80),
         column_81_90: renderValueRange(valueRangeArray.column_81_90)
-      }
+      },
+      brokerPhone: broker.phoneMobile,
+      brokerName: `${broker.firstName} ${broker.lastName}`
     }
 
     const PDF_OPTIONS = {
@@ -835,9 +747,7 @@ export const makePdf = async (req, res, next) => {
       headerTemplate: ' ',
       footerTemplate: `
       <div style="margin-left:15mm;margin-right:15mm;width:100%;font-size:12px;text-align:center;color:rgb(187, 187, 187);">
-      <span style="float: left;">${context.business_name} - Buyer Feedback ${
-  context.score_version
-}</span>
+      <span style="float: left;">${context.business_name} - Buyer Feedback ${context.score_version}</span>
       <span style="float: right;">Page: <span class="pageNumber"></span> of <span class="totalPages"></span></span>
       </div>`
     }
@@ -845,13 +755,24 @@ export const makePdf = async (req, res, next) => {
     const content = await ReadFile(templatePath, 'utf8')
     const handlebarsCompiled = handlebars.compile(content)
     const template = handlebarsCompiled(context)
-    // const browser = await puppeteer.launch({headless: false}) // to debug
+
+    // to debug
+    // const browser = await puppeteer.launch({
+    //   headless: false
+    // })
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
     await page.setContent(template)
+
+    /* only works local. Does not work in AWS */
+    // await page.goto(`data:text/html,${template}`, {
+    //   waitUntil: 'networkidle0'
+    // })
+    /* end */
+
     await page.pdf(PDF_OPTIONS)
     await browser.close()
 
@@ -859,12 +780,6 @@ export const makePdf = async (req, res, next) => {
 
     const settings = await models.SystemSettings.findOne({
       where: 1
-    })
-
-    const broker = await models.User.findOne({
-      where: {
-        id: score.Business.brokerAccountName
-      }
     })
 
     // Verify exists template
