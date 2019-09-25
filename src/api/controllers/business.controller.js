@@ -164,16 +164,37 @@ export const getBusiness = async (req, res, next) => {
 export const list = async (req, res, next) => {
   let search = req.query.search
   let stageId = req.query.stageId
-  let ctcStageId = req.query.ctcStageId
+  let company = req.query.company
   let filterLog = req.query.filterLog
   let whereOptions = {
     where: {}
   }
 
   if (stageId && stageId.length > 0) {
-    if (parseInt(stageId)) {
-      whereOptions.where.stageId = {
-        $eq: `${stageId}`
+    if (parseInt(stageId) || company) {
+      if (company === 'xcllusive') {
+        console.log(JSON.parse(stageId))
+        whereOptions.where.stageId = {
+          $eq: `${JSON.parse(stageId)}`
+        }
+        whereOptions.where.$and = []
+        whereOptions.where.$and.push({
+          company_id: {
+            $eq: 1
+          }
+        })
+      }
+      if (company === 'ctc') {
+        console.log(JSON.parse(stageId))
+        whereOptions.where.ctcStageId = {
+          $eq: `${stageId}`
+        }
+        whereOptions.where.$and = []
+        whereOptions.where.$and.push({
+          company_id: {
+            $eq: 2
+          }
+        })
       }
     } else {
       const arrayStageId = JSON.parse(stageId)
@@ -241,8 +262,8 @@ export const list = async (req, res, next) => {
       data: [],
       message: 'Get Businesses with sucessfuly'
     }
-    console.log(whereOptions)
 
+    console.log(whereOptions)
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
     if (filterLog && JSON.parse(filterLog)) {
@@ -577,7 +598,6 @@ export const updateListingAgent = async (req, res, next) => {
           path: template.attachmentPath
         }] : []
       }
-      console.log(mailOptions)
       // Send Email
       await mailer.sendMail(mailOptions)
 
@@ -2226,8 +2246,6 @@ export const updateStageMemo = async (req, res, next) => {
     updateMemo.industry = updateMemo.industry
     updateMemo.commissionPerc = parseFloat(updateMemo.commissionPerc)
     updateMemo.productId = updateMemo.businessProduct
-
-    console.log(updateMemo)
 
     await models.Business.update(updateMemo, {
       where: {
