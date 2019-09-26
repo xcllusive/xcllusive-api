@@ -173,7 +173,6 @@ export const list = async (req, res, next) => {
   if (stageId && stageId.length > 0) {
     if (parseInt(stageId) || company) {
       if (company === 'xcllusive') {
-        console.log(JSON.parse(stageId))
         whereOptions.where.stageId = {
           $eq: `${JSON.parse(stageId)}`
         }
@@ -185,7 +184,6 @@ export const list = async (req, res, next) => {
         })
       }
       if (company === 'ctc') {
-        console.log(JSON.parse(stageId))
         whereOptions.where.ctcStageId = {
           $eq: `${stageId}`
         }
@@ -202,6 +200,22 @@ export const list = async (req, res, next) => {
       whereOptions.where.$and.push({
         stageId: {
           $or: arrayStageId
+        }
+      })
+    }
+  } else {
+    whereOptions.where.$and = []
+    if (company === 'xcllusive') {
+      whereOptions.where.$and.push({
+        company_id: {
+          $eq: 1
+        }
+      })
+    }
+    if (company === 'ctc') {
+      whereOptions.where.$and.push({
+        company_id: {
+          $eq: 2
         }
       })
     }
@@ -263,7 +277,6 @@ export const list = async (req, res, next) => {
       message: 'Get Businesses with sucessfuly'
     }
 
-    console.log(whereOptions)
     const businesses = await models.Business.findAll(Object.assign(options, whereOptions))
 
     if (filterLog && JSON.parse(filterLog)) {
