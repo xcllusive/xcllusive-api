@@ -226,6 +226,16 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: null
+      },
+      vendorPhone1Number: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
+      },
+      vendorPhone2Number: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
       }
     }, {
       createdAt: 'dateTimeCreated',
@@ -320,6 +330,9 @@ export default (sequelize, DataTypes) => {
     })
     models.Business.belongsTo(models.CtcBusinessStage, {
       foreignKey: 'ctcStageId'
+    })
+    models.Business.hasMany(models.BusinessSold, {
+      foreignKey: 'business_id'
     })
   }
 

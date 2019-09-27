@@ -47,9 +47,9 @@ export const list = async (req, res, next) => {
   const limit = req.query.limit
   const offset = req.skip
   const where = businessId ? {
-      business_id: businessId
-    } :
-    null
+    business_id: businessId
+  }
+    : null
 
   try {
     const response = await models.Appraisal.findAndCountAll({
@@ -191,7 +191,6 @@ export const remove = async (req, res, next) => {
   } = req.params
 
   try {
-
     const user = await models.User.findOne({
       raw: true,
       where: {

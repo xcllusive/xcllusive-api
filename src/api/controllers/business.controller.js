@@ -8,6 +8,7 @@ import {
   uploadToS3,
   SNS
 } from '../modules/aws'
+import Sequelize from 'sequelize'
 
 export const getBusiness = async (req, res, next) => {
   const {
@@ -166,6 +167,7 @@ export const list = async (req, res, next) => {
   let stageId = req.query.stageId
   let company = req.query.company
   let filterLog = req.query.filterLog
+  let allStages = req.query.allStages
   let whereOptions = {
     where: {}
   }
@@ -230,9 +232,22 @@ export const list = async (req, res, next) => {
       }
     } else {
       if (parseInt(search)) {
-        whereOptions.where.listedPrice = {
-          $lte: search * 1.1,
-          $gte: search * 0.9
+        if (search.substr(0, 1) === '0') {
+          whereOptions.where.$or = []
+          whereOptions.where.$or.push({
+            vendorPhone1Number: {
+              $like: `%${search.substr(1, 11)}%`
+            }
+          }, {
+            vendorPhone2Number: {
+              $like: `%${search.substr(1, 11)}%`
+            }
+          })
+        } else {
+          whereOptions.where.listedPrice = {
+            $lte: search * 1.1,
+            $gte: search * 0.9
+          }
         }
       } else {
         whereOptions.where.$or = []
@@ -256,7 +271,18 @@ export const list = async (req, res, next) => {
           searchNote: {
             $like: `%${search}%`
           }
+        }, {
+          vendorEmail: {
+            $like: `%${search}%`
+          }
         })
+        whereOptions.where.$or.push(
+          Sequelize.where(
+            Sequelize.fn('concat', Sequelize.col('firstNameV'), ' ', Sequelize.col('lastNameV')), {
+              $like: `%${search}%`
+            }
+          )
+        )
       }
     }
   }
@@ -301,7 +327,18 @@ export const list = async (req, res, next) => {
         return item !== undefined
       })
     } else {
-      response.data = await businesses
+      if (company) {
+        response.data = await businesses
+      } else {
+        if (!allStages) {
+          response.data = await businesses.filter(item => {
+            return (item.company_id === 1 && (item.stageId === 4 || item.stageId === 5)) ||
+              (item.company_id === 2 && item.ctcStageId === 6)
+          })
+        } else {
+          response.data = await businesses
+        }
+      }
     }
 
     return res.status(200).json(response)
@@ -331,7 +368,9 @@ export const create = async (req, res, next) => {
     willReassign: req.body.willReassign,
     ctcStageId: req.body.ctcStageId,
     dateTimeAssignToAgent: moment().format('YYYY-MM-DD hh:mm:ss'),
-    dateTimeFirstOpenByAgent: req.body.dateTimeFirstOpenByAgent
+    dateTimeFirstOpenByAgent: req.body.dateTimeFirstOpenByAgent,
+    vendorPhone1Number: req.body.vendorPhone1Number,
+    vendorPhone2Number: req.body.vendorPhone2Number
   }
 
   let template = null
