@@ -128,7 +128,8 @@ export default (sequelize, DataTypes) => {
       as: 'ModifiedBy'
     })
     models.BusinessSold.belongsTo(models.Business, {
-      foreignKey: 'business_id'
+      foreignKey: 'business_id',
+      as: 'Business'
     })
     models.BusinessSold.belongsTo(models.BusinessType, {
       foreignKey: 'businessType',
