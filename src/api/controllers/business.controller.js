@@ -2732,3 +2732,56 @@ export const removeIssueFromBusiness = async (req, res, next) => {
     return next(err)
   }
 }
+
+export const getBusinessesAdvancedSearch = async (req, res, next) => {
+  const {
+    businessName,
+    firstNameV,
+    lastNameV,
+    vendorEmail,
+    vendoPhone1,
+    suburb,
+    postCode,
+    businessType,
+    businessProduct,
+    industry,
+    priceFrom,
+    priceTo,
+    listingAgent_id,
+    listingAgentCtc_id,
+    sourceId,
+    stageId,
+    ctcStageId,
+    ctcSourceId,
+    company
+  } = req.query
+
+  const whereOptions = {}
+
+  console.log('values', businessName)
+  if (businessName) {
+    whereOptions.businessName = {
+      $like: `%${businessName}%`
+    }
+  }
+  if (firstNameV) {
+    whereOptions.firstNameV = {
+      $like: `%${firstNameV}%`
+    }
+  }
+  console.log('test', whereOptions)
+  try {
+    const businesses = await models.Business.findAll({
+      raw: true,
+      attributes: ['id', 'businessName'],
+      where: whereOptions
+    })
+
+    console.log(businesses)
+    return res.status(200).json({
+      data: businesses
+    })
+  } catch (err) {
+    return next(err)
+  }
+}

@@ -31,7 +31,8 @@ import {
   verifyBusinessFirstOpenByAgent,
   getAllEnquiries,
   addIssueToBusiness,
-  removeIssueFromBusiness
+  removeIssueFromBusiness,
+  getBusinessesAdvancedSearch
 } from '../controllers/business.controller'
 
 import {
@@ -57,6 +58,8 @@ router.use(authMiddleware).use(authorizeMiddleware({
 router.use(controlActivityUser('Business'))
 
 router.route('/issue').put(addIssueToBusiness).delete(removeIssueFromBusiness)
+
+router.route('/advanced-search').get(getBusinessesAdvancedSearch)
 
 router.route('/show-enquiries').get(getAllEnquiries)
 

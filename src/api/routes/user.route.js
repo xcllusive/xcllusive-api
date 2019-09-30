@@ -7,7 +7,8 @@ import {
   update,
   remove,
   getLogged,
-  activeInactive
+  activeInactive,
+  getBrokers
 } from '../controllers/user.controller'
 
 import {
@@ -43,6 +44,8 @@ router
   .delete(remove)
 
 router.route('/user-logged').get(getLogged)
+
+router.route('/brokers').get(getBrokers)
 
 router.route('/active-inactive').put(activeInactive)
 

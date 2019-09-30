@@ -263,3 +263,19 @@ export const remove = async (req, res, next) => {
     return next(error)
   }
 }
+
+export const getBrokers = async (req, res, next) => {
+  try {
+    const brokers = await models.User.findAll({
+      where: {
+        userType: 'Broker'
+      }
+    })
+
+    return res.status(201).json({
+      data: brokers
+    })
+  } catch (error) {
+    return next(error)
+  }
+}

@@ -315,9 +315,33 @@ export const uploadFile = async (req, res, next) => {
     const sizeString = file.mimetype.length
     const sizeFormat = file.mimetype.indexOf('/')
     let format = file.mimetype.substr(sizeFormat + 1, sizeString)
-    if (format === 'vnd.openxmlformats-officedocument.wordprocess' || format === 'vnd.openxmlformats-officedocument.wordprocessingml.document') format = 'docx'
+
+    /* Word */
+    if (format === 'vnd.openxmlformats-officedocument.wordprocessingml.document') format = 'docx'
+    if (format === 'vnd.openxmlformats-officedocument.wordprocessingml.template') format = 'dotx'
+    if (format === 'vnd.ms-word.document.macroEnabled.12') format = 'docm'
+    if (format === 'vnd.ms-word.template.macroEnabled.12') format = 'dotm'
+
+    /* Excel */
+    if (format === 'vnd.ms-excel') format = 'xls'
     if (format === 'vnd.openxmlformats-officedocument.spreadsheet') format = 'xlsx'
+    if (format === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet') format = 'xlsx'
+    if (format === 'vnd.openxmlformats-officedocument.spreadsheetml.template') format = 'xltx'
+    if (format === 'vnd.ms-excel.sheet.macroEnabled.12') format = 'xlsm'
+    if (format === 'vnd.ms-excel.template.macroEnabled.12') format = 'xltm'
+    if (format === 'vnd.ms-excel.addin.macroEnabled.12') format = 'xlam'
+    if (format === 'vnd.ms-excel.sheet.binary.macroEnabled.12') format = 'xlsb'
+
+    /* PowerPoint */
     if (format === 'vnd.openxmlformats-officedocument.presentationml.presentation') format = 'pptx'
+    if (format === 'vnd.ms-powerpoint') format = 'ppt'
+    if (format === 'vnd.openxmlformats-officedocument.presentationml.template') format = 'potx'
+    if (format === 'vnd.openxmlformats-officedocument.presentationml.slideshow') format = 'ppsx'
+    if (format === 'vnd.ms-powerpoint.addin.macroEnabled.12') format = 'ppam'
+    if (format === 'vnd.ms-powerpoint.presentation.macroEnabled.12') format = 'pptm'
+    if (format === 'vnd.ms-powerpoint.template.macroEnabled.12') format = 'potm'
+    if (format === 'vnd.ms-powerpoint.slideshow.macroEnabled.12') format = 'ppsm'
+
     const fileNameAWS = `${office.label.replace(' ', '')}_${folder.name.replace(' ', '')}_${fileName.replace(' ', '')}`
 
     // Upload file to aws s3
