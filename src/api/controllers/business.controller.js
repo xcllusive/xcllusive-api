@@ -277,18 +277,18 @@ export const list = async (req, res, next) => {
           }
         })
         whereOptions.where.$or.push(
-          Sequelize.where(
-            Sequelize.fn('concat', Sequelize.col('firstNameV'), ' ', Sequelize.col('lastNameV')), {
-              $like: `%${search}%`
-            }
-          )
+          Sequelize.where(Sequelize.fn('concat', Sequelize.col('firstNameV'), ' ', Sequelize.col('lastNameV')), {
+            $like: `%${search}%`
+          })
         )
       }
     }
   }
 
   const options = {
-    attributes: ['id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id', 'vendorPhone1', 'vendorPhone2', 'vendorPhone3', 'ctcStageId'],
+    attributes: [
+      'id', 'businessName', 'firstNameV', 'lastNameV', 'address1', 'industry', 'listedPrice', 'description', 'stageId', 'productId', 'industryId', 'suburb', 'state', 'postCode', 'typeId', 'notifyOwner', 'vendorEmail', 'company_id', 'vendorPhone1', 'vendorPhone2', 'vendorPhone3', 'ctcStageId'
+    ],
     include: [
       models.BusinessStage, models.BusinessProduct, models.CtcBusinessStage
       // {
@@ -332,8 +332,7 @@ export const list = async (req, res, next) => {
       } else {
         if (!allStages) {
           response.data = await businesses.filter(item => {
-            return (item.company_id === 1 && (item.stageId === 4 || item.stageId === 5)) ||
-              (item.company_id === 2 && item.ctcStageId === 6)
+            return (item.company_id === 1 && (item.stageId === 4 || item.stageId === 5)) || (item.company_id === 2 && item.ctcStageId === 6)
           })
         } else {
           response.data = await businesses
@@ -2534,7 +2533,6 @@ export const sendSms = async (req, res, next) => {
     })
 
     // send SMS via aws SNS
-    // cayo
     const template = await models.EmailTemplate.findOne({
       where: {
         title: 'Enquiry SMS CTC'
@@ -2735,11 +2733,12 @@ export const removeIssueFromBusiness = async (req, res, next) => {
 
 export const getBusinessesAdvancedSearch = async (req, res, next) => {
   const {
+    limit,
     businessName,
     firstNameV,
     lastNameV,
     vendorEmail,
-    vendoPhone1,
+    vendorPhone1,
     suburb,
     postCode,
     businessType,
@@ -2747,8 +2746,9 @@ export const getBusinessesAdvancedSearch = async (req, res, next) => {
     industry,
     priceFrom,
     priceTo,
-    listingAgent_id,
-    listingAgentCtc_id,
+    brokerAccountName,
+    xcllusiveAnalyst,
+    ctcAnalyst,
     sourceId,
     stageId,
     ctcStageId,
@@ -2756,9 +2756,10 @@ export const getBusinessesAdvancedSearch = async (req, res, next) => {
     company
   } = req.query
 
+  const offset = req.skip
+
   const whereOptions = {}
 
-  console.log('values', businessName)
   if (businessName) {
     whereOptions.businessName = {
       $like: `%${businessName}%`
@@ -2769,17 +2770,148 @@ export const getBusinessesAdvancedSearch = async (req, res, next) => {
       $like: `%${firstNameV}%`
     }
   }
-  console.log('test', whereOptions)
+  if (lastNameV) {
+    whereOptions.lastNameV = {
+      $like: `%${lastNameV}%`
+    }
+  }
+  if (vendorEmail) {
+    whereOptions.vendorEmail = {
+      $like: `%${vendorEmail}%`
+    }
+  }
+  if (vendorPhone1) {
+    whereOptions.vendorPhone1Number = {
+      $like: `%${vendorPhone1.substr(1, 11)}%`
+    }
+  }
+  if (suburb) {
+    whereOptions.suburb = {
+      $like: `%${suburb}%`
+    }
+  }
+  if (postCode) {
+    whereOptions.postCode = {
+      $like: `%${postCode}%`
+    }
+  }
+  if (businessType) {
+    whereOptions.typeId = businessType
+  }
+  if (businessProduct) {
+    whereOptions.productId = {
+      $like: `%${businessProduct}%`
+    }
+  }
+  if (industry) {
+    whereOptions.industry = {
+      $like: `%${industry}%`
+    }
+  }
+  if (priceFrom && priceTo) {
+    if (parseInt(priceFrom) === -1 || parseInt(priceTo) === -1) {
+      whereOptions.currentPrice = {
+        $gte: 3000000
+      }
+    } else {
+      whereOptions.currentPrice = {
+        $between: [priceFrom, priceTo]
+      }
+    }
+  }
+  if (brokerAccountName) {
+    whereOptions.brokerAccountName = {
+      $eq: brokerAccountName
+    }
+  }
+  if (xcllusiveAnalyst) {
+    whereOptions.listingAgent_id = {
+      $eq: xcllusiveAnalyst
+    }
+  }
+  if (ctcAnalyst) {
+    whereOptions.listingAgent_id = {
+      $eq: ctcAnalyst
+    }
+  }
+  if (sourceId) {
+    whereOptions.sourceId = {
+      $like: `%${sourceId}%`
+    }
+  }
+  if (ctcSourceId) {
+    whereOptions.ctcSourceId = {
+      $eq: ctcSourceId
+    }
+  }
+  if (stageId) {
+    whereOptions.stageId = {
+      $eq: stageId
+    }
+  }
+  if (ctcStageId) {
+    whereOptions.ctcStageId = {
+      $like: `%${ctcStageId}%`
+    }
+  }
+  if (JSON.parse(company)) whereOptions.company_id = 1
+  else whereOptions.company_id = 2
+
   try {
-    const businesses = await models.Business.findAll({
+    const businesses = await models.Business.findAndCountAll({
       raw: true,
-      attributes: ['id', 'businessName'],
-      where: whereOptions
+      attributes: ['id', 'businessName', 'typeId', 'company_id', 'firstNameV', 'lastNameV', 'suburb', 'industry', 'currentPrice', 'listingAgent_id', 'listingAgentCtc_id', 'brokerAccountName', 'dateTimeCreated'],
+      where: whereOptions,
+      limit: limit,
+      offset,
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
 
-    console.log(businesses)
+    let listBusinesses = []
+    await Promise.all(
+      businesses.rows.map(async item => {
+        const listingAgent = item.company_id === 1 ? item.listingAgent_id : item.listingAgentCtc_id
+
+        let analyst = null
+        if (listingAgent) {
+          analyst = await models.User.findOne({
+            raw: true,
+            attributes: ['firstName', 'lastName'],
+            where: {
+              id: listingAgent
+            }
+          })
+        }
+        let broker = null
+        if (item.brokerAccountName) {
+          broker = await models.User.findOne({
+            raw: true,
+            attributes: ['firstName', 'lastName'],
+            where: {
+              id: item.brokerAccountName
+            }
+          })
+        }
+
+        listBusinesses.push({
+          id: item.id,
+          businessName: item.businessName,
+          vendorName: `${item.firstNameV} ${item.lastNameV}`,
+          suburb: item.suburb,
+          industry: item.industry,
+          price: item.currentPrice,
+          analystName: analyst ? `${analyst.firstName} ${analyst.lastName}` : '',
+          brokerName: broker ? `${broker.firstName} ${broker.lastName}` : ''
+        })
+      })
+    )
+
     return res.status(200).json({
-      data: businesses
+      data: listBusinesses,
+      pageCount: businesses.count,
+      itemCount: Math.ceil(businesses.count / req.query.limit)
     })
   } catch (err) {
     return next(err)
