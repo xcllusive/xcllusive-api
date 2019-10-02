@@ -2127,7 +2127,8 @@ export const getCtcAllPerUser = async (req, res, next) => {
             [{
               model: models.BusinessLog,
               as: 'BusinessLog'
-            }, 'time', 'desc'], [{
+            }, 'time', 'desc'],
+            [{
               model: models.BusinessLog,
               as: 'BusinessLog'
             }, 'followUp', 'DESC']
@@ -2416,10 +2417,10 @@ export const verifyDuplicatedBusiness = async (req, res, next) => {
       if (
         (item.vendorPhone1 &&
           item.vendorPhone1
-            .split(' ')
-            .join('')
-            .split('-')
-            .join('') === telephoneRaw) ||
+          .split(' ')
+          .join('')
+          .split('-')
+          .join('') === telephoneRaw) ||
         (item.vendorEmail && item.vendorEmail === vendorEmail)
       ) {
         duplicatedBusiness = item
@@ -2753,7 +2754,9 @@ export const getBusinessesAdvancedSearch = async (req, res, next) => {
     stageId,
     ctcStageId,
     ctcSourceId,
-    company
+    company,
+    dateFrom,
+    dateTo
   } = req.query
 
   const offset = req.skip
@@ -2856,7 +2859,12 @@ export const getBusinessesAdvancedSearch = async (req, res, next) => {
   }
   if (JSON.parse(company)) whereOptions.company_id = 1
   else whereOptions.company_id = 2
-
+  if (dateFrom && dateTo) {
+    whereOptions.dateTimeCreated = {
+      $between: [dateFrom, dateTo]
+    }
+  }
+  console.log('whereOptions', whereOptions)
   try {
     const businesses = await models.Business.findAndCountAll({
       raw: true,
