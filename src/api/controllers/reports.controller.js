@@ -1283,6 +1283,7 @@ export const getSoldBySource = async (req, res, next) => {
           },
           include: [{
             model: models.Business,
+            as: 'Business',
             attributes: ['id'],
             where: {
               id: {
