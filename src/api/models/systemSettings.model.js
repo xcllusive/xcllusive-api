@@ -19,6 +19,10 @@ export default (sequelize, DataTypes) => {
       messageMercury: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      checkCaReminder: {
+        type: DataTypes.DATE,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',

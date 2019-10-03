@@ -490,7 +490,8 @@ export const sendCA = async (req, res, next) => {
 
     // Updated caSent on Buyer
     await models.Buyer.update({
-      caSent: true
+      caSent: true,
+      dateCaSent: moment().format('YYYY-MM-DD')
     }, {
       where: {
         id: buyerId
@@ -626,8 +627,8 @@ export const sendIM = async (req, res, next) => {
       business_name: business.businessName,
       agents_name: `${brokerDetails.firstName} ${brokerDetails.lastName}`,
       agents_email: brokerDetails.email,
-      agents_phone: brokerDetails.phoneMobile
-        ? brokerDetails.phoneMobile : brokerDetails.phoneWork
+      agents_phone: brokerDetails.phoneMobile ?
+        brokerDetails.phoneMobile : brokerDetails.phoneWork
     }
 
     // Set email options
@@ -914,8 +915,8 @@ export const listBusinessesFromBuyerLog = async (req, res, next) => {
       lastLog,
       pageCount: logs.count,
       itemCount: Math.ceil(logs.count / req.query.limit),
-      message: logs.length === 0
-        ? 'No business found for buyer' : 'Get business from buyer succesfully'
+      message: logs.length === 0 ?
+        'No business found for buyer' : 'Get business from buyer succesfully'
     })
   } catch (error) {
     return next(error)
@@ -1491,8 +1492,8 @@ export const sendGroupEmail = async (req, res, next) => {
         to: buyer.email,
         from: '"Xcllusive Business Sales" <businessinfo@xcllusive.com.au>',
         subject,
-        replyTo: buyer.replyTo
-          ? req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
+        replyTo: buyer.replyTo ?
+          req.user.email : `${req.user.email}, ${emailToOffice.emailOffice}`,
         html: `
         <p>Dear ${buyer.firstName} ${buyer.lastName}</p>
         
@@ -1868,8 +1869,8 @@ export const getBusinessesPerBroker = async (req, res, next) => {
           nOfEnquiries7Days,
           nOfPendingTasks: nOfPendingTasks.length,
           nOfNewLogs7Days,
-          arrayOneBeforeLastTextToDo: oneBeforeLastTextToDo[1]
-            ? oneBeforeLastTextToDo[1] : null
+          arrayOneBeforeLastTextToDo: oneBeforeLastTextToDo[1] ?
+            oneBeforeLastTextToDo[1] : null
         }
       })
     )
@@ -2085,8 +2086,8 @@ export const getBusinessLogFromBuyer = async (req, res, next) => {
 
     return res.status(201).json({
       data: logs,
-      message: logs.length === 0
-        ? 'Nothing business log found' : 'Get business log with succesfully'
+      message: logs.length === 0 ?
+        'Nothing business log found' : 'Get business log with succesfully'
     })
   } catch (error) {
     return next(error)
@@ -2140,6 +2141,93 @@ export const finaliseBusinessLogFromBuyer = async (req, res, next) => {
     return res.status(200).json({
       message: 'Business log finalised'
     })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const checkCaReminder = async (req, res, next) => {
+  const today = moment().format('YYYY-MM-DD')
+  try {
+
+    const checkCaReminderToday = await models.SystemSettings.findOne({
+      attributes: ['checkCaReminder'],
+      where: {
+        id: 1
+      }
+    })
+
+    if (moment(today).diff(checkCaReminderToday.checkCaReminder, 'days') > 0) {
+      // make the reminders
+    }
+
+    // if (today > checkCaReminderToday.checkCaReminder) {
+    //   console.log('have not done yet')
+    // } else {
+    //   console.log('Already checked!')
+    // }
+
+    const buyers1Reminder = await models.Buyer.findAll({
+      raw: true,
+      attributes: ['id', 'caReceived', 'caSent', 'dateCaSent', 'ca1Reminder', 'ca2Reminder'],
+      where: {
+        caSent: 1,
+        caReceived: 0,
+        xcllusiveBuyer: 1,
+        ca1Reminder: 0,
+        ca2Reminder: 0
+        // dateCaSent: {
+        //   $not: true
+        // }
+      }
+    })
+
+    buyers1Reminder.map(item => {
+      const dateCaSent = moment(item.dateCaSent).format('YYYY-MM-DD')
+      if (moment(today).diff(dateCaSent, 'days') > 3 && moment(today).diff(dateCaSent, 'days') < 10) {
+        console.log('send the reminder')
+        console.log('set ca1Reminder to true')
+        console.log('create log first reminder')
+      }
+    })
+
+    const buyers2Reminder = await models.Buyer.findAll({
+      raw: true,
+      attributes: ['id', 'caReceived', 'caSent', 'dateCaSent', 'ca1Reminder', 'ca2Reminder'],
+      where: {
+        caSent: 1,
+        caReceived: 0,
+        xcllusiveBuyer: 1,
+        ca1Reminder: 1,
+        ca2Reminder: 0
+        // dateCaSent: {
+        //   $not: true
+        // }
+      }
+    })
+
+    buyers2Reminder.map(item => {
+      const dateCaSent = moment(item.dateCaSent).format('YYYY-MM-DD')
+      if (moment(today).diff(dateCaSent, 'days') >= 10 && moment(today).diff(dateCaSent, 'days') <= 15) {
+        console.log('send the reminder')
+        console.log('set ca2Reminder to true')
+        console.log('create log second reminder')
+      }
+    })
+
+    await models.SystemSettings.update({
+      checkCaReminder: moment().format('YYYY-MM-DD')
+    }, {
+      where: {
+        id: 1
+      }
+    })
+
+    return res
+      .status(200)
+      .json({
+        message: 'Message here'
+      })
   } catch (error) {
     return next(error)
   }

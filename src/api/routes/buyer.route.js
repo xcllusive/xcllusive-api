@@ -30,7 +30,8 @@ import {
   updateBusinessFromBuyer,
   getBusinessLogFromBuyer,
   updateBusinessLogFromBuyer,
-  finaliseBusinessLogFromBuyer
+  finaliseBusinessLogFromBuyer,
+  checkCaReminder
 } from '../controllers/buyer.controller'
 import * as validation from '../validations/buyer.validation'
 // import models from '../../config/sequelize'
@@ -54,6 +55,8 @@ router.use(authMiddleware).use(authorizeMiddleware({
 router.use(controlActivityUser('Buyer'))
 
 router.route('/from-business/:idBusiness').get(getBuyersFromBusiness)
+
+router.route('/ca-reminder').put(checkCaReminder)
 
 router.route('/business-from-buyer/:idBusiness').get(getBusinessFromBuyer).put(updateBusinessFromBuyer)
 router.route('/business-log-from-buyer').get(getBusinessLogFromBuyer)

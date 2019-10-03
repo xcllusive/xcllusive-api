@@ -155,6 +155,19 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false
+      },
+      dateCaSent: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+      ca1Reminder: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
+      ca2Reminder: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     }, {
       createdAt: 'dateTimeCreated',
