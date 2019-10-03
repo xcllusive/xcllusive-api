@@ -397,6 +397,7 @@ export const removeFile = async (req, res, next) => {
 
   try {
     const file = await models.DocumentFile.findOne({
+      raw: true,
       where: {
         id: documentFileId
       }
