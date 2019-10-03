@@ -280,8 +280,6 @@ export const sendEmail = async (req, res, next) => {
 
   const attachments = []
 
-  console.log('caralho')
-
   const destPdfGeneratedAgreement = path.resolve(
     'src',
     'api',

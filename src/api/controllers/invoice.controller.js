@@ -10,10 +10,16 @@ import models from '../../config/sequelize'
 import mailer from '../modules/mailer'
 
 export const get = async (req, res, next) => {
-  const { idInvoice: id } = req.params
+  const {
+    idInvoice: id
+  } = req.params
 
   try {
-    const invoice = await models.Invoice.findOne({ where: { id } })
+    const invoice = await models.Invoice.findOne({
+      where: {
+        id
+      }
+    })
 
     return res.status(201).json({
       data: invoice,
@@ -25,14 +31,18 @@ export const get = async (req, res, next) => {
 }
 
 export const getLast = async (req, res, next) => {
-  const { businessId } = req.query
+  const {
+    businessId
+  } = req.query
 
   try {
     const invoice = await models.Invoice.findOne({
       where: {
         business_id: businessId
       },
-      order: [['dateTimeCreated', 'DESC']]
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ]
     })
     return res.status(201).json({
       data: invoice,
@@ -44,7 +54,10 @@ export const getLast = async (req, res, next) => {
 }
 
 export const list = async (req, res, next) => {
-  const { limit, businessId } = req.query
+  const {
+    limit,
+    businessId
+  } = req.query
   const offset = req.skip
 
   try {
@@ -52,7 +65,9 @@ export const list = async (req, res, next) => {
       where: {
         business_id: businessId
       },
-      order: [['dateTimeCreated', 'DESC']],
+      order: [
+        ['dateTimeCreated', 'DESC']
+      ],
       limit,
       offset
     })
@@ -69,14 +84,21 @@ export const list = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
-  const { invoice, businessId } = req.body
+  const {
+    invoice,
+    businessId
+  } = req.body
 
   invoice.createdBy_id = req.user.id
   invoice.modifiedBy_id = req.user.id
 
   try {
     // Verify exists business
-    const business = await models.Business.findOne({ where: { id: businessId } })
+    const business = await models.Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
 
     if (!business) {
       throw new APIError({
@@ -105,8 +127,7 @@ export const create = async (req, res, next) => {
       lastInvoice_id: invoiceCreated.id
     }
     await models.Business.update(
-      updateInvoice,
-      {
+      updateInvoice, {
         where: {
           id: businessId
         }
@@ -123,14 +144,18 @@ export const create = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-  const { idInvoice: id } = req.params
+  const {
+    idInvoice: id
+  } = req.params
   const editInvoice = req.body
 
   editInvoice.modifiedBy_id = req.user.id
 
   try {
     const editedInvoice = await models.Invoice.update(editInvoice, {
-      where: { id }
+      where: {
+        id
+      }
     })
 
     return res.status(201).json({
@@ -143,19 +168,29 @@ export const update = async (req, res, next) => {
 }
 
 export const remove = async (req, res, next) => {
-  const { idInvoice: id } = req.params
+  const {
+    idInvoice: id
+  } = req.params
 
   try {
-    await models.Invoice.destroy({ where: { id } })
+    await models.Invoice.destroy({
+      where: {
+        id
+      }
+    })
 
-    return res.status(200).json({ message: `Invoice ${id} removed with success` })
+    return res.status(200).json({
+      message: `Invoice ${id} removed with success`
+    })
   } catch (error) {
     return next(error)
   }
 }
 
 export const makePdf = async (req, res, next) => {
-  const { idInvoice } = req.params
+  const {
+    idInvoice
+  } = req.params
 
   const templatePath = path.resolve(
     'src',
@@ -182,8 +217,13 @@ export const makePdf = async (req, res, next) => {
   try {
     // Verify exists score
     const invoice = await models.Invoice.findOne({
-      where: { id: idInvoice },
-      include: [{ model: models.Business, as: 'Business' }]
+      where: {
+        id: idInvoice
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business'
+      }]
     })
 
     if (!invoice) {
@@ -268,7 +308,10 @@ export const makePdf = async (req, res, next) => {
 }
 
 export const sendEmail = async (req, res, next) => {
-  const { invoiceId, mail } = req.body
+  const {
+    invoiceId,
+    mail
+  } = req.body
   const attachment = req.files.attachment
 
   const attachments = []
@@ -316,8 +359,13 @@ export const sendEmail = async (req, res, next) => {
   try {
     // Verify exists score
     const invoice = await models.Invoice.findOne({
-      where: { id: invoiceId },
-      include: [{ model: models.Business, as: 'Business' }]
+      where: {
+        id: invoiceId
+      },
+      include: [{
+        model: models.Business,
+        as: 'Business'
+      }]
     })
 
     if (!invoice) {
@@ -329,7 +377,9 @@ export const sendEmail = async (req, res, next) => {
     }
 
     const broker = await models.User.findOne({
-      where: { id: invoice.Business.brokerAccountName }
+      where: {
+        id: invoice.Business.brokerAccountName
+      }
     })
 
     // Agreement
@@ -415,7 +465,8 @@ export const sendEmail = async (req, res, next) => {
     })
     const page = await browser.newPage()
     await page.emulateMedia('screen')
-    await page.goto(`data:text/html,${template}`)
+    // await page.goto(`data:text/html,${template}`)
+    await page.setContent(template)
 
     await page.pdf(PDF_OPTIONS)
     await browser.close()
@@ -456,12 +507,13 @@ export const sendEmail = async (req, res, next) => {
     })
 
     // Update Date sent
-    await models.Invoice.update(
-      { dateSent: moment() },
-      {
-        where: { id: invoiceId }
+    await models.Invoice.update({
+      dateSent: moment()
+    }, {
+      where: {
+        id: invoiceId
       }
-    )
+    })
 
     return res.status(201).json({
       data: responseMailer,
