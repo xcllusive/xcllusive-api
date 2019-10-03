@@ -6,4 +6,4 @@ export const CLIENT_MANAGER_MENU = 'CLIENT_MANAGER_MENU'
 export const MANAGEMENT_MENU = 'MANAGEMENT_MENU'
 export const SYSTEM_SETTINGS_MENU = 'SYSTEM_SETTINGS_MENU'
 export const CTC_MENU = 'CTC_MENU'
-export const IGNORE_ROUTES = ['/user', '/buyer-register', '/email-template', '/reports', '/office-register']
+export const IGNORE_ROUTES = ['/user', '/buyer-register', '/email-template', '/reports', '/office-register', '/system-settings']

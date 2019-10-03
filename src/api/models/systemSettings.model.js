@@ -15,6 +15,10 @@ export default (sequelize, DataTypes) => {
       emailMarketing: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      messageMercury: {
+        type: DataTypes.TEXT,
+        allowNull: true
       }
     }, {
       createdAt: 'dateTimeCreated',
