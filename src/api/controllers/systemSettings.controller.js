@@ -64,7 +64,7 @@ export const exportBuyers = async (req, res, next) => {
   try {
     const buyer = await models.Buyer.findAll({
       raw: true,
-      attributes: ['firstName', 'surname', 'email', 'state'],
+      attributes: ['firstName', 'surname', 'email', 'state', 'telephone1'],
       where: {
         dateTimeCreated: {
           $between: [dateFrom, dateTo]

@@ -168,6 +168,14 @@ export default (sequelize, DataTypes) => {
       ca2Reminder: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+      },
+      brokersNotesDate: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+      brokersNotesModifiedBy_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
     }, {
       createdAt: 'dateTimeCreated',
@@ -197,12 +205,15 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'buyer_id',
       as: 'BuyerLog'
     })
-    models.Buyer.belongsTo(models.BuyerType, {
-      foreignKey: 'typeId'
-    })
+    // models.Buyer.belongsTo(models.BuyerType, {
+    //   foreignKey: 'typeId'
+    // })
     models.Buyer.belongsTo(models.BuyerSource, {
       foreignKey: 'source_id',
       as: 'BuyerSource'
+    })
+    models.Buyer.belongsTo(models.User, {
+      foreignKey: 'brokersNotesModifiedBy_id'
     })
   }
 

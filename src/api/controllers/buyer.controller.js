@@ -32,6 +32,17 @@ export const get = async (req, res, next) => {
       })
     }
 
+    if (buyer.brokersNotesModifiedBy_id) {
+
+      const brokersNotesModifiedBy = await models.User.findOne({
+        where: {
+          id: buyer.brokersNotesModifiedBy_id
+        }
+      })
+      buyer.brokersNotesModifiedBy_id = `${brokersNotesModifiedBy.firstName} ${brokersNotesModifiedBy.lastName}`
+    }
+
+
     const response = transformQueryAndCleanNull(buyer.toJSON())
 
     return res.status(201).json({
@@ -363,6 +374,11 @@ export const update = async (req, res, next) => {
         status: 404,
         isPublic: true
       })
+    }
+
+    if (buyer.buyerNotes !== modifyBuyer.buyerNotes) {
+      modifyBuyer.brokersNotesDate = moment().format('YYYY-MM-DD')
+      modifyBuyer.brokersNotesModifiedBy_id = req.user.id
     }
 
     await models.Buyer.update(modifyBuyer, {
@@ -2159,61 +2175,186 @@ export const checkCaReminder = async (req, res, next) => {
 
     if (moment(today).diff(checkCaReminderToday.checkCaReminder, 'days') > 0) {
       // make the reminders
+      const buyers1Reminder = await models.Buyer.findAll({
+        raw: true,
+        attributes: ['id', 'caReceived', 'caSent', 'dateCaSent', 'ca1Reminder', 'ca2Reminder', 'firstName', 'surname', 'email'],
+        where: {
+          caSent: 1,
+          caReceived: 0,
+          xcllusiveBuyer: 1,
+          ca1Reminder: 0,
+          ca2Reminder: 0
+        }
+      })
+      buyers1Reminder.map(async item => {
+        const dateCaSent = moment(item.dateCaSent).format('YYYY-MM-DD')
+        if (moment(today).diff(dateCaSent, 'days') > 3 && moment(today).diff(dateCaSent, 'days') < 10) {
+          // Verify exists template CA Sent
+          const template = await models.EmailTemplate.findOne({
+            where: {
+              id: 18
+            }
+          })
+          if (!template) {
+            throw new APIError({
+              message: 'Email template not found',
+              status: 404,
+              isPublic: true
+            })
+          }
+
+          // Compile the template to use variables
+          const templateCompiled = Handlebars.compile(template.body)
+          const context = {
+            buyer_name: `${item.firstName} ${item.surname}`
+          }
+
+          // Set email options
+          const mailOptions = {
+            to: item.email,
+            from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+            subject: template.subject,
+            html: templateCompiled(context),
+            attachments: template.enableAttachment ? [{
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }] : []
+          }
+
+          // Send Email
+          await mailer.sendMail(mailOptions)
+
+          // Updated first reminder
+          await models.Buyer.update({
+            ca1Reminder: 1
+          }, {
+            where: {
+              id: item.id
+            }
+          })
+
+          // Updated all logs Pending to Done
+          await models.BuyerLog.update({
+            followUpStatus: 'Done',
+            modifiedBy_id: req.user.id
+          }, {
+            where: {
+              buyer_id: item.id
+            }
+          })
+
+          const businessCaSent = await models.BuyerLog.findOne({
+            raw: true,
+            attributes: ['business_id'],
+            where: {
+              buyer_id: item.id,
+              text: 'CA Sent'
+            }
+          })
+
+          // Insert in log
+          await models.BuyerLog.create({
+            followUpStatus: 'Pending',
+            text: 'First CA Reminder Sent',
+            followUp: moment().add(1, 'days').format('YYYY-MM-DD hh:mm:ss'),
+            buyer_id: item.id,
+            business_id: businessCaSent.business_id,
+            createdBy_id: req.user.id,
+            modifiedBy_id: req.user.id
+          })
+        }
+      })
+
+      const buyers2Reminder = await models.Buyer.findAll({
+        raw: true,
+        attributes: ['id', 'caReceived', 'caSent', 'dateCaSent', 'ca1Reminder', 'ca2Reminder', 'firstName', 'surname', 'email'],
+        where: {
+          caSent: 1,
+          caReceived: 0,
+          xcllusiveBuyer: 1,
+          ca1Reminder: 1,
+          ca2Reminder: 0
+        }
+      })
+
+      buyers2Reminder.map(async item => {
+        const dateCaSent = moment(item.dateCaSent).format('YYYY-MM-DD')
+        if (moment(today).diff(dateCaSent, 'days') >= 10 && moment(today).diff(dateCaSent, 'days') <= 30) {
+          // Verify exists template CA Sent
+          const template = await models.EmailTemplate.findOne({
+            where: {
+              id: 18
+            }
+          })
+          if (!template) {
+            throw new APIError({
+              message: 'Email template not found',
+              status: 404,
+              isPublic: true
+            })
+          }
+
+          // Compile the template to use variables
+          const templateCompiled = Handlebars.compile(template.body)
+          const context = {
+            buyer_name: `${item.firstName} ${item.surname}`
+          }
+
+          // Set email options
+          const mailOptions = {
+            to: item.email,
+            from: '"Xcllusive" <businessinfo@xcllusive.com.au>',
+            subject: template.subject,
+            html: templateCompiled(context),
+            attachments: template.enableAttachment ? [{
+              filename: `${template.title.trim()}.pdf`,
+              path: template.attachmentPath
+            }] : []
+          }
+
+          // Send Email
+          await mailer.sendMail(mailOptions)
+
+          // Updated first reminder
+          await models.Buyer.update({
+            ca2Reminder: 1
+          }, {
+            where: {
+              id: item.id
+            }
+          })
+
+          // Updated all logs Pending to Done
+          await models.BuyerLog.update({
+            followUpStatus: 'Done',
+            modifiedBy_id: req.user.id
+          }, {
+            where: {
+              buyer_id: item.id
+            }
+          })
+
+          const businessCaSent = models.BuyerLog.findOne({
+            attributes: ['business_id'],
+            where: {
+              buyer_id: item.id,
+              text: 'CA Sent'
+            }
+          })
+
+          // Insert in log
+          await models.BuyerLog.create({
+            followUpStatus: 'Pending',
+            text: 'Second CA Reminder Sent',
+            followUp: moment().add(1, 'days').format('YYYY-MM-DD hh:mm:ss'),
+            buyer_id: item.id,
+            business_id: businessCaSent.business_id,
+            createdBy_id: req.user.id,
+            modifiedBy_id: req.user.id
+          })
+        }
+      })
     }
-
-    // if (today > checkCaReminderToday.checkCaReminder) {
-    //   console.log('have not done yet')
-    // } else {
-    //   console.log('Already checked!')
-    // }
-
-    const buyers1Reminder = await models.Buyer.findAll({
-      raw: true,
-      attributes: ['id', 'caReceived', 'caSent', 'dateCaSent', 'ca1Reminder', 'ca2Reminder'],
-      where: {
-        caSent: 1,
-        caReceived: 0,
-        xcllusiveBuyer: 1,
-        ca1Reminder: 0,
-        ca2Reminder: 0
-        // dateCaSent: {
-        //   $not: true
-        // }
-      }
-    })
-
-    buyers1Reminder.map(item => {
-      const dateCaSent = moment(item.dateCaSent).format('YYYY-MM-DD')
-      if (moment(today).diff(dateCaSent, 'days') > 3 && moment(today).diff(dateCaSent, 'days') < 10) {
-        console.log('send the reminder')
-        console.log('set ca1Reminder to true')
-        console.log('create log first reminder')
-      }
-    })
-
-    const buyers2Reminder = await models.Buyer.findAll({
-      raw: true,
-      attributes: ['id', 'caReceived', 'caSent', 'dateCaSent', 'ca1Reminder', 'ca2Reminder'],
-      where: {
-        caSent: 1,
-        caReceived: 0,
-        xcllusiveBuyer: 1,
-        ca1Reminder: 1,
-        ca2Reminder: 0
-        // dateCaSent: {
-        //   $not: true
-        // }
-      }
-    })
-
-    buyers2Reminder.map(item => {
-      const dateCaSent = moment(item.dateCaSent).format('YYYY-MM-DD')
-      if (moment(today).diff(dateCaSent, 'days') >= 10 && moment(today).diff(dateCaSent, 'days') <= 15) {
-        console.log('send the reminder')
-        console.log('set ca2Reminder to true')
-        console.log('create log second reminder')
-      }
-    })
 
     await models.SystemSettings.update({
       checkCaReminder: moment().format('YYYY-MM-DD')
