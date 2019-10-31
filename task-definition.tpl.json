@@ -91,5 +91,5 @@
       }
     ]
   }],
-  "family": "${CLUSTER_FAMILY}"
+  "family": "mercury-api-nonprod"
 }
