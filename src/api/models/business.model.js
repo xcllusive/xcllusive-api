@@ -1,6 +1,7 @@
 export default (sequelize, DataTypes) => {
   const Business = sequelize.define(
-    'Business', {
+    'Business',
+    {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -236,14 +237,21 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null
+      },
+      ccEmail: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
-    }, {
+    },
+    {
       createdAt: 'dateTimeCreated',
       updatedAt: 'dateTimeModified',
-      indexes: [{
-        unique: true,
-        fields: ['id']
-      }]
+      indexes: [
+        {
+          unique: true,
+          fields: ['id']
+        }
+      ]
     }
   )
 
