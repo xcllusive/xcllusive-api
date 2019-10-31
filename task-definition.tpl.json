@@ -1,0 +1,95 @@
+{
+  "containerDefinitions": [{
+    "essential": true,
+    "image": "${IMAGE_NAME}",
+    "memoryReservation": 512,
+    "memory": 512,
+    "name": "${APP_NAME}",
+    "portMappings": [{
+      "containerPort": 80
+    }],
+    "environment": [{
+        "name": "NODE_ENV",
+        "value": "${NODE_ENV}"
+      },
+      {
+        "name": "PORT",
+        "value": "5000"
+      },
+      {
+        "name": "JWT_EXPIRATION_HOURS",
+        "value": "8"
+      },
+      {
+        "name": "EMAIL_PORT",
+        "value": "587"
+      },
+      {
+        "name": "EMAIL_USER",
+        "value": "businessinfo@xcllusive.com.au"
+      },
+      {
+        "name": "AWS_REGION",
+        "value": "ap-southeast-2"
+      }
+    ],
+    "secrets": [{
+        "name": "JWT_SECRET",
+        "valueFrom": "${JWT_SECRET}"
+      },
+      {
+        "name": "MYSQL_URI",
+        "valueFrom": "${MYSQL_URI}"
+      },
+      {
+        "name": "MYSQL_USERNAME",
+        "valueFrom": "${MYSQL_USERNAME}"
+      },
+      {
+        "name": "MYSQL_PASSWORD",
+        "valueFrom": "${MYSQL_PASSWORD}"
+      },
+      {
+        "name": "MYSQL_DATABASE",
+        "valueFrom": "${MYSQL_DATABASE}"
+      },
+      {
+        "name": "MYSQL_URI_DEV",
+        "valueFrom": "${MYSQL_URI_DEV}"
+      },
+      {
+        "name": "MYSQL_USERNAME_DEV",
+        "valueFrom": "${MYSQL_USERNAME_DEV}"
+      },
+      {
+        "name": "MYSQL_PASSWORD_DEV",
+        "valueFrom": "${MYSQL_PASSWORD_DEV}"
+      },
+      {
+        "name": "MYSQL_DATABASE_DEV",
+        "valueFrom": "${MYSQL_DATABASE_DEV}"
+      },
+      {
+        "name": "EMAIL_HOST",
+        "valueFrom": "${EMAIL_HOST}"
+      },
+      {
+        "name": "EMAIL_PASS",
+        "valueFrom": "${EMAIL_PASS}"
+      },
+      {
+        "name": "AWS_ACCESS_KEY_ID",
+        "valueFrom": "${AWS_ACCESS_KEY_ID}"
+      },
+      {
+        "name": "AWS_SECRET_ACCESS_KEY",
+        "valueFrom": "${AWS_SECRET_ACCESS_KEY}"
+      },
+      {
+        "name": "SNS_TOPIC_ARN",
+        "valueFrom": "${SNS_TOPIC_ARN}"
+      }
+    ]
+  }],
+  "family": "${CLUSTER_FAMILY}"
+}

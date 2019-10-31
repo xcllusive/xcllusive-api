@@ -1,8 +1,10 @@
 const path = require('path')
 
-require('dotenv-safe').load({
-  path: path.join(__dirname, '../../../.env')
-})
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv-safe').load({
+    path: path.join(__dirname, '../../../.env')
+  })
+}
 
 module.exports = {
   development: {
