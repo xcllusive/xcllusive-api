@@ -32,7 +32,23 @@
         "name": "AWS_REGION",
         "value": "ap-southeast-2"
       }
-    ]
+    ],
+    "secrets": [{
+      "name": "JWT_SECRET",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/JWT_SECRET"
+    }, {
+      "name": "MYSQL_URI_DEV",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_URI_DEV"
+    }, {
+      "name": "MYSQL_USERNAME_DEV",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_USERNAME_DEV"
+    }, {
+      "name": "MYSQL_PASSWORD_DEV",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_PASSWORD_DEV"
+    }, {
+      "name": "MYSQL_DATABASE_DEV",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_DATABASE_DEV"
+    }]
   }],
   "family": "mercury-api-nonprod"
 }
