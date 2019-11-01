@@ -11,7 +11,7 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "/ecs/mercury-nonprod}/mercury-api-nonprod",
+        "awslogs-group": "/ecs/mercury-nonprod/mercury-api-nonprod",
         "awslogs-region": "${AWS_DEFAULT_REGION}",
         "awslogs-stream-prefix": "mercury-api-nonprod"
       }
