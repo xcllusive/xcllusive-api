@@ -6,8 +6,16 @@
     "memory": 512,
     "name": "VAR_APP_NAME",
     "portMappings": [{
-      "containerPort": 80
+      "containerPort": 5000
     }],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/mercury-nonprod}/mercury-api-nonprod",
+        "awslogs-region": "${AWS_DEFAULT_REGION}",
+        "awslogs-stream-prefix": "mercury-api-nonprod"
+      }
+    },
     "environment": [{
         "name": "NODE_ENV",
         "value": "VAR_NODE_ENV"
