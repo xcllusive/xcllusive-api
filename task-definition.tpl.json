@@ -1,16 +1,16 @@
 {
   "containerDefinitions": [{
     "essential": true,
-    "image": ${IMAGE_NAME},
+    "image": "${IMAGE_NAME}",
     "memoryReservation": 512,
     "memory": 512,
-    "name": ${APP_NAME},
+    "name": "${APP_NAME}",
     "portMappings": [{
       "containerPort": 80
     }],
     "environment": [{
         "name": "NODE_ENV",
-        "value": ${NODE_ENV}
+        "value": "${NODE_ENV}"
       },
       {
         "name": "PORT",
@@ -34,10 +34,9 @@
       }
     ],
     "secrets": [{
-        "name": "JWT_SECRET",
-        "valueFrom": ${JWT_SECRET}
-      }
-    ]
+      "name": "JWT_SECRET",
+      "valueFrom": "${JWT_SECRET}"
+    }]
   }],
   "family": "mercury-api-nonprod"
 }
