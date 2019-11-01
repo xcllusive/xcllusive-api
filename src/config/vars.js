@@ -1,10 +1,10 @@
-import path from 'path'
+// import path from 'path'
 
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv-safe').load({
-    path: path.join(__dirname, '../../.env')
-  })
-}
+// if (process.env.NODE_ENV === 'development') {
+//   require('dotenv-safe').load({
+//     path: path.join(__dirname, '../../.env')
+//   })
+// }
 
 module.exports = {
   env: process.env.NODE_ENV,
