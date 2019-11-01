@@ -1,10 +1,10 @@
 {
   "containerDefinitions": [{
     "essential": true,
-    "image": "${IMAGE_NAME}",
+    "image": "VAR_IMAGE_NAME",
     "memoryReservation": 512,
     "memory": 512,
-    "name": "${APP_NAME}",
+    "name": "VAR_APP_NAME",
     "portMappings": [{
       "containerPort": 80
     }],
