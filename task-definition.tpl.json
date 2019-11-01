@@ -50,5 +50,6 @@
       "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_DATABASE_DEV"
     }]
   }],
-  "family": "mercury-api-nonprod"
+  "family": "mercury-api-nonprod",
+  "executionRoleArn": "arn:aws:iam::264038389685:role/ecs-task-mercury-nonprod"
 }
