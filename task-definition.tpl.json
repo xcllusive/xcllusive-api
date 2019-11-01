@@ -10,7 +10,7 @@
     }],
     "environment": [{
         "name": "NODE_ENV",
-        "value": "${NODE_ENV}"
+        "value": "VAR_NODE_ENV"
       },
       {
         "name": "PORT",
@@ -35,7 +35,7 @@
     ],
     "secrets": [{
       "name": "JWT_SECRET",
-      "valueFrom": "${JWT_SECRET}"
+      "valueFrom": "VAR_JWT_SECRET"
     }]
   }],
   "family": "mercury-api-nonprod"
