@@ -46,33 +46,48 @@
       }
     ],
     "secrets": [{
-      "name": "JWT_SECRET",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/JWT_SECRET"
-    }, {
-      "name": "MYSQL_URI_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_URI_DEV"
-    }, {
-      "name": "MYSQL_USERNAME_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_USERNAME_DEV"
-    }, {
-      "name": "MYSQL_PASSWORD_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_PASSWORD_DEV"
-    }, {
-      "name": "MYSQL_DATABASE_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_DATABASE_DEV"
-    }, {
-      "name": "EMAIL_PASS",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/EMAIL_PASS"
-    }, {
-      "name": "AWS_ACCESS_KEY_ID",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/AWS_ACCESS_KEY_ID"
-    }, {
-      "name": "AWS_SECRET_ACCESS_KEY",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/AWS_SECRET_ACCESS_KEY"
-    }, {
-      "name": "SNS_TOPIC_ARN",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/SNS_TOPIC_ARN"
-    }]
+        "name": "JWT_SECRET",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/JWT_SECRET"
+      },
+      {
+        "name": "MYSQL_URI",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_URI"
+      }, {
+        "name": "MYSQL_USERNAME",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_USERNAME"
+      }, {
+        "name": "MYSQL_PASSWORD",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_PASSWORD"
+      }, {
+        "name": "MYSQL_DATABASE",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_DATABASE"
+      },
+      {
+        "name": "MYSQL_URI_DEV",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_URI_DEV"
+      }, {
+        "name": "MYSQL_USERNAME_DEV",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_USERNAME_DEV"
+      }, {
+        "name": "MYSQL_PASSWORD_DEV",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_PASSWORD_DEV"
+      }, {
+        "name": "MYSQL_DATABASE_DEV",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_DATABASE_DEV"
+      }, {
+        "name": "EMAIL_PASS",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/EMAIL_PASS"
+      }, {
+        "name": "AWS_ACCESS_KEY_ID",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/AWS_ACCESS_KEY_ID"
+      }, {
+        "name": "AWS_SECRET_ACCESS_KEY",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/AWS_SECRET_ACCESS_KEY"
+      }, {
+        "name": "SNS_TOPIC_ARN",
+        "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/SNS_TOPIC_ARN"
+      }
+    ]
   }],
   "family": "VAR_CLUSTER_FAMILY",
   "executionRoleArn": "arn:aws:iam::264038389685:role/ecs-task-mercury-VAR_ENVIROMENT"
