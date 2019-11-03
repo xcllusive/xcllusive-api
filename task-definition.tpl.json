@@ -11,9 +11,9 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "/ecs/mercury-nonprod/mercury-api-nonprod",
+        "awslogs-group": "/ecs/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT",
         "awslogs-region": "ap-southeast-2",
-        "awslogs-stream-prefix": "mercury-api-nonprod"
+        "awslogs-stream-prefix": "mercury-api-VAR_ENVIROMENT"
       }
     },
     "environment": [{
@@ -27,6 +27,10 @@
       {
         "name": "JWT_EXPIRATION_HOURS",
         "value": "8"
+      },
+      {
+        "name": "EMAIL_HOST",
+        "value": "smtp.office365.com"
       },
       {
         "name": "EMAIL_PORT",
@@ -43,21 +47,33 @@
     ],
     "secrets": [{
       "name": "JWT_SECRET",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/JWT_SECRET"
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/JWT_SECRET"
     }, {
       "name": "MYSQL_URI_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_URI_DEV"
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_URI_DEV"
     }, {
       "name": "MYSQL_USERNAME_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_USERNAME_DEV"
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_USERNAME_DEV"
     }, {
       "name": "MYSQL_PASSWORD_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_PASSWORD_DEV"
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_PASSWORD_DEV"
     }, {
       "name": "MYSQL_DATABASE_DEV",
-      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-nonprod/mercury-api-nonprod/MYSQL_DATABASE_DEV"
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/MYSQL_DATABASE_DEV"
+    }, {
+      "name": "EMAIL_PASS",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/EMAIL_PASS"
+    }, {
+      "name": "AWS_ACCESS_KEY_ID",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/AWS_ACCESS_KEY_ID"
+    }, {
+      "name": "AWS_SECRET_ACCESS_KEY",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/AWS_SECRET_ACCESS_KEY"
+    }, {
+      "name": "SNS_TOPIC_ARN",
+      "valueFrom": "arn:aws:ssm:ap-southeast-2:264038389685:parameter/app/mercury-VAR_ENVIROMENT/mercury-api-VAR_ENVIROMENT/SNS_TOPIC_ARN"
     }]
   }],
-  "family": "mercury-api-nonprod",
-  "executionRoleArn": "arn:aws:iam::264038389685:role/ecs-task-mercury-nonprod"
+  "family": "VAR_CLUSTER_FAMILY",
+  "executionRoleArn": "arn:aws:iam::264038389685:role/ecs-task-mercury-VAR_ENVIROMENT"
 }

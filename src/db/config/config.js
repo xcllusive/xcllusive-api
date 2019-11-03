@@ -1,10 +1,10 @@
-// const path = require('path')
+const path = require('path')
 
-// if (process.env.NODE_ENV === 'development') {
-//   require('dotenv-safe').load({
-//     path: path.join(__dirname, '../../../.env')
-//   })
-// }
+if (process.env.NODE_ENV === 'development-local') {
+  require('dotenv-safe').load({
+    path: path.join(__dirname, '../../../.env')
+  })
+}
 
 module.exports = {
   development: {
