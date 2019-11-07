@@ -15,6 +15,7 @@
     "start": "node ./dist/index.js",
     "build": "rimraf dist/ && babel ./src --out-dir dist/ --copy-files",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/index.js",
+    "dev-local": "cross-env NODE_ENV=development-local nodemon --exec babel-node ./src/index.js",
     "vscode": "babel ./src -d dist/ --source-maps",
     "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --timeout 20000 --recursive src/api/tests",
     "test:unit": "cross-env NODE_ENV=test mocha src/api/tests/unit",
