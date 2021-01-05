@@ -30,7 +30,7 @@
   "dependencies": {
     "aws-sdk": "^2.229.1",
     "aws-sns-publish": "^3.3.0",
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.0",
