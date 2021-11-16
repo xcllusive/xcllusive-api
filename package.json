@@ -28,7 +28,7 @@
     "url": "git@github.com:xcllusive/xcllusive-api.git"
   },
   "dependencies": {
-    "aws-sdk": "^2.229.1",
+    "aws-sdk": "^2.814.0",
     "aws-sns-publish": "^3.3.0",
     "axios": "^0.16.2",
     "bcryptjs": "2.4.3",
