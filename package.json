@@ -41,7 +41,7 @@
     "cors": "^2.8.3",
     "cross-env": "^5.0.1",
     "dotenv-safe": "^4.0.4",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "express-paginate": "^1.0.0",
     "express-validation": "^1.0.2",
     "handlebars": "^4.0.11",
